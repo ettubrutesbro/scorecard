@@ -3,7 +3,7 @@ exports.indicators = [
             "id": "indicatorA",
             "name": "some indicator 1", 
             "categories": ["health"],
-            "year_2017": {
+            "year": [{
                 "imperial": .183,
                 "losangeles": .585,
                 "sandiego": .31,
@@ -61,13 +61,13 @@ exports.indicators = [
                 "modoc": .258,
                 "delnorte": .777,
                 "siskiyou": .19
-            },
+            }],
     },
     {
         "id": "indicatorB",
         "name": "another indicator 2", 
         "categories": ["welfare","education"],
-        "year_2018": {
+        "year": [{
             "imperial": .540,
             "losangeles": .201,
             "sandiego": .746,
@@ -125,6 +125,6 @@ exports.indicators = [
             "modoc": .89,
             "delnorte": .473,
             "siskiyou": .478
-        }
+        }]
     }
 ]

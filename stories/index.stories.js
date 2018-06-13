@@ -40,11 +40,14 @@ storiesOf('knob test', module).add('yo', ()=>{
 })
 
 storiesOf('scorecard', module).add('CountyMap', ()=>{
+  const indicator = select('Indicator (mock data): ', [0,1],0)
+  const year = select('year (mock data): ', [0,1],0)
+  console.log(indicators[indicator])
   return(
     <div>
      <CaliforniaCountyMap 
       mode = "heat"
-      data = {indicators[0]['year_2017']}
+      data = {indicators[indicator].year[year]}
      />
 
     </div>
