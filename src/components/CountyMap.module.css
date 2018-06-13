@@ -1,0 +1,16 @@
+.map{
+    /*overflow: visible;*/
+    width: 1000px;
+    height: 600px;
+}
+.county{
+    fill: #c4c4c4;
+    stroke: #fff;
+    stroke-width: 3;
+}
+.county.selected{
+    fill: red;
+}
+.county.hovered{
+   fill: pink;
+}
