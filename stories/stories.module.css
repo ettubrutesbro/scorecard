@@ -1,3 +1,11 @@
 .testModule{
     color: red;
 }
+
+.diag{
+    position: absolute;
+    background: black; color: white;
+    bottom: 0; left: 0;
+    padding: 30px;
+
+}

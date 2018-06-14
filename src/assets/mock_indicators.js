@@ -1,8 +1,15 @@
 exports.indicators = [
         {
-            "id": "indicatorA",
-            "name": "some indicator 1", 
-            "categories": ["health"],
+            "id": "no_food_insecurity",
+            "name": "Children who do not experience food insecurity",
+            "source": {
+                "name": "Feeding America",
+                "url": "http://map.feedingamerica.org/",
+                "context": " the data for children who do not experience food insecurity comes from Feeding America, which is the nation’s largest domestic hunger-relief organization. They developed their own methodology for food insecurity and for the 2018 Scorecard we use the inverse number to get those who do not experience food insecurity.",
+            }, 
+            "categories": ["health", "welfare"],
+            "yearsAvailable": [2016, 2015],
+            "raceAvailable": false,
             "year": [{
                 "imperial": .183,
                 "losangeles": .585,
@@ -64,9 +71,16 @@ exports.indicators = [
             }],
     },
     {
-        "id": "indicatorB",
-        "name": "another indicator 2", 
-        "categories": ["welfare","education"],
+        "id": "welfare_timely_dental",
+        "name": "Children in the welfare system who've had timely dental exams", 
+        "categories": ["welfare","health"],
+        "source": {
+                "name": "California Child Welfare Indicators Project",
+                "url": "http://cssr.berkeley.edu/ucb_childwelfare/ReportDefault.aspx",
+                "context": "UC Berkeley houses data on children in foster care like placement stability, timely/dental and dental care, placement information, and more. The Indicator Project produces quarterly reports, so for data stability, so we took a year worth (4) of reports and averaged them.",
+            }, 
+        "yearsAvailable": [2017, 2016],
+        "raceAvailable": true,
         "year": [{
             "imperial": .540,
             "losangeles": .201,

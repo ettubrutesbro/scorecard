@@ -49,7 +49,18 @@ storiesOf('scorecard', module).add('CountyMap', ()=>{
       mode = "heat"
       data = {indicators[indicator].year[year]}
      />
-
+     <div className = {styles.diag}>
+      <ul>
+        <li>indicator: {indicators[indicator].name}</li>
+        <li>id: {indicators[indicator].id}</li>
+        <li>years: {indicators[indicator].yearsAvailable.join(', ')}</li>
+        <li>race data available? {indicators[indicator].raceAvailable}</li>
+        <li>categories: {indicators[indicator].categories.join(', ')}</li>
+        <li>source name: {indicators[indicator].source.name}</li>
+        <li>source url: {indicators[indicator].source.url}</li>
+        <li>source context: {indicators[indicator].source.context}</li>
+      </ul>
+     </div>
     </div>
   )
 })
