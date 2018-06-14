@@ -4,6 +4,9 @@ import {observer} from 'mobx-react'
 
 import styles from './App.module.css'
 
+import indicators from './data/indicators'
+console.log(indicators)
+
 @observer
 class App extends Component {
   @observable testObservable = 'hello'
