@@ -1,10 +1,14 @@
+.wrapper{
+    
+}
 .map{
     /*overflow: visible;*/
     width: 1000px;
     height: 600px;
 }
 .county{
-    fill: #c4c4c4;
+    /*fill: #c4c4c4;*/
+    transition: fill .2s;
     stroke: #fff;
     stroke-width: 3;
 }
@@ -13,4 +17,12 @@
 }
 .county.hovered{
    fill: pink;
+}
+
+.target{
+    position: absolute;
+    display: inline-flex;
+    padding: 10px;
+    background: red;
+    color: white;
 }

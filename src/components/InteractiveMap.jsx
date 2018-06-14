@@ -3,44 +3,72 @@ import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
-import styles from './CountyMap.module.css'
+import styles from './InteractiveMap.module.css'
+
+import chroma from 'chroma-js'
+
 
 @observer class InteractiveMap extends React.Component{
 
+    @observable targetCoords = {x: 0, y: 0}
+        @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
+    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
+
+
+    handleClick(id){
+        const bbox = document.getElementById(id).getBBox()
+        this.updateCoords(bbox.x + (bbox.width/2), bbox.y + (bbox.height/2))
+        if(this.props.onSelect) this.props.onSelect(id)
+    }
+
     render(){
         return(
-            <svg 
-                {...this.props}
-                className = {styles.map} version="1.1"
-            >
-                {React.Children.map(this.props.children, (child)=>{
-                    const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
-                    const id = child.props.id
-
-                    return(
-                        <InteractivePolygonOrPath
-                            {...child.props}
-                            style = {this.props.mode==='heat'? {
-                                // this.data[child.props.id]
-                                // backgroundColor: 'hsl()'
-                                opacity: this.props.data[child.props.id] // between 0 and 1
-                                // opacity: 0
-                            }: {}}
-                            className = {[
-                                styles.county, 
-                                this.props.selected===id? styles.selected : 
-                                this.props.highlighted===id? styles.hovered: 
-                                '' 
-                            ].join(' ')}
-                            onClick = {()=> this.props.onSelect(id)}
-                            onMouseEnter = {()=> this.props.onHover(id)}
-                            onMouseLeave = {this.props.onUnhover}
-                        />
-                    )
-                })}
-            </svg>
+            <div className = {styles.wrapper}>
+                <div 
+                    className = {styles.target}
+                    style = {{left: this.targetCoords.x, top: this.targetCoords.y}}
+                >
+                    hello
+                </div>
+                <svg 
+                    {...this.props}
+                    className = {styles.map} version="1.1"
+                >
+                    {React.Children.map(this.props.children, (child,i)=>{
+                        const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
+                        const id = child.props.id
+                        return(
+                            <InteractivePolygonOrPath
+                                {...child.props}
+                                style = {this.props.mode==='heat'? {
+                                    // this.data[child.props.id]
+                                    // backgroundColor: 'hsl()'
+                                    fill: this.colorScale(this.props.data[child.props.id]), // between 0 and 1
+                                    transitionDelay: i*0.01+'s'
+                                    // opacity: 0
+                                }: {}}
+                                className = {[
+                                    styles.county, 
+                                    this.props.selected===id? styles.selected : 
+                                    this.props.highlighted===id? styles.hovered: 
+                                    '' 
+                                ].join(' ')}
+                                onClick = {()=> this.handleClick(id)}
+                                // onMouseEnter = {()=> this.props.onHover(id)}
+                                // onMouseLeave = {this.props.onUnhover}
+                            />
+                        )
+                    })}
+                </svg>
+            </div>
         )
     }
+}
+
+InteractiveMap.defaultProps = {
+    colorStops: ['#CDFCFE','#135F80',],
+    colorInterpolation: 'hcl',
+    quantile: false
 }
 
 let SVGComponents = {

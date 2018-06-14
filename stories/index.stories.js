@@ -4,11 +4,11 @@ import styles from './stories.module.css'
 
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withViewport} from '@storybook/addon-viewport'
-import {withKnobs, select} from '@storybook/addon-knobs'
+import {withKnobs, select, color} from '@storybook/addon-knobs'
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-import CaliforniaCountyMap from '../src/components/CountyMap'
+import CaliforniaCountyMap from '../src/components/InteractiveMap'
 import {counties} from '../src/assets/counties'
 import {indicators} from '../src/assets/mock_indicators'
 import App from '../src/App'
@@ -18,36 +18,19 @@ import { Button, Welcome } from '@storybook/react/demo';
   addDecorator(withKnobs)
 // addDecorator(withViewport('iphone6'))
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
-  ));
-
-storiesOf('knob test', module).add('yo', ()=>{
-  const knob = select('test', ['hello', 'world'])
-  return(
-    <div className = {styles.testModule}>
-      {knob}
-    </div>
-  )
-})
-
-storiesOf('scorecard', module).add('CountyMap', ()=>{
-  const indicator = select('Indicator (mock data): ', [0,1],0)
-  const year = select('year (mock data): ', [0,1],0)
-  console.log(indicators[indicator])
+storiesOf('scorecard', module).add('InteractiveMap', ()=>{
+  const indicator = select('Indicator (random data): ', [0,1],0)
+  const stop1 = color('color stop 1', 'red')
+  const stop2 = color('color stop 2', 'yellow')
+  const interp = select('color interpolation', ['rgb','hsl','lab','lrgb','lch'], 'lab')
+  // console.log(indicators[indicator])
   return(
     <div>
      <CaliforniaCountyMap 
       mode = "heat"
-      data = {indicators[indicator].year[year]}
+      data = {indicators[indicator].year[0]}
+      colorStops = {[stop1,stop2]}
+      colorInterpolation = {interp}
      />
      <div className = {styles.diag}>
       <ul>

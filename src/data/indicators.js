@@ -1,8 +1,8 @@
 import * as welfare from './welfare/index.js'
 
-const indicators = [
+const indicators = {
     //welfare
-    welfare.noFoodInsecurity
-]
+    noFoodInsecurity: welfare.noFoodInsecurity
+}
 
 export default indicators
