@@ -13,7 +13,12 @@ import chroma from 'chroma-js'
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
     @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
+        @action updateColors = () =>{
 
+        }
+    componentDidUpdate(){
+
+    }
 
     handleClick(id){
         const bbox = document.getElementById(id).getBBox()
@@ -22,6 +27,7 @@ import chroma from 'chroma-js'
     }
 
     render(){
+        const {colorStops, quantile, ...domProps} = this.props
         return(
             <div className = {styles.wrapper}>
                 <div 
@@ -31,7 +37,7 @@ import chroma from 'chroma-js'
                     hello
                 </div>
                 <svg 
-                    {...this.props}
+                    {...domProps}
                     className = {styles.map} version="1.1"
                 >
                     {React.Children.map(this.props.children, (child,i)=>{
