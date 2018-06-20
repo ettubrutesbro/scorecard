@@ -16,7 +16,7 @@ export default class AccordionMenu extends React.Component {
     @observable expanded = null
     @observable filters = {
         indicatorCategories: [],
-        ageRaceGroup: []
+        race: []
     }
         @action addFilter = (filter, filterType) => {
             const target = this.filters[filterType]
@@ -38,6 +38,16 @@ export default class AccordionMenu extends React.Component {
         this.expanded = section
     }
     render() {
+        console.log(map(this.props.indicators))
+        const filteredIndicators = map(this.props.indicators).filter((ind)=>{
+            //if race, check if raceAvailable
+            //if age, compare to indicator's agegroup
+            //does ind's categories include any item in indicatorcategories? 
+            if(this.filters.race.length > 0){ if(!ind.raceAvailable) return false }
+            if(ind.categories.some(c => this.filters.indicatorCategories.includes(c))) return true
+
+        })
+
         return (
             <div className={styles.accordionMenu}>
                 <FlipMove
@@ -108,15 +118,19 @@ export default class AccordionMenu extends React.Component {
                     {this.expanded === 'categories' && (
                         <div className={styles.indicators}>
                             <ul className = {styles.list}>
-                            {map(this.props.indicators, ind => {
-                                return <li> {ind.name} </li>
+                            {filteredIndicators.map((ind)=>{
+                                return (
+                                    <li className = {styles.indicator}>
+                                        {ind.name}
+                                    </li>
+                                )
                             })}
                             </ul>
                         </div>
                     )}
 
                     <div
-                        className={[styles.ageRaceGroup, styles.group].join(
+                        className={[styles.race, styles.group].join(
                             ' '
                         )}
                     >
@@ -127,33 +141,33 @@ export default class AccordionMenu extends React.Component {
                             options={[
                                 { 
                                     name: 'American Indian', 
-                                    optionClass: this.filters.ageRaceGroup.includes('americanindian')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('americanindian','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('americanindian')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('americanindian','race')}
                                 },
                                 { 
                                     name: 'Asian', 
-                                    optionClass: this.filters.ageRaceGroup.includes('asian')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('asian','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('asian')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('asian','race')}
                                 },
                                 { 
                                     name: 'Black', 
-                                    optionClass: this.filters.ageRaceGroup.includes('black')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('black','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('black')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('black','race')}
                                 },
                                 { 
                                     name: 'Latinx', 
-                                    optionClass: this.filters.ageRaceGroup.includes('latinx')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('latinx','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('latinx')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('latinx','race')}
                                 },
                                 { 
                                     name: 'Pacific Islander', 
-                                    optionClass: this.filters.ageRaceGroup.includes('pacificislander')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('pacificislander','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('pacificislander')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('pacificislander','race')}
                                 },
                                 { 
                                     name: 'White', 
-                                    optionClass: this.filters.ageRaceGroup.includes('white')? styles.selected : '',
-                                    onClick: ()=>{this.addFilter('white','ageRaceGroup')}
+                                    optionClass: this.filters.race.includes('white')? styles.selected : '',
+                                    onClick: ()=>{this.addFilter('white','race')}
                                 },
                             ]}
                         />
