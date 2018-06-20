@@ -1,0 +1,70 @@
+.button{
+    background: var(--actionpurple);
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
+    padding: 1.1rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--basicshadow);
+    transition: background .4s;
+}
+    .button.disabled{
+        color: var(--subactionpurple);
+        background: var(--void);
+    }
+    .button.passive{
+        color: var(--actionpurple);
+        background: white;
+    }
+
+.circleButton{
+    background: var(--actionpurple);
+    border-radius: 50%;
+    box-shadow: var(--basicshadow);
+    width: 3.5rem; height: 3.5rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonGroup{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid #c4c4c4;
+    border-radius: 8px;
+    box-shadow: var(--basicshadow);
+    overflow: hidden;
+}
+.buttonGroup .option{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0;
+    height: 100%;
+    border-right: 1px solid #c4c4c4;
+    transition: background .125s;
+}
+.buttonGroup .option.active{
+    background: var(--lightpurple);
+    color: var(--textpurple);
+}
+.buttonGroup .option.inactive{
+    background: var(--offwhite);
+    color: var(--mediumpurple);
+}
+.buttonGroup .option.inactive:hover{
+    background: white;
+    color: var(--actionpurple);
+}
+.buttonGroup .option:first-of-type{
+    padding-left: 3px;
+}
+.buttonGroup .option:last-of-type{
+    border-right: none;
+    padding-right: 3px;
+}

@@ -11,7 +11,6 @@ import { linkTo } from '@storybook/addon-links';
 import CaliforniaCountyMap from '../src/components/InteractiveMap'
 import AccordionMenu from '../src/components/AccordionMenu'
 import {counties} from '../src/assets/counties'
-import {indicators} from '../src/assets/mock_indicators'
 import App from '../src/App'
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -33,6 +32,7 @@ storiesOf('scorecard', module).add('InteractiveMap', ()=>{
       colorStops = {[stop1,stop2]}
       colorInterpolation = {interp}
      />
+     {/*
      <div className = {styles.diag}>
       <ul>
         <li>indicator: {indicators[indicator].name}</li>
@@ -45,6 +45,7 @@ storiesOf('scorecard', module).add('InteractiveMap', ()=>{
         <li>source context: {indicators[indicator].source.context}</li>
       </ul>
      </div>
+   */}
     </div>
   )
 })

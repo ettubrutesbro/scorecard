@@ -1,10 +1,10 @@
 import React from 'react'
-
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
 import styles from './InteractiveMap.module.css'
 
+import {isEqual} from 'lodash'
 import chroma from 'chroma-js'
 
 
@@ -14,10 +14,13 @@ import chroma from 'chroma-js'
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
     @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
         @action updateColors = () =>{
-
+            this.colorScale = chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
         }
-    componentDidUpdate(){
-
+    componentDidUpdate(prevProps){
+        if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
+            console.log('color stop or colorinterp changed')
+            this.updateColors()   
+        }
     }
 
     handleClick(id){
@@ -50,7 +53,7 @@ import chroma from 'chroma-js'
                                     // this.data[child.props.id]
                                     // backgroundColor: 'hsl()'
                                     fill: this.colorScale(this.props.data[child.props.id]), // between 0 and 1
-                                    transitionDelay: i*0.01+'s'
+                                    transitionDuration: 0.15+i*0.025+'s'
                                     // opacity: 0
                                 }: {}}
                                 className = {[
@@ -60,6 +63,7 @@ import chroma from 'chroma-js'
                                     '' 
                                 ].join(' ')}
                                 onClick = {()=> this.handleClick(id)}
+                                onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
                                 // onMouseEnter = {()=> this.props.onHover(id)}
                                 // onMouseLeave = {this.props.onUnhover}
                             />
