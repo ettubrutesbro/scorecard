@@ -14,3 +14,17 @@
     margin: 0 5px; 
     padding: 10px;
 }
+
+.selectedCategory{
+    color: red;
+
+}
+
+.indicators{
+    border: 1px solid black;
+    height: 300px;
+}
+
+.ageRaceOption.selected{
+    color: red;
+}

@@ -26,7 +26,7 @@ export const ButtonGroup = (props) => {
                             className = {[
                                 styles.option, 
                                 props.optionClass, 
-                                option.class,
+                                option.optionClass,
                                 props.toggle && option.active? styles.active : props.toggle? styles.inactive : '' 
                             ].join(' ')}
                             onClick = {option.onClick}

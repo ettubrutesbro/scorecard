@@ -2,6 +2,8 @@ import React from 'react';
 
 import styles from './stories.module.css'
 
+import {map} from 'lodash'
+
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withViewport} from '@storybook/addon-viewport'
 import {withKnobs, select, color} from '@storybook/addon-knobs'
@@ -55,7 +57,7 @@ storiesOf('scorecard', module).add('InteractiveMap', ()=>{
 .add('mock indicators',()=>{
   return(
     <div>
-      {indicators.map((ind)=>{
+      {map(indicators, (ind)=>{
         return <span> {ind.id}</span>
       })}
     </div>
@@ -67,5 +69,7 @@ storiesOf('scorecard', module).add('InteractiveMap', ()=>{
 })
 
 .add('AccordionMenu', ()=>{
-  return <AccordionMenu />
+  return <AccordionMenu 
+    indicators = {indicators}
+  />
 })
