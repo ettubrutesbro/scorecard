@@ -81,11 +81,22 @@ export default class AccordionMenu extends React.Component {
                     </div>
                     {this.expanded === 'counties' && (
                         <div className={styles.countyList}>
-                            {counties.map(county => {
+                            {counties.sort(function(a, b) {
+                              var nameA = a.label.toUpperCase(); // ignore upper and lowercase
+                              var nameB = b.label.toUpperCase(); // ignore upper and lowercase
+                              if (nameA < nameB) {
+                                return -1;
+                              }
+                              if (nameA > nameB) {
+                                return 1;
+                              }
+                              return 0;
+                            }).map(county => {
                                 return (
-                                    <div className={styles.county}>
-                                        {' '}
-                                        {county.label}{' '}
+                                    <div className={styles.county}
+                                        onClick = {()=> {console.log('user picked', county.label)}}
+                                    >
+                                        {county.label}
                                     </div>
                                 )
                             })}
