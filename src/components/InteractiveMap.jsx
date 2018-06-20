@@ -12,9 +12,9 @@ import chroma from 'chroma-js'
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
+    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation)
         @action updateColors = () =>{
-            this.colorScale = chroma.scale(this.props.colorStops).domain([0,1]).mode(this.props.colorInterpolation)
+            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation)
         }
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){

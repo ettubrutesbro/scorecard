@@ -10,8 +10,11 @@ import { linkTo } from '@storybook/addon-links';
 
 import CaliforniaCountyMap from '../src/components/InteractiveMap'
 import AccordionMenu from '../src/components/AccordionMenu'
-import {counties} from '../src/assets/counties'
 import App from '../src/App'
+
+import counties from '../src/data/counties'
+import indicators from '../src/data/indicators'
+
 
 import { Button, Welcome } from '@storybook/react/demo';
 
@@ -19,7 +22,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 // addDecorator(withViewport('iphone6'))
 
 storiesOf('scorecard', module).add('InteractiveMap', ()=>{
-  const indicator = select('Indicator (random data): ', [0,1],0)
+  const indicator = select('Indicator (random data): ', ['welfareMock','noFoodInsecurity','edumacation'],'noFoodInsecurity')
   const stop1 = color('color stop 1', 'red')
   const stop2 = color('color stop 2', 'yellow')
   const interp = select('color interpolation', ['rgb','hsl','lab','lrgb','lch'], 'lab')
