@@ -4,7 +4,7 @@ import {observer} from 'mobx-react'
 
 import styles from './InteractiveMap.module.css'
 
-import {isEqual} from 'lodash'
+import {isEqual, map} from 'lodash'
 import chroma from 'chroma-js'
 
 import simplify from 'simplify-js'
@@ -70,9 +70,13 @@ import simplify from 'simplify-js'
                     {React.Children.map(this.props.children, (child,i)=>{
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const id = child.props.id
+                        const { points, d, ...childProps } = child.props
+                        
                         return(
                             <InteractivePolygonOrPath
-                                {...child.props}
+                                {...childProps}
+                                points = {points}
+                                d = {d}
                                 style = {this.props.mode==='heat'? {
                                     // this.data[child.props.id]
                                     // backgroundColor: 'hsl()'
