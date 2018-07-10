@@ -5,10 +5,12 @@ import {observer} from 'mobx-react'
 import styles from './App.module.css'
 
 import indicators from './data/indicators'
-console.log(indicators)
-
 
 import CaliforniaCountyMap from './components/InteractiveMap'
+
+
+console.log(indicators)
+
 
 class Store{
   @observable mode = 'selectCounty' //splash, selectCounty, heatmap

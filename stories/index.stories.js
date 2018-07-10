@@ -6,13 +6,15 @@ import {map} from 'lodash'
 
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withViewport} from '@storybook/addon-viewport'
-import {withKnobs, select, color} from '@storybook/addon-knobs'
+import {withKnobs, select, color, number} from '@storybook/addon-knobs'
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import CaliforniaCountyMap from '../src/components/InteractiveMap'
 import AccordionMenu from '../src/components/AccordionMenu'
 import App from '../src/App'
+import Map from '../src/Map'
+
 
 import counties from '../src/data/counties'
 import indicators from '../src/data/indicators'
@@ -23,7 +25,17 @@ import { Button, Welcome } from '@storybook/react/demo';
   addDecorator(withKnobs)
 // addDecorator(withViewport('iphone6'))
 
-storiesOf('scorecard', module).add('InteractiveMap', ()=>{
+storiesOf('scorecard', module).add('react-simple-maps (new approach)', ()=>{
+  const zoom = number('zoom factor', 1)
+  return(
+    <Map
+      zoom = {zoom}
+    />
+  )
+})
+
+
+.add('InteractiveMap', ()=>{
   const indicator = select('Indicator (random data): ', ['welfareMock','noFoodInsecurity','edumacation'],'noFoodInsecurity')
   const stop1 = color('color stop 1', 'red')
   const stop2 = color('color stop 2', 'yellow')

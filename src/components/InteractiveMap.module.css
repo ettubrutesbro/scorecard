@@ -1,16 +1,16 @@
 .wrapper{
-    
-}
-.map{
-    /*overflow: visible;*/
     width: 1000px;
     height: 600px;
 }
+.map{
+    width: 100%;
+    height: 100%;
+}
 .county{
     /*fill: #c4c4c4;*/
-    transition: fill .2s;
+    transition: fill .2s, stroke-width .2s;
     stroke: #fff;
-    stroke-width: 3;
+    /*stroke-width: 3;*/
 }
 .county.selected{
     fill: red;

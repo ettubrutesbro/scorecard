@@ -10,6 +10,10 @@ import chroma from 'chroma-js'
 
 @observer class InteractiveMap extends React.Component{
 
+    @observable width = null
+    @observable height = null
+        @action updateDims = (w,h)=>{this.width = w; this.height = h}
+
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
     @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation)
@@ -23,25 +27,43 @@ import chroma from 'chroma-js'
         }
     }
 
+    containerSize = (c) => {
+        if(!c) return
+        this.updateDims(c.offsetWidth, c.offsetHeight)
+        console.log(this.width, this.height)
+    }
+
     handleClick(id){
+        // const container = 
         const bbox = document.getElementById(id).getBBox()
-        this.updateCoords(bbox.x + (bbox.width/2), bbox.y + (bbox.height/2))
+        // this.updateCoords(bbox.x + (bbox.width/2), bbox.y + (bbox.height/2))
+            //deviation from center
+        const newX = (this.width/2 - (bbox.x + bbox.width/2))
+        const newY = (this.height / 2 - (bbox.y + bbox.height/2))
+        console.log(bbox.width, bbox.height)
+        console.log(newX, newY)
+        this.updateCoords(newX, newY)
         if(this.props.onSelect) this.props.onSelect(id)
     }
 
     render(){
         const {colorStops, quantile, ...domProps} = this.props
         return(
-            <div className = {styles.wrapper}>
-                <div 
-                    className = {styles.target}
-                    style = {{left: this.targetCoords.x, top: this.targetCoords.y}}
-                >
-                    hello
-                </div>
+            <div 
+                ref = {(container)=>this.containerSize(container)}
+                // ref = {(container)=>{this.updateDims(container.offsetWidth, container.offsetHeight)}}
+                className = {styles.wrapper}
+                style = {{border: '1px solid black', overflow: 'hidden'}}
+            >
+                
                 <svg 
                     {...domProps}
                     className = {styles.map} version="1.1"
+                    style = {{
+                        transition: 'transform .25s',
+                        transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
+                        border: '1px solid blue'
+                    }}
                 >
                     {React.Children.map(this.props.children, (child,i)=>{
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
@@ -53,9 +75,10 @@ import chroma from 'chroma-js'
                                     // this.data[child.props.id]
                                     // backgroundColor: 'hsl()'
                                     fill: this.colorScale(this.props.data[child.props.id]), // between 0 and 1
-                                    transitionDuration: 0.15+i*0.025+'s'
+                                    transitionDuration: 0.15+i*0.025+'s',
+                                    strokeWidth: this.props.selected? 1.25 : 2.5
                                     // opacity: 0
-                                }: {}}
+                                }: {strokeWidth: this.props.selected? 1.25 : 2.5}}
                                 className = {[
                                     styles.county, 
                                     this.props.selected===id? styles.selected : 
