@@ -1,0 +1,17 @@
+function formatJSONForScorecard(file, label){
+	let indicatorLocations = {}
+	file.map((locationblob)=>{ // should be forEach
+		console.log(blob)
+		indicatorLocations[blob.location] = {
+
+		}
+	})
+
+	return {
+		indicator: label || 'Early Prenatal Care',
+		california: {
+
+		}
+	}
+
+}

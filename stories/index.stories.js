@@ -13,7 +13,8 @@ import { linkTo } from '@storybook/addon-links';
 import CaliforniaCountyMap from '../src/components/InteractiveMap'
 import AccordionMenu from '../src/components/AccordionMenu'
 import App from '../src/App'
-import Map from '../src/Map'
+// import Map from '../src/Map'
+import LIRTest from '../src/lirtest'
 
 
 import counties from '../src/data/counties'
@@ -25,15 +26,22 @@ import { Button, Welcome } from '@storybook/react/demo';
   addDecorator(withKnobs)
 // addDecorator(withViewport('iphone6'))
 
-storiesOf('scorecard', module).add('react-simple-maps (new approach)', ()=>{
-  const zoom = number('zoom factor', 1)
+storiesOf('scorecard', module)
+
+// .add('react-simple-maps (new approach)', ()=>{
+//   const zoom = number('zoom factor', 1)
+//   return(
+//     <Map
+//       zoom = {zoom}
+//     />
+//   )
+// })
+
+.add('LIRTest', ()=>{
   return(
-    <Map
-      zoom = {zoom}
-    />
+    <LIRTest />
   )
 })
-
 
 .add('InteractiveMap', ()=>{
   const indicator = select('Indicator (random data): ', ['welfareMock','noFoodInsecurity','edumacation'],'noFoodInsecurity')
