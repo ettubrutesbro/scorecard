@@ -75,7 +75,7 @@ function IsJsonString(json)
 
 @observer class App extends Component {
   
-  @observable input = 'paste JSON here'
+  @observable input = ''
   @observable output = ''
   @observable flags = {
     multiyear: true,
@@ -169,6 +169,7 @@ function IsJsonString(json)
 
         <h4> paste raw JSON from csvjson.com here </h4>
         <textarea 
+          placeholder = "paste JSON here"
           ref = {(textarea)=>{this.inputregion = textarea}}
           style = {{
             border: '1px blue solid',
