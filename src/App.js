@@ -144,21 +144,27 @@ function IsJsonString(json)
 
   render(){
     return(
-      <div>
-        <input 
-          placeholder = "indicator name" 
-          // value = {this.indicatorName} 
-          onChange = {(e)=>{this.changeField(e,'indicatorName')}}
-        />
-        <div> 
+      <div style = {{padding: '25px 50px'}}>
+        <div style = {{
+          marginBottom: '20px'
+        }}> 
+          <h4> indicator name, with no spaces - use the same label you use in the spreadsheet column headers (e.g. NotFoodInsecure). </h4>
+          <input 
+            style = {{width: '400px', height: '30px', fontSize: '18px'}}
+            placeholder = "indicator name" 
+            // value = {this.indicatorName} 
+            onChange = {(e)=>{this.changeField(e,'indicatorName')}}
+          />
+        </div>
+        <div style = {{marginBottom: '20px'}}> 
           <input type = "checkbox" checked = {this.flags.multiyear} onChange = {()=>this.changeFlag('multiyear')}/>
-          are there 2 years of data?
+          are there 2 years of data? <br />
           {this.flags.multiyear && 
             <input placeholder = "older year" onChange = {(e)=>this.changeField(e, 'firstyear')} />
           }
           <input placeholder = "most recent year" onChange = {(e)=>this.changeField(e, 'latestyear')} />
         </div>
-          <div> 
+        <div style = {{marginBottom: '20px'}}> 
           <input type = "checkbox" checked = {this.flags.hasRace} onChange = {()=>this.changeFlag('hasRace')}/>
           is there per-race data?
         </div>
