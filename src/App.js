@@ -11,9 +11,7 @@ import indicators from './data/indicators'
 import {counties} from'./assets/counties'
 import CaliforniaCountyMap from './components/InteractiveMap'
 
-import earlyprenatal from './data/health/EarlyPrenatalCare.json'
 
-import {map} from 'lodash'
 
 function formatJSONForScorecard(file, indicatorname, years){
   console.log(indicatorname)
@@ -53,60 +51,78 @@ function formatJSONForScorecard(file, indicatorname, years){
 
 }
 
-
-
-console.log(formatJSONForScorecard)
-
-const wtf = (formatJSONForScorecard(earlyprenatal, 'EarlyPrenatalCare', [2015, 2016]))
-console.log(indicators)
-
-// fs.writeFileSync('./output.json', JSON.stringify(wtf, null, 2))
-
-
-class Store{
-  @observable mode = 'selectCounty' //splash, selectCounty, heatmap
-  @observable selectionHover = null
-  @observable highlightedCounty = null
-  @observable selectedCounty = null
-
-  @action countySelectHover = (ui) =>  this.selectionHover = ui
-  @action countySelectUnhover = () => this.selectionHover = null
-  @action onHoverCounty = (c) => this.highlightedCounty = c
-  @action onUnhoverCounty = () => this.highlightedCounty = null
-  @action onSelectCounty = (c) => this.selectedCounty = c
+function IsJsonString(json)
+{
+    var str = json.toString();
+     
+    try
+    {
+        JSON.parse(str);
+    }
+    catch (e)
+    {
+        return false;
+    }
+     
+    return true;
 }
 
-const store = new Store()
-window.store = store
+
+
+
 
 @observer class App extends Component {
-  render() {
-     const foistedProps = (element) => {
-      return {
-        onMouseEnter: ()=>store.countySelectHover(element),
-        onMouseLeave: store.countySelectUnhover,
-        enableHover: store.selectionHover === element,
-        highlighted: store.highlightedCounty,
-        selected: store.selectedCounty,
-        onSelect: store.selectionHover === element? store.onSelectCounty: ()=>{},
-        onHover: store.selectionHover === element? store.onHoverCounty: ()=>{},
-        onUnhover: store.selectionHover === element? store.onUnhoverCounty : () => {}
+  
+  @observable input = ''
+  @observable output = null
+  @observable outputheight
+    @action userInput = (e) => { 
+      this.input = e.target.value 
+      const isJSON = IsJsonString(this.input) 
+      console.log(isJSON)
+      if(isJSON){
+        const formattedInput = formatJSONForScorecard(JSON.parse(this.input), 'EarlyPrenatalCare', [2015, 2016])
+        console.log(formattedInput)
+        this.output = JSON.stringify(formattedInput)
+        // this.outputheight = this.outputregion.scrollHeight
+        // console.log(this.outputheight)
       }
+      else {
+        this.output = 'your input isn\'t JSON! copy everything from csvtojson.com'
+      }
+      
     }
 
-    return (
-      <div className="App">
-        <div style = {{position: 'absolute'}}>
-          {store.highlightedCounty}
-          {store.selectedCounty}
-        </div>
-        <CaliforniaCountyMap 
-          mode = "select"
-          data = {indicators.noFoodInsecurity.year[0]}
-          {...foistedProps('map')}
+  render(){
+    return(
+      <div>
+        <h4> paste raw JSON from csvjson.com here </h4>
+        <textarea 
+
+          style = {{
+            border: '1px blue solid',
+            padding: '25px',
+            width: '100%',
+            height: '100px'
+          }}
+          value = {this.input}
+          onChange = {this.userInput}
         />
+
+        <h4> output below - copy all (ctrl+a) and save as (indicatorname).json </h4>
+        <textarea 
+          ref = {(textarea)=>{this.outputregion = textarea}}
+        style = {{
+          border: '1px orange solid',
+          padding: '25px',
+          width: '100%',
+          height: '1000px',
+        }}
+          value = {this.output}
+        />
+
       </div>
-    );
+    )
   }
 }
 
