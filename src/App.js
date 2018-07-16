@@ -85,13 +85,14 @@ function IsJsonString(json)
     earlyChildhood: false
   }
   @observable categories = []
-  @observable firstyear = 0
-  @observable latestyear = 0
+  @observable firstyear = ''
+  @observable latestyear = ''
   @observable indicatorName = ''
 
     @action changeField = (v, field) => {
       this[field] = v.target.value
       console.log(this.indicatorName, this.firstyear, this.latestyear)
+      this.userInput()
       // console.log(this.flags)
     }
     @action changeFlag = (flag) => {
@@ -102,12 +103,13 @@ function IsJsonString(json)
       this.categories = Object.keys(this.flags).filter((flag)=>{
         return flag !== 'multiyear' && this.flags[flag]
       })
+      this.userInput()
 
       // console.log(flag, this.flags[flag])
     }
 
     @action userInput = (e) => { 
-      this.input = e.target.value 
+      if(e) this.input = e.target.value 
       const isJSON = IsJsonString(this.input) 
       console.log(isJSON)
       if(isJSON){
@@ -167,6 +169,7 @@ function IsJsonString(json)
 
         <h4> paste raw JSON from csvjson.com here </h4>
         <textarea 
+          ref = {(textarea)=>{this.inputregion = textarea}}
           style = {{
             border: '1px blue solid',
             padding: '25px',
