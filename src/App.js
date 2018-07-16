@@ -13,21 +13,31 @@ import CaliforniaCountyMap from './components/InteractiveMap'
 
 
 
-function formatJSONForScorecard(file, indicatorname, years, categories){
+function formatJSONForScorecard(file, hasRace, indicatorname, years, categories){
   console.log(indicatorname)
   let indicatorLocations = {}
   file.map((blob)=>{ // should be forEach
     // console.log(blob)
     // const newKeys = ['ranks', 'black', 'white', 'asian', 'latinx', 'other', 'totals']
 
-    const sortedBlobKeys = {
-      ranks: Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank')}),
-      black: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('aa')}),
-      white: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('white')}),
-      asian: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('asian')}),
-      latinx: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('latino')}),
-      other: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('other')}),
-      totals: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes(indicatorname.toLowerCase())})
+    let sortedBlobKeys = {}
+
+    if(hasRace) {
+      sortedBlobKeys = {
+        ranks: Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank')}),
+        black: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('aa')}),
+        white: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('white')}),
+        asian: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('asian')}),
+        latinx: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('latino')}),
+        other: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('other')}),
+        totals: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes(indicatorname.toLowerCase())})
+      }
+    }
+    else{
+      sortedBlobKeys = {
+        ranks: Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank')}),
+        totals: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes(indicatorname.toLowerCase())})
+      }
     }
 
     // console.log(sortedBlobKeys)
@@ -79,6 +89,7 @@ function IsJsonString(json)
   @observable output = ''
   @observable flags = {
     multiyear: true,
+    hasRace: true,
     welfare: false,
     health: false,
     education: false,
@@ -115,6 +126,7 @@ function IsJsonString(json)
       if(isJSON){
         const formattedInput = formatJSONForScorecard(
           JSON.parse(this.input), 
+          this.flags.hasRace, 
           this.indicatorName, 
           this.flags.multiyear? [this.firstyear, this.latestyear] : this.latestyear,
           this.categories.toJS()
@@ -145,6 +157,10 @@ function IsJsonString(json)
             <input placeholder = "older year" onChange = {(e)=>this.changeField(e, 'firstyear')} />
           }
           <input placeholder = "most recent year" onChange = {(e)=>this.changeField(e, 'latestyear')} />
+        </div>
+          <div> 
+          <input type = "checkbox" checked = {this.flags.hasRace} onChange = {()=>this.changeFlag('hasRace')}/>
+          is there per-race data?
         </div>
         check all categories that apply:
         <div> 
