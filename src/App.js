@@ -13,7 +13,7 @@ import CaliforniaCountyMap from './components/InteractiveMap'
 
 
 
-function formatJSONForScorecard(file, indicatorname, years){
+function formatJSONForScorecard(file, indicatorname, years, categories){
   console.log(indicatorname)
   let indicatorLocations = {}
   file.map((blob)=>{ // should be forEach
@@ -46,6 +46,8 @@ function formatJSONForScorecard(file, indicatorname, years){
 
   return {
     indicator: indicatorname,
+    years: years,
+    categories: categories,
     counties: indicatorLocations
   }
 
@@ -73,15 +75,48 @@ function IsJsonString(json)
 
 @observer class App extends Component {
   
-  @observable input = ''
-  @observable output = null
-  @observable outputheight
+  @observable input = 'paste JSON here'
+  @observable output = ''
+  @observable flags = {
+    multiyear: true,
+    welfare: false,
+    health: false,
+    education: false,
+    earlyChildhood: false
+  }
+  @observable categories = []
+  @observable firstyear = 0
+  @observable latestyear = 0
+  @observable indicatorName = ''
+
+    @action changeField = (v, field) => {
+      this[field] = v.target.value
+      console.log(this.indicatorName, this.firstyear, this.latestyear)
+      // console.log(this.flags)
+    }
+    @action changeFlag = (flag) => {
+      this.flags[flag] = !this.flags[flag]
+      console.log(this.flags)
+
+
+      this.categories = Object.keys(this.flags).filter((flag)=>{
+        return flag !== 'multiyear' && this.flags[flag]
+      })
+
+      // console.log(flag, this.flags[flag])
+    }
+
     @action userInput = (e) => { 
       this.input = e.target.value 
       const isJSON = IsJsonString(this.input) 
       console.log(isJSON)
       if(isJSON){
-        const formattedInput = formatJSONForScorecard(JSON.parse(this.input), 'EarlyPrenatalCare', [2015, 2016])
+        const formattedInput = formatJSONForScorecard(
+          JSON.parse(this.input), 
+          this.indicatorName, 
+          this.flags.multiyear? [this.firstyear, this.latestyear] : this.latestyear,
+          this.categories.toJS()
+        )
         console.log(formattedInput)
         this.output = JSON.stringify(formattedInput)
         // this.outputheight = this.outputregion.scrollHeight
@@ -96,9 +131,42 @@ function IsJsonString(json)
   render(){
     return(
       <div>
+        <input 
+          placeholder = "indicator name" 
+          // value = {this.indicatorName} 
+          onChange = {(e)=>{this.changeField(e,'indicatorName')}}
+        />
+        <div> 
+          <input type = "checkbox" checked = {this.flags.multiyear} onChange = {()=>this.changeFlag('multiyear')}/>
+          are there 2 years of data?
+          {this.flags.multiyear && 
+            <input placeholder = "older year" onChange = {(e)=>this.changeField(e, 'firstyear')} />
+          }
+          <input placeholder = "most recent year" onChange = {(e)=>this.changeField(e, 'latestyear')} />
+        </div>
+        check all categories that apply:
+        <div> 
+          <input type = "checkbox" checked = {this.flags.welfare} onChange = {()=>this.changeFlag('welfare')}/>
+          welfare
+        </div>
+        <div> 
+          <input type = "checkbox" checked = {this.flags.health} onChange = {()=>this.changeFlag('health')}/>
+          health
+        </div>
+        <div> 
+          <input type = "checkbox" checked = {this.flags.education} onChange = {()=>this.changeFlag('education')}/>
+          education
+        </div>
+
+        <div> 
+          <input type = "checkbox" checked = {this.flags.earlyChildhood} onChange = {()=>this.changeFlag('earlyChildhood')}/>
+          early childhood
+        </div>
+
+
+
         <h4> paste raw JSON from csvjson.com here </h4>
         <textarea 
-
           style = {{
             border: '1px blue solid',
             padding: '25px',
@@ -108,7 +176,6 @@ function IsJsonString(json)
           value = {this.input}
           onChange = {this.userInput}
         />
-
         <h4> output below - copy all (ctrl+a) and save as (indicatorname).json </h4>
         <textarea 
           ref = {(textarea)=>{this.outputregion = textarea}}
