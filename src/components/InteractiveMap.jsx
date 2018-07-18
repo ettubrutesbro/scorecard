@@ -60,7 +60,7 @@ import chroma from 'chroma-js'
                     className = {styles.map} version="1.1"
                     style = {{
                         transition: 'transform .25s',
-                        transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
+                        // transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
                         border: '1px solid blue'
                     }}
                 >
