@@ -7,9 +7,6 @@ import styles from './InteractiveMap.module.css'
 import {isEqual, map} from 'lodash'
 import chroma from 'chroma-js'
 
-import simplify from 'simplify-js'
-
-
 @observer class InteractiveMap extends React.Component{
 
     @observable width = null

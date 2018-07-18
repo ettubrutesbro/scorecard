@@ -51,7 +51,7 @@ window.store = store
         </div>
         <CaliforniaCountyMap 
           mode = "select"
-          data = {indicators.noFoodInsecurity.year[0]}
+          data = {indicators.notFoodInsecure.year[0]}
           {...foistedProps('map')}
         />
       </div>
