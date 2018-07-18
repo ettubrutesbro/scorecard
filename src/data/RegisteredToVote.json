@@ -1,0 +1,297 @@
+[
+  {
+    "Location": "California",
+    "RegisteredtoVote_2016": 48,
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Alameda",
+    "RegisteredtoVote_2016": 48,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "Alpine",
+    "RegisteredtoVote_2016": 31,
+    "Rank_2016": 56
+  },
+  {
+    "Location": "Amador",
+    "RegisteredtoVote_2016": 38,
+    "Rank_2016": 41
+  },
+  {
+    "Location": "Butte",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Calaveras",
+    "RegisteredtoVote_2016": 37,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "Colusa",
+    "RegisteredtoVote_2016": 37,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "Contra Costa",
+    "RegisteredtoVote_2016": 56,
+    "Rank_2016": 5
+  },
+  {
+    "Location": "Del Norte",
+    "RegisteredtoVote_2016": 37,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "El Dorado",
+    "RegisteredtoVote_2016": 43,
+    "Rank_2016": 24
+  },
+  {
+    "Location": "Fresno",
+    "RegisteredtoVote_2016": 43,
+    "Rank_2016": 24
+  },
+  {
+    "Location": "Glenn",
+    "RegisteredtoVote_2016": 35,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Humboldt",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Imperial",
+    "RegisteredtoVote_2016": 37,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "Inyo",
+    "RegisteredtoVote_2016": 35,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Kern",
+    "RegisteredtoVote_2016": 41,
+    "Rank_2016": 29
+  },
+  {
+    "Location": "Kings",
+    "RegisteredtoVote_2016": 35,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Lake",
+    "RegisteredtoVote_2016": 37,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "Lassen",
+    "RegisteredtoVote_2016": 31,
+    "Rank_2016": 56
+  },
+  {
+    "Location": "Los Angeles",
+    "RegisteredtoVote_2016": 50,
+    "Rank_2016": 7
+  },
+  {
+    "Location": "Madera",
+    "RegisteredtoVote_2016": 35,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Marin",
+    "RegisteredtoVote_2016": 58,
+    "Rank_2016": 2
+  },
+  {
+    "Location": "Mariposa",
+    "RegisteredtoVote_2016": 36,
+    "Rank_2016": 48
+  },
+  {
+    "Location": "Mendocino",
+    "RegisteredtoVote_2016": 38,
+    "Rank_2016": 41
+  },
+  {
+    "Location": "Merced",
+    "RegisteredtoVote_2016": 40,
+    "Rank_2016": 32
+  },
+  {
+    "Location": "Modoc",
+    "RegisteredtoVote_2016": 30,
+    "Rank_2016": 58
+  },
+  {
+    "Location": "Mono",
+    "RegisteredtoVote_2016": 36,
+    "Rank_2016": 48
+  },
+  {
+    "Location": "Monterey",
+    "RegisteredtoVote_2016": 41,
+    "Rank_2016": 29
+  },
+  {
+    "Location": "Napa",
+    "RegisteredtoVote_2016": 48,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "Nevada",
+    "RegisteredtoVote_2016": 43,
+    "Rank_2016": 24
+  },
+  {
+    "Location": "Orange",
+    "RegisteredtoVote_2016": 50,
+    "Rank_2016": 7
+  },
+  {
+    "Location": "Placer",
+    "RegisteredtoVote_2016": 69,
+    "Rank_2016": 1
+  },
+  {
+    "Location": "Plumas",
+    "RegisteredtoVote_2016": 44,
+    "Rank_2016": 22
+  },
+  {
+    "Location": "Riverside",
+    "RegisteredtoVote_2016": 45,
+    "Rank_2016": 19
+  },
+  {
+    "Location": "Sacramento",
+    "RegisteredtoVote_2016": 42,
+    "Rank_2016": 27
+  },
+  {
+    "Location": "San Benito",
+    "RegisteredtoVote_2016": 49,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "San Bernardino",
+    "RegisteredtoVote_2016": 45,
+    "Rank_2016": 19
+  },
+  {
+    "Location": "San Diego",
+    "RegisteredtoVote_2016": 49,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "San Francisco",
+    "RegisteredtoVote_2016": 58,
+    "Rank_2016": 2
+  },
+  {
+    "Location": "San Joaquin",
+    "RegisteredtoVote_2016": 44,
+    "Rank_2016": 22
+  },
+  {
+    "Location": "San Luis Obispo",
+    "RegisteredtoVote_2016": 48,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "San Mateo",
+    "RegisteredtoVote_2016": 58,
+    "Rank_2016": 2
+  },
+  {
+    "Location": "Santa Barbara",
+    "RegisteredtoVote_2016": 48,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "Santa Clara",
+    "RegisteredtoVote_2016": 49,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "Santa Cruz",
+    "RegisteredtoVote_2016": 46,
+    "Rank_2016": 17
+  },
+  {
+    "Location": "Shasta",
+    "RegisteredtoVote_2016": 46,
+    "Rank_2016": 17
+  },
+  {
+    "Location": "Sierra",
+    "RegisteredtoVote_2016": 35,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Siskiyou",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Solano",
+    "RegisteredtoVote_2016": 42,
+    "Rank_2016": 27
+  },
+  {
+    "Location": "Sonoma",
+    "RegisteredtoVote_2016": 49,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "Stanislaus",
+    "RegisteredtoVote_2016": 40,
+    "Rank_2016": 32
+  },
+  {
+    "Location": "Sutter",
+    "RegisteredtoVote_2016": 41,
+    "Rank_2016": 29
+  },
+  {
+    "Location": "Tehama",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Trinity",
+    "RegisteredtoVote_2016": 33,
+    "Rank_2016": 55
+  },
+  {
+    "Location": "Tulare",
+    "RegisteredtoVote_2016": 45,
+    "Rank_2016": 19
+  },
+  {
+    "Location": "Tuolumne",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Ventura",
+    "RegisteredtoVote_2016": 54,
+    "Rank_2016": 6
+  },
+  {
+    "Location": "Yolo",
+    "RegisteredtoVote_2016": 40,
+    "Rank_2016": 32
+  },
+  {
+    "Location": "Yuba",
+    "RegisteredtoVote_2016": 39,
+    "Rank_2016": 35
+  }
+]

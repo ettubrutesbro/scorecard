@@ -2,11 +2,14 @@
 // import * as education from './education/'
 
 import notFoodInsecure from './NotFoodInsecure.json'
-
+import earlyPrenatalCare from './EarlyPrenatalCare.json'
+import registeredToVote from './RegisteredToVote.json'
 
 const indicators = {
 
-	notFoodInsecure: notFoodInsecure,	
+	notFoodInsecure: notFoodInsecure,
+	earlyPrenatalCare: earlyPrenatalCare,	
+	registeredToVote: registeredToVote,
 
     // //welfare
     // welfareMock: welfare.welfareMock,
