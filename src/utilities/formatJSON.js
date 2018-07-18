@@ -1,22 +1,68 @@
-function formatJSONForScorecard(file, label){
-	let indicatorLocations = {}
-	file.map((locationblob)=>{ // should be forEach
-		console.log(blob)
-		let ranks = Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank') })
-		console.log(ranks)
-		ranks = ranks.map((rank)=>{
-			return blob[rank]!==undefined && blob[rank]!==""? blob[rank] : false
-		})
-		indicatorLocations[blob.location] = {
-			rank: ranks 
-		}
-	})
+function formatJSONForScorecard(file, hasRace, indicatorname, years, categories){
+  console.log(indicatorname)
+  let indicatorLocations = {}
+  file.map((blob)=>{ // should be forEach
+    // console.log(blob)
+    // const newKeys = ['ranks', 'black', 'white', 'asian', 'latinx', 'other', 'totals']
 
-	return {
-		indicator: label || 'Early Prenatal Care',
-		counties: indicatorLocations
-	}
+    let sortedBlobKeys = {}
+
+    if(hasRace) {
+      sortedBlobKeys = {
+        ranks: Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank')}),
+        black: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('aa')}),
+        white: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('white')}),
+        asian: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('asian')}),
+        latinx: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('latino')}),
+        other: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes('other')}),
+        totals: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes(indicatorname.toLowerCase())})
+      }
+    }
+    else{
+      sortedBlobKeys = {
+        ranks: Object.keys(blob).filter((key)=>{ return key.toLowerCase().includes('rank')}),
+        totals: Object.keys(blob).filter((key)=> {return key.toLowerCase().includes(indicatorname.toLowerCase())})
+      }
+    }
+
+    // console.log(sortedBlobKeys)
+
+    let newBlob = {}
+
+    Object.keys(sortedBlobKeys).forEach((key)=>{
+      newBlob[key] = []
+      sortedBlobKeys[key].forEach((specifickey)=>{
+        newBlob[key].push(blob[specifickey])
+        // console.log(blob.Location ,specifickey, blob[specifickey])
+      })
+    })
+    indicatorLocations[blob.Location] = newBlob
+  })
+
+  return {
+    indicator: indicatorname,
+    years: years,
+    categories: categories,
+    counties: indicatorLocations
+  }
 
 }
 
-export default formatJSONForScorecard
+function IsJsonString(json)
+{
+    var str = json.toString();
+     
+    try
+    {
+        JSON.parse(str);
+    }
+    catch (e)
+    {
+        return false;
+    }
+     
+    return true;
+}
+
+export {formatJSONForScorecard}
+
