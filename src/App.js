@@ -132,7 +132,7 @@ function IsJsonString(json)
           this.categories.toJS()
         )
         console.log(formattedInput)
-        this.output = JSON.stringify(formattedInput)
+        this.output = JSON.stringify(formattedInput, null, 2)
         // this.outputheight = this.outputregion.scrollHeight
         // console.log(this.outputheight)
       }
