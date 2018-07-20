@@ -1,6 +1,6 @@
 {
   "indicator": "RegisteredToVote",
-  "years": "2016",
+  "years": ["2016"],
   "categories": [
     "welfare",
     "education"
