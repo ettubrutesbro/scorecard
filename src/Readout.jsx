@@ -18,6 +18,11 @@ export default class Readout extends React.Component{
 
 		const {county, race, indicator, year} = this.props
 		const ca = indicator? indicator.counties.California : ''
+		
+			//TODO TODO: formatter needs to output camelcased locations
+		// const c = county && indicator? indicator.counties[county] : indicator? indicator.counties.California : ''
+			//TODO TODO: formatter needs to output camelcased locations
+
 		const yearIndex = indicator? indicator.years.indexOf(year) : ''
 		const semanticTitleString = indicator? `of ${semanticTitles[indicator.indicator].who} ${race? 'who are '+race+' ' : ''}${semanticTitles[indicator.indicator].what}` : ''
 		let locationString = indicator && county? `In ${find(counties, (c)=>{return c.id === county}).label} County` : indicator || race? 'In California' : ''
