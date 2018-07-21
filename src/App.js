@@ -8,8 +8,10 @@ import styles from './App.module.css'
 
 import indicators from './data/indicators'
 
+import {camelLower} from './utilities/toLowerCase'
+
 import {counties} from'./assets/counties'
-import CaliforniaCountyMap from './components/InteractiveMap'
+// import CaliforniaCountyMap from './components/InteractiveMap'
 
 
 
@@ -51,11 +53,11 @@ function formatJSONForScorecard(file, hasRace, indicatorname, years, categories)
         // console.log(blob.Location ,specifickey, blob[specifickey])
       })
     })
-    indicatorLocations[blob.Location] = newBlob
+    indicatorLocations[camelLower(blob.Location)] = newBlob
   })
 
   return {
-    indicator: indicatorname,
+    indicator: camelLower(indicatorname),
     years: years,
     categories: categories,
     counties: indicatorLocations
@@ -128,7 +130,7 @@ function IsJsonString(json)
           JSON.parse(this.input), 
           this.flags.hasRace, 
           this.indicatorName, 
-          this.flags.multiyear? [this.firstyear, this.latestyear] : this.latestyear,
+          this.flags.multiyear? [this.firstyear, this.latestyear] : [this.latestyear],
           this.categories.toJS()
         )
         console.log(formattedInput)
