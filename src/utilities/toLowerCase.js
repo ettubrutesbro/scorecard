@@ -1,8 +1,10 @@
-function firstLetterLowercase (str){return str.charAt(0).toLowerCase() + str.substr(1)}
+function firstLower (str){return str.charAt(0).toLowerCase() + str.substr(1)}
 
-function lowerCamel(str){
-	//lowercase 1st letter, then eliminate spaces while ensuring subsequent words are uppercased
-	return 'wat'
+function camelLower(str){
+	return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+    return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+  }).replace(/\s+/g, '');
 }
 
-export default firstLetterLowercase
+export {camelLower}
+export default firstLower

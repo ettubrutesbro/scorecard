@@ -3,12 +3,16 @@ import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
-import {map} from 'lodash'
+import {map, zipObject} from 'lodash'
 
-import firstLetterLowercase from './utilities/toLowerCase'
+import firstLower, {camelLower} from './utilities/toLowerCase'
 
 import {counties} from './assets/counties'
 import indicators from './data/indicators'
+
+
+import CaliforniaCountyMap from './components/InteractiveMap'
+import Readout from './Readout'
 
 class Store{
 	@observable location = null
@@ -23,7 +27,7 @@ class Store{
 		if(target === 'indicator'){
 			if(!value) this.year = null
 			else{
-				const years = indicators[firstLetterLowercase(this.indicator)].years
+				const years = indicators[firstLower(this.indicator)].years
 				if(years.length===1) this.year = years[0]
 				else if(years.length===2) this.year = years[1]
 				console.log('automatically set year to', this.year)
@@ -42,35 +46,82 @@ const Clear = styled.span`
 	padding: 5px;
 	border: 1px solid black;
 `
+const App = styled.div`
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+`
+const LeftSide = styled.div`
+	width: 50%;
+`
+
+const MockHeatMap = styled.div `
+	width: 50%;
+
+`
 
 @observer
 export default class App2 extends React.Component{
 
 	render(){
-		const ind = store.indicator? indicators[firstLetterLowercase(store.indicator)] : null
+		const ind = store.indicator? indicators[firstLower(store.indicator)] : null
+		const yearIndex = ind? ind.years.indexOf(store.year) : ''
 		console.log(ind)
+		const cts = ind? Object.keys(ind.counties) : ''
+		const heatmapdata = ind? zipObject(cts.map((c)=>{return camelLower(c)}), map(cts, (c)=>{ 
+			// console.log(c)
+			return ind.counties[c][store.race||'totals'][yearIndex] 
+		})) : ''
+
+		console.log(heatmapdata)
 		return(
-			<div>
+			<App>
 				<Selectors />
-				{store.location && 'L'}
-				{store.indicator && `I(${store.year})`}
-				{store.race && 'R'}
-				<div>
-					data for heatmap:
+
+				<LeftSide>
+					<Readout
+						county = {store.location}
+						race = {store.race}
+						year = {store.year}
+						indicator = {ind}
+					/>
+				</LeftSide>
+
+				{/*
+				<MockHeatMap>
+					<h3> data for heatmap: </h3>
 					{store.indicator && Object.keys(ind.counties).map((county)=>{
 						const yearIndex = ind.years.indexOf(store.year)
 						const raceFilter = ind.categories.includes('hasRace') && store.race? store.race : 'totals' 
-						return <div>{county + ind.counties[county][raceFilter][yearIndex]}</div>
+						const camelCounty = camelLower(county)
+
+						return county!=='California'? 
+							<div>
+							{
+								(camelCounty === store.location? 'SELECTED: ' : '') + camelCounty + ' : ' + ind.counties[county][raceFilter][yearIndex]
+							}
+							</div> : ''
 					})}
-				</div>
-			</div>
+				</MockHeatMap>
+			*/}
+			<CaliforniaCountyMap
+				mode = 'heat'
+				data = {heatmapdata}
+			/>
+
+				
+			</App>
 		)
 	}
 }
 
+const DebugSelectors = styled.div`
+	width: 100%;
+`
+
 const Selectors = (props) => {
 	return (
-		<React.Fragment>
+		<DebugSelectors>
 			<SelectorGroup 
 				prompt = "Pick a location"
 				value = {store.location}
@@ -91,7 +142,7 @@ const Selectors = (props) => {
 			/>
 			{store.indicator &&
 				<Toggle
-					options = {indicators[firstLetterLowercase(store.indicator)].years}
+					options = {indicators[firstLower(store.indicator)].years}
 					selected = {store.year}
 				/>
 			}
@@ -108,7 +159,7 @@ const Selectors = (props) => {
 					{label: 'other', value: 'other'},
 				]}
 			/>
-		</React.Fragment>
+		</DebugSelectors>
 	)
 }
 
