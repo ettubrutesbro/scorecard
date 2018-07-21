@@ -5,7 +5,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 import {map, zipObject} from 'lodash'
 
-import firstLower, {camelLower} from './utilities/toLowerCase'
+// import {camelLower} from './utilities/toLowerCase'
 
 import {counties} from './assets/counties'
 import indicators from './data/indicators'
@@ -27,7 +27,7 @@ class Store{
 		if(target === 'indicator'){
 			if(!value) this.year = null
 			else{
-				const years = indicators[firstLower(this.indicator)].years
+				const years = indicators[this.indicator].years
 				if(years.length===1) this.year = years[0]
 				else if(years.length===2) this.year = years[1]
 				console.log('automatically set year to', this.year)
@@ -64,11 +64,11 @@ const MockHeatMap = styled.div `
 export default class App2 extends React.Component{
 
 	render(){
-		const ind = store.indicator? indicators[firstLower(store.indicator)] : null
+		const ind = store.indicator? indicators[store.indicator] : null
 		const yearIndex = ind? ind.years.indexOf(store.year) : ''
 		console.log(ind)
 		const cts = ind? Object.keys(ind.counties) : ''
-		const heatmapdata = ind? zipObject(cts.map((c)=>{return camelLower(c)}), map(cts, (c)=>{ 
+		const heatmapdata = ind? zipObject(cts, map(cts, (c)=>{ 
 			// console.log(c)
 			return ind.counties[c][store.race||'totals'][yearIndex] 
 		})) : ''
@@ -142,7 +142,7 @@ const Selectors = (props) => {
 			/>
 			{store.indicator &&
 				<Toggle
-					options = {indicators[firstLower(store.indicator)].years}
+					options = {indicators[store.indicator].years}
 					selected = {store.year}
 				/>
 			}

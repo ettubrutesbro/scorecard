@@ -3,15 +3,15 @@ const semanticTitles = {
 	// 'NotFoodInsecure': ' of children don\'t have to deal with food insecurity',
 	// 'RegisteredToVote': ' of people are registered to vote..?'
 
-	'EarlyPrenatalCare': {
+	'earlyPrenatalCare': {
 		who: 'pregnant women',
 		what: 'get early prenatal care'
 	},
-	'NotFoodInsecure': {
+	'notFoodInsecure': {
 		who: 'children',
 		what: 'don\'t have to deal with food insecurity'
 	},
-	'RegisteredToVote': {
+	'registeredToVote': {
 		who: 'people',
 		what: 'are registered to vote'
 	}

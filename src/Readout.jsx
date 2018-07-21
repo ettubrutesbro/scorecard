@@ -17,10 +17,10 @@ export default class Readout extends React.Component{
 	render(){
 
 		const {county, race, indicator, year} = this.props
-		const ca = indicator? indicator.counties.California : ''
+		const ca = indicator? indicator.counties.california : ''
 		
 			//TODO TODO: formatter needs to output camelcased locations
-		// const c = county && indicator? indicator.counties[county] : indicator? indicator.counties.California : ''
+		const c = county && indicator? indicator.counties[county] : indicator? indicator.counties.california : ''
 			//TODO TODO: formatter needs to output camelcased locations
 
 		const yearIndex = indicator? indicator.years.indexOf(year) : ''
@@ -39,13 +39,13 @@ export default class Readout extends React.Component{
 						/>  
 					</SuperTitle>
 					<h3>
-					{ca[race||'totals'][yearIndex]}% {semanticTitleString}
+					{c[race||'totals'][yearIndex]}% {semanticTitleString}
 					</h3>
 
 					{indicator.categories.includes('hasRace') &&
 						<RaceTable>
 							{['black','white','asian','latinx'].map((race)=>{
-								return <div> {race} : {ca[race][yearIndex]} </div>
+								return <div> {race} : {c[race][yearIndex]} </div>
 							})}
 						</RaceTable>
 					}
