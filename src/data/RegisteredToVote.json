@@ -1,12 +1,13 @@
 {
-  "indicator": "RegisteredToVote",
-  "years": ["2016"],
+  "indicator": "registeredToVote",
+  "years": [
+    "2016"
+  ],
   "categories": [
-    "welfare",
     "education"
   ],
   "counties": {
-    "California": {
+    "california": {
       "ranks": [
         ""
       ],
@@ -14,7 +15,7 @@
         48
       ]
     },
-    "Alameda": {
+    "alameda": {
       "ranks": [
         13
       ],
@@ -22,7 +23,7 @@
         48
       ]
     },
-    "Alpine": {
+    "alpine": {
       "ranks": [
         56
       ],
@@ -30,7 +31,7 @@
         31
       ]
     },
-    "Amador": {
+    "amador": {
       "ranks": [
         41
       ],
@@ -38,7 +39,7 @@
         38
       ]
     },
-    "Butte": {
+    "butte": {
       "ranks": [
         35
       ],
@@ -46,7 +47,7 @@
         39
       ]
     },
-    "Calaveras": {
+    "calaveras": {
       "ranks": [
         43
       ],
@@ -54,7 +55,7 @@
         37
       ]
     },
-    "Colusa": {
+    "colusa": {
       "ranks": [
         43
       ],
@@ -62,7 +63,7 @@
         37
       ]
     },
-    "Contra Costa": {
+    "contraCosta": {
       "ranks": [
         5
       ],
@@ -70,7 +71,7 @@
         56
       ]
     },
-    "Del Norte": {
+    "delNorte": {
       "ranks": [
         43
       ],
@@ -78,7 +79,7 @@
         37
       ]
     },
-    "El Dorado": {
+    "elDorado": {
       "ranks": [
         24
       ],
@@ -86,7 +87,7 @@
         43
       ]
     },
-    "Fresno": {
+    "fresno": {
       "ranks": [
         24
       ],
@@ -94,7 +95,7 @@
         43
       ]
     },
-    "Glenn": {
+    "glenn": {
       "ranks": [
         50
       ],
@@ -102,7 +103,7 @@
         35
       ]
     },
-    "Humboldt": {
+    "humboldt": {
       "ranks": [
         35
       ],
@@ -110,7 +111,7 @@
         39
       ]
     },
-    "Imperial": {
+    "imperial": {
       "ranks": [
         43
       ],
@@ -118,7 +119,7 @@
         37
       ]
     },
-    "Inyo": {
+    "inyo": {
       "ranks": [
         50
       ],
@@ -126,7 +127,7 @@
         35
       ]
     },
-    "Kern": {
+    "kern": {
       "ranks": [
         29
       ],
@@ -134,7 +135,7 @@
         41
       ]
     },
-    "Kings": {
+    "kings": {
       "ranks": [
         50
       ],
@@ -142,7 +143,7 @@
         35
       ]
     },
-    "Lake": {
+    "lake": {
       "ranks": [
         43
       ],
@@ -150,7 +151,7 @@
         37
       ]
     },
-    "Lassen": {
+    "lassen": {
       "ranks": [
         56
       ],
@@ -158,7 +159,7 @@
         31
       ]
     },
-    "Los Angeles": {
+    "losAngeles": {
       "ranks": [
         7
       ],
@@ -166,7 +167,7 @@
         50
       ]
     },
-    "Madera": {
+    "madera": {
       "ranks": [
         50
       ],
@@ -174,7 +175,7 @@
         35
       ]
     },
-    "Marin": {
+    "marin": {
       "ranks": [
         2
       ],
@@ -182,7 +183,7 @@
         58
       ]
     },
-    "Mariposa": {
+    "mariposa": {
       "ranks": [
         48
       ],
@@ -190,7 +191,7 @@
         36
       ]
     },
-    "Mendocino": {
+    "mendocino": {
       "ranks": [
         41
       ],
@@ -198,7 +199,7 @@
         38
       ]
     },
-    "Merced": {
+    "merced": {
       "ranks": [
         32
       ],
@@ -206,7 +207,7 @@
         40
       ]
     },
-    "Modoc": {
+    "modoc": {
       "ranks": [
         58
       ],
@@ -214,7 +215,7 @@
         30
       ]
     },
-    "Mono": {
+    "mono": {
       "ranks": [
         48
       ],
@@ -222,7 +223,7 @@
         36
       ]
     },
-    "Monterey": {
+    "monterey": {
       "ranks": [
         29
       ],
@@ -230,7 +231,7 @@
         41
       ]
     },
-    "Napa": {
+    "napa": {
       "ranks": [
         13
       ],
@@ -238,7 +239,7 @@
         48
       ]
     },
-    "Nevada": {
+    "nevada": {
       "ranks": [
         24
       ],
@@ -246,7 +247,7 @@
         43
       ]
     },
-    "Orange": {
+    "orange": {
       "ranks": [
         7
       ],
@@ -254,7 +255,7 @@
         50
       ]
     },
-    "Placer": {
+    "placer": {
       "ranks": [
         1
       ],
@@ -262,7 +263,7 @@
         69
       ]
     },
-    "Plumas": {
+    "plumas": {
       "ranks": [
         22
       ],
@@ -270,7 +271,7 @@
         44
       ]
     },
-    "Riverside": {
+    "riverside": {
       "ranks": [
         19
       ],
@@ -278,7 +279,7 @@
         45
       ]
     },
-    "Sacramento": {
+    "sacramento": {
       "ranks": [
         27
       ],
@@ -286,7 +287,7 @@
         42
       ]
     },
-    "San Benito": {
+    "sanBenito": {
       "ranks": [
         9
       ],
@@ -294,7 +295,7 @@
         49
       ]
     },
-    "San Bernardino": {
+    "sanBernardino": {
       "ranks": [
         19
       ],
@@ -302,7 +303,7 @@
         45
       ]
     },
-    "San Diego": {
+    "sanDiego": {
       "ranks": [
         9
       ],
@@ -310,7 +311,7 @@
         49
       ]
     },
-    "San Francisco": {
+    "sanFrancisco": {
       "ranks": [
         2
       ],
@@ -318,7 +319,7 @@
         58
       ]
     },
-    "San Joaquin": {
+    "sanJoaquin": {
       "ranks": [
         22
       ],
@@ -326,7 +327,7 @@
         44
       ]
     },
-    "San Luis Obispo": {
+    "sanLuisObispo": {
       "ranks": [
         13
       ],
@@ -334,7 +335,7 @@
         48
       ]
     },
-    "San Mateo": {
+    "sanMateo": {
       "ranks": [
         2
       ],
@@ -342,7 +343,7 @@
         58
       ]
     },
-    "Santa Barbara": {
+    "santaBarbara": {
       "ranks": [
         13
       ],
@@ -350,7 +351,7 @@
         48
       ]
     },
-    "Santa Clara": {
+    "santaClara": {
       "ranks": [
         9
       ],
@@ -358,7 +359,7 @@
         49
       ]
     },
-    "Santa Cruz": {
+    "santaCruz": {
       "ranks": [
         17
       ],
@@ -366,7 +367,7 @@
         46
       ]
     },
-    "Shasta": {
+    "shasta": {
       "ranks": [
         17
       ],
@@ -374,7 +375,7 @@
         46
       ]
     },
-    "Sierra": {
+    "sierra": {
       "ranks": [
         50
       ],
@@ -382,7 +383,7 @@
         35
       ]
     },
-    "Siskiyou": {
+    "siskiyou": {
       "ranks": [
         35
       ],
@@ -390,7 +391,7 @@
         39
       ]
     },
-    "Solano": {
+    "solano": {
       "ranks": [
         27
       ],
@@ -398,7 +399,7 @@
         42
       ]
     },
-    "Sonoma": {
+    "sonoma": {
       "ranks": [
         9
       ],
@@ -406,7 +407,7 @@
         49
       ]
     },
-    "Stanislaus": {
+    "stanislaus": {
       "ranks": [
         32
       ],
@@ -414,7 +415,7 @@
         40
       ]
     },
-    "Sutter": {
+    "sutter": {
       "ranks": [
         29
       ],
@@ -422,7 +423,7 @@
         41
       ]
     },
-    "Tehama": {
+    "tehama": {
       "ranks": [
         35
       ],
@@ -430,7 +431,7 @@
         39
       ]
     },
-    "Trinity": {
+    "trinity": {
       "ranks": [
         55
       ],
@@ -438,7 +439,7 @@
         33
       ]
     },
-    "Tulare": {
+    "tulare": {
       "ranks": [
         19
       ],
@@ -446,7 +447,7 @@
         45
       ]
     },
-    "Tuolumne": {
+    "tuolumne": {
       "ranks": [
         35
       ],
@@ -454,7 +455,7 @@
         39
       ]
     },
-    "Ventura": {
+    "ventura": {
       "ranks": [
         6
       ],
@@ -462,7 +463,7 @@
         54
       ]
     },
-    "Yolo": {
+    "yolo": {
       "ranks": [
         32
       ],
@@ -470,7 +471,7 @@
         40
       ]
     },
-    "Yuba": {
+    "yuba": {
       "ranks": [
         35
       ],
