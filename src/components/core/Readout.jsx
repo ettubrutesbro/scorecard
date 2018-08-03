@@ -16,16 +16,16 @@ const SuperTitle = styled.h4`
 export default class Readout extends React.Component{
 	render(){
 
-		const {county, race, indicator, year} = this.props
+		const {location, race, indicator, year} = this.props.store
 		const ca = indicator? indicator.counties.california : ''
 		
 			//TODO TODO: formatter needs to output camelcased locations
-		const c = county && indicator? indicator.counties[county] : indicator? indicator.counties.california : ''
+		const c = location && indicator? indicator.counties[location] : indicator? indicator.counties.california : ''
 			//TODO TODO: formatter needs to output camelcased locations
 
 		const yearIndex = indicator? indicator.years.indexOf(year) : ''
 		const semanticTitleString = indicator? `of ${semanticTitles[indicator.indicator].who} ${race? 'who are '+race+' ' : ''}${semanticTitles[indicator.indicator].what}` : ''
-		let locationString = indicator && county? `In ${find(counties, (c)=>{return c.id === county}).label} County` : indicator || race? 'In California' : ''
+		let locationString = indicator && location? `In ${find(counties, (c)=>{return c.id === location}).label} location` : indicator || race? 'In California' : ''
 		const yearObject = indicator && indicator.years.length > 1? <YearToggle years = {indicator.years} /> : indicator? indicator.years : ''
 		return(
 			<div>

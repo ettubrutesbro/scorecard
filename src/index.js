@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App2 from './App2';
+import Scorecard from './Scorecard';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App2 />, document.getElementById('root'));
+ReactDOM.render(<Scorecard />, document.getElementById('root'));
 registerServiceWorker();
