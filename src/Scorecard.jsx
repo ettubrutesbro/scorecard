@@ -77,6 +77,7 @@ export default class Scorecard extends React.Component{
 					store = {store}
 					onHoverCounty = {this.onHoverCounty}
 					hoveredCounty = {this.hoveredCounty} 
+					onSelect = {store.change}
 
 				/>
 				<Readout store = {store} />
@@ -86,6 +87,7 @@ export default class Scorecard extends React.Component{
 					store = {store}
 					onHoverCounty = {this.onHoverCounty}
 					hoveredCounty = {this.hoveredCounty}
+					onSelect = {store.change}
 				/>
 				</Rightside>
 			</App>
@@ -101,7 +103,9 @@ const Debug = styled.div`
 	padding: 10px;
 	border: 1px solid red;
 `
-const DebugStore = () => {
+@observer
+class DebugStore extends React.Component{
+	render(){
 	return(
 		<Debug>
 			L: {store.location}
@@ -111,4 +115,5 @@ const DebugStore = () => {
 			mapmode: {store.mapmode}
 		</Debug>
 	)
+}
 }

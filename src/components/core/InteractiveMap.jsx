@@ -26,16 +26,19 @@ import chroma from 'chroma-js'
 
 
     handleClick(id){
-        // const container = 
+        //for handling tooltips and the like...
         const bbox = document.getElementById(id).getBBox()
-        // this.updateCoords(bbox.x + (bbox.width/2), bbox.y + (bbox.height/2))
-            //deviation from center
         const newX = (this.width/2 - (bbox.x + bbox.width/2))
         const newY = (this.height / 2 - (bbox.y + bbox.height/2))
         console.log(bbox.width, bbox.height)
         console.log(newX, newY)
         this.updateCoords(newX, newY)
-        if(this.props.onSelect) this.props.onSelect(id)
+
+        //the 
+        if(this.props.onSelect){ 
+            console.log('made county selection from map')
+            this.props.onSelect('location', id)
+        }
     }
 
     render(){
