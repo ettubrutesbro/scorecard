@@ -19,7 +19,7 @@ import Scorecard from '../src/Scorecard'
 import counties from '../src/data/counties'
 import indicators from '../src/data/indicators'
 
-import Picker from '../src/components/Picker'
+import Picker from '../src/components/core/Picker'
 
 import { Button, Welcome } from '@storybook/react/demo';
 

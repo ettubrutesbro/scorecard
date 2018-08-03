@@ -4,9 +4,9 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 import {find} from 'lodash'
 
-import indicators from './data/indicators'
-import {counties} from './assets/counties'
-import semanticTitles from './assets/semanticTitles'
+import indicators from '../../data/indicators'
+import {counties} from '../../assets/counties'
+import semanticTitles from '../../assets/semanticTitles'
 
 const SuperTitle = styled.h4`
 	display: flex;

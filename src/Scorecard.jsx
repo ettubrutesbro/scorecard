@@ -3,9 +3,9 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-import Picker from './components/Picker'
-import Readout from './Readout'
-import CAMap from './components/InteractiveMap'
+import Picker from './components/core/Picker'
+import Readout from './components/core/Readout'
+import CAMap from './components/core/InteractiveMap'
 
 import {camelLower} from './utilities/toLowerCase'
 

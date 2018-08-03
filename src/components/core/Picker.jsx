@@ -4,7 +4,7 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-import {counties} from '../assets/counties'
+import {counties} from '../../assets/counties'
 
 const Wrapper = styled.div`
 	width: 50%;
