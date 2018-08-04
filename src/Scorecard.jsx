@@ -1,6 +1,6 @@
 import React from 'react'
 import {observable, action} from 'mobx'
-import {observer} from 'mobx-react'
+import {observer, inject} from 'mobx-react'
 import styled from 'styled-components'
 
 import Picker from './components/core/Picker'
@@ -8,6 +8,8 @@ import Readout from './components/core/Readout'
 import CAMap from './components/core/InteractiveMap'
 
 import {camelLower} from './utilities/toLowerCase'
+
+import indicators from './data/indicators'
 
 class Store{
 	@observable location = null
@@ -60,6 +62,8 @@ const Rightside = styled.div`
 	border: 1px solid green;
 	width: 50%;
 `
+
+@inject('routing')
 @observer
 export default class Scorecard extends React.Component{
 
@@ -70,11 +74,23 @@ export default class Scorecard extends React.Component{
 		}
 
 	render(){
-
+		const {push, goBack} = this.props.routing
 		return(
 			<App>
 				<DebugStore />
+				<div
+					onClick = {()=>push('/test')}
+				>
+					Change url
+				</div>
+				<div
+					onClick = {()=>goBack()}
+				>
+					Back
+				</div>
 				<Leftside>
+
+				<Readout store = {store} />
 				<Picker 
 					store = {store}
 					onHoverCounty = {this.onHoverCounty}
@@ -82,7 +98,6 @@ export default class Scorecard extends React.Component{
 					onSelect = {store.change}
 
 				/>
-				<Readout store = {store} />
 				</Leftside>
 				<Rightside>
 				<CAMap 

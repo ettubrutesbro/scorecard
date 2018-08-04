@@ -7,11 +7,7 @@ import styled from 'styled-components'
 import {counties} from '../../assets/counties'
 
 const Wrapper = styled.div`
-	width: 50%;
-	position: absolute;
-	background: rgba(255,255,255,0.5);
-	top: 0; 
-	left: 0;
+
 `
 
 @observer
@@ -26,9 +22,10 @@ export default class Picker extends React.Component{
 		}
 
 	render(){
+		const {location, indicator, race} = this.props.store
 		return(
 			<Wrapper>
-				{this.mode === 'start' && 
+				{this.mode === 'start' && !location && !indicator && !race && 
 					<StartDataSearch 
 						changeMode = {this.changeMode}
 					/>

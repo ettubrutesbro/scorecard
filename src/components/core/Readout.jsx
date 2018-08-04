@@ -12,7 +12,7 @@ const SuperTitle = styled.h4`
 	display: flex;
 	align-items: center;
 `
-
+@observer
 export default class Readout extends React.Component{
 	render(){
 
@@ -29,6 +29,11 @@ export default class Readout extends React.Component{
 		const yearObject = indicator && indicator.years.length > 1? <YearToggle years = {indicator.years} /> : indicator? indicator.years : ''
 		return(
 			<div>
+				{location && 
+					<SuperTitle>
+						{location}
+					</SuperTitle>
+				}
 				{indicator && 
 				<div>
 					<SuperTitle>
