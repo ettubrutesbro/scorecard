@@ -7,6 +7,7 @@ import Picker from './components/core/Picker'
 import Readout from './components/core/Readout'
 import CAMap from './components/core/InteractiveMap'
 
+import indicators from './data/indicators'
 import {camelLower} from './utilities/toLowerCase'
 
 class Store{
@@ -75,14 +76,17 @@ export default class Scorecard extends React.Component{
 			<App>
 				<DebugStore />
 				<Leftside>
+
+				<Readout store = {store} />
 				<Picker 
 					store = {store}
 					onHoverCounty = {this.onHoverCounty}
 					hoveredCounty = {this.hoveredCounty} 
 					onSelect = {store.change}
+					
+
 
 				/>
-				<Readout store = {store} />
 				</Leftside>
 				<Rightside>
 				<CAMap 
@@ -90,6 +94,7 @@ export default class Scorecard extends React.Component{
 					onHoverCounty = {this.onHoverCounty}
 					hoveredCounty = {this.hoveredCounty}
 					onSelect = {store.change}
+					selected = {store.location}
 				/>
 				</Rightside>
 			</App>
