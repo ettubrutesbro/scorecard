@@ -21,7 +21,7 @@ import indicators from '../src/data/indicators'
 
 import Picker from '../src/components/core/Picker'
 import Readout2 from '../src/components/core/Readout2'
-import ProtoWorkflow from '../src/components/core/ProtoWorkflow'
+import Info from '../src/components/Info'
 
 import Toggle from '../src/components/Toggle'
 
@@ -65,8 +65,10 @@ storiesOf('scorecard', module)
 		/>
 	)
 })
-.add('ProtoWorkflow', ()=>{
+.add('info', ()=>{
 	return(
-		<ProtoWorkflow />
+		<div style = {{height: '90vh'}}>
+			<Info />
+		</div>
 	)
 })
