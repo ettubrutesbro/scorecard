@@ -4,7 +4,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import Picker from './components/core/Picker'
-import Readout from './components/core/Readout'
+import Readout from './components/core/Readout2'
 import CAMap from './components/core/InteractiveMap'
 
 import indicators from './data/indicators'
@@ -15,6 +15,8 @@ class Store{
 	@observable indicator = null
 	@observable race = null
 	@observable year = null //important: when indicator changes this needs to be set automatically
+
+	@observable queryOrder = []
 
 	@observable mapmode = '' // '', 'heat', 'county', 'countyheat'
 	// @observable userPicking = 'start'
@@ -32,7 +34,11 @@ class Store{
 				console.log('automatically set year to', this.year)
 			}
 		}
+		if(!value && this.queryOrder.includes(target)) this.queryOrder.splice(this.queryOrder.indexOf(target),1)
+		else this.queryOrder.push(target)
+		console.log('query order:', this.queryOrder.toJS())
 	}
+
 
 	@action changedPickerMode = (newPickerMode) => {
 
@@ -77,15 +83,16 @@ export default class Scorecard extends React.Component{
 				<DebugStore />
 				<Leftside>
 
-				<Readout store = {store} />
 				<Picker 
 					store = {store}
 					onHoverCounty = {this.onHoverCounty}
 					hoveredCounty = {this.hoveredCounty} 
 					onSelect = {store.change}
-					
-
-
+				/>
+				<Readout
+					location = {store.location}
+					race = {store.race}
+					indicator = {store.indicator}
 				/>
 				</Leftside>
 				<Rightside>

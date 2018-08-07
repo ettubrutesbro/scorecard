@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 export default class Picker extends React.Component{
 	//better name? this is the component that lets users pick anything
 	
-	@observable mode = 'start' //start, county, race, topic, indicator, mini
+	@observable mode = 'start' //start, county, race, indicator, ''
 		//this might need to be a prop..?
 		@action changeMode = (newmode) => {
 			console.log('changemode')

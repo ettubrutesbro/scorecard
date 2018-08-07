@@ -17,23 +17,45 @@ const Wrapper = styled.div`
 	background: rgba(0,255,255,0.1);
 	padding: 30px;
 `
+const BigNumber = styled.h1`
+	width: auto;	
+`
+
 const TitleBlock = styled.div`
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	h1{
+		display: flex;
+		justify-content: flex-start;
 		font-weight: 400;
 		font-size: 24px;
 		margin: 0;
+		width: 100%;
+		align-items: center;
+		h1{ 
+			font-size: 36px;
+			font-weight: 600;
+			width: auto;
+			margin-right: 7px;
+		}
 	}
 	h2{
+		display: flex;
+		width: 100%;
 		font-size: 16px;
 		font-weight: 400;
 		margin: 0;
 		h4{
+			margin: 0;
+			margin-left: 5px;
 			display: inline;
 			font-size: 16px;
 			font-weight: 600;
 		}
+	}
+	h3{
+		width: 100%;
 	}
 	font-size: 14px;
 `
@@ -65,52 +87,35 @@ const PointerBox = styled.div`
 export default class Readout extends React.Component{
 	render(){
 
-		const {location, race, indicator, year} = this.props.store
-		const ca = indicator? indicator.counties.california : ''
-		
-			//TODO TODO: formatter needs to output camelcased locations
-		const c = location && indicator? indicator.counties[location] : indicator? indicator.counties.california : ''
-			//TODO TODO: formatter needs to output camelcased locations
+		const {location, race, year} = this.props.store
 
-		const yearIndex = indicator? indicator.years.indexOf(year) : ''
-		const semanticTitleString = indicator? `of ${semanticTitles[indicator.indicator].who} ${race? 'who are '+race+' ' : ''}${semanticTitles[indicator.indicator].what}` : ''
-		let locationString = indicator && location? `In ${find(counties, (c)=>{return c.id === location}).label} location` : indicator || race? 'In California' : ''
+		const indicator = indicators[this.props.store.indicator]
+
+		const ca = indicator? indicator.counties.california : ''
+
+
 		const yearObject = indicator && indicator.years.length > 1? <YearToggle years = {indicator.years} /> : indicator? indicator.years : ''
 		return(
 			<Wrapper>
-				<TitleBlock>
-					{location && !indicator && !race &&
-						<div>
-							<LocationOnly location = {location} />
-						</div>
+					{location && !indicator && !race &&	
+						<LocationReadout 
+							location = {location} 
+							onBack = {()=>{this.props.store.change('location','')}}
+						/>
 					}
 					{indicator && 
-						<React.Fragment>
-						{locationString},
-						<YearToggle 
-							years = {indicator.years}
-							selected = {year}
-						/>  
-						</React.Fragment>
-					}
-				</TitleBlock>
+						<IndicatorReadout
+							indicator = {indicator}
+							computedLocation = {location && indicator? indicator.counties[location] : indicator? indicator.counties.california : ''}
+							race = {race}
 
-				{indicator && 
-				<div>
-					
-					<h3>
-					{c[race||'totals'][yearIndex]}% {semanticTitleString}
-					</h3>
+							raceData = {demopop[location]}
+							location = {location}
+							yearIndex = {indicator? indicator.years.indexOf(year) : ''}
 
-					{indicator.categories.includes('hasRace') &&
-						<RaceTable>
-							{['black','white','asian','latinx'].map((race)=>{
-								return <div> {race} : {c[race][yearIndex]} </div>
-							})}
-						</RaceTable>
+						/>	
 					}
-				</div>
-				}
+
 			</Wrapper>
 		)
 	}
@@ -148,11 +153,14 @@ const YearToggle = (props) => {
 }
 
 
-const LocationOnly = (props) => {
+const LocationReadout = (props) => {
 	const label = find(counties, (c)=>{return c.id === props.location}).label
 	const demo = demopop[props.location] || {population: 100, poverty: 100, homeless: 100, immigrantFamilies: 100, }
 	return(
-		<React.Fragment>
+		<TitleBlock>
+			<h3
+				onClick = {props.onBack}
+			> Restart search </h3>
 			<h1> {label} county </h1>
 			<h2> Child population: <h4>{commaNumber(demo.population)}</h4> </h2>
 			<PointerBox>
@@ -161,7 +169,40 @@ const LocationOnly = (props) => {
 			</PointerBox>
 
 
-		</React.Fragment>
+		</TitleBlock>
+	)
+}
+const IndicatorReadout = (props) => {
+	//prop: hasRace, county, percentage, indicator
+	//calculate locationString and semanticTitleString here
+	const {indicator, year, race, yearIndex, computedLocation} = props
+	let locationString = props.indicator && props.location? `In ${find(counties, (c)=>{return c.id === props.location}).label} county` : indicator || race? 'In California' : ''
+	const semanticTitleString = indicator? `of ${semanticTitles[indicator.indicator].who} ${race? 'who are '+race+' ' : ''}${semanticTitles[indicator.indicator].what}` : ''
+	console.log(props.raceData)
+	return(
+		<TitleBlock>
+			<h3> Restart search </h3>
+			<h2> 
+				{locationString} 
+				<YearToggle 
+					years = {indicator.years}
+					selected = {year}
+				/>
+			</h2>
+			
+			<h1>
+				<BigNumber>
+					{computedLocation[race||'totals'][yearIndex]}%
+				</BigNumber> 
+				{semanticTitleString}
+			</h1>
+
+			{indicator.categories.includes('hasRace') &&
+				<RaceRowTable 
+					raceData = {props.raceData}
+				/>
+			}
+		</TitleBlock>
 	)
 }
 
@@ -218,7 +259,7 @@ const Bar = styled.div`
 	transform-origin: 50% 100%;
 	background: black;
 	width: 50px;
-`
+`	
 const RaceGraphTable = (props) => {
 	return(
 		<GraphTable>
@@ -254,3 +295,10 @@ const RaceRowTable = (props) => {
 		</RowTable>
 	)
 }
+
+// function backString = () => {
+// 	queryOrder
+// 	return (
+
+// 	)
+// }
