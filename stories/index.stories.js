@@ -71,7 +71,7 @@ storiesOf('scorecard', module)
         <div
             style = {{display: 'flex', overflow: 'hidden'}}
         >
-            <div style = {{height: '100vh', minWidth: '50%'}}>
+            <div style = {{minWidth: '50%'}}>
                 <Info />
             </div>
             <CAMap />

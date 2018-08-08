@@ -5,8 +5,11 @@ import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 
 import commaNumber from 'comma-number'
-import IndicatorPrompt from './IndicatorPrompt'
 
+import IndicatorBrokenDownByRaces from './IndicatorBrokenDownByRaces'
+import PerformanceDistributionByCounty from './PerformanceDistributionByCounty'
+
+import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 
 const Wrapper = styled.div`
@@ -39,7 +42,17 @@ export default class Breakdown extends React.Component{
             >
                 <BreakdownBox>
                     {indicator && !county && !race && 
-                        'county performance distribution and indicator by race'
+                        // 'county performance distribution and indicator by race'
+                        <div>
+                            <PerformanceDistributionByCounty 
+                                store = {store}
+                            />
+                            {indicators[indicator].categories.includes('hasRace') &&
+                                <IndicatorBrokenDownByRaces
+                                    store = {store}
+                                />
+                            }
+                        </div>
 
                     }
                     {!indicator && county && !race &&
@@ -75,7 +88,7 @@ const RacePct = styled.div`
     margin-left: 15px;
     text-align: right;
 `
-const races = ['asian','black','latino','white','other']
+const races = ['asian','black','latinx','white','other']
 const RaceRowTable = (props) => {
     return(
         <RowTable className = 'race'>

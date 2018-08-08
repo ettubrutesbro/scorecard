@@ -60,16 +60,18 @@ export default class Readout extends React.Component{
 
 
     render(){
-        const {county, indicator, race} = this.props.store
+        const {county, indicator, race, year} = this.props.store
 
 
-        const raceString = race? `who are ${race.charAt(0).toUpperCase() + race.substr(1)}` : ''
+        const raceString = race? `${race.charAt(0).toUpperCase() + race.substr(1)}` : ''
         const countyString = county? `${find(counties,{id:county}).label} county.` : 'California.'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
 
         console.log(demopop[county])
-        const popCount = county&&race? demopop[county][race]+'%?' : county? demopop[county].population : race? demopop.california[race]+'%' : ''
+        const popCount = county&&race? ((demopop[county][race] / 100) * demopop.county.population).toFixed(0)
+        : county? demopop[county].population 
+        : race? ((demopop.california[race]/100) * demopop.california.population).toFixed(0) : ''
 
         const ind = indicators[indicator]
 
@@ -79,18 +81,18 @@ export default class Readout extends React.Component{
             >
                 {!indicator && (county || race) && 
                     <React.Fragment>
-                    <b>{commaNumber(popCount)}</b> 
-                    {who} {raceString} live in {countyString}
+                    <b>{commaNumber(popCount)} </b> 
+                    {raceString} {who} live in {countyString}
                     </React.Fragment>
                 }
                 {indicator && 
                     <div style = {{position: 'relative'}}>
                         <h1 ref = {(h1)=>{this.bigNumber = h1}}>
-                        	{county && race && ind.counties[county][race][1]}
-                        	{county && !race && ind.counties[county].totals[1]}
-                        	{!county && race && ind.counties.california[race][1]}
-                        	{!county && !race && ind.counties.california.totals[1]}
-                        	%
+                            {county && race && ind.counties[county][race][year]}
+                            {county && !race && ind.counties[county].totals[year]}
+                            {!county && race && ind.counties.california[race][year]}
+                            {!county && !race && ind.counties.california.totals[year]}
+                            %
                         </h1>
                         <IndentedTitle
                             style = {{

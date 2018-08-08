@@ -1,0 +1,371 @@
+{
+  "indicator": "fRPMSchoolYear",
+  "years": [
+    "2016"
+  ],
+  "categories": [
+    "education"
+  ],
+  "counties": {
+    "california": {
+      "ranks": [
+        ""
+      ],
+      "totals": []
+    },
+    "alameda": {
+      "ranks": [
+        54
+      ],
+      "totals": []
+    },
+    "alpine": {
+      "ranks": [
+        1
+      ],
+      "totals": []
+    },
+    "amador": {
+      "ranks": [
+        45
+      ],
+      "totals": []
+    },
+    "butte": {
+      "ranks": [
+        24
+      ],
+      "totals": []
+    },
+    "calaveras": {
+      "ranks": [
+        47
+      ],
+      "totals": []
+    },
+    "colusa": {
+      "ranks": [
+        2
+      ],
+      "totals": []
+    },
+    "contraCosta": {
+      "ranks": [
+        30
+      ],
+      "totals": []
+    },
+    "delNorte": {
+      "ranks": [
+        43
+      ],
+      "totals": []
+    },
+    "elDorado": {
+      "ranks": [
+        32
+      ],
+      "totals": []
+    },
+    "fresno": {
+      "ranks": [
+        4
+      ],
+      "totals": []
+    },
+    "glenn": {
+      "ranks": [
+        16
+      ],
+      "totals": []
+    },
+    "humboldt": {
+      "ranks": [
+        48
+      ],
+      "totals": []
+    },
+    "imperial": {
+      "ranks": [
+        14
+      ],
+      "totals": []
+    },
+    "inyo": {
+      "ranks": [
+        58
+      ],
+      "totals": []
+    },
+    "kern": {
+      "ranks": [
+        7
+      ],
+      "totals": []
+    },
+    "kings": {
+      "ranks": [
+        21
+      ],
+      "totals": []
+    },
+    "lake": {
+      "ranks": [
+        31
+      ],
+      "totals": []
+    },
+    "lassen": {
+      "ranks": [
+        55
+      ],
+      "totals": []
+    },
+    "losAngeles": {
+      "ranks": [
+        38
+      ],
+      "totals": []
+    },
+    "madera": {
+      "ranks": [
+        11
+      ],
+      "totals": []
+    },
+    "marin": {
+      "ranks": [
+        34
+      ],
+      "totals": []
+    },
+    "mariposa": {
+      "ranks": [
+        46
+      ],
+      "totals": []
+    },
+    "mendocino": {
+      "ranks": [
+        40
+      ],
+      "totals": []
+    },
+    "merced": {
+      "ranks": [
+        9
+      ],
+      "totals": []
+    },
+    "modoc": {
+      "ranks": [
+        6
+      ],
+      "totals": []
+    },
+    "mono": {
+      "ranks": [
+        56
+      ],
+      "totals": []
+    },
+    "monterey": {
+      "ranks": [
+        19
+      ],
+      "totals": []
+    },
+    "napa": {
+      "ranks": [
+        50
+      ],
+      "totals": []
+    },
+    "nevada": {
+      "ranks": [
+        57
+      ],
+      "totals": []
+    },
+    "orange": {
+      "ranks": [
+        13
+      ],
+      "totals": []
+    },
+    "placer": {
+      "ranks": [
+        35
+      ],
+      "totals": []
+    },
+    "plumas": {
+      "ranks": [
+        53
+      ],
+      "totals": []
+    },
+    "riverside": {
+      "ranks": [
+        10
+      ],
+      "totals": []
+    },
+    "sacramento": {
+      "ranks": [
+        28
+      ],
+      "totals": []
+    },
+    "sanBenito": {
+      "ranks": [
+        15
+      ],
+      "totals": []
+    },
+    "sanBernardino": {
+      "ranks": [
+        17
+      ],
+      "totals": []
+    },
+    "sanDiego": {
+      "ranks": [
+        42
+      ],
+      "totals": []
+    },
+    "sanFrancisco": {
+      "ranks": [
+        51
+      ],
+      "totals": []
+    },
+    "sanJoaquin": {
+      "ranks": [
+        25
+      ],
+      "totals": []
+    },
+    "sanLuisObispo": {
+      "ranks": [
+        49
+      ],
+      "totals": []
+    },
+    "sanMateo": {
+      "ranks": [
+        36
+      ],
+      "totals": []
+    },
+    "santaBarbara": {
+      "ranks": [
+        12
+      ],
+      "totals": []
+    },
+    "santaClara": {
+      "ranks": [
+        41
+      ],
+      "totals": []
+    },
+    "santaCruz": {
+      "ranks": [
+        44
+      ],
+      "totals": []
+    },
+    "shasta": {
+      "ranks": [
+        26
+      ],
+      "totals": []
+    },
+    "sierra": {
+      "ranks": [
+        23
+      ],
+      "totals": []
+    },
+    "siskiyou": {
+      "ranks": [
+        33
+      ],
+      "totals": []
+    },
+    "solano": {
+      "ranks": [
+        37
+      ],
+      "totals": []
+    },
+    "sonoma": {
+      "ranks": [
+        52
+      ],
+      "totals": []
+    },
+    "stanislaus": {
+      "ranks": [
+        18
+      ],
+      "totals": []
+    },
+    "sutter": {
+      "ranks": [
+        39
+      ],
+      "totals": []
+    },
+    "tehama": {
+      "ranks": [
+        3
+      ],
+      "totals": []
+    },
+    "trinity": {
+      "ranks": [
+        22
+      ],
+      "totals": []
+    },
+    "tulare": {
+      "ranks": [
+        8
+      ],
+      "totals": []
+    },
+    "tuolumne": {
+      "ranks": [
+        29
+      ],
+      "totals": []
+    },
+    "ventura": {
+      "ranks": [
+        27
+      ],
+      "totals": []
+    },
+    "yolo": {
+      "ranks": [
+        20
+      ],
+      "totals": []
+    },
+    "yuba": {
+      "ranks": [
+        5
+      ],
+      "totals": []
+    },
+    "": {
+      "ranks": [
+        ""
+      ],
+      "totals": []
+    }
+  }
+}

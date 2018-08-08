@@ -1,4 +1,5 @@
 {
-	"california": {"black": 13, "asian": 5, "latinx": 21, "white": 30, "other": 19},
-	"sanLuisObispo": {"population": 2345381, "poverty": 42, "homeless": 132000, "immigrantFamilies": 875000, "black": 30, "white": 40, "latino": 20, "asian": 5, "other": 5}
+    "california": {"population":9118201, "black": 5.3, "asian": 11, "latinx": 51.4, "white": 26.9, "other": 5.5},
+    "alameda": {"population":345798, "poverty":1,"homeless":2, "immigrantFamilies":3, "black": 10.8, "asian": 25.5, "latinx": 30.9, "white": 24.1, "other": 8.8},
+    "sanLuisObispo": {"population": 49256, "poverty": 42, "homeless": 132000, "immigrantFamilies": 875000, "black": 30, "white": 40, "latinx": 20, "asian": 5, "other": 5}
 }

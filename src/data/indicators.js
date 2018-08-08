@@ -4,12 +4,18 @@
 import notFoodInsecure from './NotFoodInsecure.json'
 import earlyPrenatalCare from './EarlyPrenatalCare.json'
 import registeredToVote from './RegisteredToVote.json'
+import upToDateVaccinations from './UpToDateVaccinations.json'
+import lowIncomeDental from './LowIncomeDental.json'
+import collegeCareerReady from './CollegeCareerReady.json'
 
 const indicators = {
 
-	notFoodInsecure: notFoodInsecure,
-	earlyPrenatalCare: earlyPrenatalCare,	
-	registeredToVote: registeredToVote,
+    notFoodInsecure: notFoodInsecure,
+    earlyPrenatalCare: earlyPrenatalCare,   
+    registeredToVote: registeredToVote,
+    upToDateVaccinations: upToDateVaccinations,
+    lowIncomeDental: lowIncomeDental,
+    collegeCareerReady: collegeCareerReady,
 
     // //welfare
     // welfareMock: welfare.welfareMock,

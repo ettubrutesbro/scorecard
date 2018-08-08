@@ -1,0 +1,1429 @@
+{
+  "indicator": "familyLike",
+  "years": [
+    "2016",
+    "2017"
+  ],
+  "categories": [
+    "hasRace",
+    "welfare"
+  ],
+  "counties": {
+    "california": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [],
+      "white": [
+        71,
+        72
+      ],
+      "asian": [
+        75,
+        78
+      ],
+      "latinx": [
+        73,
+        74
+      ],
+      "other": [
+        79,
+        82
+      ],
+      "totals": []
+    },
+    "alameda": {
+      "ranks": [
+        46,
+        46
+      ],
+      "black": [],
+      "white": [
+        69,
+        69
+      ],
+      "asian": [
+        63,
+        81
+      ],
+      "latinx": [
+        63,
+        64
+      ],
+      "other": [
+        100,
+        92
+      ],
+      "totals": []
+    },
+    "alpine": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [],
+      "white": [
+        "",
+        ""
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "",
+        ""
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "amador": {
+      "ranks": [
+        2,
+        5
+      ],
+      "black": [],
+      "white": [
+        91,
+        84
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        86,
+        96
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "butte": {
+      "ranks": [
+        17,
+        20
+      ],
+      "black": [],
+      "white": [
+        76,
+        77
+      ],
+      "asian": [
+        92,
+        84
+      ],
+      "latinx": [
+        72,
+        64
+      ],
+      "other": [
+        78,
+        77
+      ],
+      "totals": []
+    },
+    "calaveras": {
+      "ranks": [
+        33,
+        31
+      ],
+      "black": [],
+      "white": [
+        69,
+        74
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        77,
+        42
+      ],
+      "other": [
+        50,
+        92
+      ],
+      "totals": []
+    },
+    "colusa": {
+      "ranks": [
+        55,
+        25
+      ],
+      "black": [],
+      "white": [
+        40,
+        59
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        78,
+        85
+      ],
+      "other": [
+        "",
+        50
+      ],
+      "totals": []
+    },
+    "contraCosta": {
+      "ranks": [
+        38,
+        39
+      ],
+      "black": [],
+      "white": [
+        67,
+        69
+      ],
+      "asian": [
+        71,
+        62
+      ],
+      "latinx": [
+        71,
+        70
+      ],
+      "other": [
+        87,
+        74
+      ],
+      "totals": []
+    },
+    "delNorte": {
+      "ranks": [
+        36,
+        12
+      ],
+      "black": [],
+      "white": [
+        69,
+        77
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        17,
+        64
+      ],
+      "other": [
+        76,
+        87
+      ],
+      "totals": []
+    },
+    "elDorado": {
+      "ranks": [
+        13,
+        22
+      ],
+      "black": [],
+      "white": [
+        78,
+        75
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        83,
+        84
+      ],
+      "other": [
+        59,
+        28
+      ],
+      "totals": []
+    },
+    "fresno": {
+      "ranks": [
+        7,
+        9
+      ],
+      "black": [],
+      "white": [
+        83,
+        77
+      ],
+      "asian": [
+        90,
+        90
+      ],
+      "latinx": [
+        82,
+        82
+      ],
+      "other": [
+        90,
+        82
+      ],
+      "totals": []
+    },
+    "glenn": {
+      "ranks": [
+        26,
+        14
+      ],
+      "black": [],
+      "white": [
+        65,
+        72
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        81,
+        79
+      ],
+      "other": [
+        62,
+        78
+      ],
+      "totals": []
+    },
+    "humboldt": {
+      "ranks": [
+        10,
+        15
+      ],
+      "black": [],
+      "white": [
+        79,
+        80
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        78,
+        71
+      ],
+      "other": [
+        84,
+        77
+      ],
+      "totals": []
+    },
+    "imperial": {
+      "ranks": [
+        51,
+        51
+      ],
+      "black": [],
+      "white": [
+        51,
+        48
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        63,
+        65
+      ],
+      "other": [
+        18,
+        28
+      ],
+      "totals": []
+    },
+    "inyo": {
+      "ranks": [
+        5,
+        55
+      ],
+      "black": [],
+      "white": [
+        100,
+        50
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "",
+        100
+      ],
+      "other": [
+        75,
+        50
+      ],
+      "totals": []
+    },
+    "kern": {
+      "ranks": [
+        27,
+        21
+      ],
+      "black": [],
+      "white": [
+        68,
+        69
+      ],
+      "asian": [
+        88,
+        91
+      ],
+      "latinx": [
+        75,
+        79
+      ],
+      "other": [
+        50,
+        63
+      ],
+      "totals": []
+    },
+    "kings": {
+      "ranks": [
+        6,
+        4
+      ],
+      "black": [],
+      "white": [
+        80,
+        76
+      ],
+      "asian": [
+        100,
+        94
+      ],
+      "latinx": [
+        87,
+        91
+      ],
+      "other": [
+        40,
+        63
+      ],
+      "totals": []
+    },
+    "lake": {
+      "ranks": [
+        40,
+        26
+      ],
+      "black": [],
+      "white": [
+        63,
+        75
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        78,
+        85
+      ],
+      "other": [
+        57,
+        67
+      ],
+      "totals": []
+    },
+    "lassen": {
+      "ranks": [
+        29,
+        18
+      ],
+      "black": [],
+      "white": [
+        71,
+        81
+      ],
+      "asian": [
+        25,
+        75
+      ],
+      "latinx": [
+        83,
+        78
+      ],
+      "other": [
+        39,
+        ""
+      ],
+      "totals": []
+    },
+    "losAngeles": {
+      "ranks": [
+        24,
+        24
+      ],
+      "black": [],
+      "white": [
+        73,
+        76
+      ],
+      "asian": [
+        82,
+        81
+      ],
+      "latinx": [
+        74,
+        75
+      ],
+      "other": [
+        86,
+        86
+      ],
+      "totals": []
+    },
+    "madera": {
+      "ranks": [
+        3,
+        7
+      ],
+      "black": [],
+      "white": [
+        82,
+        79
+      ],
+      "asian": [
+        50,
+        100
+      ],
+      "latinx": [
+        86,
+        87
+      ],
+      "other": [
+        79,
+        100
+      ],
+      "totals": []
+    },
+    "marin": {
+      "ranks": [
+        48,
+        49
+      ],
+      "black": [],
+      "white": [
+        55,
+        62
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        56,
+        49
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "mariposa": {
+      "ranks": [
+        16,
+        41
+      ],
+      "black": [],
+      "white": [
+        75,
+        65
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        79,
+        60
+      ],
+      "other": [
+        100,
+        100
+      ],
+      "totals": []
+    },
+    "mendocino": {
+      "ranks": [
+        32,
+        38
+      ],
+      "black": [],
+      "white": [
+        67,
+        68
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        74,
+        66
+      ],
+      "other": [
+        63,
+        69
+      ],
+      "totals": []
+    },
+    "merced": {
+      "ranks": [
+        15,
+        11
+      ],
+      "black": [],
+      "white": [
+        81,
+        80
+      ],
+      "asian": [
+        93,
+        92
+      ],
+      "latinx": [
+        74,
+        76
+      ],
+      "other": [
+        78,
+        96
+      ],
+      "totals": []
+    },
+    "modoc": {
+      "ranks": [
+        56,
+        2
+      ],
+      "black": [],
+      "white": [
+        26,
+        78
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        33,
+        100
+      ],
+      "other": [
+        100,
+        100
+      ],
+      "totals": []
+    },
+    "mono": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [],
+      "white": [
+        "",
+        ""
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "",
+        ""
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "monterey": {
+      "ranks": [
+        54,
+        54
+      ],
+      "black": [],
+      "white": [
+        47,
+        62
+      ],
+      "asian": [
+        "",
+        8
+      ],
+      "latinx": [
+        51,
+        59
+      ],
+      "other": [
+        100,
+        92
+      ],
+      "totals": []
+    },
+    "napa": {
+      "ranks": [
+        23,
+        28
+      ],
+      "black": [],
+      "white": [
+        80,
+        82
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        71,
+        67
+      ],
+      "other": [
+        75,
+        63
+      ],
+      "totals": []
+    },
+    "nevada": {
+      "ranks": [
+        45,
+        34
+      ],
+      "black": [],
+      "white": [
+        57,
+        69
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        100,
+        88
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "orange": {
+      "ranks": [
+        28,
+        34
+      ],
+      "black": [],
+      "white": [
+        71,
+        70
+      ],
+      "asian": [
+        81,
+        78
+      ],
+      "latinx": [
+        71,
+        72
+      ],
+      "other": [
+        57,
+        73
+      ],
+      "totals": []
+    },
+    "placer": {
+      "ranks": [
+        25,
+        33
+      ],
+      "black": [],
+      "white": [
+        80,
+        72
+      ],
+      "asian": [
+        48,
+        58
+      ],
+      "latinx": [
+        59,
+        66
+      ],
+      "other": [
+        100,
+        75
+      ],
+      "totals": []
+    },
+    "plumas": {
+      "ranks": [
+        43,
+        50
+      ],
+      "black": [],
+      "white": [
+        63,
+        57
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        71,
+        83
+      ],
+      "other": [
+        38,
+        83
+      ],
+      "totals": []
+    },
+    "riverside": {
+      "ranks": [
+        18,
+        18
+      ],
+      "black": [],
+      "white": [
+        75,
+        75
+      ],
+      "asian": [
+        81,
+        81
+      ],
+      "latinx": [
+        76,
+        77
+      ],
+      "other": [
+        78,
+        92
+      ],
+      "totals": []
+    },
+    "sacramento": {
+      "ranks": [
+        47,
+        44
+      ],
+      "black": [],
+      "white": [
+        63,
+        68
+      ],
+      "asian": [
+        68,
+        68
+      ],
+      "latinx": [
+        64,
+        65
+      ],
+      "other": [
+        66,
+        70
+      ],
+      "totals": []
+    },
+    "sanBenito": {
+      "ranks": [
+        9,
+        13
+      ],
+      "black": [],
+      "white": [
+        88,
+        78
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        75,
+        72
+      ],
+      "other": [
+        100,
+        100
+      ],
+      "totals": []
+    },
+    "sanBernardino": {
+      "ranks": [
+        22,
+        17
+      ],
+      "black": [],
+      "white": [
+        73,
+        75
+      ],
+      "asian": [
+        89,
+        91
+      ],
+      "latinx": [
+        78,
+        80
+      ],
+      "other": [
+        74,
+        83
+      ],
+      "totals": []
+    },
+    "sanDiego": {
+      "ranks": [
+        42,
+        43
+      ],
+      "black": [],
+      "white": [
+        63,
+        62
+      ],
+      "asian": [
+        78,
+        84
+      ],
+      "latinx": [
+        67,
+        68
+      ],
+      "other": [
+        59,
+        78
+      ],
+      "totals": []
+    },
+    "sanFrancisco": {
+      "ranks": [
+        50,
+        48
+      ],
+      "black": [],
+      "white": [
+        61,
+        69
+      ],
+      "asian": [
+        70,
+        68
+      ],
+      "latinx": [
+        64,
+        64
+      ],
+      "other": [
+        28,
+        16
+      ],
+      "totals": []
+    },
+    "sanJoaquin": {
+      "ranks": [
+        49,
+        45
+      ],
+      "black": [],
+      "white": [
+        61,
+        62
+      ],
+      "asian": [
+        59,
+        53
+      ],
+      "latinx": [
+        64,
+        66
+      ],
+      "other": [
+        42,
+        50
+      ],
+      "totals": []
+    },
+    "sanLuisObispo": {
+      "ranks": [
+        37,
+        42
+      ],
+      "black": [],
+      "white": [
+        63,
+        62
+      ],
+      "asian": [
+        25,
+        28
+      ],
+      "latinx": [
+        75,
+        74
+      ],
+      "other": [
+        95,
+        71
+      ],
+      "totals": []
+    },
+    "sanMateo": {
+      "ranks": [
+        39,
+        37
+      ],
+      "black": [],
+      "white": [
+        68,
+        82
+      ],
+      "asian": [
+        74,
+        78
+      ],
+      "latinx": [
+        65,
+        64
+      ],
+      "other": [
+        67,
+        92
+      ],
+      "totals": []
+    },
+    "santaBarbara": {
+      "ranks": [
+        52,
+        40
+      ],
+      "black": [],
+      "white": [
+        62,
+        66
+      ],
+      "asian": [
+        60,
+        75
+      ],
+      "latinx": [
+        59,
+        70
+      ],
+      "other": [
+        38,
+        100
+      ],
+      "totals": []
+    },
+    "santaClara": {
+      "ranks": [
+        41,
+        52
+      ],
+      "black": [],
+      "white": [
+        59,
+        40
+      ],
+      "asian": [
+        56,
+        65
+      ],
+      "latinx": [
+        69,
+        64
+      ],
+      "other": [
+        42,
+        27
+      ],
+      "totals": []
+    },
+    "santaCruz": {
+      "ranks": [
+        43,
+        53
+      ],
+      "black": [],
+      "white": [
+        77,
+        71
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        54,
+        53
+      ],
+      "other": [
+        "",
+        100
+      ],
+      "totals": []
+    },
+    "shasta": {
+      "ranks": [
+        12,
+        10
+      ],
+      "black": [],
+      "white": [
+        80,
+        79
+      ],
+      "asian": [
+        100,
+        100
+      ],
+      "latinx": [
+        79,
+        82
+      ],
+      "other": [
+        90,
+        88
+      ],
+      "totals": []
+    },
+    "sierra": {
+      "ranks": [
+        19,
+        56
+      ],
+      "black": [],
+      "white": [
+        75,
+        38
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "",
+        ""
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": []
+    },
+    "siskiyou": {
+      "ranks": [
+        14,
+        32
+      ],
+      "black": [],
+      "white": [
+        76,
+        72
+      ],
+      "asian": [
+        100,
+        100
+      ],
+      "latinx": [
+        90,
+        75
+      ],
+      "other": [
+        82,
+        71
+      ],
+      "totals": []
+    },
+    "solano": {
+      "ranks": [
+        34,
+        27
+      ],
+      "black": [],
+      "white": [
+        65,
+        68
+      ],
+      "asian": [
+        94,
+        94
+      ],
+      "latinx": [
+        72,
+        78
+      ],
+      "other": [
+        73,
+        70
+      ],
+      "totals": []
+    },
+    "sonoma": {
+      "ranks": [
+        53,
+        47
+      ],
+      "black": [],
+      "white": [
+        52,
+        62
+      ],
+      "asian": [
+        48,
+        46
+      ],
+      "latinx": [
+        61,
+        63
+      ],
+      "other": [
+        72,
+        71
+      ],
+      "totals": []
+    },
+    "stanislaus": {
+      "ranks": [
+        20,
+        16
+      ],
+      "black": [],
+      "white": [
+        73,
+        73
+      ],
+      "asian": [
+        100,
+        98
+      ],
+      "latinx": [
+        73,
+        77
+      ],
+      "other": [
+        75,
+        100
+      ],
+      "totals": []
+    },
+    "sutter": {
+      "ranks": [
+        35,
+        29
+      ],
+      "black": [],
+      "white": [
+        67,
+        70
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        65,
+        77
+      ],
+      "other": [
+        "",
+        100
+      ],
+      "totals": []
+    },
+    "tehama": {
+      "ranks": [
+        1,
+        1
+      ],
+      "black": [],
+      "white": [
+        83,
+        88
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        91,
+        93
+      ],
+      "other": [
+        50,
+        100
+      ],
+      "totals": []
+    },
+    "trinity": {
+      "ranks": [
+        8,
+        3
+      ],
+      "black": [],
+      "white": [
+        88,
+        91
+      ],
+      "asian": [
+        25,
+        ""
+      ],
+      "latinx": [
+        25,
+        25
+      ],
+      "other": [
+        "",
+        100
+      ],
+      "totals": []
+    },
+    "tulare": {
+      "ranks": [
+        4,
+        6
+      ],
+      "black": [],
+      "white": [
+        79,
+        80
+      ],
+      "asian": [
+        "",
+        100
+      ],
+      "latinx": [
+        86,
+        87
+      ],
+      "other": [
+        90,
+        92
+      ],
+      "totals": []
+    },
+    "tuolumne": {
+      "ranks": [
+        21,
+        23
+      ],
+      "black": [],
+      "white": [
+        67,
+        70
+      ],
+      "asian": [
+        88,
+        100
+      ],
+      "latinx": [
+        82,
+        82
+      ],
+      "other": [
+        100,
+        67
+      ],
+      "totals": []
+    },
+    "ventura": {
+      "ranks": [
+        30,
+        30
+      ],
+      "black": [],
+      "white": [
+        65,
+        65
+      ],
+      "asian": [
+        100,
+        100
+      ],
+      "latinx": [
+        71,
+        76
+      ],
+      "other": [
+        75,
+        25
+      ],
+      "totals": []
+    },
+    "yolo": {
+      "ranks": [
+        11,
+        8
+      ],
+      "black": [],
+      "white": [
+        70,
+        75
+      ],
+      "asian": [
+        100,
+        100
+      ],
+      "latinx": [
+        85,
+        89
+      ],
+      "other": [
+        "",
+        100
+      ],
+      "totals": []
+    },
+    "yuba": {
+      "ranks": [
+        31,
+        36
+      ],
+      "black": [],
+      "white": [
+        68,
+        68
+      ],
+      "asian": [
+        25,
+        67
+      ],
+      "latinx": [
+        78,
+        73
+      ],
+      "other": [
+        88,
+        100
+      ],
+      "totals": []
+    }
+  }
+}

@@ -56,7 +56,9 @@ export default class IndicatorPrompt extends React.Component{
             >
             <Prompt>
                 <h1>Choose an indicator. </h1>
-                {Object.keys(indicators).map((ind)=>{
+                {Object.keys(indicators).filter((ind)=>{
+                    return race? indicators[ind].categories.includes('hasRace') : true
+                }).slice(0,3).map((ind)=>{
                     return <SampleIndicator
                         onClick = {()=>store.completeWorkflow('indicator',ind)}
                     > 

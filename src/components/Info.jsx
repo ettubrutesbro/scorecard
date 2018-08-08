@@ -14,13 +14,24 @@ import Breakdown from './Breakdown'
 import Context from './Context'
 import IndicatorPrompt from './IndicatorPrompt'
 
+import indicators from '../data/indicators'
+
 class InfoStore{
     @observable indicator = null
     @observable county = null
     @observable race = null
+    @observable year = null
     @observable activeWorkflow = null
 
     @observable queryOrder = []
+
+    @action setYearIndex = () => {
+        const newYears = indicators[this.indicator].years
+        if(!this.year && newYears.length>1) this.year = newYears.length-1
+        else if(!this.year) this.year = 0
+        else if(this.year === 1 && newYears.length===1) this.year = 0
+        console.log(`year ${this.year} (${newYears[this.year]})`)
+    }
 
     @computed get itemOrder(){
         const {indicator, county, race, activeWorkflow} = this
@@ -49,6 +60,7 @@ class InfoStore{
             // let order = ['readout',...incompleteWorkflows]
             let order = ['readout','breakdown'] //indicator prompt if no indicator
             if(!indicator) order.push('prompt')
+            // else order.push('indicatorBtn')
             return order
 
         }
@@ -80,9 +92,14 @@ class InfoStore{
     @action completeWorkflow = (which, value) => {
 
         if(!this.queryOrder.includes(this.activeWorkflow)) this.queryOrder.push(this.activeWorkflow)
+        console.log('query order:', this.queryOrder.toJS())
+
         this.activeWorkflow = null
         this[which] = value
-        console.log('query order:', this.queryOrder.toJS())
+        if(which==='indicator'){
+            this.setYearIndex()
+        }
+        
     }
     
 }
