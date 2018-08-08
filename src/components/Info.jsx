@@ -34,9 +34,9 @@ class InfoStore{
             // else if(activeWorkflow === 'indicator') return ['countyBtn','raceBtn','indicatorBtn','indicatorWorkflow']
             // else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceBtn','raceWorkflow']
          
-            if(activeWorkflow === 'county') return ['indicatorBtn','countyWorkflow','raceBtn',]
-            else if(activeWorkflow === 'indicator') return ['indicatorWorkflow', 'countyBtn','raceBtn',]
-            else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceWorkflow']
+            if(activeWorkflow === 'county') return ['countyBtn','countyWorkflow','indicatorBtn',,'raceBtn',]
+            else if(activeWorkflow === 'indicator') return ['indicatorBtn','indicatorWorkflow', 'countyBtn','raceBtn',]
+            else if(activeWorkflow === 'race') return ['raceBtn','raceWorkflow','indicatorBtn','countyBtn',]
             
         }
         else if((indicator||county||race) && !activeWorkflow){
@@ -127,11 +127,10 @@ const manifest = {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    /*width: 450px;*/
     flex-shrink: 0;
     position: relative;
-    // border: 1px solid red;
     height: 100%;
+    padding: 30px 30px 0 30px;
 `
 
 

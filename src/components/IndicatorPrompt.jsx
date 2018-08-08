@@ -14,8 +14,13 @@ const Prompt = styled.div`
     width: 100%;
     /*border-top: 1px solid black;*/
     box-shadow: 0 -2px 5px rgba(0,0,0,0.25);
-    padding: 20px;
+    padding: 30px;
     flex-grow: 1;
+    h1{
+        margin: 0;
+        font-size: 24px;
+        font-weight: 400;
+    }
 `
 const Button = styled.div`
     background: black;
@@ -42,10 +47,10 @@ export default class IndicatorPrompt extends React.Component{
         const {county, indicator, race} = store
         return(
              <FlipMove
-                delay = {1000}
-                duration = {600}
+                delay = {700}
+                duration = {400}
                 appearAnimation = {{
-                    from: {transform: 'translateY(100%)', opacity: 0},
+                    from: {transform: 'translateY(40%)', opacity: 0},
                     to: {transform: 'translateY(0)', opacity: 1}
                 }}
             >

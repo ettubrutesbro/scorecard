@@ -12,7 +12,7 @@ const Btn = styled.div`
     padding: 15px 20px;
     margin-top: 15px;
     transition: ${props => props.mode==='button'? 'border-bottom-color .35s' : ''};
-    border-bottom-color: ${props => props.mode === 'active'? 'transparent' : 'black'};
+    border-color: ${props => props.mode === 'active'? 'transparent' : 'black'};
     transform-origin: 50% 0%; 
 `
 
@@ -25,7 +25,7 @@ export default class WorkflowButton extends React.Component{
         return(
             <Btn track = {track} mode = {mode} onClick = {()=>setWorkflow(track)}>
                 {mode === 'button' && btnlabel} 
-                {mode === 'active' && activelabel}
+                {mode === 'active' && 'Back'}
                 {mode === 'prompt' && 'See full list'}
             </Btn>
         )

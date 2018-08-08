@@ -48,7 +48,7 @@ import chroma from 'chroma-js'
                 // ref = {(container)=>this.containerSize(container)}
                 // ref = {(container)=>{this.updateDims(container.offsetWidth, container.offsetHeight)}}
                 className = {styles.wrapper}
-                style = {{border: '1px solid black', overflow: 'hidden'}}
+                style = {{overflow: 'hidden'}}
             >
                 
                 <svg 
@@ -58,7 +58,7 @@ import chroma from 'chroma-js'
                     style = {{
                         transition: 'transform .25s',
                         // transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
-                        border: '1px solid blue'
+                        // border: '1px solid blue'
                     }}
                 >
                     {React.Children.map(this.props.children, (child,i)=>{

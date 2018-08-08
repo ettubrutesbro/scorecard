@@ -71,38 +71,33 @@ export default class Readout extends React.Component{
         console.log(demopop[county])
         const popCount = county&&race? demopop[county][race]+'%?' : county? demopop[county].population : race? demopop.california[race]+'%' : ''
 
+        const ind = indicators[indicator]
+
         return(
             <ReadoutBlock
                 compact = {this.props.store.activeWorkflow}
             >
                 {!indicator && (county || race) && 
                     <React.Fragment>
-                    <b>{commaNumber(popCount)}</b> {who} 
-                    <Crumb active = {race}>
-                        {raceString}
-                    </Crumb> 
-                    live in 
-                    <Crumb active = {county}>
-                        {countyString}
-                    </Crumb>
+                    <b>{commaNumber(popCount)}</b> 
+                    {who} {raceString} live in {countyString}
                     </React.Fragment>
                 }
                 {indicator && 
                     <div style = {{position: 'relative'}}>
-                        <h1 ref = {(h1)=>{this.bigNumber = h1}}> 36% </h1>
+                        <h1 ref = {(h1)=>{this.bigNumber = h1}}>
+                        	{county && race && ind.counties[county][race][1]}
+                        	{county && !race && ind.counties[county].totals[1]}
+                        	{!county && race && ind.counties.california[race][1]}
+                        	{!county && !race && ind.counties.california.totals[1]}
+                        	%
+                        </h1>
                         <IndentedTitle
                             style = {{
                                 textIndent: this.bigNumberWidth+10 + 'px'
                             }}
                         > 
-                            of {who}                    
-                            <Crumb active = {race}>
-                                {raceString}
-                            </Crumb>
-                            {what} in 
-                            <Crumb active = {county}>
-                                {countyString}
-                            </Crumb>
+                            of {who} {raceString} {what} in {countyString}
                         </IndentedTitle>
 
                     </div >

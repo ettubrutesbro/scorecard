@@ -30,10 +30,10 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper>
             <FlipMove
-                delay = {350}
-                duration = {500}
+                delay = {250}
+                duration = {400}
                 appearAnimation = {{
-                    from: {transform: 'translateY(-100%)', opacity: 0},
+                    from: {transform: 'translateY(-50%)', opacity: 0},
                     to: {transform: 'translateY(0)', opacity: 1}    
                 }}
             >
