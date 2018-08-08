@@ -69,7 +69,7 @@ export default class Readout extends React.Component{
         const what = indicator? semanticTitles[indicator].what : ''
 
         console.log(demopop[county])
-        const popCount = county? demopop[county].population : race? demopop.california[race]+'%' : ''
+        const popCount = county&&race? demopop[county][race]+'%?' : county? demopop[county].population : race? demopop.california[race]+'%' : ''
 
         return(
             <ReadoutBlock

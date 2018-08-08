@@ -36,7 +36,10 @@ const SampleIndicator = styled.div`
 ` 
 
 export default class IndicatorPrompt extends React.Component{
+
     render(){
+        const {store} = this.props
+        const {county, indicator, race} = store
         return(
              <FlipMove
                 delay = {1000}
@@ -47,17 +50,17 @@ export default class IndicatorPrompt extends React.Component{
                 }}
             >
             <Prompt>
-                Pick an Indicator
+                <h1>Choose an indicator. </h1>
                 {Object.keys(indicators).map((ind)=>{
                     return <SampleIndicator
-
+                        onClick = {()=>store.completeWorkflow('indicator',ind)}
                     > 
                         {semanticTitles[ind].label} 
                     </SampleIndicator>    
                 })}
                 <Button
-                    onClick = {this.props.openList}
-                    > see list</Button>
+                    onClick = {()=>store.setWorkflow('indicator')}
+                    > see full indicator list</Button>
             </Prompt>
 
             </FlipMove>
