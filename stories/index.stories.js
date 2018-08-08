@@ -23,6 +23,7 @@ import indicators from '../src/data/indicators'
 // import Readout2 from '../src/components/core/Readout2'
 import Info from '../src/components/Info'
 
+import CAMap from '../src/components/core/InteractiveMap'
 import Toggle from '../src/components/Toggle'
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -44,31 +45,36 @@ storiesOf('scorecard', module)
 //   return <Scorecard />
 // })
 // .add('Readout2', ()=>{
-// 	const ind = select('indicator',['earlyPrenatalCare','notFoodInsecure',null])
-// 	const race = text('race','')
-// 	const location = select('location',['sanBernardino','kern','alameda','sanLuisObispo'])
-// 	return <Readout2 
-// 		race = {race}
-// 		location = {location}
-// 		indicator = {ind}
-// 	/>
+//  const ind = select('indicator',['earlyPrenatalCare','notFoodInsecure',null])
+//  const race = text('race','')
+//  const location = select('location',['sanBernardino','kern','alameda','sanLuisObispo'])
+//  return <Readout2 
+//      race = {race}
+//      location = {location}
+//      indicator = {ind}
+//  />
 // })
 .add('Toggle', ()=>{
-	return(
-		<Toggle
-			onClick = {action('hi')}
-			options = {[
-				{label: 'hellouoaeuaoeu'},
-				{label: 'goodbye'}
-			]}
-			selected = {1}
-		/>
-	)
+    return(
+        <Toggle
+            onClick = {action('hi')}
+            options = {[
+                {label: 'hellouoaeuaoeu'},
+                {label: 'goodbye'}
+            ]}
+            selected = {1}
+        />
+    )
 })
 .add('info', ()=>{
-	return(
-		<div style = {{height: '90vh'}}>
-			<Info />
-		</div>
-	)
+    return(
+        <div
+            style = {{display: 'flex'}}
+        >
+            <div style = {{height: '90vh'}}>
+                <Info />
+            </div>
+            <CAMap />
+        </div>
+    )
 })
