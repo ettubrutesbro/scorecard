@@ -2,23 +2,24 @@
 import React from 'react'
 import styled, {keyframes} from 'styled-components'
 
-// import {observable, action, computed} from 'mobx'
-// import {observer} from 'mobx-react'
+import {observable, action, computed} from 'mobx'
+import {observer} from 'mobx-react'
+import {findIndex} from 'lodash'
 
-// import FlipMove from 'react-flip-move'
+import FlipMove from 'react-flip-move'
+import Toggle from './Toggle'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 
-const scaleMount = keyframes`
+const fadeIn = keyframes`
 	from {opacity: 0;}
 	to {opacity: 1;}
 `
-
-const inverseScale = keyframes`
-	from { opacity: 1;}
-	to{ opacity: 0;} 
+const rightColMount = keyframes`
+	from {transform: scaleX(0.01);}
+	to {transform: scaleX(1);}
 `
 
 const Wkflw = styled.div`
@@ -28,41 +29,233 @@ const Wkflw = styled.div`
 	flex-grow: 1;
 	padding: 10px;
 `
+const Wrapper = styled.div`
+`
 const Content = styled.div`
-	background: black;
-	padding: 10px;
-	color: white;
+	position: absolute;
+	z-index: 2;
+	padding: 20px;
+	// width: 100%;
+	width: 200%;
+	height: 100%;	
+	// border: 1px solid red;
+	// background: white;
+	top: 0; left: 0;
 	opacity: 0;
-	animation: ${scaleMount} .5s forwards;
+	animation: ${fadeIn} .5s forwards;
 	animation-delay: .5s;
 	// visibility: ${props=>!props.mounting? 'hidden' : 'visible'};
 `
-const List = styled.ul`
+const RightColumn = styled.div`
+	position: absolute;
+	left: calc(100% - 0.5px); 
+	top: -2px;
+	width: 100%;
+	height: calc(100% + 3px);
+	border: 1px solid black;
+	border-left-color: white;
+	background: white;
+	transform-origin: 0% 50%;
+	transform: scaleX(0);
+	animation: ${rightColMount} .5s forwards;
+`
+const GridList = styled.ul`
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+
+	flex-wrap: wrap;
+	height: 100%;
+	justify-content: space-between;
+	flex-direction: column;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 `
-const Item = styled.li`
-	margin: 0;
+const GridItem = styled.li`
+	// margin: 1%;
+	padding: 0 10px;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	// justify-content: center;
+	&:hover{
+		background: #f3f3f5;
+	}
 `
-const IndicatorList = (props) => {
+const ColumnList = styled.ul`
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 15px;
+
+	// display: flex;
+	// flex-wrap: wrap;
+	// justify-content: space-between;
+	margin: 0;
+	padding: 0;
+`
+const ColumnItem = styled.li`
+	// width: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 15px 20px;
+	// margin: 10px;
+	list-style-type: none;
+	border: 1px solid #dedede;
+
+` 
+const IndicatorListHeader = styled.div`
+	width: 100%;
+	margin-bottom: 15px;
+`
+const IndLeft = styled.div``
+const Categories = styled.div`	
+	margin-top: 4px;
+	display: flex;
+	align-items: center;
+`
+const NoRace = styled.div`
+	color: #b1b1b1;
+	font-size: 13px;
+	margin-right: 8px;
+`
+const HealthTag = styled.div`
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: red;
+`
+const EduTag = styled.div`
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: blue;
+	margin-left: 5px;
+`
+const WelfTag = styled.div`
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: goldenrod;
+	margin-left: 5px;
+`
+const EarlTag = styled.div`
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: purple;
+	margin-left: 5px;
+`
+const IndRight = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	white-space: nowrap;
+	margin-left: 20px;
+`
+const Where = styled.div`
+	color: #b1b1b1;
+	margin-top: 4px;
+	font-size: 13px;
+`
+const Percentage = styled.div`
+	font-weight: 600;
+	letter-spacing: .05rem;
+`
+const indicatorFilterOptions = [
+	{label: 'All', value: 'all'},
+	{label: 'Health', value: 'health'},
+	{label: 'Education', value: 'education'},
+	{label: 'Welfare', value: 'welfare'},
+	{label: 'Early Childhood', value: 'earlyChildhood'},
+]
+@observer
+class IndicatorList extends React.Component{
+	@observable filter = 'all'
+	@action setFilter = (value) => this.filter = value
+	render(){
+		return(
+			<React.Fragment>
+			<IndicatorListHeader>
+				Filter by category: 
+				<Toggle
+					options = {indicatorFilterOptions}
+					onClick = {this.setFilter}
+					selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===this.filter})}
+				/>
+
+			</IndicatorListHeader>
+			<ColumnList>
+				<FlipMove
+					typeName = {null}
+					staggerDelayBy = {15}
+					enterAnimation = 'fade'
+					leaveAnimation = {null}
+				>
+					{Object.keys(indicators).filter((ind)=>{
+						const cats = indicators[ind].categories
+						return this.filter === 'all'? true : cats.includes(this.filter)
+					}).map((ind)=>{
+						const indicator = indicators[ind]
+						const cats = indicator.categories
+						return <ColumnItem
+							onClick = {()=>{this.props.clickedItem('indicator',ind)}}
+						> 
+							<IndLeft>
+								{semanticTitles[ind].label}
+								<Categories>
+									{!cats.includes('hasRace') && 
+										<NoRace> No race data </NoRace>
+									}
+									{cats.includes('health') && <HealthTag />}
+									{cats.includes('education') && <EduTag />}
+									{cats.includes('welfare') && <WelfTag />}
+									{cats.includes('early') && <EarlTag />}
+
+								</Categories>
+							</IndLeft>
+							<IndRight>
+								<Percentage>{indicator.counties.california.totals[indicator.counties.california.totals.length-1]}%</Percentage>
+								<Where>CA avg</Where>
+							</IndRight>
+						</ColumnItem>
+					})}
+				</FlipMove>
+			</ColumnList>
+			</React.Fragment>
+		)
+	}
+}
+
+const CountyList = (props) => {
 	return(
-		<List>
-			{Object.keys(indicators).map((ind)=>{
-				return <Item
-					onClick = {()=>{props.clickedItem('indicator',ind)}}
+		<GridList>
+			{counties.sort((a,b)=>{
+				if(a.id < b.id) return -1
+				else if (a.id > b.id) return 1
+				else return 0
+			}).map((county)=>{
+				return <GridItem
+					onClick = {()=>{props.clickedItem('county',county.id)}}
 				> 
-					{semanticTitles[ind].label} 
-				</Item>
-			})}
-		</List>
+					{county.label}
+				</GridItem>
+			})
+			}
+		</GridList>
 	)
 }
+
+const RaceList = (props) => {
+	return(
+		<div />
+	)
+}
+
 const workflowManifest = {
 	indicator: <IndicatorList />,
-	race: <div>'hewwo'</div>,
-	location: <div>'locazion'</div>,
+	race: <div> race </div>,
+	county: <CountyList />,
 }
 	
 
@@ -73,15 +266,20 @@ export default class Workflow extends React.Component{
 		console.log(workflowManifest[target])
 		return(
 			<Wkflw target = {target}>
-				<Content 
+				<Wrapper 
 					mounting = {store.activeWorkflow === target}
 					// onClick = {()=>store.completeWorkflow(target,'black')}
 				>
+					<Content>
 					{React.cloneElement(
 						workflowManifest[target],
 						{clickedItem: store.completeWorkflow}
 					)}
-				</Content>
+					</Content>
+					{(target === 'indicator' || target === 'county') &&
+						<RightColumn />
+					}
+				</Wrapper>
 			</Wkflw>
 		)
 	}

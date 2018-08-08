@@ -16,6 +16,7 @@ const ReadoutBlock = styled.div`
 	padding: 30px;
 	font-size: 24px;
 	position: relative;
+	flex-grow: 1;
 	b{
 		font-weight: 600;
 	}
@@ -58,13 +59,13 @@ export default class Readout extends React.Component{
 
 
 	render(){
-		let {location, indicator, race} = this.props.store
+		let {county, indicator, race} = this.props.store
 
-		location = location? find(counties,{id:location}).label : ''
+		county = county? find(counties,{id:county}).label : ''
 		race = race? race.charAt(0).toUpperCase() + race.substr(1) : ''
 
 		const raceString = race? `who are ${race}` : ''
-		const locationString = location? `${location} county.` : 'California.'
+		const countyString = county? `${county} county.` : 'California.'
 		const indicatorString = indicator? `${indicator}` : ''
 		const who = indicator? semanticTitles[indicator].who : 'children'
 		const what = indicator? semanticTitles[indicator].what : ''
@@ -73,15 +74,15 @@ export default class Readout extends React.Component{
 
 		return(
 			<ReadoutBlock>
-				{!indicator && (location || race) && 
+				{!indicator && (county || race) && 
 					<React.Fragment>
 					<b>1,000,000</b> {who} 
 					<Crumb active = {race}>
 						{raceString}
 					</Crumb> 
 					live in 
-					<Crumb active = {location}>
-						{locationString}
+					<Crumb active = {county}>
+						{countyString}
 					</Crumb>
 					</React.Fragment>
 				}
@@ -98,8 +99,8 @@ export default class Readout extends React.Component{
 								{raceString}
 							</Crumb>
 							{what} in 
-							<Crumb active = {location}>
-								{locationString}
+							<Crumb active = {county}>
+								{countyString}
 							</Crumb>
 						</IndentedTitle>
 

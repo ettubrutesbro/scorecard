@@ -30,7 +30,7 @@ const Accent = styled.div`
 	box-sizing: border-box;
 	border: 2px solid black;
 	transform-origin: 0% 100%;
-	// transition: transform .2s;
+	transition: transform .2s;
 	&::after{
 		// content: '';
 		position: absolute;
@@ -71,7 +71,7 @@ export default class Toggle extends React.Component {
 				return <Option 
 					key = {this.hash+'option'+i}
 					ref = {(option)=> this['option'+i] = option}
-					onClick = {option.onClick||this.props.onClick}
+					onClick = {()=>this.props.onClick(option.value)}
 					selected = {i===this.props.selected}
 				> 
 					{option.label}
@@ -80,7 +80,7 @@ export default class Toggle extends React.Component {
 			<Accent 
 				style = {{
 					transform: `translateX(${this.accentPosition}px) scaleX(${this.accentWidth/100})`,
-					transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
+					// transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
 				}}
 			/>
 		</ToggleBody>

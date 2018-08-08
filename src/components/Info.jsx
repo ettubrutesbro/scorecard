@@ -138,19 +138,21 @@ const Wrapper = styled.div`
 	height: 100%;
 `
 
+
 @observer
 export default class ProtoWorkflow extends React.Component{
 
 	render(){
-		const {activeWorkflow, location, race, indicator} = store
+		const {activeWorkflow, county, race, indicator} = store
 		return(
 			<Wrapper>
+
 				<FlipMove 
 					// disableAllAnimations
 					typeName = {null}
 					duration = {350}
 					staggerDurationBy = {!activeWorkflow? 50 : 0}
-					enterAnimation = {activeWorkflow || (!location&&!race&&!indicator)? {
+					enterAnimation = {activeWorkflow || (!county&&!race&&!indicator)? {
 						from: {transform: 'scaleY(0.2)', opacity: 0},
 						to: {transform: 'scaleY(1)', opacity: 1}
 					} : {
