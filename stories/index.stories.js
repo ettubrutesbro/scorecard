@@ -69,9 +69,9 @@ storiesOf('scorecard', module)
 .add('info', ()=>{
     return(
         <div
-            style = {{display: 'flex'}}
+            style = {{display: 'flex', overflow: 'hidden'}}
         >
-            <div style = {{height: '90vh'}}>
+            <div style = {{height: '90vh', minWidth: '50%'}}>
                 <Info />
             </div>
             <CAMap />

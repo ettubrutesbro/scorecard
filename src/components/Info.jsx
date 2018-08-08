@@ -30,9 +30,9 @@ class InfoStore{
         } 
         else if(!indicator && !county && !race && activeWorkflow){
             console.log('first workflow state')
-            if(activeWorkflow === 'county') return ['countyBtn','countyWorkflow','indicatorBtn','raceBtn']
-            else if(activeWorkflow === 'indicator') return ['indicatorBtn','indicatorWorkflow','countyBtn','raceBtn']
-            else if(activeWorkflow === 'race') return ['raceBtn','raceWorkflow','indicatorBtn','countyBtn']
+            if(activeWorkflow === 'county') return ['indicatorBtn','raceBtn','countyBtn','countyWorkflow',]
+            else if(activeWorkflow === 'indicator') return ['countyBtn','raceBtn','indicatorBtn','indicatorWorkflow']
+            else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceBtn','raceWorkflow']
         }
         else if((indicator||county||race) && !activeWorkflow){
             console.log('information state')
@@ -149,7 +149,7 @@ export default class ProtoWorkflow extends React.Component{
                         to: {transform: 'scaleY(1)', opacity: 1}
                     } : {
                         from: {
-                            transform: 'translateX(100%)',
+                            transform: 'translateX(100px)',
                             opacity: 0
                         },
                         to: {
