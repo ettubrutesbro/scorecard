@@ -30,9 +30,10 @@ const rightColUnmount = keyframes`
 const Wkflw = styled.div`
     border: 1px solid black;
     transform-origin: 50% 0%;
-    border-top-color: transparent;
+    /*border-top-color: transparent;*/
     flex-grow: 1;
     padding: 10px;
+    margin-top: 15px;
 `
 const Wrapper = styled.div`
 `
@@ -40,7 +41,7 @@ const Content = styled.div`
     position: absolute;
     z-index: 2;
     padding: 20px;
-    width: ${props => props.doublewide?'200%' : '100%'};
+    width: ${props => props.doublewide?'160%' : '100%'};
     height: 100%;   
     top: 0; left: 0;
     opacity: 0;
@@ -52,7 +53,7 @@ const RightColumn = styled.div`
     position: absolute;
     left: calc(100% - 0.5px); 
     top: -2px;
-    width: 100%;
+    width: 60%;
     height: calc(100% + 3px);
     border: 1px solid black;
     border-left-color: white;

@@ -30,9 +30,14 @@ class InfoStore{
         } 
         else if(!indicator && !county && !race && activeWorkflow){
             console.log('first workflow state')
-            if(activeWorkflow === 'county') return ['indicatorBtn','raceBtn','countyBtn','countyWorkflow',]
-            else if(activeWorkflow === 'indicator') return ['countyBtn','raceBtn','indicatorBtn','indicatorWorkflow']
-            else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceBtn','raceWorkflow']
+            // if(activeWorkflow === 'county') return ['indicatorBtn','raceBtn','countyBtn','countyWorkflow',]
+            // else if(activeWorkflow === 'indicator') return ['countyBtn','raceBtn','indicatorBtn','indicatorWorkflow']
+            // else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceBtn','raceWorkflow']
+         
+            if(activeWorkflow === 'county') return ['indicatorBtn','countyWorkflow','raceBtn',]
+            else if(activeWorkflow === 'indicator') return ['indicatorWorkflow', 'countyBtn','raceBtn',]
+            else if(activeWorkflow === 'race') return ['indicatorBtn','countyBtn','raceWorkflow']
+            
         }
         else if((indicator||county||race) && !activeWorkflow){
             console.log('information state')
