@@ -3,6 +3,8 @@ import styled, {keyframes} from 'styled-components'
 import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 
+import FlipMove from 'react-flip-move'
+
 import {shuffle} from 'lodash'
 
 import indicators from '../data/indicators'
@@ -36,10 +38,20 @@ const SampleIndicator = styled.div`
 export default class IndicatorPrompt extends React.Component{
     render(){
         return(
+             <FlipMove
+                delay = {1000}
+                duration = {600}
+                appearAnimation = {{
+                    from: {transform: 'translateY(100%)', opacity: 0},
+                    to: {transform: 'translateY(0)', opacity: 1}
+                }}
+            >
             <Prompt>
                 Pick an Indicator
                 {Object.keys(indicators).map((ind)=>{
-                    return <SampleIndicator> 
+                    return <SampleIndicator
+
+                    > 
                         {semanticTitles[ind].label} 
                     </SampleIndicator>    
                 })}
@@ -47,6 +59,8 @@ export default class IndicatorPrompt extends React.Component{
                     onClick = {this.props.openList}
                     > see list</Button>
             </Prompt>
+
+            </FlipMove>
         )
     }
 }
