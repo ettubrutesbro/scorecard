@@ -9,14 +9,14 @@ import {findDOMNode} from 'react-dom'
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
-import demopop from '../data/countyDemographicPopulation.json'
+import demopop from '../data/demographicsAndPopulation.json'
 
 const ReadoutBlock = styled.div`
 	transform-origin: 50% 0%;
 	padding: 30px;
 	font-size: 24px;
 	position: relative;
-	flex-grow: 1;
+	flex-grow: ${props=> props.compact? 0: 1};
 	b{
 		font-weight: 600;
 	}
@@ -73,7 +73,9 @@ export default class Readout extends React.Component{
 
 
 		return(
-			<ReadoutBlock>
+			<ReadoutBlock
+				compact = {this.props.store.activeWorkflow}
+			>
 				{!indicator && (county || race) && 
 					<React.Fragment>
 					<b>1,000,000</b> {who} 

@@ -1,3 +1,4 @@
 {
+	"california": {"black": 13, "asian": 5, "latinx": 21, "white": 30, "other": 19},
 	"sanLuisObispo": {"population": 2345381, "poverty": 42, "homeless": 132000, "immigrantFamilies": 875000, "black": 30, "white": 40, "latino": 20, "asian": 5, "other": 5}
 }

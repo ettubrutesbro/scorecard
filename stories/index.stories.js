@@ -11,16 +11,16 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 
-import App2 from '../src/App2'
-import Scorecard from '../src/Scorecard'
+// import App2 from '../src/App2'
+// import Scorecard from '../src/Scorecard'
 // import Map from '../src/Map'
 
 
 import counties from '../src/data/counties'
 import indicators from '../src/data/indicators'
 
-import Picker from '../src/components/core/Picker'
-import Readout2 from '../src/components/core/Readout2'
+// import Picker from '../src/components/core/Picker'
+// import Readout2 from '../src/components/core/Readout2'
 import Info from '../src/components/Info'
 
 import Toggle from '../src/components/Toggle'
@@ -34,25 +34,25 @@ import '../src/global.css'
 
 storiesOf('scorecard', module)
 
-.add('Picker', ()=>{
-  return <Picker />
-})
-.add('App2 (test app)', ()=>{
-  return <App2 />
-})
-.add('Scorecard (final)', ()=> {
-  return <Scorecard />
-})
-.add('Readout2', ()=>{
-	const ind = select('indicator',['earlyPrenatalCare','notFoodInsecure',null])
-	const race = text('race','')
-	const location = select('location',['sanBernardino','kern','alameda','sanLuisObispo'])
-	return <Readout2 
-		race = {race}
-		location = {location}
-		indicator = {ind}
-	/>
-})
+// .add('Picker', ()=>{
+//   return <Picker />
+// })
+// .add('App2 (test app)', ()=>{
+//   return <App2 />
+// })
+// .add('Scorecard (final)', ()=> {
+//   return <Scorecard />
+// })
+// .add('Readout2', ()=>{
+// 	const ind = select('indicator',['earlyPrenatalCare','notFoodInsecure',null])
+// 	const race = text('race','')
+// 	const location = select('location',['sanBernardino','kern','alameda','sanLuisObispo'])
+// 	return <Readout2 
+// 		race = {race}
+// 		location = {location}
+// 		indicator = {ind}
+// 	/>
+// })
 .add('Toggle', ()=>{
 	return(
 		<Toggle

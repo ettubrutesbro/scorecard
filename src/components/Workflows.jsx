@@ -12,6 +12,7 @@ import Toggle from './Toggle'
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
+import demopop from '../data/demographicsAndPopulation.json'
 
 const fadeIn = keyframes`
 	from {opacity: 0;}
@@ -35,11 +36,8 @@ const Content = styled.div`
 	position: absolute;
 	z-index: 2;
 	padding: 20px;
-	// width: 100%;
-	width: 200%;
+	width: ${props => props.doublewide?'200%' : '100%'};
 	height: 100%;	
-	// border: 1px solid red;
-	// background: white;
 	top: 0; left: 0;
 	opacity: 0;
 	animation: ${fadeIn} .5s forwards;
@@ -245,16 +243,53 @@ const CountyList = (props) => {
 		</GridList>
 	)
 }
+const RaceRow = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 15px 20px;
+	border: 1px solid #dedede;
+	h1{ 
+		margin: 0;
+		font-size: 16px;
+		font-weight: 400;
+	}
+	h3{ 
+		font-weight: 400;
+		font-size: 13px;
+		margin: 0;
+		margin-top: 4px;
+	}
+	&:not(:first-of-type){
+		margin-top: 15px;
+	}
+`
+const RowList = styled.div`
 
+`
+const races = ['asian','black','latinx','white','other']
 const RaceList = (props) => {
 	return(
-		<div />
+		<RowList>
+			{races.map((race)=>{
+				return <RaceRow
+					onClick = {()=>props.clickedItem('race',race)}
+				>
+					<h1>
+						{race.charAt(0).toUpperCase()+ race.substr(1)} children
+					</h1>
+					<h3> 
+						{demopop.california[race]}% of California's kids
+					</h3>
+				</RaceRow>
+			})}
+		</RowList>
 	)
 }
 
 const workflowManifest = {
 	indicator: <IndicatorList />,
-	race: <div> race </div>,
+	race: <RaceList />,
 	county: <CountyList />,
 }
 	
@@ -270,7 +305,9 @@ export default class Workflow extends React.Component{
 					mounting = {store.activeWorkflow === target}
 					// onClick = {()=>store.completeWorkflow(target,'black')}
 				>
-					<Content>
+					<Content
+						doublewide = {target==='county'|| target==='indicator'}
+					>
 					{React.cloneElement(
 						workflowManifest[target],
 						{clickedItem: store.completeWorkflow}

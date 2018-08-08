@@ -56,7 +56,8 @@ class InfoStore{
 			})
 			// let order = ['complete','readout','breakdown','context',...incompleteWorkflows]
 			// let order = ['complete','readout',...incompleteWorkflows]
-			let order = ['readout',...incompleteWorkflows]
+			// let order = ['readout',...incompleteWorkflows]
+			let order = ['readout'] //indicator prompt if no indicator
 			
 			return order
 
