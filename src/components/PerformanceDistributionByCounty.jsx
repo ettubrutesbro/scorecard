@@ -1,5 +1,6 @@
 
 import React from 'react'
+import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import indicators from '../data/indicators'
@@ -21,6 +22,7 @@ function indexOfClosest(nums, target) {
   return index;
 }
 
+@observer
 export default class PerformanceDistributionByCounty extends React.Component{
 
     generateDistribution = () => {
@@ -57,7 +59,7 @@ export default class PerformanceDistributionByCounty extends React.Component{
         }).sort((a,b)=>{
             return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         })
-
+        console.log(performance)
         const distribution = this.generateDistribution()
 
         return config==='top5'?(
@@ -73,20 +75,63 @@ export default class PerformanceDistributionByCounty extends React.Component{
 
             </div>
         ):(
-            <div>
-                distribution
-                {performance.filter((e,i)=>{return distribution.includes(i)}).map((item,i,arr)=>{
-                    const tied = i>0? item.rank===arr[i-1].rank : false
-                        //this won't work for anything more than a two-way tie.
-                        return <div>{tied && `T-${item.rank}`}{!tied && item.rank}.{item.county} : {item.value}</div>
-                })}
+            <GraphTable>
+                <Header>
+                    Distribution
+                </Header>
+                <InfoColumn>
+                    {performance.filter((e,i)=>{return distribution.includes(i)}).map((item,i,arr)=>{
+                        const tied = i>0? item.rank===arr[i-1].rank : false
+                            //this won't work for anything more than a two-way tie.
+                            return <div>{tied && `T-${item.rank}`}{!tied && item.rank}.{item.county} : {item.value}</div>
+                    })}
 
-            </div>
+                </InfoColumn>
+                <GraphColumn>
+                    {performance.filter((e,i)=>{return distribution.includes(i)}).map((item)=>{
+                        return <GraphRow 
+                            percentage = {item.value}
+                            height = {100/this.props.entries} 
+                        />
+                    })}
+
+                </GraphColumn>
+            </GraphTable>
 
 
         )
     }
 }
+
+const GraphTable = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    /*width: 100%;*/
+    max-width: 800px;
+    border: 1px solid red;
+`
+const Header = styled.div`
+    width: 100%;
+`
+const InfoColumn = styled.div`
+    flex-shrink: 0;
+    margin-right: 30px;
+`
+const GraphColumn = styled.div`
+    max-width: 400px;
+    /*width: 100%;*/
+    flex-grow: 1;
+    border: 1px solid black;
+`
+const GraphRow = styled.div`
+    width: 100%;
+    transform-origin: 0% 50%;
+    background: green;
+    transition: transform .25s;
+    height: ${props=> props.height}%;
+    transform: scaleX(${props=> props.percentage/100});
+    
+`
 
 PerformanceDistributionByCounty.defaultProps = {
     entries: 12,
