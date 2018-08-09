@@ -26,6 +26,9 @@ import Info from '../src/components/Info'
 import CAMap from '../src/components/core/InteractiveMap'
 import Toggle from '../src/components/Toggle'
 
+import NeoScorecard from '../src/NeoScorecard'
+import UniversalPicker from '../src/components/UniversalPicker'
+
 import { Button, Welcome } from '@storybook/react/demo';
 
 import '../src/global.css'
@@ -33,7 +36,7 @@ import '../src/global.css'
   addDecorator(withKnobs)
 // addDecorator(withViewport('iphone6'))
 
-storiesOf('scorecard', module)
+storiesOf('Scorecard Prototypes', module)
 
 // .add('Picker', ()=>{
 //   return <Picker />
@@ -54,19 +57,20 @@ storiesOf('scorecard', module)
 //      indicator = {ind}
 //  />
 // })
-.add('Toggle', ()=>{
-    return(
-        <Toggle
-            onClick = {action('hi')}
-            options = {[
-                {label: 'hellouoaeuaoeu'},
-                {label: 'goodbye'}
-            ]}
-            selected = {1}
-        />
-    )
-})
-.add('info', ()=>{
+// .add('Toggle', ()=>{
+//     return(
+//         <Toggle
+//             onClick = {action('hi')}
+//             options = {[
+//                 {label: 'hellouoaeuaoeu'},
+//                 {label: 'goodbye'}
+//             ]}
+//             selected = {1}
+//         />
+//     )
+// })
+
+.add('info (accordiony-column)', ()=>{
     return(
         <div
             style = {{display: 'flex', overflow: 'hidden'}}
@@ -76,5 +80,29 @@ storiesOf('scorecard', module)
             </div>
             <CAMap />
         </div>
+    )
+})
+
+.add('neoscorecard (noanim)',()=>{
+    return(
+        <NeoScorecard />
+    )
+})
+
+.add('UniversalPicker', ()=>{
+    return(
+        <UniversalPicker />
+    )
+})
+
+storiesOf('Maps',module)
+.add('CAMap', ()=>{
+    const selectCounty = select('select county: ', ['sanLuisObispo', 'alameda', 'siskiyou', 'napa', 'losAngeles'], 'sanLuisObispo')
+    return(
+    <div style = {{width: '100vw', height: '100vh'}}>
+        <CAMap 
+            selected = {selectCounty}
+        />
+    </div>
     )
 })

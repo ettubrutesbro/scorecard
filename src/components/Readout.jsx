@@ -64,16 +64,16 @@ export default class Readout extends React.Component{
 
 
         const raceString = race? `${race.charAt(0).toUpperCase() + race.substr(1)}` : ''
-        const countyString = county? `${find(counties,{id:county}).label} county.` : 'California.'
+        const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
 
-        console.log(demopop[county])
-        const popCount = county&&race? ((demopop[county][race] / 100) * demopop.county.population).toFixed(0)
+        const popCount = county&&race? ((demopop[county][race] / 100) * demopop[county].population).toFixed(0)
         : county? demopop[county].population 
         : race? ((demopop.california[race]/100) * demopop.california.population).toFixed(0) : ''
 
         const ind = indicators[indicator]
+        const actualYear = ind? ind.years[year] : ''
 
         return(
             <ReadoutBlock
@@ -99,7 +99,7 @@ export default class Readout extends React.Component{
                                 textIndent: this.bigNumberWidth+10 + 'px'
                             }}
                         > 
-                            of {who} {raceString} {what} in {countyString}
+                            of {raceString} {who}  {what} in {countyString} in {actualYear}.
                         </IndentedTitle>
 
                     </div >

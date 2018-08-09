@@ -5,10 +5,12 @@ import {counties} from '../assets/counties'
 
 const GridList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-
+    grid-template-columns: repeat(6, 1fr);
+    // grid-template-columns: repeat(auto-fill, 1fr);
+    // grid-template-columns: minmax(100px, 1fr);
+    grid-gap: 10px;
     flex-wrap: wrap;
-    height: 100%;
+    // height: 100%;
     justify-content: space-between;
     flex-direction: column;
     list-style-type: none;
@@ -17,11 +19,12 @@ const GridList = styled.ul`
 `
 const GridItem = styled.li`
     // margin: 1%;
-    padding: 0 10px;
+    padding: 10px 15px;
     cursor: pointer;
     display: flex;
     align-items: center;
     // justify-content: center;
+    white-space: nowrap;
     &:hover{
         background: #f3f3f5;
     }

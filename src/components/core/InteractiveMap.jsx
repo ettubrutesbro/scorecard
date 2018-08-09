@@ -23,21 +23,19 @@ import chroma from 'chroma-js'
         }
     }
 
-
-
     handleClick(id){
         //for handling tooltips and the like...
         const bbox = document.getElementById(id).getBBox()
-        const newX = (this.width/2 - (bbox.x + bbox.width/2))
-        const newY = (this.height / 2 - (bbox.y + bbox.height/2))
-        console.log(bbox.width, bbox.height)
+        const newX = (this.container.offsetWidth/2 - (bbox.x + bbox.width/2))
+        const newY = (this.container.offsetHeight / 2 - (bbox.y + bbox.height/2))
+        // console.log(, )
         console.log(newX, newY)
         this.updateCoords(newX, newY)
 
         //the 
         if(this.props.onSelect){ 
-            console.log('made county selection from map')
-            this.props.onSelect('location', id)
+            console.log('made county selection from map:',id)
+            this.props.onSelect('county', id)
         }
     }
 
@@ -47,8 +45,9 @@ import chroma from 'chroma-js'
             <div 
                 // ref = {(container)=>this.containerSize(container)}
                 // ref = {(container)=>{this.updateDims(container.offsetWidth, container.offsetHeight)}}
+                ref = {(container)=> this.container = container}
                 className = {styles.wrapper}
-                style = {{overflow: 'hidden'}}
+                style = {{border: '1px solid black', overflow: 'hidden'}}
             >
                 
                 <svg 
