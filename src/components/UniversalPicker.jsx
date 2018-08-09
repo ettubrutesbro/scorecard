@@ -119,6 +119,18 @@ export default class UniversalPicker extends React.Component{
 					}
 					
 				</Row>
+				{indicator && 
+				<Row>
+					Year: 
+					<Toggle
+						options = {indicators[indicator].years.map((yr,i)=>{
+							return {label: yr, value: i}
+						})}
+						selected = {year}
+						onClick = {(value)=>store.completeWorkflow('year',value)}
+					/>
+				</Row>
+				}
 
 			</Wrapper>	
 		)
