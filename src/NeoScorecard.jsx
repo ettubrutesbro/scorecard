@@ -135,6 +135,7 @@ export default class NeoScorecard extends React.Component{
 						onSelect = {store.completeWorkflow}
 						selected = {store.county}
 
+					    colorStops = { ['#CDFCFE','#135F80'] }
 						data = {dataForMap}
 						mode = {dataForMap?'heat':''}
 						// selected = "sanLuisObispo"

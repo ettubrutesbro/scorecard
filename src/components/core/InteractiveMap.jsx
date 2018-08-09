@@ -2,18 +2,40 @@ import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
-import styles from './InteractiveMap.module.css'
+import styled from 'styled-components'
+// import styles from './InteractiveMap.module.css'
 
 import {isEqual, map} from 'lodash'
 import chroma from 'chroma-js'
+
+const Wrapper = styled.div`
+    width: 100%; height: 100%;
+` 
+const TheMap = styled.svg`
+    width: 100%; height: 100%;
+`
+const CountyPolygon = styled.polygon`
+    cursor: pointer;
+    stroke: ${props => props.selected?'red': '#fff'};
+    stroke-alignment: ${props => props.selected? 'inner' : 'center'}
+    fill: ${props => props.selected?'red' : '#d7d7d7'};
+    stroke-width: ${props=>props.selected? 2 : 1.25};
+`
+const CountyPath = styled.path`
+    cursor: pointer;
+    stroke: ${props => props.selected?'red': '#fff'};
+    stroke-alignment: ${props => props.selected? 'inner' : 'center'}
+    fill: ${props => props.selected?'red' : '#d7d7d7'};
+    stroke-width: ${props=>props.selected? 2 : 1.25};
+`
 
 @observer class InteractiveMap extends React.Component{
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation)
+    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(3)
         @action updateColors = () =>{
-            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation)
+            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(3)
         }
 
     componentDidUpdate(prevProps){
@@ -25,12 +47,12 @@ import chroma from 'chroma-js'
 
     handleClick(id){
         //for handling tooltips and the like...
-        const bbox = document.getElementById(id).getBBox()
-        const newX = (this.container.offsetWidth/2 - (bbox.x + bbox.width/2))
-        const newY = (this.container.offsetHeight / 2 - (bbox.y + bbox.height/2))
+        // const bbox = document.getElementById(id).getBBox()
+        // const newX = (this.container.offsetWidth/2 - (bbox.x + bbox.width/2))
+        // const newY = (this.container.offsetHeight / 2 - (bbox.y + bbox.height/2))
         // console.log(, )
-        console.log(newX, newY)
-        this.updateCoords(newX, newY)
+        // console.log(newX, newY)
+        // this.updateCoords(newX, newY)
 
         //the 
         if(this.props.onSelect){ 
@@ -40,50 +62,46 @@ import chroma from 'chroma-js'
     }
 
     render(){
-        const {colorStops, quantile, ...domProps} = this.props
+        const {colorStops, quantile, selected, ...domProps} = this.props
+
+        let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
+            return a.props.id === selected? 1 : 0
+        })
+
         return(
-            <div 
-                // ref = {(container)=>this.containerSize(container)}
-                // ref = {(container)=>{this.updateDims(container.offsetWidth, container.offsetHeight)}}
+            <Wrapper 
                 ref = {(container)=> this.container = container}
-                className = {styles.wrapper}
                 style = {{border: '1px solid black', overflow: 'hidden'}}
             >
                 
-                <svg 
+                <TheMap 
                     viewBox = '0 0 504 576'
                     {...domProps}
-                    className = {styles.map} version="1.1"
+                    version="1.1"
                     style = {{
                         transition: 'transform .25s',
                         // transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
                         // border: '1px solid blue'
                     }}
                 >
-                    {React.Children.map(this.props.children, (child,i)=>{
+                    {reorderedChildren.map((child,i)=>{
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
-                        const id = child.props.id
-                        const { points, d, ...childProps } = child.props
-                        
+                        const {data} = this.props
+                        const { points, d, id, ...childProps } = child.props
+                        const fill = data[id] && data[id]!=='*'? this.colorScale(data[id]) : ''
+
                         return(
                             <InteractivePolygonOrPath
                                 {...childProps}
                                 points = {points}
                                 d = {d}
-                                style = {this.props.mode==='heat'? {
-                                    // this.data[child.props.id]
-                                    // backgroundColor: 'hsl()'
-                                    fill: this.colorScale(this.props.data[child.props.id]), // between 0 and 1
+                                style = {{
+                                    fill: fill, // between 0 and 1
                                     transitionDuration: 0.15+i*0.025+'s',
-                                    strokeWidth: this.props.selected? 1.25 : 2.5
-                                    // opacity: 0
-                                }: {strokeWidth: this.props.selected? 1.25 : 2.5}}
-                                className = {[
-                                    styles.county, 
-                                    this.props.selected===id? styles.selected : 
-                                    this.highlighted===id || this.props.hoveredCounty === id? styles.hovered: 
-                                    '' 
-                                ].join(' ')}
+                                    // strokeWidth: this.props.selected? 1.25 : 2.5
+                                }}
+                                selected = {selected===id}
+                                highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
                                 onClick = {()=> this.handleClick(id)}
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
                                 onMouseEnter = {()=> this.props.onHoverCounty(id)}
@@ -91,8 +109,8 @@ import chroma from 'chroma-js'
                             />
                         )
                     })}
-                </svg>
-            </div>
+                </TheMap>
+            </Wrapper>
         )
     }
 }
@@ -104,15 +122,14 @@ InteractiveMap.defaultProps = {
 }
 
 let SVGComponents = {
-    InteractivePolygon: (props) => <polygon {...props} />,
-    InteractivePath: (props) => <path {...props}  />
+    InteractivePolygon: (props) => <CountyPolygon {...props} />,
+    InteractivePath: (props) => <CountyPath {...props}  />
 }
 
 export default class CaliforniaCountyMap extends React.Component{
     render(){
         return(
             <React.Fragment>
-                {this.props.debug && <div className = {styles.debugMode}> {this.props.mode || 'mode = none'} </div>}
             <InteractiveMap
                 {...this.props}
             >
@@ -451,6 +468,7 @@ export default class CaliforniaCountyMap extends React.Component{
                     463.3,532.6 464.4,533 466.7,532.4 468.5,532.9 470.9,535.6 470.5,537.9 471.2,542.8 468.2,544.8 467.8,546 468.1,546.9 
                     467.5,546.9 467.5,547.4 466.6,547.4 466.7,548.1 466.1,548.1 466.2,548.7 464.7,548.8 464.7,549.3 460.6,548.5 459.7,548.8 
                     459.3,549.6 "/>
+
             </InteractiveMap>
             </React.Fragment>
         )
