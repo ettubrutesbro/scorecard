@@ -33,9 +33,9 @@ const CountyPath = styled.path`
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(3)
+    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
         @action updateColors = () =>{
-            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(3)
+            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
         }
 
     componentDidUpdate(prevProps){
@@ -89,7 +89,7 @@ const CountyPath = styled.path`
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = data[id] && data[id]!=='*'? this.colorScale(data[id]) : ''
+                        const fill = data[id]!=='' && data[id]!=='*'? this.colorScale(data[id]) : ''
 
                         return(
                             <InteractivePolygonOrPath
@@ -105,7 +105,7 @@ const CountyPath = styled.path`
                                 selected = {selected===id}
                                 highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
                                 onClick = {
-                                    indicator && (data[id]==='*' || !data[id]) ? ()=>console.log('county has no data')
+                                    indicator && (data[id]==='*' || data[id]==='') ? ()=>console.log('county has no data')
                                     : ()=> this.handleClick(id)
                                 }
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}

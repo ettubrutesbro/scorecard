@@ -67,6 +67,7 @@ export default class Readout extends React.Component{
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
+        const descriptor = indicator? semanticTitles[indicator].descriptor : ''
 
         const popCount = county&&race? ((demopop[county][race] / 100) * demopop[county].population).toFixed(0)
         : county? demopop[county].population 
@@ -99,7 +100,7 @@ export default class Readout extends React.Component{
                                 textIndent: this.bigNumberWidth+10 + 'px'
                             }}
                         > 
-                            of {raceString} {who}  {what} in {countyString} in {actualYear}.
+                            of {descriptor} {raceString} {who}  {what} in {countyString} in {actualYear}.
                         </IndentedTitle>
 
                     </div >

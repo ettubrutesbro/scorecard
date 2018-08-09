@@ -4,33 +4,36 @@ const semanticTitles = {
     // 'RegisteredToVote': ' of people are registered to vote..?'
 
     'earlyPrenatalCare': {
-        who: 'pregnant women',
-        what: 'get early prenatal care',
+        descriptor: 'pregnant',
+        who: 'women',
+
+        what: 'got early prenatal care',
         label: 'Pregnant women who get early prenatal care'
     },
     'notFoodInsecure': {
         who: 'children',
-        what: 'don\'t have to deal with food insecurity',
+        what: 'didn\'t have to deal with food insecurity',
         label: 'Children that don\'t face food insecurity'
     },
     'registeredToVote': {
-        who: 'people',
-        what: 'are registered to vote',
+        who: 'youths, ages 18-25,',
+        what: 'were registered to vote',
         label: 'People who\'re registered to vote'
     },
     'collegeCareerReady': {
         who: 'students',
-        what: 'are college or career ready',
+        what: 'were college or career ready',
         label: 'Students who are college or career ready'
     },
     'lowIncomeDental': {
-        who: 'Low-income children, ages 0-5',
-        what: 'have visited a dentist in the last year',
+        descriptor: 'Low-income',
+        who: 'children, ages 0-5,',
+        what: 'had visited a dentist within the last year',
         label: 'Children, ages 0-5, who are low-income and have visited a dentist in the last year'
     },
     'upToDateVaccinations': {
         who: 'Kindergarteners',
-        what: 'are up-to-date on their vaccines',
+        what: 'were up-to-date on their vaccines',
         label: 'Kindergarteners with up-to-date vaccines'
     }
 }
