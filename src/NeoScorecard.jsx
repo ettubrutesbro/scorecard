@@ -25,8 +25,6 @@ class AppStore{
     @observable year = null
     @observable activeWorkflow = null
 
-    @observable queryOrder = []
-
     @action setYearIndex = () => {
         const newYears = indicators[this.indicator].years
         if(!this.year && newYears.length>1) this.year = newYears.length-1
@@ -38,13 +36,13 @@ class AppStore{
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
     @action completeWorkflow = (which, value) => {
 
-        if(!this.queryOrder.includes(this.activeWorkflow)) this.queryOrder.push(this.activeWorkflow)
-        console.log('query order:', this.queryOrder.toJS())
-
         this.activeWorkflow = null
         this[which] = value
         if(which==='indicator'){
             this.setYearIndex()
+        }
+        if(which==='race' && this.indicator && this.county){
+            //if setting a race, with a county already selected and indicator
         }
         
     }
@@ -54,95 +52,95 @@ class AppStore{
 const store = new AppStore()
 
 const App = styled.div`
-	display: flex;
-	width: 100%;
-	height: 100%;
+    display: flex;
+    width: 100%;
+    height: 100%;
 `
 const Left = styled.div`
-	width: 50%;
-	height: 100%;
+    width: 50%;
+    height: 100%;
 `
 const Right = styled.div`
-	width: 50%;
-	height: 100%;
+    width: 50%;
+    height: 100%;
 `
 const Workflow = styled.div`
-	position: fixed;
-	width: 100%; height: 100%;
-	z-index: 13;
-	padding: 60px;
-	background: rgba(0,0,0,0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    position: fixed;
+    width: 100%; height: 100%;
+    z-index: 13;
+    padding: 60px;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `
 const WorkflowContent = styled.div`
-	padding: 60px;
-	background: rgba(255,255,255,.95);
-	max-width: 1280px;
+    padding: 60px;
+    background: rgba(255,255,255,.95);
+    max-width: 1280px;
 `
 const ExitWorkflow = styled.div`
-	position: absolute;
-	width: 30px;
-	height: 30px;
-	background: black;
-	top: 0;
-	right: 0;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: black;
+    top: 0;
+    right: 0;
 `
 @observer
 export default class NeoScorecard extends React.Component{
-	@observable hoveredCounty = null
-	@action onHoverCounty = (id) => {
-		if(id) this.hoveredCounty = camelLower(id)
-		else this.hoveredCounty = null
-	}
-	render(){
-		const {indicator, year, race} = store
-		const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
-			return county[race||'totals'][year]
-		}): ''
-		return(
-			<App>
-				{(store.activeWorkflow === 'indicator' || store.activeWorkflow === 'county') && 
-					<Workflow>
-						<WorkflowContent>
-						<ExitWorkflow onClick = {()=>store.setWorkflow(null)}/>
-						{store.activeWorkflow === 'indicator' &&
-							<IndicatorList store = {store} />
-						}
-						{store.activeWorkflow === 'county' &&
-							<CountyList store = {store} />
-						}
-						</WorkflowContent>
-					</Workflow>
-				}
-				<Left>
-					<UniversalPicker 
-						store = {store}
-						countySearchPlaceholder = {
-							this.hoveredCounty? find(counties, (c)=>{return c.id===this.hoveredCounty}).label 
-							: 'Search counties...'}
-					/>
-					<Readout store = {store}/>
-				</Left>
-				<Right>
-					<CAMap 
-						mode = "zoom"
-						store = {store}
-						onHoverCounty = {this.onHoverCounty}
-						hoveredCounty = {this.hoveredCounty}
-						onSelect = {store.completeWorkflow}
-						selected = {store.county}
+    @observable hoveredCounty = null
+    @action onHoverCounty = (id) => {
+        if(id) this.hoveredCounty = camelLower(id)
+        else this.hoveredCounty = null
+    }
+    render(){
+        const {indicator, year, race} = store
+        const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
+            return county[race||'totals'][year]
+        }): ''
+        return(
+            <App>
+                {(store.activeWorkflow === 'indicator' || store.activeWorkflow === 'county') && 
+                    <Workflow>
+                        <WorkflowContent>
+                        <ExitWorkflow onClick = {()=>store.setWorkflow(null)}/>
+                        {store.activeWorkflow === 'indicator' &&
+                            <IndicatorList store = {store} />
+                        }
+                        {store.activeWorkflow === 'county' &&
+                            <CountyList store = {store} />
+                        }
+                        </WorkflowContent>
+                    </Workflow>
+                }
+                <Left>
+                    <UniversalPicker 
+                        store = {store}
+                        countySearchPlaceholder = {
+                            this.hoveredCounty? find(counties, (c)=>{return c.id===this.hoveredCounty}).label 
+                            : 'Search counties...'}
+                    />
+                    <Readout store = {store}/>
+                </Left>
+                <Right>
+                    <CAMap 
+                        mode = "zoom"
+                        store = {store}
+                        onHoverCounty = {this.onHoverCounty}
+                        hoveredCounty = {this.hoveredCounty}
+                        onSelect = {store.completeWorkflow}
+                        selected = {store.county}
 
-					    colorStops = { ['#CDFCFE','#135F80'] }
-						data = {dataForMap}
-						mode = {dataForMap?'heat':''}
-						// selected = "sanLuisObispo"
-					/>
-				</Right>
-			</App>
+                        colorStops = { ['#CDFCFE','#135F80'] }
+                        data = {dataForMap}
+                        mode = {dataForMap?'heat':''}
+                        // selected = "sanLuisObispo"
+                    />
+                </Right>
+            </App>
 
 
-		)
-	}
+        )
+    }
 }
