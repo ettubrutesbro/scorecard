@@ -11,7 +11,7 @@ addDecorator(withKnobs)
 storiesOf('Breakdowns', module)
 .add('PerformanceDistributionByCounty (I, LI)', ()=>{
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
-    const county = select('county', ['sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], 'alameda')
+    const county = select('county', ['marin','fresno','tehama', 'sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], null)
     const year = select('year(index)', [0,1], 0)
     return(
         <PerformanceDistributionByCounty 
@@ -20,6 +20,7 @@ storiesOf('Breakdowns', module)
                 indicator: indicator,
                 county: county
             }}
+            entries = {county? 10 : 12}
         />
     )
 })
