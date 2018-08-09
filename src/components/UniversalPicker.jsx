@@ -56,13 +56,13 @@ export default class UniversalPicker extends React.Component{
         const flatCountyList = counties.map((county)=>{
             return county.label.toLowerCase()
         })
-        const raceOptions = [
+        const raceOptions = !indicator || (indicator&&indicators[indicator].categories.includes('hasRace'))? [
             {label: 'All', value: null},
             {label: 'Asian', value: 'asian', disabled: indicator&&county&&!indicators[indicator].counties[county].asian[year]},
             {label: 'Black', value: 'black', disabled: indicator&&county&&!indicators[indicator].counties[county].black[year]},
             {label: 'Latinx', value: 'latinx', disabled: indicator&&county&&!indicators[indicator].counties[county].latinx[year]},
             {label: 'White', value: 'white', disabled: indicator&&county&&!indicators[indicator].counties[county].white[year]}
-        ]
+        ]: ''
 
 
         return(
@@ -105,22 +105,17 @@ export default class UniversalPicker extends React.Component{
                         }
                     </Results>
                 }
+                {(!indicator || indicators[indicator].categories.includes('hasRace')) &&               
                 <Row>
                     Race: 
-                    {(!indicator || indicators[indicator].categories.includes('hasRace')) && 
-                        <Toggle 
-                            options = {raceOptions}
-                            onClick = {(value)=>store.completeWorkflow('race',value)}
-                            selected = {!race? 0 : findIndex(raceOptions, (o)=>{return o.value===race})}
-                        />
-                    }
-                    {indicator && !indicators[indicator].categories.includes('hasRace') &&
-                        'This indicator doesn\'t have race data'
-
-                    }
-                    
+                    <Toggle 
+                        options = {raceOptions}
+                        onClick = {(value)=>store.completeWorkflow('race',value)}
+                        selected = {!race? 0 : findIndex(raceOptions, (o)=>{return o.value===race})}
+                    />
                 </Row>
-                {indicator && 
+                }
+                {indicator && indicators[indicator].years.length > 1 && 
                 <Row>
                     Year: 
                     <Toggle
