@@ -62,7 +62,8 @@ const CountyPath = styled.path`
     }
 
     render(){
-        const {colorStops, quantile, selected, ...domProps} = this.props
+        const {store, colorStops, quantile, selected, ...domProps} = this.props
+        const {indicator} = store
 
         let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
             return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
@@ -103,7 +104,10 @@ const CountyPath = styled.path`
                                 }}
                                 selected = {selected===id}
                                 highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
-                                onClick = {()=> this.handleClick(id)}
+                                onClick = {
+                                    indicator && (data[id]==='*' || !data[id]) ? ()=>console.log('county has no data')
+                                    : ()=> this.handleClick(id)
+                                }
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
                                 onMouseEnter = {()=> this.props.onHoverCounty(id)}
                                 onMouseLeave = {()=> this.props.onHoverCounty()}
