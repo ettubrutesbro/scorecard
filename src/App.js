@@ -8,11 +8,27 @@ import styles from './App.module.css'
 
 import indicators from './data/indicators'
 
+import {mapKeys, mapValues} from 'lodash'
+
 import {camelLower} from './utilities/toLowerCase'
 
 import {counties} from'./assets/counties'
+import commaNumber from 'comma-number'
 // import CaliforniaCountyMap from './components/InteractiveMap'
 
+function formatDemographicJSON(file){
+  let demographicObject = {}
+  file.forEach((blob)=>{
+    let {Location, ...restOfKeyVals} = blob
+    restOfKeyVals.Population = commaNumber(restOfKeyVals.Population).replace(/\,/g,'')
+    const formattedKeyVals = mapKeys(restOfKeyVals,(value, key)=>{
+      return camelLower(key)
+    })
+    demographicObject[camelLower(Location)] = formattedKeyVals
+  })
+  console.log(demographicObject)
+  return demographicObject
+}
 
 
 function formatJSONForScorecard(file, hasRace, indicatorname, years, categories){
@@ -126,16 +142,20 @@ function IsJsonString(json)
       const isJSON = IsJsonString(this.input) 
       console.log(isJSON)
       if(isJSON){
-        const formattedInput = formatJSONForScorecard(
-          JSON.parse(this.input), 
-          this.flags.hasRace, 
-          this.indicatorName, 
-          this.flags.multiyear? [this.firstyear, this.latestyear] : [this.latestyear],
-          this.categories.toJS()
+        const formattedInput = formatDemographicJSON(
+          JSON.parse(this.input)
         )
-        console.log(formattedInput)
+        
+        // const formattedInput = formatJSONForScorecard(
+        //   JSON.parse(this.input), 
+        //   this.flags.hasRace, 
+        //   this.indicatorName, 
+        //   this.flags.multiyear? [this.firstyear, this.latestyear] : [this.latestyear],
+        //   this.categories.toJS()
+        // )
+        // console.log(formattedInput)
         this.output = JSON.stringify(formattedInput, null, 2)
-        // this.outputheight = this.outputregion.scrollHeight
+        this.outputheight = this.outputregion.scrollHeight
         // console.log(this.outputheight)
       }
       else {
