@@ -101,7 +101,6 @@ export default class NeoScorecard extends React.Component{
 		const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
 			return county[race||'totals'][year]
 		}): ''
-		console.log(dataForMap)
 		return(
 			<App>
 				{(store.activeWorkflow === 'indicator' || store.activeWorkflow === 'county') && 

@@ -16,7 +16,7 @@ const TheMap = styled.svg`
 `
 const CountyPolygon = styled.polygon`
     cursor: pointer;
-    stroke: ${props => props.selected?'red': '#fff'};
+    stroke: ${props => props.selected?'red': props.highlighted?'pink': '#fff'};
     stroke-alignment: ${props => props.selected? 'inner' : 'center'}
     fill: ${props => props.selected?'red' : '#d7d7d7'};
     stroke-width: ${props=>props.selected? 2 : 1.25};
@@ -65,7 +65,7 @@ const CountyPath = styled.path`
         const {colorStops, quantile, selected, ...domProps} = this.props
 
         let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
-            return a.props.id === selected? 1 : 0
+            return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
         })
 
         return(
@@ -97,7 +97,7 @@ const CountyPath = styled.path`
                                 d = {d}
                                 style = {{
                                     fill: fill, // between 0 and 1
-                                    transitionDuration: 0.15+i*0.025+'s',
+                                    transitionDuration: data? 0.15+i*0.025+'s' : '0s',
                                     // strokeWidth: this.props.selected? 1.25 : 2.5
                                 }}
                                 selected = {selected===id}
