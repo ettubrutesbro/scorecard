@@ -6,10 +6,26 @@ import indicators from '../data/indicators'
 
 const config = 'distribution' //top5
 
+function indexOfClosest(nums, target) {
+  let closest = 1000;
+  let index = 0;
+
+  nums.forEach((num, i) => {
+    let dist = Math.abs(target - num);
+    if (dist < closest) {
+      index = i;
+      closest = dist;
+    }
+  });
+
+  return index;
+}
+
 export default class PerformanceDistributionByCounty extends React.Component{
 
     generateDistribution = () => {
-        const countyCount = Object.keys(indicators[this.props.store.indicator].counties).length - 1
+        const {county, indicator, year} = this.props.store
+        const countyCount = Object.keys(indicators[indicator].counties).length - 1
         const unit = parseInt((countyCount / (this.props.entries-1)).toFixed(0))
         const offset = parseInt((Math.abs(((countyCount-1) - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
@@ -17,14 +33,16 @@ export default class PerformanceDistributionByCounty extends React.Component{
         for(let i = 1; i<this.props.entries-1; i++){
             distribution.push((i*unit)+offset)
         }
-        distribution.splice(0,0,0)
+        distribution.unshift(0)
         distribution.push(countyCount-2)
-        // console.log(distribution)
+        if(county){
+            const mustInclude = indicators[indicator].counties[county].ranks[year] - 1
+            const replaceIndex = indexOfClosest(distribution, mustInclude)
+            distribution[replaceIndex] = mustInclude
+        }
         return distribution
-    }
 
-    componentDidMount(){
-        this.generateDistribution()
+
     }
 
     render(){
@@ -39,7 +57,6 @@ export default class PerformanceDistributionByCounty extends React.Component{
         }).sort((a,b)=>{
             return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         })
-        console.log(performance)
 
         const distribution = this.generateDistribution()
 
@@ -72,5 +89,6 @@ export default class PerformanceDistributionByCounty extends React.Component{
 }
 
 PerformanceDistributionByCounty.defaultProps = {
-    entries: 10 
+    entries: 12,
+    // mustInclude: 5, 
 }
