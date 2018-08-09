@@ -8,6 +8,7 @@ import commaNumber from 'comma-number'
 
 import IndicatorBrokenDownByRaces from './IndicatorBrokenDownByRaces'
 import PerformanceDistributionByCounty from './PerformanceDistributionByCounty'
+import DemoDataTable from './DemoDataTable'
 
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
@@ -32,14 +33,7 @@ export default class Breakdown extends React.Component{
         const {indicator, county, race} = store
         return(
             <Wrapper>
-            <FlipMove
-                delay = {250}
-                duration = {400}
-                appearAnimation = {{
-                    from: {transform: 'translateY(-50%)', opacity: 0},
-                    to: {transform: 'translateY(0)', opacity: 1}    
-                }}
-            >
+
                 <BreakdownBox>
                     {indicator && !county && !race && 
                         // 'county performance distribution and indicator by race'
@@ -63,12 +57,12 @@ export default class Breakdown extends React.Component{
                             demo = {demopop[county]}
                         />
 
-                        <DemoDataTable demo = {demopop[county]} />
+                        <DemoDataTable store = {store} />
                         </React.Fragment>
                     }
                     {!indicator && !county && race && 'counties with the most children of this race (number not percent)'}
                 </BreakdownBox>
-            </FlipMove>
+
            
 
             </Wrapper>
@@ -110,31 +104,3 @@ const RowTable = styled.div`
         margin-left: 30px;
     }   
 `
-const DemoRow = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
-const DemoLabel = styled.div`
-`
-const DemoValue = styled.div`
-    margin-left: 15px;
-` 
-const DemoDataTable = (props) => {
-    return(
-        <RowTable>
-            <DemoRow> 
-                <DemoLabel>in Immigrant Families: </DemoLabel>
-                <DemoValue> {commaNumber(props.demo.immigrantFamilies)} </DemoValue>
-            </DemoRow>
-            <DemoRow> 
-                <DemoLabel>in Poverty: </DemoLabel>
-                <DemoValue> {props.demo.poverty}% </DemoValue>
-            </DemoRow>
-            <DemoRow> 
-                <DemoLabel>who are Homeless:</DemoLabel>
-                <DemoValue> {commaNumber(props.demo.homeless)} </DemoValue>
-            </DemoRow>
-        </RowTable>
-    )
-}

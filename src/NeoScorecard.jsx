@@ -8,6 +8,7 @@ import {find, mapValues} from 'lodash'
 
 import CAMap from './components/core/InteractiveMap'
 import Readout from './components/Readout'
+import Breakdown from './components/Breakdown'
 import UniversalPicker from './components/UniversalPicker'
 
 import IndicatorList from './components/IndicatorList'
@@ -126,6 +127,7 @@ export default class NeoScorecard extends React.Component{
                             : 'Search counties...'}
                     />
                     <Readout store = {store}/>
+                    <Breakdown store = {store}/>
                 </Left>
                 <Right>
                     <CAMap 

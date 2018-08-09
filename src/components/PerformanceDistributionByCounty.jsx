@@ -4,7 +4,29 @@ import styled from 'styled-components'
 
 import indicators from '../data/indicators'
 
+const config = 'distribution' //top5
+
 export default class PerformanceDistributionByCounty extends React.Component{
+
+    generateDistribution = () => {
+        const countyCount = Object.keys(indicators[this.props.store.indicator].counties).length - 1
+        const unit = parseInt((countyCount / (this.props.entries-1)).toFixed(0))
+        const offset = parseInt((Math.abs(((countyCount-1) - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
+            //-1 for california...
+        let distribution = []
+        for(let i = 1; i<this.props.entries-1; i++){
+            distribution.push((i*unit)+offset)
+        }
+        distribution.splice(0,0,0)
+        distribution.push(countyCount-2)
+        // console.log(distribution)
+        return distribution
+    }
+
+    componentDidMount(){
+        this.generateDistribution()
+    }
+
     render(){
         const {county, indicator, year} = this.props.store
         //map through indicator.counties, looking at totals[year] or race[year]
@@ -18,7 +40,10 @@ export default class PerformanceDistributionByCounty extends React.Component{
             return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         })
         console.log(performance)
-        return(
+
+        const distribution = this.generateDistribution()
+
+        return config==='top5'?(
             <div>
                 top 5 counties for {indicator} {indicators[indicator].years[year]}
                 {
@@ -30,6 +55,22 @@ export default class PerformanceDistributionByCounty extends React.Component{
                 }
 
             </div>
+        ):(
+            <div>
+                distribution
+                {performance.filter((e,i)=>{return distribution.includes(i)}).map((item,i,arr)=>{
+                    const tied = i>0? item.rank===arr[i-1].rank : false
+                        //this won't work for anything more than a two-way tie.
+                        return <div>{tied && `T-${item.rank}`}{!tied && item.rank}.{item.county} : {item.value}</div>
+                })}
+
+            </div>
+
+
         )
     }
+}
+
+PerformanceDistributionByCounty.defaultProps = {
+    entries: 10 
 }
