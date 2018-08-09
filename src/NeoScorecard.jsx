@@ -41,8 +41,12 @@ class AppStore{
         if(which==='indicator'){
             this.setYearIndex()
         }
-        if(which==='race' && this.indicator && this.county){
-            //if setting a race, with a county already selected and indicator
+        if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
+            //if race/indicator/county selected -> no race data, unset race
+            // console.log('race not supported after selection, unsetting')
+            // this.race = null
+
+            //the result of this code is that it just looks unresponsive - lets grey the options in UniversalPicker
         }
         
     }
