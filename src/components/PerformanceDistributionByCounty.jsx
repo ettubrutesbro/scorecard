@@ -56,11 +56,11 @@ export default class PerformanceDistributionByCounty extends React.Component{
         const countyCount = validCounties.length
         console.log(countyCount, 'counties are valid with this query')
         const unit = parseInt((countyCount / this.props.entries).toFixed(0))
-        // const offset = parseInt((Math.abs((countyCount - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
+        const offset = parseInt((Math.abs((countyCount - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
         let distribution = []
         for(let i = 1; i<this.props.entries-1; i++){
-            distribution.push((i*unit))
+            distribution.push((i*unit+offset))
         }
         distribution.unshift(0)
         distribution.push(countyCount-1)
@@ -84,6 +84,7 @@ export default class PerformanceDistributionByCounty extends React.Component{
                 
             let replaceIndex = indexOfClosest(distribution, mustInclude)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
+            if(replaceIndex===this.props.entries-1 && mustInclude !==this.props.entries-1) replaceIndex = this.props.entries-2
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
         }
