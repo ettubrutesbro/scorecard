@@ -38,32 +38,57 @@ export default class PerformanceDistributionByCounty extends React.Component{
     @observable selectedIndex = null
 
     @action generateDistribution = () => {
-        const {county, indicator, year} = this.props.store
+        const {county, indicator, year, race} = this.props.store
 
         const ind = indicators[indicator]
 
-        const countiesWithRanks = Object.keys(ind.counties).filter((county)=>{
-            const rank = ind.counties[county].ranks[year]
-            return rank && typeof rank === 'number'
+        const validCounties = Object.keys(ind.counties).filter((cty)=>{
+            if(!race){
+                const rank = ind.counties[cty].ranks[year]
+                 return cty!=='california' && rank && typeof rank === 'number'
+            }
+            else{
+                const value = ind.counties[cty][race][year]
+                return cty!=='california' && value && typeof value == 'number'   
+            }
         })
 
-        const countyCount = countiesWithRanks.length
-        const unit = parseInt((countyCount / (this.props.entries-1)).toFixed(0))
-        const offset = parseInt((Math.abs(((countyCount-1) - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
+        const countyCount = validCounties.length
+        console.log(countyCount, 'counties are valid with this query')
+        const unit = parseInt((countyCount / this.props.entries).toFixed(0))
+        // const offset = parseInt((Math.abs((countyCount - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
         let distribution = []
         for(let i = 1; i<this.props.entries-1; i++){
-            distribution.push((i*unit)+offset)
+            distribution.push((i*unit))
         }
         distribution.unshift(0)
         distribution.push(countyCount-1)
         if(county){
-            const mustInclude = ind.counties[county].ranks[year] - 1
+            let mustInclude = ind.counties[county].ranks[year] - 1
+                //to find the equivalent in race, we need to find its place in the entire pecking order
+            if(race){
+                const valueSortedCounties = Object.keys(ind.counties).map((cty)=>{
+                    return {county: cty, value: ind.counties[cty][race][year]}
+                }).filter((item)=>{
+                    return item.county!=='california' && item.value!=='' && item.value !== '*'
+                })
+                .sort((a,b)=>{
+                     return a.value > b.value? -1 : a.value < b.value? 1 : 0
+                })
+                console.log(county)
+                mustInclude = findIndex(valueSortedCounties, (item)=>{return item.county===county})
+                // console.log(valueSortedCounties)
+                console.log('race: mustinclude is', mustInclude)
+            }
+                
             let replaceIndex = indexOfClosest(distribution, mustInclude)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
         }
+        console.log('distribution')
+        console.log(distribution)
         return distribution
 
 
@@ -79,20 +104,30 @@ export default class PerformanceDistributionByCounty extends React.Component{
     }
 
     render(){
-        const {county, indicator, year} = this.props.store
+        const {county, indicator, year, race} = this.props.store
         const ind = indicators[indicator]
         //all counties' performance in this indicator 
         let performance = Object.keys(ind.counties).map((cty)=>{
             const rank = ind.counties[cty].ranks[year]
-            const value = ind.counties[cty].totals[year]
-            return {county: cty, rank: rank, value: value}
-        }).filter((item)=>{
-            return !item.rank? false : typeof item.rank !== 'number'? false : true
-        }).sort((a,b)=>{
-            return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
+            const value = ind.counties[cty][race?race:'totals'][year]
+            return {county: cty, rank: !race?rank:'', value: value}
         })
-        console.log(ind.counties)
-
+        if(!race){
+            performance = performance.filter((item)=>{
+                return !item.rank? false : typeof item.rank !== 'number'? false : true
+            }).sort((a,b)=>{
+                return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
+            })
+        }
+        else{
+            performance = performance.filter((item)=>{
+                return item.county!== 'california' &&item.value !== '' && item.value !== '*'
+            }).sort((a,b)=>{
+                return a.value > b.value? -1 : a.value < b.value? 1 : 0
+            }).map((item,i)=>{
+                return {...item, rank: i+1}
+            })
+        }
         //if a county is selected, insert item at selectedIndex+1
         if(county){
 //             const insertIndex = findIndex(performance, (item)=>{return item.county===county})
@@ -110,7 +145,7 @@ export default class PerformanceDistributionByCounty extends React.Component{
                 ref = {(graph)=>{this.graph=graph}}
             >
                 <Header>
-                    Distribution
+                    County ranks, all races
                 </Header>
                 <FlipMove
                     duration = {250}
@@ -125,7 +160,6 @@ export default class PerformanceDistributionByCounty extends React.Component{
                     .map((item,i,arr)=>{
                         const tied = i>0? item.rank===arr[i-1].rank : false
                         const filler = item.county==='filler'
-                        console.log(item.county)
                             //this won't work for anything more than a two-way tie.
                             return filler?(
                                 <FillerRow 
@@ -187,8 +221,8 @@ export default class PerformanceDistributionByCounty extends React.Component{
                     </FlipMove>
                 
                     <AverageLine 
-                        percentage = {ind.counties.california.totals[year]}
-                        offset = {(ind.counties.california.totals[year]/100)*(this.width-labelWidth)}
+                        percentage = {ind.counties.california[race||'totals'][year]}
+                        offset = {(ind.counties.california[race||'totals'][year]/100)*(this.width-labelWidth)}
                     />
 
 

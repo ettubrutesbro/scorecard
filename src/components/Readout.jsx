@@ -63,7 +63,7 @@ export default class Readout extends React.Component{
         const {county, indicator, race, year} = this.props.store
 
 
-        const raceString = race? `${race.charAt(0).toUpperCase() + race.substr(1)}` : ''
+        const raceString = race? `${race!=='white'? race.charAt(0).toUpperCase() + race.substr(1):race}` : ''
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
@@ -83,7 +83,7 @@ export default class Readout extends React.Component{
                 {!indicator && (county || race) && 
                     <React.Fragment>
                     <b>{commaNumber(popCount)} </b> 
-                    {raceString} {who} live in {countyString}
+                    {raceString} {who} live in {countyString}.
                     </React.Fragment>
                 }
                 {indicator && 

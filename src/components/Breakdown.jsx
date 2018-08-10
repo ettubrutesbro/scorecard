@@ -35,7 +35,7 @@ export default class Breakdown extends React.Component{
             <Wrapper>
 
                 <BreakdownBox>
-                    {indicator && !county && !race && 
+                    {indicator && 
                         // 'county performance distribution and indicator by race'
                         <div>
                             <PerformanceDistributionByCounty 
