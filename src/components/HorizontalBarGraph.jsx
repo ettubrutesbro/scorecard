@@ -79,7 +79,6 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     /*width: 100%;*/
     max-width: 800px;
-    border: 1px solid red;
 `
 const Header = styled.div`
     width: 100%;

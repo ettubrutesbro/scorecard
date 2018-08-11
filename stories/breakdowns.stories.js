@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components'
 
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
@@ -9,6 +10,13 @@ import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation
 
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
 
+const Note = styled.h3`
+    display: inline-flex;
+    background: #FFF8D5;
+    padding: 10px 20px;
+    margin: 30px 0 10px 0;
+    font-weight: 400;
+`
 
 addDecorator(withKnobs)
 
@@ -33,13 +41,24 @@ storiesOf('Breakdowns', module)
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county',[null, 'sanLuisObispo', 'alameda'], null)
     return(
-        <IndicatorByRaces 
-            store = {{
-                year: 0,
-                indicator: indicator,
-                county: county
-            }}    
-        />
+        <div>
+            <Note></Note>
+            <IndicatorByRaces 
+                store = {{
+                    year: 0,
+                    indicator: indicator,
+                    county: county
+                }}    
+            />
+            <Note>sometimes an indicator at county level doesnt have race data</Note>
+            <IndicatorByRaces 
+                store = {{
+                    year: 0,
+                    indicator: 'earlyPrenatalCare',
+                    county: 'mono'
+                }}    
+            />
+        </div>
     )
 })
 .add('CountiesByRace',()=>{
