@@ -6,6 +6,8 @@ import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 import PerformanceDistributionByCounty from '../src/components/PerformanceDistributionByCounty'
 import IndicatorBrokenDownByRaces from '../src/components/IndicatorBrokenDownByRaces'
 
+import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
+
 addDecorator(withKnobs)
 
 storiesOf('Breakdowns', module)
@@ -14,13 +16,12 @@ storiesOf('Breakdowns', module)
     const county = select('county', ['marin','fresno','tehama', 'sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], null)
     const year = select('year(index)', [0,1], 0)
     return(
-        <PerformanceDistributionByCounty 
+        <PerformanceDistributionByCounty
             store = {{
                 year: year,
                 indicator: indicator,
                 county: county
             }}
-            entries = {county? 10 : 12}
         />
     )
 })
@@ -34,6 +35,20 @@ storiesOf('Breakdowns', module)
                 indicator: indicator,
                 county: county
             }}    
+        />
+    )
+})
+
+.add('HorizontalBarGraph', ()=>{
+    return(
+        <HorizontalBarGraph 
+            labelWidth = {100}
+            bars = {[
+                {label: 'hi', value: 100},    
+                {label: 'oeu', value: 50},    
+                {label: '.py', value: 20},    
+                {label: 'ytnoh', value: 10},    
+            ]}
         />
     )
 })

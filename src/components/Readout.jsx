@@ -31,7 +31,6 @@ const ReadoutBlock = styled.div`
     }
 `
 const IndentedTitle = styled.div`
-    max-width: 400px;
     line-height: 36px;
     padding-top: 18px;
 `
