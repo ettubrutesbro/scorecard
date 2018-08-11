@@ -8,7 +8,10 @@ import commaNumber from 'comma-number'
 
 import IndicatorByRaces from './IndicatorByRaces'
 import IndicatorByCounties from './IndicatorByCounties'
+import CountiesByRacePopulation from './CountiesByRacePopulation'
+
 import DemoDataTable from './DemoDataTable'
+
 
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
@@ -35,19 +38,16 @@ export default class Breakdown extends React.Component{
             <Wrapper>
 
                 <BreakdownBox>
-                    {indicator && 
+                    {indicator && !race &&  
                         // 'county performance distribution and indicator by race'
-                        <div>
-                            <IndicatorByCounties 
-                                store = {store}
-                            />
-                            {indicators[indicator].categories.includes('hasRace') &&
-                                <IndicatorByRaces
-                                    store = {store}
-                                />
-                            }
-                        </div>
-
+                        <IndicatorByCounties 
+                            store = {store}
+                        />  
+                    }
+                    {indicator && !race && indicators[indicator].categories.includes('hasRace') &&
+                        <IndicatorByRaces
+                            store = {store}
+                        />
                     }
                     {!indicator && county && !race &&
                          // 'population race % breakdown and county demographic data'
@@ -60,7 +60,11 @@ export default class Breakdown extends React.Component{
                         <DemoDataTable store = {store} />
                         </React.Fragment>
                     }
-                    {!indicator && !county && race && 'counties with the most children of this race (number not percent)'}
+                    {!county && race &&
+                        <CountiesByRacePopulation 
+                            store = {store}
+                        />
+                    }
                 </BreakdownBox>
 
            
