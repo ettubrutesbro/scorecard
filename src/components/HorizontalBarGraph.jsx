@@ -38,16 +38,26 @@ export default class HorizontalBarGraph extends React.Component{
                     leaveAnimation = {null}
                 >
                     {this.props.bars.map((item,i,bars)=>{
+                        const invalidValue = item.value !==0 && (!item.value || item.value==='*')
+
                         return(
                             <Row key = {item.county}>
-                                <Label labelWidth = {this.props.labelWidth} >
+                                <Label 
+                                    labelWidth = {this.props.labelWidth} 
+                                    invalid = {invalidValue}
+                                >
                                     {item.label}
                                 </Label>
+                                {!invalidValue &&
                                 <Bar
                                     selected = {i === this.props.selected}
                                     percentage = {item.value}
                                     height = {100/bars.length} 
                                 />
+                                }
+                                {invalidValue && 
+                                    <Invalid> N/A </Invalid>
+                                }
                             </Row>
                         )
                     })}
@@ -84,6 +94,10 @@ const Label = styled.div`
     flex-shrink: 0;
     justify-content: flex-end;
     padding-right: 10px;
+    color: ${props => props.invalid? "#898989" : "black"};
+`
+const Invalid = styled.span`
+    color: #898989;
 `
 const Rank = styled.span`
     margin-right: 5px;

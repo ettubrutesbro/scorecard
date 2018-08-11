@@ -15,9 +15,11 @@ export default class IndicatorByRaces extends React.Component{
         const {indicator, year, county} = this.props.store
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
         const indicatorPerformanceByRace = races.map((race)=>{
+            // const value = !ind[race][year] || ind[race][year]==='*'? 0 : ind[race][year]
             return {
                 label: race,
-                value: ind[race][year] 
+                // value: value
+                value: ind[race][year]
             }
         })
         // console.log(indicatorPerformanceByRace)
