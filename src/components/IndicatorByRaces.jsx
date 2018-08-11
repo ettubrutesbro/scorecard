@@ -20,7 +20,7 @@ export default class IndicatorByRaces extends React.Component{
                 value: ind[race][year] 
             }
         })
-        console.log(indicatorPerformanceByRace)
+        // console.log(indicatorPerformanceByRace)
         return(
             <div>
                 

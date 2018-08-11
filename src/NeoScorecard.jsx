@@ -18,6 +18,7 @@ import {camelLower} from './utilities/toLowerCase'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
+import demopop from './data/demographicsAndPopulation'
 
 class AppStore{
     @observable indicator = null
@@ -37,10 +38,33 @@ class AppStore{
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
     @action completeWorkflow = (which, value) => {
 
-        if(which==='indicator'){
-            if(!indicators[value].categories.includes('hasRace') && this.race) this.race = null
-            
+        if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')) this.race = null
+        else if(which==='indicator' && this.county){
+            const val = indicators[value].counties[this.county][this.race||'totals'][this.year]
+            this.county = null
         }
+        else if(which==='county' && this.indicator){
+            const val = indicators[this.indicator].counties[value][this.race||'totals'][this.year]
+            if(this.race && (!val || val==='*')){ 
+                const holdOnToRace = this.race
+                this.race = null
+                console.log('unset race so the selection could go on')
+                if(!this.checkInvalid('county',value)){
+                    this.race = holdOnToRace
+                    return
+                }
+            }
+            else if(!this.race && (!val || val==='*')){
+                console.log('this county has no data, stopping selection')
+                return
+            }
+        }
+        if(!this.checkInvalid()){ 
+            console.log('something invalid, stopping selection')
+            alert('oops! something bad happened.')
+            return
+        }
+
         this.activeWorkflow = null
         this[which] = value
         if(which==='indicator'){
@@ -54,6 +78,14 @@ class AppStore{
             //the result of this code is that it just looks unresponsive - lets grey the options in UniversalPicker
         }
         
+    }
+
+    checkInvalid = (which, value) => {
+        const {indicator, county, race, year} = this
+        const val = indicator? indicators[which==='indicator'?value:indicator].counties[which==='county'?value:county||'california'][which==='race'?value:race||'totals'][year]
+            : demopop[county||'california'][race||'population']
+        console.log(val)
+        return val==='*' || !val? false : true
     }
     
 }

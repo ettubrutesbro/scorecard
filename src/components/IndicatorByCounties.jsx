@@ -73,10 +73,10 @@ export default class IndicatorByCounties extends React.Component{
                 .sort((a,b)=>{
                      return a.value > b.value? -1 : a.value < b.value? 1 : 0
                 })
-                console.log(county)
+                // console.log(county)
                 mustInclude = findIndex(valueSortedCounties, (item)=>{return item.county===county})
                 // console.log(valueSortedCounties)
-                console.log('race: mustinclude is', mustInclude)
+                // console.log('race: mustinclude is', mustInclude)
             }
                 
             let replaceIndex = indexOfClosest(distribution, mustInclude)
@@ -85,8 +85,8 @@ export default class IndicatorByCounties extends React.Component{
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
         }
-        console.log('distribution')
-        console.log(distribution)
+        // console.log('distribution')
+        // console.log(distribution)
         return distribution
     }
 
@@ -127,7 +127,7 @@ export default class IndicatorByCounties extends React.Component{
             return this.generateDistribution().includes(i)
         })
 
-        console.log(performance)
+        // console.log(performance)
 
         return (
             <HorizontalBarGraph

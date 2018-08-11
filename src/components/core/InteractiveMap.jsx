@@ -105,8 +105,8 @@ const CountyPath = styled.path`
                                 selected = {selected===id}
                                 highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
                                 onClick = {
-                                    indicator && (data[id]==='*' || data[id]==='') ? ()=>console.log('county has no data')
-                                    : ()=> this.handleClick(id)
+                                    //indicator && (data[id]==='*' || data[id]==='') ? ()=>console.log('county has no data'): 
+                                    ()=> this.handleClick(id)
                                 }
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
                                 onMouseEnter = {()=> this.props.onHoverCounty(id)}
