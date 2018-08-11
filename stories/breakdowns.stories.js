@@ -16,11 +16,13 @@ storiesOf('Breakdowns', module)
 .add('IndicatorByCounties (I, LI)', ()=>{
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county', ['marin','fresno','tehama', 'sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], null)
+    const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
     return(
         <IndicatorByCounties
             store = {{
                 year: year,
+                race: race,
                 indicator: indicator,
                 county: county
             }}
@@ -58,6 +60,8 @@ storiesOf('Breakdowns', module)
 .add('HorizontalBarGraph', ()=>{
     return(
         <HorizontalBarGraph 
+            header = 'My Bar Graph'
+            average = {50}
             labelWidth = {100}
             bars = {[
                 {label: 'hi', value: 100},    

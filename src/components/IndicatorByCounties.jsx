@@ -9,6 +9,7 @@ import {find, findIndex} from 'lodash'
 import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
+import semanticTitles from '../assets/semanticTitles'
 
 import ordinal from 'ordinal'
 
@@ -108,7 +109,7 @@ export default class IndicatorByCounties extends React.Component{
             const value = ind.counties[cty][race?race:'totals'][year]
             return {
                 //label should be dom element featuring rank ordinal
-                label: find(counties,(c)=>{return c.id===cty}).label, 
+                label: `${!race?ordinal(rank):''} ${find(counties,(c)=>{return c.id===cty}).label}`, 
                 rank: !race?rank:'', 
                 value: value
             }
@@ -117,7 +118,11 @@ export default class IndicatorByCounties extends React.Component{
             else return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         }).map((cty,i)=>{
             if(!race) return cty
-            else return {...cty, rank: i+1}
+            else return {
+                ...cty,
+                label:  `${ordinal(i+1)} ${cty.label}`,
+                rank: i+1
+            }
         }).filter((e,i)=>{
             return this.generateDistribution().includes(i)
         })
@@ -126,6 +131,7 @@ export default class IndicatorByCounties extends React.Component{
 
         return (
             <HorizontalBarGraph
+                header = {`${race} ${semanticTitles[indicator].label}: distribution`}
                 labelWidth = {175}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
