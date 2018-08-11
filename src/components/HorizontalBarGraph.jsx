@@ -41,7 +41,7 @@ export default class HorizontalBarGraph extends React.Component{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
 
                         return(
-                            <Row key = {item.county}>
+                            <Row key = {item.label+'bar'}>
                                 <Label 
                                     labelWidth = {this.props.labelWidth} 
                                     invalid = {invalidValue}

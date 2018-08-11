@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import {isEqual, map} from 'lodash'
 import chroma from 'chroma-js'
 
+import ReactTooltip from 'react-tooltip'
+
 const Wrapper = styled.div`
     width: 100%; height: 100%;
 ` 
@@ -74,7 +76,7 @@ const CountyPath = styled.path`
                 ref = {(container)=> this.container = container}
                 style = {{border: '1px solid black', overflow: 'hidden'}}
             >
-                
+                <ReactTooltip disable = {!indicator}/>
                 <TheMap 
                     viewBox = '0 0 504 576'
                     {...domProps}
@@ -94,6 +96,7 @@ const CountyPath = styled.path`
                         return(
                             <InteractivePolygonOrPath
                                 {...childProps}
+                                data-tip = {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null}
                                 key = {id}
                                 points = {points}
                                 d = {d}

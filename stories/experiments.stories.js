@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 
+import ReactTooltip from 'react-tooltip'
 
 addDecorator(withKnobs)
 
@@ -24,12 +25,12 @@ const TestTip = styled.div`
 
 `
 storiesOf('Experiments', module)
-.add('Tippy?',()=>{
+.add('ReactTooltip',()=>{
     return(
         <div>
-
-
-                <AbsTarget> Absolutely positioned</AbsTarget>
+            <div data-tip = "hi"> Normal target? </div>
+            <ReactTooltip />
+            <AbsTarget data-tip = "Hello world"> Absolutely positioned</AbsTarget>
 
         </div>
     )
