@@ -3,10 +3,8 @@ import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
-import {findDOMNode} from 'react-dom'
 
 import {find, findIndex} from 'lodash'
-import FlipMove from 'react-flip-move'
 
 import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
@@ -15,8 +13,6 @@ import demopop from '../data/demographicsAndPopulation'
 import ordinal from 'ordinal'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
-
-const config = 'distribution' //top5
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -34,10 +30,8 @@ function indexOfClosest(nums, target) {
 }
 
 @observer
-export default class PerformanceDistributionByCounty extends React.Component{
+export default class IndicatorByCounties extends React.Component{
 
-    @observable width = 400
-    @observable selectedIndex = null
 
     @action generateDistribution = () => {
         const {county, indicator, year, race} = this.props.store
@@ -140,6 +134,6 @@ export default class PerformanceDistributionByCounty extends React.Component{
     }
 }
 
-PerformanceDistributionByCounty.defaultProps = {
+IndicatorByCounties.defaultProps = {
     entries: 12,
 }

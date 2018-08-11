@@ -8,7 +8,7 @@ const races = [
     'asian', 'black', 'latinx', 'white', 'other'
 ]
 
-export default class IndicatorBrokenDownByRaces extends React.Component{
+export default class IndicatorByRaces extends React.Component{
     render(){
         const {indicator, year, county} = this.props.store
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california

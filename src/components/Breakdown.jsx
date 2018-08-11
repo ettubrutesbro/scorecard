@@ -6,8 +6,8 @@ import {observer} from 'mobx-react'
 
 import commaNumber from 'comma-number'
 
-import IndicatorBrokenDownByRaces from './IndicatorBrokenDownByRaces'
-import PerformanceDistributionByCounty from './PerformanceDistributionByCounty'
+import IndicatorByRaces from './IndicatorByRaces'
+import IndicatorByCounties from './IndicatorByCounties'
 import DemoDataTable from './DemoDataTable'
 
 import indicators from '../data/indicators'
@@ -38,11 +38,11 @@ export default class Breakdown extends React.Component{
                     {indicator && 
                         // 'county performance distribution and indicator by race'
                         <div>
-                            <PerformanceDistributionByCounty 
+                            <IndicatorByCounties 
                                 store = {store}
                             />
                             {indicators[indicator].categories.includes('hasRace') &&
-                                <IndicatorBrokenDownByRaces
+                                <IndicatorByRaces
                                     store = {store}
                                 />
                             }

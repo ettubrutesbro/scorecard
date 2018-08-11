@@ -135,3 +135,6 @@ const Bar = styled.div`
     transition: transform .25s;
     transform: scaleX(${props=> props.percentage/100});
 `
+HorizontalBarGraph.defaultProps = {
+    header: 'Needs header'
+}

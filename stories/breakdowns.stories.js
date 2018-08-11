@@ -3,20 +3,22 @@ import React from 'react';
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 
-import PerformanceDistributionByCounty from '../src/components/PerformanceDistributionByCounty'
-import IndicatorBrokenDownByRaces from '../src/components/IndicatorBrokenDownByRaces'
+import IndicatorByCounties from '../src/components/IndicatorByCounties'
+import IndicatorByRaces from '../src/components/IndicatorByRaces'
+import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation'
 
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
+
 
 addDecorator(withKnobs)
 
 storiesOf('Breakdowns', module)
-.add('PerformanceDistributionByCounty (I, LI)', ()=>{
+.add('IndicatorByCounties (I, LI)', ()=>{
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county', ['marin','fresno','tehama', 'sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], null)
     const year = select('year(index)', [0,1], 0)
     return(
-        <PerformanceDistributionByCounty
+        <IndicatorByCounties
             store = {{
                 year: year,
                 indicator: indicator,
@@ -25,11 +27,11 @@ storiesOf('Breakdowns', module)
         />
     )
 })
-.add('IndicatorBrokenDownByRaces(I,LI)', ()=>{
+.add('IndicatorByRaces(I,LI)', ()=>{
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county',[null, 'sanLuisObispo', 'alameda'], null)
     return(
-        <IndicatorBrokenDownByRaces 
+        <IndicatorByRaces 
             store = {{
                 year: 0,
                 indicator: indicator,
@@ -38,7 +40,21 @@ storiesOf('Breakdowns', module)
         />
     )
 })
-
+.add('CountiesByRace',()=>{
+    const indicator = select('indicator',[null, 'earlyPrenatalCare','collegeCareerReady'], null)
+    const race = select('race', ['asian','black','latinx','white','other',null],'black')
+    const year = select('year(index)', [0,1], 0)
+    return(
+        <CountiesByRacePopulation
+            store = {{
+                race: race,
+                year: year,
+                indicator: indicator,
+                // county: county
+            }}  
+        />
+    )
+})
 .add('HorizontalBarGraph', ()=>{
     return(
         <HorizontalBarGraph 
