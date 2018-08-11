@@ -1,4 +1,6 @@
 import React from 'react';
+import {observable, action} from 'mobx'
+import {observer} from 'mobx-react'
 
 import styles from './stories.module.css'
 
@@ -7,7 +9,7 @@ import {map} from 'lodash'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withViewport} from '@storybook/addon-viewport'
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
-import { action } from '@storybook/addon-actions';
+// import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 
@@ -35,6 +37,44 @@ import '../src/global.css'
 
   addDecorator(withKnobs)
 // addDecorator(withViewport('iphone6'))
+
+class AppStore{
+    @observable indicator = null
+    @observable county = null
+    @observable race = null
+    @observable year = null
+    @observable activeWorkflow = null
+
+    @action setYearIndex = () => {
+        const newYears = indicators[this.indicator].years
+        if(!this.year && newYears.length>1) this.year = newYears.length-1
+        else if(!this.year) this.year = 0
+        else if(this.year === 1 && newYears.length===1) this.year = 0
+        console.log(`year ${this.year} (${newYears[this.year]})`)
+    }
+
+    @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
+    @action completeWorkflow = (which, value) => {
+
+        this.activeWorkflow = null
+        this[which] = value
+        if(which==='indicator'){
+            this.setYearIndex()
+        }
+        if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
+            //if race/indicator/county selected -> no race data, unset race
+            // console.log('race not supported after selection, unsetting')
+            // this.race = null
+
+            //the result of this code is that it just looks unresponsive - lets grey the options in UniversalPicker
+        }
+        
+    }
+    
+}
+
+const store = new AppStore()
+window.store = store
 
 storiesOf('Scorecard Prototypes', module)
 
@@ -70,18 +110,18 @@ storiesOf('Scorecard Prototypes', module)
 //     )
 // })
 
-.add('info (accordiony-column)', ()=>{
-    return(
-        <div
-            style = {{display: 'flex', overflow: 'hidden'}}
-        >
-            <div style = {{minWidth: '50%'}}>
-                <Info />
-            </div>
-            <CAMap />
-        </div>
-    )
-})
+// .add('info (accordiony-column)', ()=>{
+//     return(
+//         <div
+//             style = {{display: 'flex', overflow: 'hidden'}}
+//         >
+//             <div style = {{minWidth: '50%'}}>
+//                 <Info />
+//             </div>
+//             <CAMap />
+//         </div>
+//     )
+// })
 
 .add('neoscorecard (noanim)',()=>{
     return(
@@ -91,7 +131,9 @@ storiesOf('Scorecard Prototypes', module)
 
 .add('UniversalPicker', ()=>{
     return(
-        <UniversalPicker />
+        <UniversalPicker 
+            store = {store}
+        />
     )
 })
 
@@ -101,7 +143,11 @@ storiesOf('Maps',module)
     return(
     <div style = {{width: '100vw', height: '100vh'}}>
         <CAMap 
+            data = ''
+            store = {store}
             selected = {selectCounty}
+            // onSelect = {store.completeWorkflow}
+            // selected = {store.county}
         />
     </div>
     )

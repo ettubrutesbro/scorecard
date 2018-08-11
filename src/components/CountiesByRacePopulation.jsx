@@ -8,6 +8,7 @@ import {find, findIndex} from 'lodash'
 import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
+import semanticTitles from '../assets/semanticTitles'
 
 import ordinal from 'ordinal'
 
@@ -51,6 +52,7 @@ export default class CountiesByRacePopulation extends React.Component{
 
         return(
             <HorizontalBarGraph 
+                header = {`Counties with most ${race} children${indicator? `: ${semanticTitles[indicator].label}` : ''}`}
                 labelWidth = {140}
                 bars = {top10}
                 average = {indicator? indicators[indicator].counties.california[race][year] : ''}
