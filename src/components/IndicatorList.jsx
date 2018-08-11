@@ -159,7 +159,7 @@ export default class IndicatorList extends React.Component{
                         return <ColumnItem
                             noRaceNeedRace = {!cats.includes('hasRace') && race}
                             onClick = {()=>{
-                                if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
+                                // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
                                 this.props.store.completeWorkflow('indicator',ind)
                             }}
                         > 

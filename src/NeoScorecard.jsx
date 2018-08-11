@@ -37,6 +37,10 @@ class AppStore{
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
     @action completeWorkflow = (which, value) => {
 
+        if(which==='indicator'){
+            if(!indicators[value].categories.includes('hasRace') && this.race) this.race = null
+            
+        }
         this.activeWorkflow = null
         this[which] = value
         if(which==='indicator'){
@@ -131,7 +135,6 @@ export default class NeoScorecard extends React.Component{
                 </Left>
                 <Right>
                     <CAMap 
-                        mode = "zoom"
                         store = {store}
                         onHoverCounty = {this.onHoverCounty}
                         hoveredCounty = {this.hoveredCounty}
