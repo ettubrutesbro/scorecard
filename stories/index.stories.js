@@ -2,6 +2,8 @@ import React from 'react';
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
+import styled from 'styled-components'
+
 import styles from './stories.module.css'
 
 import {map} from 'lodash'
@@ -152,3 +154,29 @@ storiesOf('Maps',module)
     </div>
     )
 })
+
+storiesOf('Generic components',module)
+.add('Toggle', ()=>{
+    return(
+        <div>
+        <Note>(not interactive because its value is controlled by parent store)</Note>
+        <br />
+        <Toggle
+            options = {[
+                {label: 'hello', value: 'hello'},    
+                {label: 'world', value: 'world'},    
+                {label: 'goodbye', value: 'goodbye'},    
+                {label: 'blablabla', value: 'blablabla'},    
+            ]}
+        />
+        </div>
+    )
+})
+
+const Note = styled.h3`
+    display: inline-flex;
+    background: #FFF8D5;
+    padding: 10px 20px;
+    margin: 30px 0 10px 0;
+    font-weight: 400;
+`
