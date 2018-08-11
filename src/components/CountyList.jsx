@@ -3,6 +3,8 @@ import styled, {keyframes} from 'styled-components'
 
 import {counties} from '../assets/counties'
 
+import {Tooltip} from 'react-tippy'
+
 const GridList = styled.ul`
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -29,7 +31,13 @@ const GridItem = styled.li`
         background: #f3f3f5;
     }
 `
-
+const TestTooltip = styled.div`
+    position: absolute;
+    background: black;
+    color: white;
+    padding: 10px;
+    margin-top: 5px;    
+`
 
 const CountyList = (props) => {
     return(
@@ -39,12 +47,20 @@ const CountyList = (props) => {
                 else if (a.id > b.id) return 1
                 else return 0
             }).map((county)=>{
-                return <GridItem
-                    key = {"countylist"+county.id}
-                    onClick = {()=>{props.store.completeWorkflow('county',county.id)}}
-                > 
-                    {county.label}
-                </GridItem>
+                return 
+                    (
+                    <Tooltip title = "hello world" followCursor
+                        html = {(<TestTooltip> Hello </TestTooltip>)}
+                    >
+                        <GridItem
+                            key = {"countylist"+county.id}
+                            onClick = {()=>{props.store.completeWorkflow('county',county.id)}}
+                        > 
+                            {county.label}
+                        </GridItem>
+                    </Tooltip>
+                    )
+
             })
             }
         </GridList>
