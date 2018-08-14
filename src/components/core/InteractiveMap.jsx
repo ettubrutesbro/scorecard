@@ -67,9 +67,9 @@ const CountyPath = styled.path`
         const {store, colorStops, quantile, selected, ...domProps} = this.props
         const {indicator} = store
 
-        let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
-            return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
-        })
+        // let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
+        //     return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
+        // })
 
         return(
             <Wrapper 
@@ -87,11 +87,11 @@ const CountyPath = styled.path`
                         // border: '1px solid blue'
                     }}
                 >
-                    {reorderedChildren.map((child,i)=>{
+                    {this.props.children.map((child,i)=>{
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = data[id]!=='' && data[id]!=='*'? this.colorScale(data[id]) : ''
+                        const fill = data[id]!=='' && data[id]!=='*'? this.colorScale(data[id]) : '#b1b1b1' // TODO
 
                         return(
                             <InteractivePolygonOrPath
