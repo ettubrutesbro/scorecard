@@ -1,11 +1,13 @@
 import React from 'react';
-import {observable, action} from 'mobx'
+import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 
 import styled from 'styled-components'
 
 import styles from './stories.module.css'
 
+
+import chroma from 'chroma-js'
 import {map} from 'lodash'
 
 import { storiesOf, addDecorator } from '@storybook/react';
@@ -46,6 +48,20 @@ class AppStore{
     @observable race = null
     @observable year = null
     @observable activeWorkflow = null
+
+        @observable colorOptions = {
+        scheme: 'OrRd',
+        padLo: 0, padHi: 0,
+        classes: 5
+    }
+
+    @computed get colorScale(){
+        const opts = this.colorOptions
+        return chroma.scale(opts.scheme)
+            .domain([0,100])
+            .padding([opts.padLo, opts.padHi])
+            .classes(opts.classes)
+    } 
 
     @action setYearIndex = () => {
         const newYears = indicators[this.indicator].years

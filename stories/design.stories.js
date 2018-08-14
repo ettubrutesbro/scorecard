@@ -12,6 +12,7 @@ import indicators from '../src/data/indicators'
 
 import CAMap from '../src/components/core/InteractiveMap'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
+import ColorPreviewer from '../src/utilities/ColorPreviewer'
 
 
 const Note = styled.h3`
@@ -48,7 +49,7 @@ addDecorator(withKnobs)
 storiesOf('Design Tooling', module)
 .add('hard coded brewer schemes', ()=>{
 
-    const indicator = select('indicator', Object.keys(indicators))
+    const indicator = select('indicator', Object.keys(indicators), 'notFoodInsecure')
 
     const hasRace = indicators[indicator].categories.includes('hasRace')
     const hasYears  = indicators[indicator].years.length > 1
@@ -100,3 +101,28 @@ storiesOf('Design Tooling', module)
         </React.Fragment>
     )
 })
+
+
+// .add('componentized color preview?',()=>{
+//     const indicator = select('indicator', Object.keys(indicators), 'notFoodInsecure')
+//     console.log(indicator)
+//     const hasRace = indicators[indicator].categories.includes('hasRace')
+//     const hasYears  = indicators[indicator].years.length > 1
+//     const race = hasRace? select('race',['asian','black','latinx','white',null],null) : null
+//     const year = hasYears? select('year (index)', [0,1],0) : 0
+//     const brewerScheme = select('brewer scheme', ['OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'OrRd')
+//     const classes = number('# of colors in spectrum', 5)
+//     const padLeft = number('color scale padding, low end',0)
+//     const padRight = number('color scale padding, high end',0)
+//     return(
+//         <ColorPreviewer 
+//             year = {year}
+//             indicator = {indicator}
+//             race = {race}
+//             brewerScheme = {brewerScheme}
+//             classes = {classes}
+//             padLeft = {padLeft}
+//             padRight = {padRight}
+//         />
+//     )
+// })
