@@ -35,10 +35,10 @@ const CountyPath = styled.path`
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    @observable colorScale =  chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
-        @action updateColors = () =>{
-            this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
-        }
+    // @observable colorScale =  chroma.scale(chroma.brewer.OrRd).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
+    //     @action updateColors = () =>{
+    //         this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
+    //     }
 
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
@@ -65,7 +65,7 @@ const CountyPath = styled.path`
 
     render(){
         const {store, colorStops, quantile, selected, ...domProps} = this.props
-        const {indicator} = store
+        const {indicator, colorScale} = store
 
         // let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
         //     return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
@@ -91,7 +91,7 @@ const CountyPath = styled.path`
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = data[id]!=='' && data[id]!=='*'? this.colorScale(data[id]) : '#b1b1b1' // TODO
+                        const fill = data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : '#b1b1b1' // TODO
 
                         return(
                             <InteractivePolygonOrPath

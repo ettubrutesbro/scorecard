@@ -53,6 +53,7 @@ export default class HorizontalBarGraph extends React.Component{
                                     selected = {i === this.props.selected}
                                     percentage = {item.value}
                                     height = {100/bars.length} 
+                                    fill = {item.fill || ''}
                                 />
                                 }
                                 {invalidValue && 
@@ -144,9 +145,11 @@ const Bar = styled.div`
     width: 100%;
     height: 100%;
     transform-origin: 0% 0%;
-    background: ${props => props.selected? 'orange' : 'green'};
+    /*background: ${props => props.selected? 'orange' : 'green'};*/
     transition: transform .25s;
     transform: scaleX(${props=> props.percentage/100});
+    //TODO: selection handling
+    background: ${props => props.fill? props.fill : 'green'};
 `
 HorizontalBarGraph.defaultProps = {
     header: 'Needs header'

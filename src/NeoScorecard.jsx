@@ -5,6 +5,7 @@ import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 
 import {find, mapValues} from 'lodash'
+import chroma from 'chroma-js'
 
 import CAMap from './components/core/InteractiveMap'
 import Readout from './components/Readout'
@@ -26,6 +27,20 @@ class AppStore{
     @observable race = null
     @observable year = null
     @observable activeWorkflow = null
+
+    @observable colorOptions = {
+        scheme: 'OrRd',
+        padLo: 0, padHi: 0,
+        classes: 5
+    }
+
+    @computed get colorScale(){
+        const opts = this.colorOptions
+        return chroma.scale(opts.scheme)
+            .domain([0,100])
+            .padding([opts.padLo, opts.padHi])
+            .classes(opts.classes)
+    } 
 
     @action setYearIndex = () => {
         const newYears = indicators[this.indicator].years
@@ -172,8 +187,6 @@ export default class NeoScorecard extends React.Component{
                         hoveredCounty = {this.hoveredCounty}
                         onSelect = {store.completeWorkflow}
                         selected = {store.county}
-
-                        colorStops = { ['#CDFCFE','#135F80'] }
                         data = {dataForMap}
                         mode = {dataForMap?'heat':''}
                         // selected = "sanLuisObispo"

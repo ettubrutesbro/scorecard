@@ -18,7 +18,20 @@ export default class CountiesByRacePopulation extends React.Component{
     render(){
         const {race, indicator, year} = this.props.store
         let highestValue = 0
-        const top10 = Object.keys(demopop)
+
+        const ranksByIndicatorPerf = indicator? Object.keys(indicators[indicator].counties).map((cty)=>{
+            return {name: cty, value: indicators[indicator].counties[cty][race][year]}
+        }).filter((o)=>{
+            return o.value!=='*'&&o.value
+        }).sort((a,b)=>{
+            return a.value>b.value?-1:a.value<b.value?1:0
+        }).map((o,i)=>{
+            return {...o, rank: i+1}
+        }): ''
+
+        console.log(ranksByIndicatorPerf)
+
+        const top5 = Object.keys(demopop)
             .filter((cty)=> {return cty!=='california'})
             .map((cty)=>{
                 const pop = parseInt(((demopop[cty][race]/100) * demopop[cty].population).toFixed(0))
@@ -33,28 +46,29 @@ export default class CountiesByRacePopulation extends React.Component{
             .sort((a,b)=>{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
-            .slice(0,10)
+            .slice(0,5)
             .map((cty)=>{
                 //if indicator active, value is indicator perf.
-                
                 return {
                     ...cty, 
                     label: !indicator? cty.label 
-                        : 'rank '+ cty.label,
+                        : `${cty.label} ${ordinal(find(ranksByIndicatorPerf,(o)=>{return o.name===cty.id}).rank)}`,
                     value: !indicator? (cty.value/highestValue)*100
-                        : indicators[indicator].counties[cty.id][race][year]
+                        : indicators[indicator].counties[cty.id][race][year],
 
                 }
             })
 
-        console.log(top10)
+
+
+        console.log(top5)
         console.log('highest pop:', highestValue)
 
         return(
             <HorizontalBarGraph 
                 header = {`Counties with most ${race} children${indicator? `: ${semanticTitles[indicator].label}` : ''}`}
                 labelWidth = {140}
-                bars = {top10}
+                bars = {top5}
                 average = {indicator? indicators[indicator].counties.california[race][year] : ''}
             />
         )

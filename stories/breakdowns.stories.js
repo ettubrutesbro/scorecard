@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components'
 
 import { storiesOf, addDecorator } from '@storybook/react';
-import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
+import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
@@ -69,6 +69,8 @@ storiesOf('Breakdowns', module)
     const race = select('race', ['asian','black','latinx','white','other',null],'black')
     const year = select('year(index)', [0,1], 0)
     return(
+        <React.Fragment>
+        <Note> With indicator, I put rank after county 'cause the order is still by race population count (and rank can be misleading since #1 might have a really small race pop) </Note>
         <CountiesByRacePopulation
             store = {{
                 race: race,
@@ -77,6 +79,7 @@ storiesOf('Breakdowns', module)
                 // county: county
             }}  
         />
+        </React.Fragment>
     )
 })
 .add('HorizontalBarGraph', ()=>{
@@ -121,11 +124,20 @@ storiesOf('Breakdowns', module)
 // })
 .add('RaceBreakdownBar',()=>{
     const county = select('county', ['sanLuisObispo','alameda','butte','siskiyou','madera'],null)
+    const centerText = boolean('centerText', false)
     return(
+        <div>
+            <Note> Still needs testing: multiple tiny percentages (that aren't 0)</Note>
+        <br />
+        <Note> Try the centerText knob to see diff label placement strategies</Note>
+        <br />
         <RaceBreakdownBar 
+            centerText = {centerText}
             store = {{
                 county: county
             }}
         />
+
+        </div>
     )
 })

@@ -26,6 +26,7 @@ const centerText = css`
 const LabelColumn = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: ${props=>props.centerText? 'flex-start' : 'space-between'};
     width: 100px;
     margin-right: 30px;
 `
@@ -34,7 +35,22 @@ const RaceLabel = styled.div`
     display: flex;
     /*border: 1px solid black;*/
     /*margin-right: 30px;*/
-    ${props => props.centerText? centerText: 'flex-grow: 1'};
+    ${props => props.centerText? centerText: ''};
+    &.compressed1{
+        /*border: 1px solid pink;*/
+        margin-top: -.5rem;
+    }
+    &.compressed2{
+        height: 1rem;
+        /*margin-bottom: 1rem;*/
+        border: 1px solid red;
+        margin-top: -1rem;
+    }
+    &.compressed2 ~ .compressed2{
+        border: 1px solid green;
+        /*margin-bottom: 2rem;*/
+        margin-top: -2rem;
+    }
 
 `
 const LabelPct = styled.div`
@@ -102,21 +118,31 @@ export default class RaceBreakdownBar extends React.Component{
         if(!county) county = 'california'
         county = demopop[county]
 
+        let numOfCompressedLabels = 0
+
         const racePercentages = races.map((race)=>{
-            return {label:race, percentage: county[race]}
+            const pct = county[race]
+            if(pct < 4 && pct > 0) numOfCompressedLabels++
+            return {label:race, percentage: pct}
         }).sort((a,b)=>{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
         })
+
+        console.log('number of compressed labels:', numOfCompressedLabels)
         return(
             <Container>
-            <LabelColumn>
+            <LabelColumn
+                centerText = {this.props.centerText}
+            >
                 <FlipMove typeName = {null}>
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
                     const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
                     return <RaceLabel
                         key = {race.label}
-                        centerText 
+                        centerText = {this.props.centerText}
+                        style = {{visibility: race.percentage===0?'hidden' : 'visible'}}
+                        className = {race.percentage < 4? 'compressed'+numOfCompressedLabels : ''}
                         // offset = {((race.percentage+offset)/100)*this.height}
                         height = {(race.percentage/100) * this.height}
                     > 

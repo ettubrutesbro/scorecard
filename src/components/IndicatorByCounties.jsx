@@ -91,7 +91,7 @@ export default class IndicatorByCounties extends React.Component{
     }
 
     render(){
-        const {county, indicator, year, race} = this.props.store
+        const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
         //all counties' performance in this indicator 
         let performance = Object.keys(ind.counties).filter((cty)=>{
@@ -111,7 +111,9 @@ export default class IndicatorByCounties extends React.Component{
                 //label should be dom element featuring rank ordinal
                 label: `${!race?ordinal(rank):''} ${find(counties,(c)=>{return c.id===cty}).label}`, 
                 rank: !race?rank:'', 
-                value: value
+                value: value,
+                //should i do this at the bargraph level?
+                fill: colorScale? colorScale(value): ''
             }
         }).sort((a,b)=>{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
