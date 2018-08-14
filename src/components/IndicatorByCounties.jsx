@@ -131,7 +131,7 @@ export default class IndicatorByCounties extends React.Component{
 
         return (
             <HorizontalBarGraph
-                header = {`${race} ${semanticTitles[indicator].label}: distribution`}
+                header = {`${race||''} ${semanticTitles[indicator].label}: distribution`}
                 labelWidth = {175}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
