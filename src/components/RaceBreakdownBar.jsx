@@ -2,7 +2,7 @@
 import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
 import {find, findIndex} from 'lodash'
@@ -10,6 +10,44 @@ import {find, findIndex} from 'lodash'
 import demopop from '../data/demographicsAndPopulation'
 import FlipMove from 'react-flip-move'
 
+const Container = styled.div`
+    display: inline-flex;
+    border: 1px solid black;
+    padding: 30px;
+`
+
+const centerText = css`
+     display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: ${props=> props.height}px;
+`
+
+const LabelColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    margin-right: 30px;
+`
+const RaceLabel = styled.div`
+    /*position: absolute;*/
+    display: flex;
+    /*border: 1px solid black;*/
+    /*margin-right: 30px;*/
+    ${props => props.centerText? centerText: 'flex-grow: 1'};
+
+`
+const LabelPct = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`
+const Label = styled.div`
+    
+`
+const Percentage = styled.div`
+    margin-left: 10px;
+`
 const VertBar = styled.div`
     position: relative;
     height: 500px; //arbitrary
@@ -70,6 +108,27 @@ export default class RaceBreakdownBar extends React.Component{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
         })
         return(
+            <Container>
+            <LabelColumn>
+                <FlipMove typeName = {null}>
+                {racePercentages.map((race,i,arr)=>{
+                    const previousSegs = arr.slice(0,i)
+                    const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
+                    return <RaceLabel
+                        key = {race.label}
+                        centerText 
+                        // offset = {((race.percentage+offset)/100)*this.height}
+                        height = {(race.percentage/100) * this.height}
+                    > 
+                        <LabelPct>
+                            <Label>{race.label[0].toUpperCase()+race.label.substr(1)}</Label>
+                            <Percentage>{race.percentage}%</Percentage> 
+                        </LabelPct>
+                    </RaceLabel>  
+                })}
+                </FlipMove>
+
+            </LabelColumn>
             <VertBar>
 
                 {racePercentages.map((o,i,arr)=>{
@@ -77,13 +136,14 @@ export default class RaceBreakdownBar extends React.Component{
                     const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
                     return <Segment
                         key = {i}
-                        style = {{zIndex: 5-i}}
+                        style = {{zIndex: arr.length-i}}
                         className = {o.label}
                         offset = {((o.percentage+offset)/100)*this.height}
               
                     />
                 })}
             </VertBar>
+            </Container>
         )
     }
 }
