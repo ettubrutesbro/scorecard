@@ -9,8 +9,9 @@ import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation'
 
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
-import VerticalBreakdownBar from '../src/components/VerticalBreakdownBar'
+import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
 
+import demopop from '../src/data/demographicsAndPopulation'
 
 const Note = styled.h3`
     display: inline-flex;
@@ -93,28 +94,38 @@ storiesOf('Breakdowns', module)
         />
     )
 })
-.add('VerticalBreakdownBar', ()=>{
-    const options = {
-         hellaAzns: [
-            {label: 'Black', value: 10, color: 'red'},    
-            {label: 'Latinx', value: 10, color: 'green'},  
-            {label: 'Asian', value: 50, color: 'blue'},     
-            {label: 'White', value: 10, color: 'goldenrod'},    
-            {label: 'Other', value: 20, color: 'grey'},   
-        ],
-        blah: [
-            {label: 'Black', value: 30, color: 'red'},    
-            {label: 'Latinx', value: 30, color: 'green'},    
-            {label: 'Asian', value: 15, color: 'blue'},    
-            {label: 'White', value: 15, color: 'goldenrod'},    
-            {label: 'Other', value: 10, color: 'grey'},   
-        ]
-    }
-    const mockDataSet = select('different mock data sets', ['blah','hellaAzns'], 'blah')
+// .add('VerticalBreakdownBar', ()=>{
+//     const options = {
+//          hellaAzns: [
+//             {label: 'Black', value: 10, color: 'red'},    
+//             {label: 'Latinx', value: 10, color: 'green'},  
+//             {label: 'Asian', value: 50, color: 'blue'},     
+//             {label: 'White', value: 10, color: 'goldenrod'},    
+//             {label: 'Other', value: 20, color: 'grey'},   
+//         ],
+//         blah: [
+//             {label: 'Black', value: 30, color: 'red'},    
+//             {label: 'Latinx', value: 30, color: 'green'},    
+//             {label: 'Asian', value: 15, color: 'blue'},    
+//             {label: 'White', value: 15, color: 'goldenrod'},    
+//             {label: 'Other', value: 10, color: 'grey'},   
+//         ]
+//     }
+//     const mockDataSet = select('different mock data sets', ['blah','hellaAzns'], 'blah')
+//     return(
+//         <VerticalBreakdownBar
+//             header = 'Race Breakdown'
+//             segments = {options[mockDataSet]}
+//         />
+//     )
+// })
+.add('RaceBreakdownBar',()=>{
+    const county = select('county', ['sanLuisObispo','alameda','butte','siskiyou','madera'],null)
     return(
-        <VerticalBreakdownBar
-            header = 'Race Breakdown'
-            segments = {options[mockDataSet]}
+        <RaceBreakdownBar 
+            store = {{
+                county: county
+            }}
         />
     )
 })
