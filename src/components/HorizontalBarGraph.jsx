@@ -39,33 +39,41 @@ export default class HorizontalBarGraph extends React.Component{
                 >
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
-
+                        const condensed = item.condensed
                         return(
-                            <Row key = {item.label+'bar'}>
-                                <Label 
-                                    labelWidth = {this.props.labelWidth} 
-                                    invalid = {invalidValue}
-                                >
-                                    {item.label}
-                                </Label>
+                            <Row key = {item.label+'bar'}
+                                condensed = {condensed}
+                            >
+                                
+                                    <Label 
+                                        labelWidth = {this.props.labelWidth} 
+                                        invalid = {invalidValue}
+                                    >
+                                    
+                                        {!condensed && item.label}
+                                    </Label>
+                                
                                 {!invalidValue &&
                                     <React.Fragment>
-                                <Bar
-                                    selected = {i === this.props.selected}
-                                    percentage = {item.value}
-                                    height = {100/bars.length} 
-                                    fill = {item.fill || ''}
-                                />
-                                <Value
-                                    alignValue = {this.props.alignValue}
-                                    offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
-                                        : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
-                                >
-                                    {item.trueValue && item.trueValue}
-                                    {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")+'%'}
-                                    
-                                </Value>
-                                </React.Fragment>
+                                        <Bar
+                                            condensed = {condensed}
+                                            selected = {i === this.props.selected}
+                                            percentage = {item.value}
+                                            height = {100/bars.length} 
+                                            fill = {item.fill || ''}
+                                        />
+                                        {!condensed && 
+                                        <Value
+                                            alignValue = {this.props.alignValue}
+                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
+                                                : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
+                                        >
+                                            {item.trueValue && item.trueValue}
+                                            {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")+'%'}
+                                            
+                                        </Value>
+                                        }
+                                    </React.Fragment>
                                 }
                                 {invalidValue && 
                                     <Invalid> N/A </Invalid>
@@ -156,13 +164,12 @@ const AverageLine = styled.div`
 const Bar = styled.div`
     position: relative;
     width: 100%;
-    height: 100%;
+    height: ${props => props.condensed? '6px' : '100%'};
     transform-origin: 0% 0%;
-    /*background: ${props => props.selected? 'orange' : 'green'};*/
     transition: transform .25s;
     transform: scaleX(${props=> props.percentage/100});
     //TODO: selection handling
-    background: ${props => props.fill? props.fill : 'green'};
+    background: ${props => props.condensed? '#d7d7d7' : props.fill? props.fill : 'green'};
 `
 const Value = styled.div`
     position: absolute;

@@ -104,7 +104,7 @@ export default class IndicatorByCounties extends React.Component{
                 const rank = ind.counties[cty].ranks[year]
                 return !rank? false : typeof rank !== 'number'? false : true
             }
-        }).map((cty)=>{
+        }).map((cty,i)=>{
             const rank = ind.counties[cty].ranks[year]
             const value = ind.counties[cty][race?race:'totals'][year]
             return {
@@ -113,23 +113,30 @@ export default class IndicatorByCounties extends React.Component{
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
-                fill: colorScale? colorScale(value): ''
+                fill: colorScale? colorScale(value): '',
+                // condensed: !distrib.includes(i)
             }
         }).sort((a,b)=>{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
             else return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         }).map((cty,i)=>{
-            if(!race) return cty
+            const distrib = this.generateDistribution()
+            if(!race) return {
+                ...cty,
+                condensed: !distrib.includes(i)
+            }
             else return {
                 ...cty,
                 label:  `${ordinal(i+1)} ${cty.label}`,
-                rank: i+1
+                rank: i+1,
+                condensed: !distrib.includes(i)
             }
-        }).filter((e,i)=>{
-            return this.generateDistribution().includes(i)
         })
+        // .filter((e,i)=>{
+        //     return this.generateDistribution().includes(i)
+        // })
 
-        // console.log(performance)
+        console.log(performance)
 
         return (
             <HorizontalBarGraph
