@@ -4,6 +4,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import {find, findIndex} from 'lodash'
+import commaNumber from 'comma-number'
 
 import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
@@ -40,7 +41,7 @@ export default class CountiesByRacePopulation extends React.Component{
                     id: cty,
                     label: find(counties, (c)=>{return c.id===cty}).label,
                     value: pop,
-                    racepop: pop
+                    trueValue: commaNumber(pop),
                 }
             })
             .sort((a,b)=>{
@@ -49,6 +50,12 @@ export default class CountiesByRacePopulation extends React.Component{
             .slice(0,5)
             .map((cty)=>{
                 //if indicator active, value is indicator perf.
+
+                //TODO: right now, most populous county is '100%'
+                //and the rest are fractions of it, but a true, static 100% should
+                //be the largest % of the largest county (hmm, maybe?)
+
+                //or it could be the total of all [race] in CA
                 return {
                     ...cty, 
                     label: !indicator? cty.label 

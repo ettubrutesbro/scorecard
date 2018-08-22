@@ -2,7 +2,7 @@
 import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
 import {find, findIndex} from 'lodash'
@@ -49,12 +49,23 @@ export default class HorizontalBarGraph extends React.Component{
                                     {item.label}
                                 </Label>
                                 {!invalidValue &&
+                                    <React.Fragment>
                                 <Bar
                                     selected = {i === this.props.selected}
                                     percentage = {item.value}
                                     height = {100/bars.length} 
                                     fill = {item.fill || ''}
                                 />
+                                <Value
+                                    alignValue = {this.props.alignValue}
+                                    offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
+                                        : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
+                                >
+                                    {item.trueValue && item.trueValue}
+                                    {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")+'%'}
+                                    
+                                </Value>
+                                </React.Fragment>
                                 }
                                 {invalidValue && 
                                     <Invalid> N/A </Invalid>
@@ -104,6 +115,7 @@ const Rank = styled.span`
     color: #898989;
 `
 const Row = styled.div`
+    position: relative;
     font-size: 13px;
     width: 100%;
     display: flex;
@@ -142,6 +154,7 @@ const AverageLine = styled.div`
     }
 `
 const Bar = styled.div`
+    position: relative;
     width: 100%;
     height: 100%;
     transform-origin: 0% 0%;
@@ -151,6 +164,14 @@ const Bar = styled.div`
     //TODO: selection handling
     background: ${props => props.fill? props.fill : 'green'};
 `
+const Value = styled.div`
+    position: absolute;
+    // right: 0;
+    ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
+    transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
+`
+
 HorizontalBarGraph.defaultProps = {
-    header: 'Needs header'
+    header: 'Needs header',
+    alignValue: 'outside' //outside or inside
 }
