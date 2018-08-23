@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
+import chroma from 'chroma-js'
+
 
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
@@ -32,11 +34,13 @@ storiesOf('Breakdowns', module)
     return(
         <IndicatorByCounties
             store = {{
+
                 year: year,
                 race: race,
                 indicator: indicator,
                 county: county,
-                completeWorkflow: (a,b) => {console.log(a,b)}
+                completeWorkflow: (a,b) => {console.log(a,b)},
+                colorScale: chroma.scale('BuPu').domain([0,100]).classes(5)
             }}
         />
     )

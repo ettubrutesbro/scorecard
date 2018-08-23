@@ -103,6 +103,7 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     /*width: 100%;*/
     max-width: 800px;
+    border: 1px solid black;
 `
 const Header = styled.div`
     width: 100%;
@@ -142,10 +143,10 @@ const Row = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: 0;
+    bottom: -10px;
     left: ${props => props.labelWidth}px;
     width: 0px;
-    height: calc(100% - 10px);
+    height: calc(100%);
     border-right: 1px solid black;
     z-index: 2;
     // margin-left: calc(${props=>props.percentage}% - 200px);
@@ -161,12 +162,15 @@ const AverageLine = styled.div`
         left: -12px;
     }
     &::after{
-        content: 'CA avg';
+        content: '';
         position: absolute;
         white-space: nowrap;
         /*width: 0;*/
+        border-top: 1px black solid;
+        width: 25px;
+        height: 1px;
         transform: translateX(-50%);
-        top: -20px;
+        bottom: -1px;
         text-align: center;
     }
 `
@@ -178,7 +182,7 @@ const Bar = styled.div`
     transition: transform .25s;
     transform: scaleX(${props=> props.percentage/100});
     //TODO: selection handling
-    background: ${props => props.condensed? '#d7d7d7' : props.fill? props.fill : 'green'};
+    background: ${props => props.fill? props.fill : 'green'};
 `
 const Value = styled.div`
     position: absolute;
