@@ -17,6 +17,7 @@ import HorizontalBarGraph from './HorizontalBarGraph'
 import Button from './Button'
 
 const defaultEntries = 8
+const moreEntries = 12
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -39,8 +40,7 @@ export default class IndicatorByCounties extends React.Component{
     @observable distribute = true
 
     @observable distribution = []
-    @observable tweeners = []
-    @observable showtweeners = []
+    @observable condensed = []
 
     @action toggleDistribute = () => {this.distribute = !this.distribute}
 
@@ -61,12 +61,14 @@ export default class IndicatorByCounties extends React.Component{
             }
         })
 
+        const entries = this.props.store.county? moreEntries : defaultEntries
+
         const countyCount = validCounties.length
-        const unit = parseInt((countyCount / defaultEntries).toFixed(0))
-        const offset = parseInt((Math.abs((countyCount - (unit*(defaultEntries-2))) - unit) / 2).toFixed(0))
+        const unit = parseInt((countyCount / entries).toFixed(0))
+        const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
         let distribution = []
-        for(let i = 1; i<defaultEntries-1; i++){
+        for(let i = 1; i<entries-1; i++){
             distribution.push((i*unit+offset))
         }
         distribution.unshift(0)
@@ -95,40 +97,37 @@ export default class IndicatorByCounties extends React.Component{
             if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
+
+            this.condensed = distribution.slice(0)
+            this.condensed.splice(replaceIndex,1)
+            if(replaceIndex !== 0) this.condensed.splice(0,1)
+            if(replaceIndex !== this.condensed.length - 1) this.condensed.splice(this.condensed.length-1,1)
+
+        }
+        else if (!county){
+            this.condensed = []
         }
         // console.log('distribution')
-        // console.log(distribution)
+        console.log(distribution)
         // return distribution
         this.distribution = distribution
     }
 
-    @action averageTweeners = () => {
-        const tweeners = this.tweeners
-        const distrib = this.distribution
-        // console.log(distrib)
-        distrib.forEach((ele,i,arr)=>{
-            if(i!==arr.length-1){
-                let values = []
-                for(var it = ele+1; it<arr[i+1]; it++){
-                    values.push(it)
-                }
-                console.log('get average for these values between',ele,'and',arr[i+1],':',values)
-                
-                // console.log('get average for all values between pos',ele,'and',arr[i+1])
-                // tweenerValues.push()
-                tweeners.push(values[0])
-            } 
-            // let num = ele
-
-        })
-        console.log('tweeners')
-        console.log(this.tweeners.toJS())
-
-    }
 
     componentDidMount(){
         this.generateDistribution()
-        this.averageTweeners()
+        // this.averageTweeners()
+    }
+
+    componentDidUpdate(oldProps){
+        console.log('updated')
+        if(this.props.store !== oldProps.store){
+            console.log('store changed')
+            this.generateDistribution()
+            // this.averageTweeners()
+        }
+        // this.generateDistribution()
+        // this.averageTweeners()
     }
 
     render(){
@@ -151,7 +150,8 @@ export default class IndicatorByCounties extends React.Component{
             const value = ind.counties[cty][race?race:'totals'][year]
             return {
                 //label should be dom element featuring rank ordinal
-                label: `${!race?ordinal(rank):''} ${find(counties,(c)=>{return c.id===cty}).label}`, 
+                label: find(counties,(c)=>{return c.id===cty}).label, 
+                leftLabel: !race? ordinal(rank) : '',
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
@@ -168,7 +168,8 @@ export default class IndicatorByCounties extends React.Component{
             }
             else return {
                 ...cty,
-                label:  `${ordinal(i+1)} ${cty.label}`,
+                // label: cty.label,
+                leftLabel: ordinal(i+1),
                 rank: i+1,
                 // condensed: !distrib.includes(i)
             }
@@ -179,27 +180,8 @@ export default class IndicatorByCounties extends React.Component{
             const distrib = this.distribution
 
             if(!this.distribute) return e
-            else if(this.tweeners.includes(i)){
-                let peersInAvg = []
-                const limit = distrib.find((e)=>{return e>i})
-                for(var it = i; it<limit; it++){
-                    peersInAvg.push(it)
-                }
-                console.log('as',i,'i am an average and my peers are:', peersInAvg)
-                peersInAvg =  peersInAvg.map((index)=>{
-                    return arr[index].value
-                })
-                const avg = peersInAvg.reduce((a,b)=>a+b) / peersInAvg.length
-                console.log(avg)
-
-
-                //FIND FIRST ITEM IN DISTRIBUTION THAT IS GREATER THAN I (this tweener's position)
-                return {
-                    ...e,
-                    value: avg,
-                    // value: 100, //find which array my rank lives in in tweeners
-                    condensed: true
-                }
+            else if(this.condensed.includes(i)){
+                return {...e, condensed: true}
             }
             else if(distrib.includes(i)) return e
             else return null
@@ -227,6 +209,7 @@ export default class IndicatorByCounties extends React.Component{
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
+                selectBar = {this.props.store.completeWorkflow}
             />
                 <Button label = "See full list" onClick = {this.toggleDistribute}/>
             </div>

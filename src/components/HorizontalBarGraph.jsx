@@ -24,6 +24,8 @@ export default class HorizontalBarGraph extends React.Component{
     }
 
     render(){
+        const {selectBar} = this.props
+        console.log(selectBar)
         return (
             <GraphTable
                 ref = {(graph)=>{this.graph=graph}}
@@ -44,13 +46,14 @@ export default class HorizontalBarGraph extends React.Component{
                         return(
                             <Row key = {item.label+'bar'}
                                 condensed = {condensed}
+                                onClick = {selectBar?()=>{selectBar('county',item)}:console.log(item) }
                             >
                                 
                                     <Label 
                                         labelWidth = {this.props.labelWidth} 
                                         invalid = {invalidValue}
                                     >
-                                    
+                                        <LeftLabel>{!condensed && item.leftLabel}</LeftLabel>
                                         {!condensed && item.label}
                                     </Label>
                                 
@@ -112,9 +115,14 @@ const Label = styled.div`
     width: ${props => props.labelWidth}px;
     align-items: center;
     flex-shrink: 0;
-    justify-content: flex-end;
+    // justify-content: flex-end;
+    justify-content: space-between;
     padding-right: 10px;
+    // border: 1px solid black;
     color: ${props => props.invalid? "#898989" : "black"};
+`
+const LeftLabel = styled.div`
+    // border: 1px solid red;
 `
 const Invalid = styled.span`
     color: #898989;
