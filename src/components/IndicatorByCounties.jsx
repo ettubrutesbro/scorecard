@@ -14,6 +14,9 @@ import semanticTitles from '../assets/semanticTitles'
 import ordinal from 'ordinal'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
+import Button from './Button'
+
+const defaultEntries = 8
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -33,8 +36,11 @@ function indexOfClosest(nums, target) {
 @observer
 export default class IndicatorByCounties extends React.Component{
 
+    @observable distribute = true
+    @action toggleDistribute = () => {this.distribute = !this.distribute}
 
     @action generateDistribution = () => {
+        console.log('generating distribution')
         const {county, indicator, year, race} = this.props.store
 
         const ind = indicators[indicator]
@@ -51,11 +57,11 @@ export default class IndicatorByCounties extends React.Component{
         })
 
         const countyCount = validCounties.length
-        const unit = parseInt((countyCount / this.props.entries).toFixed(0))
-        const offset = parseInt((Math.abs((countyCount - (unit*(this.props.entries-2))) - unit) / 2).toFixed(0))
+        const unit = parseInt((countyCount / defaultEntries).toFixed(0))
+        const offset = parseInt((Math.abs((countyCount - (unit*(defaultEntries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
         let distribution = []
-        for(let i = 1; i<this.props.entries-1; i++){
+        for(let i = 1; i<defaultEntries-1; i++){
             distribution.push((i*unit+offset))
         }
         distribution.unshift(0)
@@ -81,18 +87,19 @@ export default class IndicatorByCounties extends React.Component{
                 
             let replaceIndex = indexOfClosest(distribution, mustInclude)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
-            if(replaceIndex===this.props.entries-1 && mustInclude !==this.props.entries-1) replaceIndex = this.props.entries-2
+            if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
         }
         // console.log('distribution')
-        // console.log(distribution)
+        console.log(distribution)
         return distribution
     }
 
     render(){
         const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
+        const {distribution} = this
         //all counties' performance in this indicator 
         let performance = Object.keys(ind.counties).filter((cty)=>{
             if(cty==='california') return false
@@ -120,35 +127,39 @@ export default class IndicatorByCounties extends React.Component{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
             else return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         }).map((cty,i)=>{
-            const distrib = this.generateDistribution()
+            // const distrib = this.generateDistribution()
             if(!race) return {
                 ...cty,
-                condensed: !distrib.includes(i)
+                // condensed: !distrib.includes(i)
             }
             else return {
                 ...cty,
                 label:  `${ordinal(i+1)} ${cty.label}`,
                 rank: i+1,
-                condensed: !distrib.includes(i)
+                // condensed: !distrib.includes(i)
             }
         })
-        // .filter((e,i)=>{
-        //     return this.generateDistribution().includes(i)
-        // })
+        .filter((e,i)=>{
+            return this.distribute? this.generateDistribution().includes(i) : true
+        })
 
         console.log(performance)
 
         return (
+            <div>
             <HorizontalBarGraph
-                header = {`${race||''} ${semanticTitles[indicator].label}: distribution`}
+                header = {`${defaultEntries} ${race||''} ${semanticTitles[indicator].label}: distribution`}
                 labelWidth = {175}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
+                disableAnim = {this.distribute}
             />
+                <Button label = "See full list" onClick = {this.toggleDistribute}/>
+            </div>
         )
     }
 }
 
-IndicatorByCounties.defaultProps = {
-    entries: 12,
-}
+// IndicatorByCounties.defaultProps = {
+//     entries: 12,
+// }

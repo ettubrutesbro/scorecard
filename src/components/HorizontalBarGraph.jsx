@@ -36,6 +36,7 @@ export default class HorizontalBarGraph extends React.Component{
                     typeName = {null}
                     enterAnimation = {null}
                     leaveAnimation = {null}
+                    disableAllAnimations = {this.props.disableAnim}
                 >
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
