@@ -37,6 +37,11 @@ function indexOfClosest(nums, target) {
 export default class IndicatorByCounties extends React.Component{
 
     @observable distribute = true
+
+    @observable distribution = []
+    @observable tweeners = []
+    @observable showtweeners = []
+
     @action toggleDistribute = () => {this.distribute = !this.distribute}
 
     @action generateDistribution = () => {
@@ -92,8 +97,38 @@ export default class IndicatorByCounties extends React.Component{
             distribution[replaceIndex] = mustInclude
         }
         // console.log('distribution')
-        console.log(distribution)
-        return distribution
+        // console.log(distribution)
+        // return distribution
+        this.distribution = distribution
+    }
+
+    @action averageTweeners = () => {
+        const tweeners = this.tweeners
+        const distrib = this.distribution
+        // console.log(distrib)
+        distrib.forEach((ele,i,arr)=>{
+            if(i!==arr.length-1){
+                let values = []
+                for(var it = ele+1; it<arr[i+1]; it++){
+                    values.push(it)
+                }
+                console.log('get average for these values between',ele,'and',arr[i+1],':',values)
+                
+                // console.log('get average for all values between pos',ele,'and',arr[i+1])
+                // tweenerValues.push()
+                tweeners.push(values[0])
+            } 
+            // let num = ele
+
+        })
+        console.log('tweeners')
+        console.log(this.tweeners.toJS())
+
+    }
+
+    componentDidMount(){
+        this.generateDistribution()
+        this.averageTweeners()
     }
 
     render(){
@@ -120,8 +155,7 @@ export default class IndicatorByCounties extends React.Component{
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
-                fill: colorScale? colorScale(value): '',
-                // condensed: !distrib.includes(i)
+                fill: colorScale? colorScale(value): ''
             }
         }).sort((a,b)=>{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
@@ -139,9 +173,49 @@ export default class IndicatorByCounties extends React.Component{
                 // condensed: !distrib.includes(i)
             }
         })
-        .filter((e,i)=>{
-            return this.distribute? this.generateDistribution().includes(i) : true
+
+
+        performance = performance.map((e,i,arr)=>{
+            const distrib = this.distribution
+
+            if(!this.distribute) return e
+            else if(this.tweeners.includes(i)){
+                let peersInAvg = []
+                const limit = distrib.find((e)=>{return e>i})
+                for(var it = i; it<limit; it++){
+                    peersInAvg.push(it)
+                }
+                console.log('as',i,'i am an average and my peers are:', peersInAvg)
+                peersInAvg =  peersInAvg.map((index)=>{
+                    return arr[index].value
+                })
+                const avg = peersInAvg.reduce((a,b)=>a+b) / peersInAvg.length
+                console.log(avg)
+
+
+                //FIND FIRST ITEM IN DISTRIBUTION THAT IS GREATER THAN I (this tweener's position)
+                return {
+                    ...e,
+                    value: avg,
+                    // value: 100, //find which array my rank lives in in tweeners
+                    condensed: true
+                }
+            }
+            else if(distrib.includes(i)) return e
+            else return null
         })
+        .filter((e,i)=>{
+            if(!this.distribute) return true
+            if(e===null) return false
+            else return true
+        })
+
+
+        // .filter((e,i)=>{
+            // return this.distribute? this.generateDistribution().includes(i) : true
+        // })
+        //add tweeners in
+        //sort once more? 
 
         console.log(performance)
 
