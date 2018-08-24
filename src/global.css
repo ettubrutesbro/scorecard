@@ -2,3 +2,13 @@
 	font-family: 'Heebo', sans-serif;
 	box-sizing: border-box;
 }
+
+html{
+	--strokepurple: #6E016B;
+	--inactivegrey: #EFEFEF;
+	--fainttext: #919191;
+	--offwhitebg: #f3f3f5;
+	--shadow: 0 4px 4px rgba(0,0,0,0.25);
+	--peach: #fcc9b5;
+	--strokepeach: #ef6732;
+}

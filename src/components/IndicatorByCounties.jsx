@@ -150,6 +150,7 @@ export default class IndicatorByCounties extends React.Component{
             const value = ind.counties[cty][race?race:'totals'][year]
             return {
                 //label should be dom element featuring rank ordinal
+                id: cty,
                 label: find(counties,(c)=>{return c.id===cty}).label, 
                 leftLabel: !race? ordinal(rank) : '',
                 rank: !race?rank:'', 
@@ -180,9 +181,9 @@ export default class IndicatorByCounties extends React.Component{
             const distrib = this.distribution
 
             if(!this.distribute) return e
-            else if(this.condensed.includes(i)){
-                return {...e, condensed: true}
-            }
+            // else if(this.condensed.includes(i)){
+            //     return {...e, condensed: true}
+            // }
             else if(distrib.includes(i)) return e
             else return null
         })
@@ -204,8 +205,9 @@ export default class IndicatorByCounties extends React.Component{
         return (
             <div>
             <HorizontalBarGraph
-                header = {`${defaultEntries} ${race||''} ${semanticTitles[indicator].label}: distribution`}
-                labelWidth = {175}
+                selected = {county}
+                header = {'COUNTY DISTRIBUTION'}
+                labelWidth = {150}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}

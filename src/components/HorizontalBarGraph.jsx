@@ -26,13 +26,15 @@ export default class HorizontalBarGraph extends React.Component{
     render(){
         const {selectBar} = this.props
         console.log(selectBar)
+        console.log(this.selectedIndex)
         return (
             <GraphTable
                 ref = {(graph)=>{this.graph=graph}}
             >
                 <Header>
-                    {this.props.header}
+                    {this.props.header} {this.selectedIndex}
                 </Header>
+                <Content>
                 <FlipMove
                     duration = {250}
                     typeName = {null}
@@ -50,6 +52,7 @@ export default class HorizontalBarGraph extends React.Component{
                             >
                                 
                                     <Label 
+                                        selected = {item.id === this.props.selected}
                                         labelWidth = {this.props.labelWidth} 
                                         invalid = {invalidValue}
                                     >
@@ -61,10 +64,15 @@ export default class HorizontalBarGraph extends React.Component{
                                     <React.Fragment>
                                         <Bar
                                             condensed = {condensed}
-                                            selected = {i === this.props.selected}
+                                            selected = {item.id === this.props.selected}
                                             percentage = {item.value}
                                             height = {100/bars.length} 
                                             fill = {item.fill || ''}
+                                        />
+                                        <EndHatch
+                                            selected = {item.id === this.props.selected}
+                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
+                                                : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
                                         />
                                         {!condensed && 
                                         <Value
@@ -86,6 +94,7 @@ export default class HorizontalBarGraph extends React.Component{
                         )
                     })}
                 </FlipMove>
+                </Content>
                 {this.props.average &&
                     <AverageLine 
                         labelWidth = {this.props.labelWidth}
@@ -102,14 +111,27 @@ const GraphTable = styled.div`
     display: flex;
     flex-wrap: wrap;
     /*width: 100%;*/
-    max-width: 800px;
-    border: 1px solid black;
+    max-width: 480px;
+    // border: 1px solid black;
+    // border: 1px solid var(--strokepurple);
+    // padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    letter-spacing: 0.5px;
+    font-size: 13px;
 `
 const Header = styled.div`
     width: 100%;
+    color: var(--fainttext);
+    margin: 20px 0 15px 20px;
+    // font-weight: bold;
 `
-
-const labelWidth = 175
+const Content = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 0 20px 20px 20px;
+    // border: 1px solid red;
+`
 
 const Label = styled.div`
     display: inline-flex;
@@ -120,26 +142,29 @@ const Label = styled.div`
     justify-content: space-between;
     padding-right: 10px;
     // border: 1px solid black;
-    color: ${props => props.invalid? "#898989" : "black"};
+    color: ${props => props.selected? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--fainttext)"};
+
 `
 const LeftLabel = styled.div`
+    font-weight: bold;
     // border: 1px solid red;
 `
 const Invalid = styled.span`
-    color: #898989;
+    color: var(--fainttext);
 `
 const Rank = styled.span`
     margin-right: 5px;
-    color: #898989;
+    color: var(--fainttext);
 `
 const Row = styled.div`
+
     position: relative;
-    font-size: 13px;
     width: 100%;
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 4px;
     /*height: 100%;*/
+    // padding: 0px 20px;
 `
 const AverageLine = styled.div`
     position: absolute;
@@ -177,14 +202,24 @@ const AverageLine = styled.div`
 const Bar = styled.div`
     position: relative;
     width: 100%;
-    height: ${props => props.condensed? '6px' : '100%'};
+    height: ${props => props.condensed? '6px' : '15.5px'};
     transform-origin: 0% 0%;
     transition: transform .25s;
     transform: scaleX(${props=> props.percentage/100});
     //TODO: selection handling
-    background: ${props => props.fill? props.fill : 'green'};
+    background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
+    border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
+`
+const EndHatch = styled.div`
+    position: absolute;
+    left: 0;
+    transform: translateX(${props => props.offset-1}px);
+    border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};
+    height: 100%;
 `
 const Value = styled.div`
+    color: var(--fainttext);
+    letter-spacing: 0.5px;
     position: absolute;
     // right: 0;
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
