@@ -67,9 +67,14 @@ storiesOf('Design Tooling', module)
     const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'l')
     console.log(dataClassing)
 
+    let invalids = 0
     const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
         return indicators[indicator].counties[cty][race||'totals'][year]
-    }).filter((o)=>{return o===''||o==='*'?false : true})
+    }).filter((o)=>{
+        const inv = o==='' || o==='*'
+        if(inv) invalids++
+        return inv?false : true
+    })
 
     // const padLeft = number('color scale padding, low end',0)
     // const padRight = number('color scale padding, high end',0)
@@ -96,12 +101,13 @@ storiesOf('Design Tooling', module)
     return(
         <React.Fragment>
         <Note> Data lowest number: {Math.min(...allNums)} Highest: {Math.max(...allNums)} </Note> <br />
+        <Note> Reporting counties: {allNums.length} (invalid: {invalids}) </Note> <br />
         <Swatches>
             {classBreaks.map((ele,i,arr)=>{
                 const range = i===0? `0-${ele.toFixed(1)}` : `${arr[i-1].toFixed(1)} - ${ele.toFixed(1)}` 
+                
                 const countiesInClass = allNums.filter((num)=>{
-                    if(i>0) return num < ele && num > arr[i-1]
-                    else return num < ele
+                    return num===ele || (num<ele && num>arr[i-1])
                 }).length
 
                 return i===0? null : <Swatch

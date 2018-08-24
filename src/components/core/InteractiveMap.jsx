@@ -2,7 +2,7 @@ import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 // import styles from './InteractiveMap.module.css'
 
 import {isEqual, map} from 'lodash'
@@ -16,20 +16,17 @@ const Wrapper = styled.div`
 const TheMap = styled.svg`
     width: 100%; height: 100%;
 `
-const CountyPolygon = styled.polygon`
+
+const CountyStyle = css`
     cursor: pointer;
     stroke: ${props => props.selected?'red': props.highlighted?'pink': '#fff'};
     stroke-alignment: ${props => props.selected? 'inner' : 'center'}
-    fill: ${props => props.selected?'red' : '#d7d7d7'};
+    fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
     stroke-width: ${props=>props.selected? 2 : 1.25};
 `
-const CountyPath = styled.path`
-    cursor: pointer;
-    stroke: ${props => props.selected?'red': '#fff'};
-    stroke-alignment: ${props => props.selected? 'inner' : 'center'}
-    fill: ${props => props.selected?'red' : '#d7d7d7'};
-    stroke-width: ${props=>props.selected? 2 : 1.25};
-`
+
+const CountyPolygon = styled.polygon`${CountyStyle}`
+const CountyPath = styled.path`${CountyStyle}`
 
 @observer class InteractiveMap extends React.Component{
 
@@ -91,7 +88,7 @@ const CountyPath = styled.path`
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : '#b1b1b1' // TODO
+                        const fill = data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
                         return(
                             <InteractivePolygonOrPath
