@@ -23,6 +23,7 @@ const Void = styled.div`
     width: 100vw;
     height: 100vh;
     background: var(--offwhitebg);
+    padding: 50px;
 
 `
 
@@ -47,6 +48,15 @@ storiesOf('Breakdowns', module)
     const county = select('county', allCounties, null)
     const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
+    
+    const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
+        return indicators[indicator].counties[cty][race||'totals'][year]
+    }).filter((o)=>{return o===''||o==='*'?false : true})
+    // console.log(padLo)
+
+    console.log(Math.min(...allNums)/100)
+    console.log(1-(Math.max(...allNums)/100))
+
     return(
         <Void>
         <IndicatorByCounties
@@ -57,7 +67,10 @@ storiesOf('Breakdowns', module)
                 indicator: indicator,
                 county: county,
                 completeWorkflow: (a,b) => {console.log(a,b)},
-                colorScale: chroma.scale('BuPu').domain([0,100]).classes(5)
+                colorScale: chroma.scale('BuPu')
+                    .domain([0,100])
+                    .padding([Math.min(...allNums)/100, 0])
+                    .classes(5)
             }}
         />
         </Void>

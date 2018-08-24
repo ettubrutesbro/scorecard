@@ -121,7 +121,7 @@ const GraphTable = styled.div`
 const Header = styled.div`
     width: 100%;
     color: var(--fainttext);
-    margin: 20px 0 15px 20px;
+    margin: 20px 0 5px 20px;
     // font-weight: bold;
 `
 const Content = styled.div`
@@ -160,7 +160,7 @@ const Row = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    margin-top: 4px;
+    margin-top: 5px;
     /*height: 100%;*/
     // padding: 0px 20px;
 `

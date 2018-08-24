@@ -39,7 +39,7 @@ const MapContainer = styled.div`
     /*max-height: 500px;*/
 `
 const ColorMocks = styled.div`
-    display: flex;
+    // display: flex;
     /*height: 900px;*/
     /*border: 1px solid black;*/
 `
@@ -59,30 +59,58 @@ storiesOf('Design Tooling', module)
     const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
     }): ''
+    console.log(dataForMap)
 
     const brewerScheme = select('brewer scheme', ['OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'OrRd')
     const classes = number('# of colors in spectrum', 5)
-    const padLeft = number('color scale padding, low end',0)
-    const padRight = number('color scale padding, high end',0)
 
+    const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'l')
+    console.log(dataClassing)
 
-    const scale = chroma.scale(brewerScheme).domain([0,100]).padding([padLeft/10,padRight/10]).classes(classes)
+    const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
+        return indicators[indicator].counties[cty][race||'totals'][year]
+    }).filter((o)=>{return o===''||o==='*'?false : true})
 
-    console.log(scale)
+    // const padLeft = number('color scale padding, low end',0)
+    // const padRight = number('color scale padding, high end',0)
+    const padLeft = Math.min(...allNums)/100
+    const padRight = 1 - Math.max(...allNums)/100
+
+    const classBreaks = chroma.limits(allNums, dataClassing, classes)
+    console.log(classBreaks)
+
+    const scale = chroma.scale(brewerScheme)
+        .domain([0,100])
+        .padding([padLeft,padRight])
+        .classes(classBreaks)
+
+    // console.log(scale)
     let arbitraryArray = []
     for(var i = 0; i<classes; i++){
         arbitraryArray.push('')
     }
 
+    console.log(allNums)
+
     const computedStore = {indicator: indicator, race: race, year: year, colorScale: scale}
     return(
         <React.Fragment>
+        <Note> Data lowest number: {Math.min(...allNums)} Highest: {Math.max(...allNums)} </Note> <br />
         <Swatches>
-            {arbitraryArray.map((ele,i,arr)=>{
-                console.log('swatch')
-                return <Swatch
-                    fill = {scale(i*(100/classes))}
-                />   
+            {classBreaks.map((ele,i,arr)=>{
+                const range = i===0? `0-${ele.toFixed(1)}` : `${arr[i-1].toFixed(1)} - ${ele.toFixed(1)}` 
+                const countiesInClass = allNums.filter((num)=>{
+                    if(i>0) return num < ele && num > arr[i-1]
+                    else return num < ele
+                }).length
+
+                return i===0? null : <Swatch
+                    fill = {scale(ele)}
+                >
+                    {range} <br />
+                    {countiesInClass}
+                    
+                </Swatch>   
             })}
 
         </Swatches>
