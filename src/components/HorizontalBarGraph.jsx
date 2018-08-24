@@ -71,13 +71,12 @@ export default class HorizontalBarGraph extends React.Component{
                                         />
                                         <EndHatch
                                             selected = {item.id === this.props.selected}
-                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
-                                                : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
+                                            offset = {this.props.labelWidth + (((this.width-40) - this.props.labelWidth) * (item.value/100)) }
                                         />
                                         {!condensed && 
                                         <Value
                                             alignValue = {this.props.alignValue}
-                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + ((this.width - this.props.labelWidth) * (item.value/100) ) 
+                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + (((this.width-40) - this.props.labelWidth) * (item.value/100) ) 
                                                 : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
                                         >
                                             {item.trueValue && item.trueValue}
@@ -224,6 +223,7 @@ const Value = styled.div`
     // right: 0;
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
+    margin-left: 8px;
 `
 
 HorizontalBarGraph.defaultProps = {

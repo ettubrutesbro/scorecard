@@ -13,6 +13,8 @@ import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
 import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
 
+import {counties} from '../src/assets/counties'
+import indicators from '../src/data/indicators'
 import demopop from '../src/data/demographicsAndPopulation'
 
 const Note = styled.h3`
@@ -23,12 +25,17 @@ const Note = styled.h3`
     font-weight: 400;
 `
 
+let allIndicators = Object.keys(indicators)
+let allCounties = counties.map((cty)=>{return cty.id})
+allIndicators.push('')
+allCounties.push('')
+
 addDecorator(withKnobs)
 
 storiesOf('Breakdowns', module)
 .add('IndicatorByCounties (I, LI)', ()=>{
-    const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
-    const county = select('county', [null,'marin','fresno','tehama', 'sanLuisObispo', 'alameda', 'alpine', 'siskiyou'], null)
+    const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
+    const county = select('county', allCounties, null)
     const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
     return(
