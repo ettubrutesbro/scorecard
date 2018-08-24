@@ -118,6 +118,7 @@ const GraphTable = styled.div`
     box-shadow: var(--shadow);
     letter-spacing: 0.5px;
     font-size: 13px;
+    background: #fbfbfc;
 `
 const Header = styled.div`
     width: 100%;

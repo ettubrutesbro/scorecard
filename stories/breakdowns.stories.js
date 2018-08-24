@@ -13,9 +13,18 @@ import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
 import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
 
+
+
 import {counties} from '../src/assets/counties'
 import indicators from '../src/data/indicators'
 import demopop from '../src/data/demographicsAndPopulation'
+
+const Void = styled.div`
+    width: 100vw;
+    height: 100vh;
+    background: var(--offwhitebg);
+
+`
 
 const Note = styled.h3`
     display: inline-flex;
@@ -39,6 +48,7 @@ storiesOf('Breakdowns', module)
     const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
     return(
+        <Void>
         <IndicatorByCounties
             store = {{
 
@@ -50,6 +60,7 @@ storiesOf('Breakdowns', module)
                 colorScale: chroma.scale('BuPu').domain([0,100]).classes(5)
             }}
         />
+        </Void>
     )
 })
 .add('IndicatorByRaces(I,LI)', ()=>{
