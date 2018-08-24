@@ -39,103 +39,16 @@ export default class IndicatorByCounties extends React.Component{
 
     @observable distribute = true
 
+    @observable performance = []
     @observable distribution = []
     @observable condensed = []
 
-    @action toggleDistribute = () => {this.distribute = !this.distribute}
-
-    @action generateDistribution = () => {
-        console.log('generating distribution')
-        const {county, indicator, year, race} = this.props.store
-
-        const ind = indicators[indicator]
-
-        const validCounties = Object.keys(ind.counties).filter((cty)=>{
-            if(!race){
-                const rank = ind.counties[cty].ranks[year]
-                 return cty!=='california' && rank && typeof rank === 'number'
-            }
-            else{
-                const value = ind.counties[cty][race][year]
-                return cty!=='california' && value && typeof value == 'number'   
-            }
-        })
-
-        const entries = this.props.store.county? moreEntries : defaultEntries
-
-        const countyCount = validCounties.length
-        const unit = parseInt((countyCount / entries).toFixed(0))
-        const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
-            //-1 for california...
-        let distribution = []
-        for(let i = 1; i<entries-1; i++){
-            distribution.push((i*unit+offset))
-        }
-        distribution.unshift(0)
-        distribution.push(countyCount-1)
-
-        if(county){
-            let mustInclude = ind.counties[county].ranks[year] - 1
-                //to find the equivalent in race, we need to find its place in the entire pecking order
-            if(race){
-                const valueSortedCounties = Object.keys(ind.counties).map((cty)=>{
-                    return {county: cty, value: ind.counties[cty][race][year]}
-                }).filter((item)=>{
-                    return item.county!=='california' && item.value!=='' && item.value !== '*'
-                })
-                .sort((a,b)=>{
-                     return a.value > b.value? -1 : a.value < b.value? 1 : 0
-                })
-                // console.log(county)
-                mustInclude = findIndex(valueSortedCounties, (item)=>{return item.county===county})
-                // console.log(valueSortedCounties)
-                // console.log('race: mustinclude is', mustInclude)
-            }
-                
-            let replaceIndex = indexOfClosest(distribution, mustInclude)
-            if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
-            if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
-            this.selectedIndex = replaceIndex
-            distribution[replaceIndex] = mustInclude
-
-            this.condensed = distribution.slice(0)
-            this.condensed.splice(replaceIndex,1)
-            if(replaceIndex !== 0) this.condensed.splice(0,1)
-            if(replaceIndex !== this.condensed.length - 1) this.condensed.splice(this.condensed.length-1,1)
-
-        }
-        else if (!county){
-            this.condensed = []
-        }
-        // console.log('distribution')
-        console.log(distribution)
-        // return distribution
-        this.distribution = distribution
-    }
-
-
-    componentDidMount(){
-        this.generateDistribution()
-        // this.averageTweeners()
-    }
-
-    componentDidUpdate(oldProps){
-        console.log('updated')
-        if(this.props.store !== oldProps.store){
-            console.log('store changed')
-            this.generateDistribution()
-            // this.averageTweeners()
-        }
-        // this.generateDistribution()
-        // this.averageTweeners()
-    }
-
-    render(){
+    @action calculatePerformance = () => {
+        console.log('calculating performance')
         const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
-        const {distribution} = this
         //all counties' performance in this indicator 
-        let performance = Object.keys(ind.counties).filter((cty)=>{
+        this.performance = Object.keys(ind.counties).filter((cty)=>{
             if(cty==='california') return false
             if(race){
                 const value = ind.counties[cty][race?race:'totals'][year]
@@ -162,20 +75,120 @@ export default class IndicatorByCounties extends React.Component{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
             else return a.rank > b.rank? 1 : a.rank < b.rank? -1 : 0 
         }).map((cty,i)=>{
-            // const distrib = this.generateDistribution()
-            if(!race) return {
-                ...cty,
-                // condensed: !distrib.includes(i)
-            }
+            if(!race) return {...cty}
             else return {
                 ...cty,
-                // label: cty.label,
                 leftLabel: ordinal(i+1),
                 rank: i+1,
-                // condensed: !distrib.includes(i)
             }
         })
 
+        console.log(this.performance.toJS())
+    } 
+
+    @action toggleDistribute = () => {this.distribute = !this.distribute}
+
+    @action generateDistribution = () => {
+        console.log('generating distribution')
+        const {county, indicator, year, race} = this.props.store
+
+        const ind = indicators[indicator]
+
+        const validCounties = Object.keys(ind.counties).filter((cty)=>{
+            if(!race){
+                const rank = ind.counties[cty].ranks[year]
+                 return cty!=='california' && rank && typeof rank === 'number'
+            }
+            else{
+                const value = ind.counties[cty][race][year]
+                return cty!=='california' && value && typeof value == 'number'   
+            }
+        })
+
+        // const entries = this.props.store.county? moreEntries : defaultEntries
+        const entries = defaultEntries
+        const countyCount = validCounties.length
+        const unit = parseInt((countyCount / entries).toFixed(0))
+        const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
+            //-1 for california...
+        let distribution = []
+        for(let i = 1; i<entries-1; i++){
+            distribution.push((i*unit+offset))
+        }
+        distribution.unshift(0)
+        distribution.push(countyCount-1)
+
+        if(county){
+            let mustInclude = findIndex(this.performance, (o)=>{return o.id===county})
+            //get actual index of this county within the performance list
+
+                //to find the equivalent in race, we need to find its place in the entire pecking order
+            if(race){
+                const valueSortedCounties = Object.keys(ind.counties).map((cty)=>{
+                    return {county: cty, value: ind.counties[cty][race][year]}
+                }).filter((item)=>{
+                    return item.county!=='california' && item.value!=='' && item.value !== '*'
+                })
+                .sort((a,b)=>{
+                     return a.value > b.value? -1 : a.value < b.value? 1 : 0
+                })
+                // console.log(county)
+                mustInclude = findIndex(valueSortedCounties, (item)=>{return item.county===county})
+                // console.log(valueSortedCounties)
+                // console.log('race: mustinclude is', mustInclude)
+            }
+                
+            let replaceIndex = indexOfClosest(distribution, mustInclude)
+            console.log('mustInclude is', mustInclude, 'replaceIndex is', replaceIndex)
+            if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
+            if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
+            this.selectedIndex = replaceIndex
+            distribution[replaceIndex] = mustInclude
+
+            console.log('adjusted distribution:', distribution)
+
+            // this.condensed = distribution.slice(0)
+            // this.condensed.splice(replaceIndex,1)
+            // if(replaceIndex !== 0) this.condensed.splice(0,1)
+            // if(replaceIndex !== this.condensed.length - 1) this.condensed.splice(this.condensed.length-1,1)
+
+        }
+        else if (!county){
+            this.condensed = []
+        }
+        // console.log('distribution')
+        console.log(distribution)
+        // return distribution
+        this.distribution = distribution
+    }
+
+
+    componentDidMount(){
+        this.calculatePerformance()
+        this.generateDistribution()
+        // this.averageTweeners()
+    }
+
+    componentDidUpdate(oldProps){
+        console.log('updated')
+        if(this.props.store !== oldProps.store){
+            console.log('store changed')
+
+            this.calculatePerformance()
+            this.generateDistribution()
+
+
+            // this.averageTweeners()
+        }
+        // this.generateDistribution()
+        // this.averageTweeners()
+    }
+
+    render(){
+
+        const {county, race, year, indicator, completeWorkflow} = this.props.store
+        let {performance} = this 
+        const ind = indicators[indicator]
 
         performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
@@ -192,15 +205,6 @@ export default class IndicatorByCounties extends React.Component{
             if(e===null) return false
             else return true
         })
-
-
-        // .filter((e,i)=>{
-            // return this.distribute? this.generateDistribution().includes(i) : true
-        // })
-        //add tweeners in
-        //sort once more? 
-
-        console.log(performance)
 
         return (
             <div>

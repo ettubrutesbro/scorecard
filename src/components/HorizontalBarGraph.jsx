@@ -12,7 +12,6 @@ import FlipMove from 'react-flip-move'
 export default class HorizontalBarGraph extends React.Component{
 
     @observable width = 400
-    @observable selectedIndex = null
 
     componentDidMount(){
         this.setGraphDimensions()
@@ -26,7 +25,6 @@ export default class HorizontalBarGraph extends React.Component{
     render(){
         const {selectBar} = this.props
         console.log(selectBar)
-        console.log(this.selectedIndex)
         return (
             <GraphTable
                 ref = {(graph)=>{this.graph=graph}}
