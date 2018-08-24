@@ -61,7 +61,7 @@ storiesOf('Design Tooling', module)
     }): ''
     console.log(dataForMap)
 
-    const brewerScheme = select('brewer scheme', ['OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'OrRd')
+    const brewerScheme = select('brewer scheme', ['OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'PuBu')
     const classes = number('# of colors in spectrum', 5)
 
     const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'l')
