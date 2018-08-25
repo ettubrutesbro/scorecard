@@ -15,6 +15,7 @@ const Option = styled.div`
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
+    // margin: 0 -1px;
     outline: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
     z-index: ${props => props.selected? 1 : 0}
     font-size: 13px;
@@ -26,6 +27,7 @@ const Option = styled.div`
     &:not(:first-of-type){
         // border-left: none;
         // transform: translateX(-1px);
+        outline-left-color: none;
     }
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--normtext)'};
     // background: ${props => props.disabled? '#f3f3f5' : 'white'};
