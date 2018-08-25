@@ -24,9 +24,6 @@ const Wrapper = styled.div`
 `
 
 const BreakdownBox = styled.div`
-    padding: 30px;
-    margin: 0px 30px 30px 30px;
-    border: 1px solid #dedede;
     flex-grow: 1;
 `
 

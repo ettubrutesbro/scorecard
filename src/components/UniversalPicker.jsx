@@ -15,6 +15,10 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     max-width: 480px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+    background: var(--offwhitefg);
 `
 const Row = styled.div`
     input {
@@ -22,10 +26,15 @@ const Row = styled.div`
         height: 100%;
         padding: 10px;
     }
-    margin-top: 10px;
+    &:not(:first-of-type){
+        margin-top: 15px;   
+    }
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    // justify-content: space-between;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: var(--fainttext);
 `
 const Results = styled.div`
     margin: 10px;
@@ -34,13 +43,24 @@ const Results = styled.div`
     border: 1px solid black;
 `
 const Btn = styled.div`
-    background: black;
-    color: white;
-    padding: 10px;
+    background: white;
+    border: 1px solid var(--fainttext);
+    padding: 6px 15px;
+    color: var(--normtext);
+    cursor: pointer;
+    &:hover{
+        color: var(--strokepeach);
+        border-color: 1px solid var(--peach);
+
+    }
 `
 const Button = props => {
     return <Btn onClick={props.onClick}> {props.label} </Btn>
 }
+const Label = styled.div`
+    margin-right: 15px;
+    width: 60px;
+`
 
 @observer
 export default class UniversalPicker extends React.Component {
@@ -108,7 +128,7 @@ export default class UniversalPicker extends React.Component {
         return (
             <Wrapper>
                 <Row>
-                    Indicator:
+                    <Label>Indicator</Label>
                     <Button
                         label="See all indicators"
                         onClick={() => {
@@ -133,9 +153,9 @@ export default class UniversalPicker extends React.Component {
                     </Results>
                 )*/}
                 <Row>
-                    County: 
+                    <Label>County: </Label>
                     <Button
-                        label="See county list"
+                        label = "Search list of counties"
                         onClick={() => {
                             store.setWorkflow('county')
                         }}
@@ -158,7 +178,7 @@ export default class UniversalPicker extends React.Component {
                 {(!indicator ||
                     ind.categories.includes('hasRace')) && (
                     <Row>
-                        Race:
+                        <Label>Race:</Label>
                         <Toggle
                             options={raceOptions}
                             onClick={value =>
@@ -177,7 +197,7 @@ export default class UniversalPicker extends React.Component {
                 {indicator &&
                     ind.years.length > 1 && (
                         <Row>
-                            Year:
+                            <Label>Year:</Label>
                             <Toggle
                                 options={ind.years.map(
                                     (yr, i) => {

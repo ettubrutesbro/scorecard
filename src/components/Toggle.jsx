@@ -27,9 +27,10 @@ const Option = styled.div`
     &:not(:first-of-type){
         // border-left: none;
         // transform: translateX(-1px);
-        outline-left-color: none;
+        // outline-left-color: none;
     }
-    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--normtext)'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
+    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};
     // background: ${props => props.disabled? '#f3f3f5' : 'white'};
     &:hover{
         // background: white;
@@ -41,6 +42,7 @@ const Option = styled.div`
 
 const Accent = styled.div`
     position: absolute;
+    display: none;
     width: 100px;
     bottom: 0;
     box-sizing: border-box;
