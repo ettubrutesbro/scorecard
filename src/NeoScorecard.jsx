@@ -34,6 +34,7 @@ class AppStore{
         classes: 5
     }
 
+
     @computed get colorScale(){
         const opts = this.colorOptions
         return chroma.scale(opts.scheme)
@@ -42,6 +43,7 @@ class AppStore{
             .classes(opts.classes)
     } 
 
+    @action setColor = (which,what) => this.colorOptions[which] = what
     @action setYearIndex = () => {
         const newYears = indicators[this.indicator].years
         if(!this.year && newYears.length>1) this.year = newYears.length-1
@@ -83,7 +85,22 @@ class AppStore{
         this.activeWorkflow = null
         this[which] = value
         if(which==='indicator'){
+            //ensure year validity when changing indicators
             this.setYearIndex()
+            //set color scheme for indicator category
+            const catColors = {welfare: 'PuRd', health: 'BuGn', education: 'Purples', earlyChildhood: 'PuBu'}
+            const mainCategory = indicators[this.indicator].categories.filter((o)=>{return o!=='hasRace'})[0]
+            this.setColor('scheme', catColors[mainCategory])
+            //assign padding values 
+            const allNums = Object.keys(indicators[this.indicator].counties).map((cty)=>{
+                return indicators[this.indicator].counties[cty][race||'totals'][year]
+            }).filter((o)=>{
+                const inv = o==='' || o==='*'
+                // if(inv) invalids++
+                return inv?false : true
+            })
+            this.setColor('padLo',Math.min(...allNums)/100)
+            this.setColor('padHi',1 - Math.max(...allNums)/100)
         }
         if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
             //if race/indicator/county selected -> no race data, unset race
