@@ -16,9 +16,9 @@ export default class HorizontalBarGraph extends React.Component{
     @observable hoveredRow = null
     @observable expanded = false
 
-    @action handleHoverGraph = (v) => {this.hoveredGraph = v}
-    @action handleHoverContents = (tf) => this.hoveredGraph = tf? false : true 
-    @action handleHoverRow = (row) => this.hoveredRow = row
+    @action handleHoverGraph = (v) => {if(this.props.expandable) this.hoveredGraph = v}
+    @action handleHoverContents = (tf) => {if(this.props.expandable) this.hoveredGraph = tf? false : true }
+    @action handleHoverRow = (row) => {if(this.props.selectable) this.hoveredRow = row}
 
     @action expandGraph = () => {
         this.expanded = !this.expanded
@@ -44,6 +44,7 @@ export default class HorizontalBarGraph extends React.Component{
                 onMouseLeave = {()=>this.handleHoverGraph(false)}
                 hovered = {this.hoveredGraph&&!this.expanded}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
+                expanded = {this.expanded}
             >
                 <Header offset = {this.hoveredGraph&&!this.expanded}>
                     {this.props.header} {this.selectedIndex}
@@ -146,11 +147,11 @@ const GraphTable = styled.div`
     /*width: 100%;*/
     max-width: 480px;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};
     letter-spacing: 0.5px;
     font-size: 13px;
     border: 1px solid;
-    transition: border-color .25s, background-color .25s;
+    transition: border-color .25s, background-color .25s, box-shadow .25s;
     border-color: ${props => props.hovered? 'var(--peach)' : 'transparent'};
     background-color: ${props => props.hovered? 'var(--faintpeach)' : 'var(--offwhitefg)'};
     cursor: pointer;
@@ -171,7 +172,7 @@ const Content = styled.div`
     padding: 0 20px 0px 20px;
     margin-bottom: 20px;
     transition: transform .25s;
-    transform: ${props => props.offset? 'translateY(-25px)' : ''};
+    transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
 
 const Label = styled.div`

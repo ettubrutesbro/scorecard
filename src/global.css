@@ -9,7 +9,8 @@ html{
 	--fainttext: #919191;
 	--offwhitebg: #f3f3f5;
 	--offwhitefg: #fbfbfc;
-	--shadow: 0 4px 4px rgba(0,0,0,0.25);
+	--shadow: 0 3px 5px rgba(0,0,0,0.25);
+	--highlightshadow: 0 5px 8px rgba(0,0,0,0.375);
 	--faintpeach: #FFF6F2;
 	--peach: #FCBBA1;
 	--strokepeach: #ef6732;

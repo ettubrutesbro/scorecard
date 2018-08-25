@@ -220,6 +220,7 @@ export default class IndicatorByCounties extends React.Component{
                 onClickGraph = {this.toggleDistribute}
                 graphHoverPrompt = 'Click to see full list (47 counties)'
                 expandable
+                selectable
             />
             </div>
         )
