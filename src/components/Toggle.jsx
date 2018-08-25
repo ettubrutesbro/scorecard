@@ -8,19 +8,33 @@ import {findDOMNode} from 'react-dom'
 const ToggleBody = styled.div`
     position: relative;
     display: inline-flex;
-    border: 1px solid black;
+    // border: 1px solid var(--fainttext);
     // padding: 10px;
 `
 const Option = styled.div`
+    cursor: pointer;
     box-sizing: border-box;
     height: 100%;
-    // border: 1px solid red;
-    padding: 8px 12px 9px 12px;
+    outline: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
+    z-index: ${props => props.selected? 1 : 0}
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 6px 15px;
+    // &:first-of-type{
+    //     // border-left: none;
+    // }
     &:not(:first-of-type){
-        border-left: 1px solid black;
+        // border-left: none;
+        // transform: translateX(-1px);
     }
-    color: ${props => props.selected? 'red' : props.disabled? '#b1b1b1' : 'black'};
-    background: ${props => props.disabled? '#f3f3f5' : 'white'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--normtext)'};
+    // background: ${props => props.disabled? '#f3f3f5' : 'white'};
+    &:hover{
+        // background: white;
+        color: ${props => props.selected?'var(--strokepeach)':'var(--strokepeach)'};
+        outline-color: var(--strokepeach);
+        z-index: 1;
+    }
 ` 
 
 const Accent = styled.div`
@@ -28,14 +42,17 @@ const Accent = styled.div`
     width: 100px;
     bottom: 0;
     box-sizing: border-box;
-    border: 2px solid black;
+    height: 100%;
+    background: var(--faintpeach);
+    // border: 1px solid var(--strokepeach);
     transform-origin: 0% 100%;
     transition: transform .2s;
+    z-index: 0;
     &::after{
         // content: '';
         position: absolute;
         height: 3px;
-        border-right: 1px solid black;
+        border-right: 1px solid var(--strokepeach);
         right: -3px;
         top: -2px;
     }

@@ -14,6 +14,7 @@ import semanticTitles from '../assets/semanticTitles'
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 480px;
 `
 const Row = styled.div`
     input {
@@ -107,13 +108,7 @@ export default class UniversalPicker extends React.Component {
         return (
             <Wrapper>
                 <Row>
-                    <input
-                        placeholder="search indicators"
-                        value={this.searchIndicators}
-                        onChange={e => {
-                            this.setSearchString('Indicators', e.target.value)
-                        }}
-                    />
+                    Indicator:
                     <Button
                         label="See all indicators"
                         onClick={() => {
@@ -121,7 +116,7 @@ export default class UniversalPicker extends React.Component {
                         }}
                     />
                 </Row>
-                {this.searchIndicators && (
+                {/*this.searchIndicators && (
                     <Results>
                         {flatIndicatorList
                             .filter(ind => {
@@ -136,18 +131,9 @@ export default class UniversalPicker extends React.Component {
                             })
                             .slice(0, 10)}
                     </Results>
-                )}
+                )*/}
                 <Row>
-                    <input
-                        placeholder={
-                            this.props.countySearchPlaceholder ||
-                            'Search counties...'
-                        }
-                        value={this.searchCounties}
-                        onChange={e => {
-                            this.setSearchString('Counties', e.target.value)
-                        }}
-                    />
+                    County: 
                     <Button
                         label="See county list"
                         onClick={() => {
@@ -155,7 +141,7 @@ export default class UniversalPicker extends React.Component {
                         }}
                     />
                 </Row>
-                {this.searchCounties && (
+                {/*this.searchCounties && (
                     <Results>
                         {flatCountyList
                             .filter(county => {
@@ -168,7 +154,7 @@ export default class UniversalPicker extends React.Component {
                             })
                             .slice(0, 10)}
                     </Results>
-                )}
+                )*/}
                 {(!indicator ||
                     ind.categories.includes('hasRace')) && (
                     <Row>
