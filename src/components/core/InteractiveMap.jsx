@@ -71,7 +71,7 @@ const CountyPath = styled.path`${CountyStyle}`
         return(
             <Wrapper 
                 ref = {(container)=> this.container = container}
-                style = {{border: '1px solid black', overflow: 'hidden'}}
+                style = {{overflow: 'hidden'}}
             >
                 <ReactTooltip disable = {!indicator}/>
                 <TheMap 

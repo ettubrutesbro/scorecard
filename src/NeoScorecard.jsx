@@ -130,7 +130,7 @@ const App = styled.div`
     height: 100%;
 `
 const Left = styled.div`
-    width: 50%;
+    width: 600px;
     height: 100%;
     padding: 30px;
     background: var(--offwhitebg);
