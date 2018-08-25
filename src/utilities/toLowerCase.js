@@ -6,5 +6,9 @@ function camelLower(str){
   }).replace(/\s+/g, '');
 }
 
-export {camelLower}
+function capitalize(str){
+	return str.slice(0,1).toUpperCase() + str.substr(1)
+}
+
+export {camelLower, capitalize}
 export default firstLower

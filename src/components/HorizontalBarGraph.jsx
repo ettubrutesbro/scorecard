@@ -46,8 +46,12 @@ export default class HorizontalBarGraph extends React.Component{
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
             >
-                <Header offset = {this.hoveredGraph&&!this.expanded}>
-                    {this.props.header} {this.selectedIndex}
+                <Header expanded = {this.expanded}>
+                    {!this.expanded && this.props.header}
+                    {this.expanded && this.props.expandedHeader}
+                    {this.expanded && this.props.expandedSubHeader && 
+                        <Subheader>{this.props.expandedSubHeader}</Subheader>
+                    }
                 </Header>
                 <Content
                     offset = {this.hoveredGraph&&!this.expanded}
@@ -59,7 +63,7 @@ export default class HorizontalBarGraph extends React.Component{
                     typeName = {null}
                     enterAnimation = {null}
                     leaveAnimation = {null}
-                    disableAllAnimations = {this.props.disableAnim}
+                    disableAllAnimations = {this.props.disableAnim || this.expanded}
                 >
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
@@ -123,13 +127,18 @@ export default class HorizontalBarGraph extends React.Component{
                         )
                     })}
                 </FlipMove>
-                </Content>
-                {this.props.average &&
+                                {this.props.average &&
                     <AverageLine 
                         labelWidth = {this.props.labelWidth}
-                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth)}
-                    />
+                        // offset = {0}
+                        muted = {this.hoveredRow}
+                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-40)}
+                    >
+                        <AverageLabel> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
+                    </AverageLine>
                 }
+                </Content>
+
                 {this.props.graphHoverPrompt &&
                     <Prompt visible = {this.hoveredGraph&&!this.expanded}>
                         {this.props.graphHoverPrompt}
@@ -153,17 +162,21 @@ const GraphTable = styled.div`
     border: 1px solid;
     transition: border-color .25s, background-color .25s, box-shadow .25s;
     border-color: ${props => props.hovered? 'var(--peach)' : 'transparent'};
-    background-color: ${props => props.hovered? 'var(--faintpeach)' : 'var(--offwhitefg)'};
+    background-color: ${props => props.hovered? 'white' : 'var(--offwhitefg)'};
     cursor: pointer;
+    overflow: hidden;
 `
 const Header = styled.div`
     width: 100%;
-    color: var(--fainttext);
-    margin: 20px 0 5px 20px;
-    // font-weight: bold;
+    color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
+    margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
+    font-size: ${props=>props.expanded? '16px' : '13px'};
     transition: transform .25s, opacity .25s;
-    opacity: ${props => props.offset? 0 : 1};
-    transform: ${props => props.offset? 'translateY(-15px)' : ''};
+`
+const Subheader = styled.div`
+    font-size: 13px;
+    color: var(--fainttext);
+    margin-top: 5px;
 
 `
 const Content = styled.div`
@@ -172,7 +185,7 @@ const Content = styled.div`
     padding: 0 20px 0px 20px;
     margin-bottom: 20px;
     transition: transform .25s;
-    transform: ${props => props.offset? 'translateY(-20px)' : ''};
+    // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
 
 const Label = styled.div`
@@ -184,11 +197,12 @@ const Label = styled.div`
     justify-content: space-between;
     padding-right: 10px;
     // border: 1px solid black;
-    color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--fainttext)"};
+    color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
 
 `
 const LeftLabel = styled.div`
     font-weight: bold;
+    // font-weight: 500;
     // border: 1px solid red;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" : "var(--fainttext)"};
 
@@ -213,36 +227,55 @@ const Row = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -10px;
-    left: ${props => props.labelWidth}px;
+    bottom: -5px;
+    left: ${props => props.labelWidth + 19}px;
     width: 0px;
-    height: calc(100%);
-    border-right: 1px solid black;
+    height: calc(100% + 5px);
+    border-left: 1px dashed ${props=>props.muted?'transparent':'var(--offwhitefg)'};
+    border-right: 1px dashed ${props=>props.muted?'rgba(0,0,0,0.25)':'var(--normtext)'};
     z-index: 2;
     // margin-left: calc(${props=>props.percentage}% - 200px);
-    transition: transform .5s;
+    transition: transform .5s, border-color .15s;
     transform: translateX(${props=>props.offset}px);
+    // opacity: ${props=>props.muted?0.5:1};
+
     &::before{  
         content: '';
         position: absolute;
-        width: 25px;
+        width: 20px;
         height: 1px;
-        border-bottom: 1px black solid;
+        border-bottom: 1px var(--fainttext) solid;
         top: -1px;
-        left: -12px;
+        left: -10px;
     }
     &::after{
         content: '';
         position: absolute;
         white-space: nowrap;
         /*width: 0;*/
-        border-top: 1px black solid;
-        width: 25px;
+        border-top: 1px var(--fainttext) solid;
+        width: 20px;
         height: 1px;
         transform: translateX(-50%);
         bottom: -1px;
         text-align: center;
     }
+`
+const AverageLabel = styled.div`
+    width: 100%;
+    white-space: nowrap;
+    position: absolute;
+    // border: 1px solid black;
+    display: inline-flex;
+    justify-content: center;
+    top: -20px;
+    // color: var(--normtext);
+    color: var(--fainttext);
+
+`
+const AverageValue = styled.span`
+    margin-left: 5px;
+    color: var(--normtext);
 `
 const Bar = styled.div`
     position: relative;
@@ -264,7 +297,7 @@ const EndHatch = styled.div`
     height: 100%;
 `
 const Value = styled.div`
-    color: ${props => props.hovered?'var(--strokepeach)':'var(--fainttext)'};
+    color: ${props => props.hovered?'var(--strokepeach)':'var(--normtext)'};
     letter-spacing: 0.5px;
     position: absolute;
     // right: 0;
@@ -276,15 +309,18 @@ const Prompt = styled.div`
     position: absolute;
     width: 100%;
     font-size: 13px;
-    color: var(--strokepeach);
-    font-weight: bold;
+    // color: var(--strokepeach);
+    // font-weight: bold;
     // letter-spacing: 0.1px;
     text-align: center;
     bottom: 0;
-    padding: 10px;
+    padding: 45px 0 10px 0;
+    // border-top: 1px solid red;
+    color: var(--normtext);
     transition: transform .25s, opacity .25s;
-    transform: ${props => props.visible? 'translateY(0px)' : 'translateY(10px)'};
+    transform: ${props => props.visible? 'translateY(0px)' : 'translateY(20px)'};
     opacity: ${props => props.visible? 1 : 0};
+    background: linear-gradient(0deg, rgba(255,255,255,1) 35%, rgba(255,255,255,0) 100%)
 `
 
 HorizontalBarGraph.defaultProps = {

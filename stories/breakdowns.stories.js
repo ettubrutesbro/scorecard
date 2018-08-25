@@ -48,9 +48,11 @@ storiesOf('Breakdowns', module)
     const county = select('county', allCounties, null)
     const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
-    
+
     const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
-        return indicators[indicator].counties[cty][race||'totals'][year]
+        let use = race
+        if(!indicators[indicator].counties[cty][race]) use = 'totals'
+        return indicators[indicator].counties[cty][use][year]
     }).filter((o)=>{return o===''||o==='*'?false : true})
     // console.log(padLo)
 

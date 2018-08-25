@@ -11,6 +11,8 @@ import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 import semanticTitles from '../assets/semanticTitles'
 
+import {capitalize} from '../utilities/toLowerCase'
+
 import ordinal from 'ordinal'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
@@ -206,11 +208,17 @@ export default class IndicatorByCounties extends React.Component{
             else return true
         })
 
+        const sem = semanticTitles[indicator]
+        let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
+        expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
+
         return (
             <div>
             <HorizontalBarGraph
                 selected = {county}
-                header = {'COUNTY DISTRIBUTION'}
+                header = {'By Counties'}
+                expandedHeader = {expandedHeader}
+                expandedSubHeader = {performance.length + ' counties reported data'}
                 labelWidth = {150}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
