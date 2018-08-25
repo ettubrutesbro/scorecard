@@ -216,12 +216,23 @@ export default class IndicatorByCounties extends React.Component{
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
                 selectBar = {this.props.store.completeWorkflow}
+                onHover = {()=>console.log('hovering graph')}
+                onClickGraph = {this.toggleDistribute}
+                graphHoverPrompt = 'Click to see full list (47 counties)'
+                expandable
             />
-                <Button label = "See full list" onClick = {this.toggleDistribute}/>
             </div>
         )
     }
 }
+
+const Prompt = styled.div`
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 10px;
+    opacity: ${props => props.visible? 1 : 0};
+`
 
 // IndicatorByCounties.defaultProps = {
 //     entries: 12,
