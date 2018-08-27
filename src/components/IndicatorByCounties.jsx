@@ -1,6 +1,6 @@
 
 import React from 'react'
-import {observable, action} from 'mobx'
+import {observable, action, autorun} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
@@ -45,6 +45,7 @@ export default class IndicatorByCounties extends React.Component{
     @observable distribution = []
     @observable condensed = []
 
+
     @action calculatePerformance = () => {
         console.log('calculating performance')
         const {county, indicator, year, race, colorScale} = this.props.store
@@ -85,7 +86,7 @@ export default class IndicatorByCounties extends React.Component{
             }
         })
 
-        console.log(this.performance.toJS())
+        // console.log(this.performance.toJS())
     } 
 
     @action toggleDistribute = () => {this.distribute = !this.distribute}
@@ -159,38 +160,34 @@ export default class IndicatorByCounties extends React.Component{
             this.condensed = []
         }
         // console.log('distribution')
-        console.log(distribution)
+        // console.log(distribution)
         // return distribution
         this.distribution = distribution
     }
 
 
     componentDidMount(){
-        this.calculatePerformance()
-        this.generateDistribution()
-        // this.averageTweeners()
-    }
-
-    componentDidUpdate(oldProps){
-        console.log('updated')
-        if(this.props.store !== oldProps.store){
-            console.log('store changed')
-
+        // this.calculatePerformance()
+        // this.generateDistribution()
+        const wtf = autorun(()=>{
+            const {indicator, race, county, year} = this.props.store
+            console.log(indicator, race, county, year)
             this.calculatePerformance()
             this.generateDistribution()
-
-
-            // this.averageTweeners()
-        }
-        // this.generateDistribution()
+        })
         // this.averageTweeners()
     }
+
+    
+
 
     render(){
 
         const {county, race, year, indicator, completeWorkflow} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
+
+
 
         performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution

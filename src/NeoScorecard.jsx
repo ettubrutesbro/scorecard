@@ -93,7 +93,7 @@ class AppStore{
             this.setColor('scheme', catColors[mainCategory])
             //assign padding values 
             const allNums = Object.keys(indicators[this.indicator].counties).map((cty)=>{
-                return indicators[this.indicator].counties[cty][race||'totals'][year]
+                return indicators[this.indicator].counties[cty][this.race||'totals'][this.year]
             }).filter((o)=>{
                 const inv = o==='' || o==='*'
                 // if(inv) invalids++

@@ -101,16 +101,20 @@ export default class HorizontalBarGraph extends React.Component{
                                             percentage = {item.value}
                                             height = {100/bars.length} 
                                             fill = {item.fill || ''}
-                                        />
+                                        >
+
                                         <EndHatch
+                                            scaleX = {100 / item.value}
                                             selected = {item.id === this.props.selected}
-                                            offset = {this.props.labelWidth + (((this.width-40) - this.props.labelWidth) * (item.value/100)) }
+                                            // offset = {this.props.labelWidth}
+                                            // offset = {this.props.labelWidth + (((this.width-60) - this.props.labelWidth) * (item.value/100)) }
                                         />
+                                        </Bar>
                                         {!condensed && 
                                         <Value
                                             hovered = {item.id === this.hoveredRow}
                                             alignValue = {this.props.alignValue}
-                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + (((this.width-40) - this.props.labelWidth) * (item.value/100) ) 
+                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + (((this.width-60) - this.props.labelWidth) * (item.value/100) ) 
                                                 : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
                                         >
                                             {item.trueValue && item.trueValue}
@@ -132,7 +136,7 @@ export default class HorizontalBarGraph extends React.Component{
                         labelWidth = {this.props.labelWidth}
                         // offset = {0}
                         muted = {this.hoveredRow}
-                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-40)}
+                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-60)}
                     >
                         <AverageLabel> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
                     </AverageLine>
@@ -217,7 +221,7 @@ const Rank = styled.span`
 const Row = styled.div`
     cursor: pointer;
     position: relative;
-    width: 100%;
+    width: calc(100% - 20px);
     display: flex;
     align-items: center;
     margin-top: 5px;
@@ -291,8 +295,8 @@ const Bar = styled.div`
 `
 const EndHatch = styled.div`
     position: absolute;
-    left: -2px;
-    transform: translateX(${props => props.offset}px);
+    right: 0px;
+    transform: scaleX(${props => props.scaleX});
     border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};
     height: 100%;
 `

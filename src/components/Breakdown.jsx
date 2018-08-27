@@ -27,18 +27,23 @@ const BreakdownBox = styled.div`
     flex-grow: 1;
 `
 
+@observer
 export default class Breakdown extends React.Component{
     render(){
         const {store} = this.props
-        const {indicator, county, race} = store
+        const {indicator, county, race, year} = store
         return(
             <Wrapper>
 
-                <BreakdownBox>
                     {indicator && !race &&  
                         // 'county performance distribution and indicator by race'
                         <IndicatorByCounties 
+                            // key = {indicator+county+year+race} //kills anims but works
                             store = {store}
+                            // indicator = {indicator}
+                            // county = {county}
+                            // race = {race}
+                            // year = {year}
                         />  
                     }
                     {indicator && !race && indicators[indicator].categories.includes('hasRace') &&
@@ -62,7 +67,6 @@ export default class Breakdown extends React.Component{
                             store = {store}
                         />
                     }
-                </BreakdownBox>
 
            
 
