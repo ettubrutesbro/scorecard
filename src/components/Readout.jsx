@@ -7,6 +7,8 @@ import {find} from 'lodash'
 import {findDOMNode} from 'react-dom'
 import commaNumber from 'comma-number'
 
+import CountingNumber from './CountingNumber'
+
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
@@ -40,8 +42,11 @@ const Crumb = styled.span`
     box-sizing: border-box;
     padding-bottom: 5px;
     border-bottom: ${props => props.active? '1px solid black' : '1px solid transparent'};
-    margin: ${props => props.active? '0 .5rem' : '0 0 0 0.4rem'};
-    
+    margin: ${props => props.active? '0 .5rem' : '0 0 0 0.4rem'};   
+`
+
+const ShadowNum = styled.div`
+    opacity: 0;
 `
 @observer
 export default class Readout extends React.Component{
@@ -74,7 +79,14 @@ export default class Readout extends React.Component{
 
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
-
+        let displayNum
+        if(indicator){
+            displayNum = county && race? ind.counties[county][race][year]
+                : county && !race? ind.counties[county].totals[year]
+                : !county && race? ind.counties.california[race][year]
+                : !county && !race? ind.counties.california.totals[year]
+                : 'wat'
+        }
         return(
             <ReadoutBlock
                 compact = {this.props.store.activeWorkflow}
@@ -88,11 +100,11 @@ export default class Readout extends React.Component{
                 {indicator && 
                     <div style = {{position: 'relative'}}>
                         <h1 ref = {(h1)=>{this.bigNumber = h1}}>
-                            {county && race && ind.counties[county][race][year]}
-                            {county && !race && ind.counties[county].totals[year]}
-                            {!county && race && ind.counties.california[race][year]}
-                            {!county && !race && ind.counties.california.totals[year]}
-                            %
+                            <ShadowNum>{displayNum}%</ShadowNum>
+                            <CountingNumber
+                                number = {displayNum}
+                            />
+                            
                         </h1>
                         <IndentedTitle
                             style = {{

@@ -73,8 +73,8 @@ export default class HorizontalBarGraph extends React.Component{
                                 key = {i}
                                 condensed = {condensed}
                                 onClick = {selectBar?()=>{selectBar('county',item)}:console.log(item) }
-                                onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
-                                onMouseLeave = {()=>{this.handleHoverRow(null)}}
+                                // onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
+                                // onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                 hovered = {item.id === this.hoveredRow}
                             >
                                 
@@ -83,6 +83,8 @@ export default class HorizontalBarGraph extends React.Component{
                                         labelWidth = {this.props.labelWidth} 
                                         invalid = {invalidValue}
                                         hovered = {item.id === this.hoveredRow}
+                                        onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
+                                        onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                     >
                                         <LeftLabel
                                             hovered = {item.id === this.hoveredRow}
@@ -102,6 +104,8 @@ export default class HorizontalBarGraph extends React.Component{
                                             percentage = {item.value}
                                             height = {100/bars.length} 
                                             fill = {item.fill || ''}
+                                            onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
+                                            onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                         >
 
                                         <EndHatch
