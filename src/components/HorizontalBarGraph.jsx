@@ -69,7 +69,8 @@ export default class HorizontalBarGraph extends React.Component{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
                         const condensed = item.condensed
                         return(
-                            <Row key = {item.label+'bar'}
+                            <Row 
+                                key = {i}
                                 condensed = {condensed}
                                 onClick = {selectBar?()=>{selectBar('county',item)}:console.log(item) }
                                 onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
