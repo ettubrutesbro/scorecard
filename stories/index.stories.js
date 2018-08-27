@@ -34,6 +34,7 @@ import Toggle from '../src/components/Toggle'
 
 import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
+import PickerBar from '../src/components/PickerBar'
 
 import { Button, Welcome } from '@storybook/react/demo';
 
@@ -150,6 +151,14 @@ storiesOf('Scorecard Prototypes', module)
 .add('UniversalPicker', ()=>{
     return(
         <UniversalPicker 
+            store = {store}
+        />
+    )
+})
+
+.add('PickerBar', ()=>{
+    return(
+        <PickerBar
             store = {store}
         />
     )

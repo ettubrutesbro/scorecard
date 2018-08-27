@@ -17,6 +17,7 @@ export default class IndicatorByRaces extends React.Component{
         const indicatorPerformanceByRace = races.map((race)=>{
             // const value = !ind[race][year] || ind[race][year]==='*'? 0 : ind[race][year]
             return {
+                id: race,
                 label: race,
                 // value: value
                 value: ind[race][year]
