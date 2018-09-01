@@ -8,6 +8,35 @@ import {mapValues} from 'lodash'
 
 import indicators from '../data/indicators'
 
+const Note = styled.h3`
+    display: inline-flex;
+    background: #FFF8D5;
+    padding: 10px 20px;
+    margin: 30px 0 10px 0;
+    font-weight: 400;
+`
+const Swatches = styled.div`
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid black;
+    max-width: 500px;
+`
+const Swatch = styled.div`
+    width: 65px; height: 65px;
+    background: ${props => props.fill};
+`
+const MapContainer = styled.div`
+    max-width: 650px;
+    flex-basis: 650px;
+    flex-shrink: 0;
+    /*max-height: 500px;*/
+`
+const ColorMocks = styled.div`
+    display: flex;
+    /*height: 900px;*/
+    /*border: 1px solid black;*/
+`
+
 const ColorPreviewer = (props) => {
 
 const {indicator, race, year, classes, padLeft, padRight, brewerScheme} = props

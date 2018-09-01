@@ -8,6 +8,8 @@ import {findDOMNode} from 'react-dom'
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
 
+import {floatingCorner, flushHard} from './BoxStyling'
+
 @observer
 export default class HorizontalBarGraph extends React.Component{
 
@@ -164,22 +166,28 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     /*width: 100%;*/
     max-width: 480px;
-    border-radius: 12px;
-    box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};
+    /*${floatingCorner}*/
+    ${flushHard}
+    /*border-radius: 12px;*/
+    /*box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};*/
     letter-spacing: 0.5px;
     font-size: 13px;
-    border: 1px solid;
+    /*border: 1px solid;*/
     transition: border-color .25s, background-color .25s, box-shadow .25s;
-    border-color: ${props => props.hovered? 'var(--peach)' : 'transparent'};
-    background-color: ${props => props.hovered? 'white' : 'var(--offwhitefg)'};
+    // border-color: ${props => props.hovered? 'var(--peach)' : 'transparent'};
+    // background-color: ${props => props.hovered? 'white' : 'var(--offwhitefg)'};
     cursor: pointer;
     overflow: hidden;
 `
 const Header = styled.div`
     width: 100%;
-    color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
-    margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
-    font-size: ${props=>props.expanded? '16px' : '13px'};
+    // color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
+    // margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
+    // 
+    // font-size: ${props=>props.expanded? '16px' : '13px'};
+    color: var(--normtext);
+    margin: 20px 0 10px 20px;
+    font-size: 16px;
     transition: transform .25s, opacity .25s;
 `
 const Subheader = styled.div`
