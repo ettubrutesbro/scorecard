@@ -166,8 +166,7 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     /*width: 100%;*/
     max-width: 480px;
-    /*${floatingCorner}*/
-    ${flushHard}
+    ${floatingCorner}
     /*border-radius: 12px;*/
     /*box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};*/
     letter-spacing: 0.5px;
@@ -303,14 +302,14 @@ const Bar = styled.div`
     transform: scaleX(${props=> props.percentage/100});
     //TODO: selection handling
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
-    border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
+    // border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
     border-right-color: transparent;
 `
 const EndHatch = styled.div`
     position: absolute;
     right: 0px;
     transform: scaleX(${props => props.scaleX});
-    border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};
+    /*border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};*/
     height: 100%;
 `
 const Value = styled.div`

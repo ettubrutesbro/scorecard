@@ -27,13 +27,11 @@ export default class IndicatorByRaces extends React.Component{
         // console.log(indicatorPerformanceByRace)
         return(
             <div>
-                
-
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
                     header = "By Race"
                     bars = {indicatorPerformanceByRace}
-                    labelWidth = {70}
+                    labelWidth = {100}
                 />
             </div>
         )

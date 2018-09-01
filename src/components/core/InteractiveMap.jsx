@@ -19,10 +19,10 @@ const TheMap = styled.svg`
 
 const CountyStyle = css`
     cursor: pointer;
-    stroke: ${props => props.selected?'red': props.highlighted?'pink': 'white'};
+    stroke: ${props => props.selected?'red': props.highlighted?'pink': 'transparent'};
     stroke-alignment: ${props => props.selected? 'inner' : 'center'}
     fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
-    stroke-width: ${props=>props.selected? 2 : 0.5};
+    stroke-width: 2.25;
 `
 
 const CountyPolygon = styled.polygon`${CountyStyle}`
@@ -99,7 +99,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 d = {d}
                                 style = {{
                                     fill: fill, // between 0 and 1
-                                    transitionDuration: data? 0.15+i*0.025+'s' : '0s',
+                                    transition: data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s',
                                     // strokeWidth: this.props.selected? 1.25 : 2.5
                                 }}
                                 selected = {selected===id}
