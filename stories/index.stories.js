@@ -158,9 +158,11 @@ storiesOf('Scorecard Prototypes', module)
 
 .add('PickerBar', ()=>{
     return(
+        <Void>
         <PickerBar
             store = {store}
         />
+        </Void>
     )
 })
 
@@ -194,6 +196,15 @@ storiesOf('Generic components',module)
                 {label: 'blablabla', value: 'blablabla'},    
             ]}
         />
+        <Toggle
+            size = "big"
+            options = {[
+                {label: 'hello', value: 'hello'},    
+                {label: 'world', value: 'world'},    
+                {label: 'goodbye', value: 'goodbye'},    
+                {label: 'blablabla', value: 'blablabla'},    
+            ]}
+        />
         </div>
     )
 })
@@ -204,4 +215,11 @@ const Note = styled.h3`
     padding: 10px 20px;
     margin: 30px 0 10px 0;
     font-weight: 400;
+`
+const Void = styled.div`
+    width: 100vw;
+    height: 100vh;
+    background: var(--offwhitebg);
+    padding: 50px;
+
 `

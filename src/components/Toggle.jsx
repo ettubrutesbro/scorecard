@@ -16,19 +16,12 @@ const Option = styled.div`
     box-sizing: border-box;
     height: 100%;
     // margin: 0 -1px;
-    outline: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
+    border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
     z-index: ${props => props.selected? 1 : 0}
-    font-size: 13px;
+    font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
-    padding: 6px 15px;
-    // &:first-of-type{
-    //     // border-left: none;
-    // }
-    &:not(:first-of-type){
-        // border-left: none;
-        // transform: translateX(-1px);
-        // outline-left-color: none;
-    }
+    padding: ${props => props.size==='big'? '15px 25px' : '6px 15px'};
+    border-radius: ${props => props.firstLast==='first'? '4px 0 0 4px' : props.firstLast === 'last'? '0 4px 4px 0' : ''};
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};
     // background: ${props => props.disabled? '#f3f3f5' : 'white'};
@@ -37,6 +30,9 @@ const Option = styled.div`
         color: ${props => props.selected?'var(--strokepeach)':'var(--strokepeach)'};
         outline-color: var(--strokepeach);
         z-index: 1;
+    }
+    &:not(:first-of-type){
+        transform: translateX(-${props => props.index}px);
     }
 ` 
 
@@ -86,10 +82,13 @@ export default class Toggle extends React.Component {
 
     render(){
     return(
-        <ToggleBody>
-            {this.props.options.map((option, i)=>{
+        <ToggleBody size = {this.props.size}>
+            {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
+                    firstLast = {i===0?'first':i===arr.length-1?'last':''}
+                    index = {i}
+                    size = {this.props.size}
                     key = {this.hash+'option'+i}
                     ref = {(option)=> this['option'+i] = option}
                     onClick = {!option.disabled? ()=>this.props.onClick(option.value) : ()=>console.log('this option is disabled.')}
