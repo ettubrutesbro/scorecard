@@ -12,7 +12,7 @@ const races = [
 
 export default class IndicatorByRaces extends React.Component{
     render(){
-        const {indicator, year, county} = this.props.store
+        const {indicator, year, county, colorScale} = this.props.store
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
         const indicatorPerformanceByRace = races.map((race)=>{
             // const value = !ind[race][year] || ind[race][year]==='*'? 0 : ind[race][year]
@@ -20,18 +20,18 @@ export default class IndicatorByRaces extends React.Component{
                 id: race,
                 label: race,
                 // value: value
-                value: ind[race][year]
+                value: ind[race][year],
+                fill: colorScale? colorScale(ind[race][year]) : ''
             }
         })
         // console.log(indicatorPerformanceByRace)
         return(
             <div>
-                
-
                 <HorizontalBarGraph
-                    header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
+                    // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
+                    header = "By Race"
                     bars = {indicatorPerformanceByRace}
-                    labelWidth = {70}
+                    labelWidth = {100}
                 />
             </div>
         )

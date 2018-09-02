@@ -68,7 +68,7 @@ export default class IndicatorByCounties extends React.Component{
                 //label should be dom element featuring rank ordinal
                 id: cty,
                 label: find(counties,(c)=>{return c.id===cty}).label, 
-                leftLabel: !race? ordinal(rank) : '',
+                // leftLabel: !race? ordinal(rank) : '',
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
@@ -81,7 +81,7 @@ export default class IndicatorByCounties extends React.Component{
             if(!race) return {...cty}
             else return {
                 ...cty,
-                leftLabel: ordinal(i+1),
+                // leftLabel: ordinal(i+1),
                 rank: i+1,
             }
         })
@@ -216,7 +216,7 @@ export default class IndicatorByCounties extends React.Component{
                 header = {'By Counties'}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
-                labelWidth = {150}
+                labelWidth = {120}
                 bars = {performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
