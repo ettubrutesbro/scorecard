@@ -78,7 +78,6 @@ export default class PickerBar extends React.Component{
 						expanded = {this.expanded==='race'} 
 						onClick = {()=>this.setExpanded('race')}
 					/>
-				{!this.expanded && 
 				<Toggle
 					size = "big"
 					options = {[
@@ -86,7 +85,7 @@ export default class PickerBar extends React.Component{
 						{label: '2016', value: 2016},
 					]}
 				/>
-				}
+				
 				</Wrapper>
 				<FlipMove
 					// delay = {100}
@@ -99,12 +98,12 @@ export default class PickerBar extends React.Component{
 						to: {transform: 'scaleY(0)', opacity: 0}
 					}}
 				>
-				{this.showArea && (this.expanded === 'county' || this.expanded === 'indicator') &&
+				{/*this.showArea && (this.expanded === 'county' || this.expanded === 'indicator') &&
 					<LargeSelectionArea 
 						ref = {(thing)=>{this.thing = thing}}
 						// key = {this.expanded}
 					/>
-				}
+				*/}
 				</FlipMove>
 
 			</React.Fragment>

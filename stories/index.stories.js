@@ -35,6 +35,7 @@ import Toggle from '../src/components/Toggle'
 import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
 import PickerBar from '../src/components/PickerBar'
+import Scorecard from '../src/Scorecard'
 
 import { Button, Welcome } from '@storybook/react/demo';
 
@@ -145,6 +146,12 @@ storiesOf('Scorecard Prototypes', module)
 .add('neoscorecard (noanim)',()=>{
     return(
         <NeoScorecard />
+    )
+})
+
+.add('scorecard', ()=>{
+    return(
+        <Scorecard />
     )
 })
 
