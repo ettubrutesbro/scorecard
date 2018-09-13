@@ -47,7 +47,7 @@ export default class IndicatorByCounties extends React.Component{
 
 
     @action calculatePerformance = () => {
-        console.log('calculating performance')
+        // console.log('calculating performance')
         const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
         //all counties' performance in this indicator 
@@ -92,7 +92,7 @@ export default class IndicatorByCounties extends React.Component{
     @action toggleDistribute = () => {this.distribute = !this.distribute}
 
     @action generateDistribution = () => {
-        console.log('generating distribution')
+        // console.log('generating distribution')
         const {county, indicator, year, race} = this.props.store
 
         const ind = indicators[indicator]
@@ -142,13 +142,13 @@ export default class IndicatorByCounties extends React.Component{
             }
                 
             let replaceIndex = indexOfClosest(distribution, mustInclude)
-            console.log('mustInclude is', mustInclude, 'replaceIndex is', replaceIndex)
+            // console.log('mustInclude is', mustInclude, 'replaceIndex is', replaceIndex)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
             if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
 
-            console.log('adjusted distribution:', distribution)
+            // console.log('adjusted distribution:', distribution)
 
             // this.condensed = distribution.slice(0)
             // this.condensed.splice(replaceIndex,1)
@@ -171,7 +171,7 @@ export default class IndicatorByCounties extends React.Component{
         // this.generateDistribution()
         const wtf = autorun(()=>{
             const {indicator, race, county, year} = this.props.store
-            console.log(indicator, race, county, year)
+            // console.log(indicator, race, county, year)
             this.calculatePerformance()
             this.generateDistribution()
         })
@@ -221,7 +221,7 @@ export default class IndicatorByCounties extends React.Component{
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
                 selectBar = {this.props.store.completeWorkflow}
-                onHover = {()=>console.log('hovering graph')}
+                // onHover = {()=>console.log('hovering graph')}
                 onClickGraph = {this.toggleDistribute}
                 graphHoverPrompt = 'Click to see full list (47 counties)'
                 expandable

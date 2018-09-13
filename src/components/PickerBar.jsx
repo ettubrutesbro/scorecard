@@ -36,22 +36,8 @@ export default class PickerBar extends React.Component{
 	@action hideArea = () => this.showArea = false
 
 	componentDidMount(){
-		document.addEventListener('click', function(evt){
-			// if(evt.target.closest('.pickerbar')){
-			// 	console.log('clicked inside')
-			// 	evt.stopPropagation()
-			// }
-			// else{
-			// 	console.log('clicked outside')
-			// 	evt.stopPropagation()
-			// }
-			const wrapper = findDOMNode(this.wrapper)
-			const thing = findDOMNode(this.thing)
-			if(wrapper.contains(evt.target) || thing.contains(evt.target)){
-				console.log('clicked inside')
-			}
-			else console.log('clicked outnside')
-		})
+
+
 	}
 
 	render(){
@@ -87,24 +73,14 @@ export default class PickerBar extends React.Component{
 				/>
 				
 				</Wrapper>
-				<FlipMove
-					// delay = {100}
-					enterAnimation = {{
-						from: {transform: 'scaleY(0)', opacity: 0}, 
-						to: {transform: 'scaleY(1)', opacity: 1}
-					}}
-					leaveAnimation = {{
-						from: {transform: 'scaleY(1)', opacity: 1}, 
-						to: {transform: 'scaleY(0)', opacity: 0}
-					}}
-				>
-				{/*this.showArea && (this.expanded === 'county' || this.expanded === 'indicator') &&
+				
 					<LargeSelectionArea 
+						id = 'lsa'
 						ref = {(thing)=>{this.thing = thing}}
-						// key = {this.expanded}
+						key = {this.expanded}
 					/>
-				*/}
-				</FlipMove>
+				
+				
 
 			</React.Fragment>
 		)

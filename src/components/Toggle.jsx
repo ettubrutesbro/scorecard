@@ -20,7 +20,7 @@ const Option = styled.div`
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
-    padding: ${props => props.size==='big'? '15px 25px' : '6px 15px'};
+    padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};
     border-radius: ${props => props.firstLast==='first'? '4px 0 0 4px' : props.firstLast === 'last'? '0 4px 4px 0' : ''};
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};

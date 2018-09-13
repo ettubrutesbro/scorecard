@@ -15,4 +15,11 @@ html{
 	--faintpeach: #FFF6F2;
 	--peach: #FCBBA1;
 	--strokepeach: #ef6732;
+
+	overflow: hidden;
+}
+
+body{
+	margin: 0;
+	height: 100%;
 }

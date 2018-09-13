@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import NeoScorecard from './NeoScorecard';
+import './global.css';
+import Scorecard from './Scorecard';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<NeoScorecard />, document.getElementById('root'));
+ReactDOM.render(<Scorecard />, document.getElementById('root'));
 registerServiceWorker();

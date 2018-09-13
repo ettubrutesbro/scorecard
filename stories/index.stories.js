@@ -36,6 +36,7 @@ import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
 import PickerBar from '../src/components/PickerBar'
 import Scorecard from '../src/Scorecard'
+import Nav from '../src/Nav'
 
 import { Button, Welcome } from '@storybook/react/demo';
 
@@ -142,6 +143,14 @@ storiesOf('Scorecard Prototypes', module)
 //         </div>
 //     )
 // })
+
+.add('Nav', ()=>{
+    return(
+            <Nav 
+                store = {store}
+            />
+    )
+})
 
 .add('neoscorecard (noanim)',()=>{
     return(

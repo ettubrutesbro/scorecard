@@ -38,7 +38,7 @@ export default class HorizontalBarGraph extends React.Component{
 
     render(){
         const {selectBar} = this.props
-        console.log(selectBar)
+        // console.log(selectBar)
         return (
             <GraphTable
                 ref = {(graph)=>{this.graph=graph}}
@@ -74,7 +74,7 @@ export default class HorizontalBarGraph extends React.Component{
                             <Row 
                                 key = {i}
                                 condensed = {condensed}
-                                onClick = {selectBar?()=>{selectBar('county',item)}:console.log(item) }
+                                onClick = {selectBar?()=>{selectBar('county',item)}: ()=>{} }
                                 // onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                 // onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                 hovered = {item.id === this.hoveredRow}

@@ -12,6 +12,7 @@ import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation
 
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
 import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
+import DemoDataTable from '../src/components/DemoDataTable'
 
 
 
@@ -160,7 +161,22 @@ storiesOf('Breakdowns', module)
 .add('RaceBreakdownBar',()=>{
     const county = select('county', ['sanLuisObispo','alameda','butte','siskiyou','madera'],null)
     return(
+        <React.Fragment>
+        <Note>Nonideal stopgap: height must be provided as prop</Note> <br />
         <RaceBreakdownBar 
+            store = {{
+                county: county
+            }}
+            height = {400}
+        />
+
+        </React.Fragment>
+    )
+})
+.add('DemoDataTable', ()=>{
+    const county = select('county', ['sanLuisObispo','alameda','butte','siskiyou','madera'],null)
+    return(
+        <DemoDataTable 
             store = {{
                 county: county
             }}

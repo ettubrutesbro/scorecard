@@ -11,9 +11,11 @@ import demopop from '../data/demographicsAndPopulation'
 import FlipMove from 'react-flip-move'
 
 const Container = styled.div`
-    display: inline-flex;
+    display: flex;
     border: 1px solid black;
-    padding: 30px;
+    // padding: 30px;
+    box-sizing: border-box;
+    flex-direction: column;
 `
 
 const centerText = css`
@@ -26,16 +28,21 @@ const centerText = css`
 const LabelColumn = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+    // justify-content: flex-end;
     justify-content: ${props=>props.centerText? 'flex-start' : 'space-between'};
     width: 100px;
+    // outline: 1px solid green;
     margin-right: 30px;
 `
 const RaceLabel = styled.div`
-    /*position: absolute;*/
+    // text-align: right;
+    position: absolute;
+    // height: 0;
     display: flex;
-    /*border: 1px solid black;*/
-    /*margin-right: 30px;*/
+    // align-items: center;
     ${props => props.centerText? centerText: ''};
+    transform: translateY(${props=>props.offset}px);
     &.compressed1{
         /*border: 1px solid pink;*/
         margin-top: -.5rem;
@@ -62,13 +69,16 @@ const Label = styled.div`
     
 `
 const Percentage = styled.div`
-    margin-left: 10px;
+    margin-left: 7px;
+    font-weight: bold;
 `
 const VertBar = styled.div`
     position: relative;
-    height: 500px; //arbitrary
+    // height: 500px; //arbitrary
+    height: ${props => props.height}%;
     // outline: 1px solid #999999;
-    // box-sizing: border-box;
+    // padding: 30px;
+    box-sizing: border-box;
     width: 40px;
     display: flex;
     flex-direction: column;
@@ -81,7 +91,7 @@ const Segment = styled.div`
     background-color: ${props=>props.selected?'rgba(239,103,50,0.25)':'white'};
     height: 100%;
     transition: transform .5s, background-color .25s;
-    transform: translateY(${props=>props.offset}px);
+    transform: translateY(${props=>props.offset}%);
     transform-origin: 50% 0%;
     // background-color: ${props=>props.fill};
     // outline: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
@@ -102,6 +112,16 @@ const Hatch = styled.div`
     transform: translateY(${props=>props.offset}px);
     border-top: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
 `
+const Title = styled.div`
+    width: 100%;
+    margin-bottom: 20px;
+`
+const Content = styled.div`
+    width: 100%;
+    display: flex;
+    height: 100%;
+`
+
 const races = [
     'asian',
     'black',
@@ -111,8 +131,16 @@ const races = [
 ]
 @observer
 export default class RaceBreakdownBar extends React.Component{
-    @observable height = 500 //TODO: need to findDOMNode this shit
 
+
+    componentDidMount(){
+        // this.setHeight(this.container)
+        console.log(findDOMNode(this.labelcolumn).offsetHeight)
+    }
+
+    setHeight = (node) => {
+        // console.log(findDOMNode(node).offsetHeight)
+    }
     render(){
         let {county} = this.props.store
         if(!county) county = 'california'
@@ -128,13 +156,19 @@ export default class RaceBreakdownBar extends React.Component{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
         })
 
-        console.log('number of compressed labels:', numOfCompressedLabels)
+        // console.log('number of compressed labels:', numOfCompressedLabels)
         return(
-            <Container>
+            <Container 
+                // innerRef = {(container)=>{this.container = container}}
+            >
+            <Title>
+                Race breakdown
+            </Title>
+            <Content>
             <LabelColumn
+                innerRef = {(column) => this.labelcolumn = column}
                 centerText = {this.props.centerText}
             >
-                <FlipMove typeName = {null}>
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
                     const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
@@ -143,8 +177,9 @@ export default class RaceBreakdownBar extends React.Component{
                         centerText = {this.props.centerText}
                         style = {{visibility: race.percentage===0?'hidden' : 'visible'}}
                         className = {race.percentage < 4? 'compressed'+numOfCompressedLabels : ''}
-                        // offset = {((race.percentage+offset)/100)*this.height}
-                        height = {(race.percentage/100) * this.height}
+                        offset = {(offset/100) * 233}
+                        height = {race.percentage}
+                        // height = {(race.percentage/100) * this.props.height}
                     > 
                         <LabelPct>
                             <Label>{race.label[0].toUpperCase()+race.label.substr(1)}</Label>
@@ -152,10 +187,11 @@ export default class RaceBreakdownBar extends React.Component{
                         </LabelPct>
                     </RaceLabel>  
                 })}
-                </FlipMove>
 
             </LabelColumn>
-            <VertBar>
+            <VertBar
+                // height = {this.props.height}
+            >
 
                 {racePercentages.map((o,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
@@ -164,11 +200,12 @@ export default class RaceBreakdownBar extends React.Component{
                         key = {i}
                         style = {{zIndex: arr.length-i}}
                         className = {o.label}
-                        offset = {((o.percentage+offset)/100)*this.height}
+                        offset = {((o.percentage+offset))}
               
                     />
                 })}
             </VertBar>
+            </Content>
             </Container>
         )
     }

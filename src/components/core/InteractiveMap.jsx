@@ -11,10 +11,15 @@ import chroma from 'chroma-js'
 import ReactTooltip from 'react-tooltip'
 
 const Wrapper = styled.div`
-    width: 100%; height: 100%;
+    // position: absolute;
+    width: 100%;
+    height: 100%;
 ` 
 const TheMap = styled.svg`
-    width: 100%; height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 100%;
 `
 
 const CountyStyle = css`
@@ -24,6 +29,10 @@ const CountyStyle = css`
     fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
     stroke-width: 2.25;
 `
+const OverlapBox = styled.polyline`
+    stroke: black;
+    stroke-width: 1;
+`
 
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
@@ -32,16 +41,42 @@ const CountyPath = styled.path`${CountyStyle}`
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    // @observable colorScale =  chroma.scale(chroma.brewer.OrRd).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
-    //     @action updateColors = () =>{
-    //         this.colorScale = chroma.scale(this.props.colorStops).domain([0,100]).mode(this.props.colorInterpolation).classes(5)
-    //     }
 
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
             console.log('color stop or colorinterp changed')
             this.updateColors()   
         }
+    }
+
+    componentDidMount(){
+        // console.log(document.getElementById('overlapbox').getBBox())
+       this.setDims()
+       document.addEventListener('resize',()=>this.setDims)
+        
+    }
+
+    setDims = () => {
+        console.log('setting box coords for map underlap')
+        const box = document.getElementById('overlapbox').getBoundingClientRect()
+        if(this.props.returnBoxCoords){
+            this.props.returnBoxCoords({
+                left: box.left,
+                top: box.top,
+                width: box.width,
+                height: box.height,
+            })
+        }
+        const svg = document.getElementById('svg').getBoundingClientRect()
+        console.log(svg)
+        if(this.props.reportSVGDims){
+            this.props.reportSVGDims({
+                width: svg.width,
+                height: svg.height
+            })
+        }
+
+
     }
 
     handleClick(id){
@@ -75,7 +110,8 @@ const CountyPath = styled.path`${CountyStyle}`
             >
                 <ReactTooltip disable = {!indicator}/>
                 <TheMap 
-                    viewBox = '0 0 520 600'
+                    id = "svg"
+                    viewBox = '0 0 906.5 620'
                     {...domProps}
                     version="1.1"
                     style = {{
@@ -88,11 +124,12 @@ const CountyPath = styled.path`${CountyStyle}`
                         const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
+                        const fill = child.type === 'polyline'? 'none' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
                         return(
                             <InteractivePolygonOrPath
                                 {...childProps}
+                                id = {id}
                                 data-tip = {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null}
                                 key = {id}
                                 points = {points}
@@ -128,7 +165,8 @@ InteractiveMap.defaultProps = {
 
 let SVGComponents = {
     InteractivePolygon: (props) => <CountyPolygon {...props} />,
-    InteractivePath: (props) => <CountyPath {...props}  />
+    InteractivePath: (props) => <CountyPath {...props}  />,
+    InteractivePolyline: (props) => <OverlapBox {...props} />
 }
 
 export default class CaliforniaCountyMap extends React.Component{
@@ -273,6 +311,9 @@ export default class CaliforniaCountyMap extends React.Component{
 <polygon id = "sanLuisObispo" points="239.2,444 251.4,448.1 251.4,439.2 247.1,438.5 247.5,433.3 242.1,433.5 242.2,428.4 235.5,428.4 
     232.2,418.1 226.6,418 222.3,407.8 216.9,407.8 216.9,397.4 216.6,397.4 159.2,397.1 164.1,406.1 169.9,408.4 177.5,418 183,419.7 
     181.5,428.3 185.9,434 194.6,436.9 193.9,442.9 196.7,444.8 206.2,443.2 211.7,447.1 210.7,441.6 217.5,440.8 222.9,435.8 "/>
+
+<polyline id="overlapbox" points="338.3,244.5 338.3,26.3 905.5,26.3 905.5,399.1 500.5,399.1 " />
+
             </InteractiveMap>
             </React.Fragment>
         )
