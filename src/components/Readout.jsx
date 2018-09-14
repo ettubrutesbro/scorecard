@@ -15,8 +15,10 @@ import semanticTitles from '../assets/semanticTitles'
 import demopop from '../data/demographicsAndPopulation.json'
 
 const ReadoutBlock = styled.div`
+    // width: 70%;
+    
+
     transform-origin: 50% 0%;
-    padding: 30px;
     font-size: 24px;
     position: relative;
     /*flex-grow: ${props=> props.compact? 0: 1};*/

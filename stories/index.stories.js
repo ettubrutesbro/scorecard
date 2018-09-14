@@ -35,7 +35,7 @@ import Toggle from '../src/components/Toggle'
 import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
 import PickerBar from '../src/components/PickerBar'
-import Scorecard from '../src/Scorecard'
+import ResponsiveScorecard from '../src/ResponsiveScorecard'
 import Nav from '../src/Nav'
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -154,35 +154,26 @@ storiesOf('Scorecard Prototypes', module)
     )
 })
 
-.add('neoscorecard (noanim)',()=>{
+.add('responsivescorecard', ()=>{
+    const ind = select('indicator', Object.keys(indicators), null)
+    const cties = counties.map((cty)=>{return cty.id})
+    console.log(cties)
+    const coun = select('county', cties, null)
+    const race = select('race',['asian','black','latinx','white'], null)
+    const yr = 0
+    const mockStore = {
+        indicator: ind,
+        county: coun,
+        race: race,
+        year: yr
+    }
     return(
-        <NeoScorecard />
-    )
-})
-
-.add('scorecard', ()=>{
-    return(
-        <Scorecard />
-    )
-})
-
-.add('UniversalPicker', ()=>{
-    return(
-        <UniversalPicker 
-            store = {store}
+        <ResponsiveScorecard 
+            store = {mockStore}
         />
     )
 })
 
-.add('PickerBar', ()=>{
-    return(
-        <Void>
-        <PickerBar
-            store = {store}
-        />
-        </Void>
-    )
-})
 
 storiesOf('Maps',module)
 .add('CAMap', ()=>{

@@ -26,6 +26,10 @@ const Wrapper = styled.div`
 const BreakdownBox = styled.div`
     flex-grow: 1;
 `
+const BottomTable = styled.div`
+    margin-top: 20px;
+`
+
 
 @observer
 export default class Breakdown extends React.Component{
@@ -47,11 +51,13 @@ export default class Breakdown extends React.Component{
                         />  
                     }
                     {indicator && !race && indicators[indicator].categories.includes('hasRace') &&
+                        <BottomTable>
                         <IndicatorByRaces
                             store = {store}
                         />
+                        </BottomTable>
                     }
-                    {!indicator && county && !race &&
+                    {/*!indicator && county && !race &&
                          // 'population race % breakdown and county demographic data'
                          <React.Fragment>
                          <RaceRowTable 
@@ -61,7 +67,7 @@ export default class Breakdown extends React.Component{
 
                         <DemoDataTable store = {store} />
                         </React.Fragment>
-                    }
+                    */}
                     {!county && race &&
                         <CountiesByRacePopulation 
                             store = {store}
