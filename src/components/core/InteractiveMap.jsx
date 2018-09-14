@@ -19,7 +19,7 @@ const TheMap = styled.svg`
 
 const CountyStyle = css`
     cursor: pointer;
-    stroke: ${props => props.selected?'red': props.highlighted?'pink': 'transparent'};
+    stroke: ${props => props.selected?'red': props.highlighted?'pink': 'none'};
     stroke-alignment: ${props => props.selected? 'inner' : 'center'}
     fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
     stroke-width: 2.25;
