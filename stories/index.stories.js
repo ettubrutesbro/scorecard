@@ -146,9 +146,11 @@ storiesOf('Scorecard Prototypes', module)
 
 .add('Nav', ()=>{
     return(
+        <Void>
             <Nav 
                 store = {store}
             />
+        </Void>
     )
 })
 

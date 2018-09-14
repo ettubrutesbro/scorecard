@@ -19,6 +19,7 @@ export default class CountingNumber extends React.Component{
 		console.log(diff)
 
 		this.speed = (diff/100) * 2
+		if(this.speed > 2) this.speed = 2
 	}
 
 	componentWillUpdate(oldProps){

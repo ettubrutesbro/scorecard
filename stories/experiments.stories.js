@@ -2,12 +2,14 @@ import React from 'react';
 import styled from 'styled-components'
 
 import { storiesOf, addDecorator } from '@storybook/react';
-import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
+import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
 import ReactTooltip from 'react-tooltip'
 import CountUp from 'react-countup'
 
+
 import CountingNumber from '../src/components/CountingNumber'
+import ExpandBox from '../src/components/ExpandBox'
 
 addDecorator(withKnobs)
 
@@ -28,6 +30,14 @@ const TestTip = styled.div`
 
 `
 storiesOf('Experiments', module)
+.add('ExpandBox', ()=>{
+    const show = boolean('show box', false)
+    return(
+        <ExpandBox show = {show}>
+            eoatnuhaoentuht
+        </ExpandBox>
+    )   
+})
 .add('CountUp',()=>{
     const opts = {
         first: [0,100],

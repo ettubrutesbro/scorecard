@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
@@ -19,6 +19,10 @@ import Toggle from './components/Toggle'
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
 import semanticTitles from './assets/semanticTitles'
+
+import IndicatorList from './components/IndicatorList'
+import CountyList from './components/CountyList'
+import ExpandBox from './components/ExpandBox'
 
 const Share = styled.div`
 	width: 30%;
@@ -40,7 +44,7 @@ const Nav = styled.div`
 export default class Navbar extends React.Component{
 
 	@observable expanded = null
-		@action setExpanded = (which) => {
+	@action setExpanded = (which) => {
 		this.expanded = which
 		if(this.props.open){
 			if(this.expanded) this.props.open(true)
@@ -74,19 +78,17 @@ export default class Navbar extends React.Component{
 
 const Wrapper = styled.div`
     display: flex;
-    // flex-direction: column;
-    // max-width: 480px;
-    // padding: 20px;
-    // box-shadow: var(--shadow);
-    // border-radius: 4px;
-    // background: var(--offwhitefg);
 `
 @observer class PickerBar extends React.Component{
 
 	@observable showArea = false
-
 	@action toggleArea = () => this.showArea = true
 	@action hideArea = () => this.showArea = false
+
+	@observable displayExpandedArea = false
+	@action setExpandedAreaDisplay = (val) => {
+		this.displayExpandedArea = val
+	}
 
 	componentDidMount(){
 
@@ -96,9 +98,10 @@ const Wrapper = styled.div`
 		const offset = this.props.expanded && this.props.expanded !== 'race'
 		return(
 			<React.Fragment>
+
 				<Wrapper 
-						ref = {(wrap)=>this.wrapper=wrap}
 						className = 'pickerbar'>
+					
 					<IndicatorSelect 
 						indicator = {this.props.store.indicator}
 						expanded = {this.props.expanded==='indicator'} 
@@ -124,25 +127,35 @@ const Wrapper = styled.div`
 					/>
 				
 				</Wrapper>
-				<FlipMove
-					// delay = {100}
-					typeName = {null}
-					enterAnimation = {{
-						from: {transform: 'scaleY(0)', opacity: 0}, 
-						to: {transform: 'scaleY(1)', opacity: 1}
-					}}
-					leaveAnimation = {{
-						from: {transform: 'scaleY(1)', opacity: 1}, 
-						to: {transform: 'scaleY(0)', opacity: 0}
-					}}
-				>
-				{this.showArea && (this.props.expanded === 'county' || this.props.expanded === 'indicator') &&
-					<LargeSelectionArea 
-						ref = {(thing)=>{this.thing = thing}}
-						key = {this.props.expanded}
-					/>
-				}
-				</FlipMove>
+
+					<ExpandBox 
+						// key = {this.props.expanded}
+						show = {this.showArea && this.props.expanded === 'indicator'}
+						style = {{
+							top: '68px',
+							background: 'white'
+						}}
+					>
+							<IndicatorList 
+								store = {store}
+							/>
+						
+					</ExpandBox>
+
+					<ExpandBox 
+						// key = {this.props.expanded}
+						show = {this.showArea && this.props.expanded === 'county'}
+						style = {{
+							top: '68px',
+							background: 'white'
+						}}
+					>
+							<CountyList 
+								store = {store}
+							/>
+						
+					</ExpandBox>
+
 
 			</React.Fragment>
 		)
@@ -150,7 +163,18 @@ const Wrapper = styled.div`
 	
 }
 
-const LargeSelectionArea = styled.div`
+const GreyMask = styled.div`
+	position: fixed;
+	z-index: 1;
+	height: 100%;
+	width: 100%;
+	background: var(--offwhitebg);
+	left: 0;
+	top: 0;
+	transform: ${props=>props.expanded? 'scaleY(1)' : 'scaleY(0)'};
+`
+
+const LargeSelectionArea = styled(ExpandBox)`
 	position: absolute;
 	width: 100%;
 	max-width: 1240px;
@@ -162,6 +186,10 @@ const LargeSelectionArea = styled.div`
 	transform-origin: 50% 0%;
 `
 
+const ExpandedNavContent = styled.div`
+	transition: ${props => props.show? 'opacity .25s' : 'none'};
+	opacity: ${props => props.show? 1 : 0};
+`
 const IndicatorBtn = styled.div`
 	position: relative;
 	width: 275px;
@@ -187,10 +215,12 @@ const Extension = styled.div`
 	border-top: none;
 	border-bottom: none;
 	height: 15px;
-	transition: transform .25s;
+	transition: ${props => props.expanded? 'transform .25s' : 'transform .1s'};
 	transform-origin: 50% 0%;
 	transform: ${props => props.expanded? 'scaleY(1)' : 'scaleY(0)'};
-`
+	transition-delay: ${props=>props.expanded? '0' : '.45s'};
+	transition-timing-function: ${props => props.expanded? 'ease' : 'linear'};
+` 
 
 const CountyBtn = styled.div`
 	transition: transform .25s;

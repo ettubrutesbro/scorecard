@@ -7,11 +7,14 @@ import commaNumber from 'comma-number'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 
+import CountingNumber from './CountingNumber'
+
 const RowTable = styled.div`
 
 
 `
 const DemoRow = styled.div`
+    position: relative;
     margin-top: 15px;   
     padding-left: 10px;
     line-height: 150%;
@@ -40,11 +43,11 @@ export default class DemoDataTable extends React.Component {
             <RowTable>
                 <Title> Children in {place} </Title>
                 <DemoRow> 
-                    <DemoValue> {commaNumber(875302)} </DemoValue>
+                    <DemoValue> <CountingNumber number = {demo.population} /> </DemoValue>
                      children live in {place}
                 </DemoRow>
                 <DemoRow> 
-                    <DemoValue> {commaNumber(demo.immigrantFamilies)} </DemoValue>
+                    <DemoValue> <CountingNumber number = {demo.immigrantFamilies} /> </DemoValue>
                     live with foreign-born parents 
                 </DemoRow>
                 <DemoRow> 
@@ -52,7 +55,7 @@ export default class DemoDataTable extends React.Component {
                     are living 200% below the federal poverty level 
                 </DemoRow>
                 <DemoRow> 
-                    <DemoValue> {commaNumber(demo['studentHomeless_2018'])} </DemoValue>
+                    <DemoValue> <CountingNumber number = {demo['studentHomeless_2018']} />} </DemoValue>
                     students are experiencing homelessness
                 </DemoRow>
             </RowTable>

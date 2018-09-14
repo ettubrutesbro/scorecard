@@ -51,7 +51,6 @@ const BottomRow = styled(Row)`
 	flex-grow: 1;
 ` 
 const GenericDebug = styled.div`
-	border: 1px solid black;
 	padding: 30px;
 `
 const Legend = styled(GenericDebug)`
@@ -163,15 +162,12 @@ export default class Scorecard extends React.Component{
 								}}
 							>
 								<DemoDataTable
-									store = {{...store,
-										county: 'alameda'
-									}}
+									store = {store}
 								/>
 
 								<RaceBreakdownBar 
 									height = {this.overlapBoxDims.height}
-									store = {{...store,
-										county: 'alameda'}}
+									store = {store}
 
 								/>
 
