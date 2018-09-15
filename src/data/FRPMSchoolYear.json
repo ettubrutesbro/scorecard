@@ -1,371 +1,312 @@
-{
-  "indicator": "fRPMSchoolYear",
-  "years": [
-    "2016"
-  ],
-  "categories": [
-    "education"
-  ],
-  "counties": {
-    "california": {
-      "ranks": [
-        ""
-      ],
-      "totals": []
-    },
-    "alameda": {
-      "ranks": [
-        54
-      ],
-      "totals": []
-    },
-    "alpine": {
-      "ranks": [
-        1
-      ],
-      "totals": []
-    },
-    "amador": {
-      "ranks": [
-        45
-      ],
-      "totals": []
-    },
-    "butte": {
-      "ranks": [
-        24
-      ],
-      "totals": []
-    },
-    "calaveras": {
-      "ranks": [
-        47
-      ],
-      "totals": []
-    },
-    "colusa": {
-      "ranks": [
-        2
-      ],
-      "totals": []
-    },
-    "contraCosta": {
-      "ranks": [
-        30
-      ],
-      "totals": []
-    },
-    "delNorte": {
-      "ranks": [
-        43
-      ],
-      "totals": []
-    },
-    "elDorado": {
-      "ranks": [
-        32
-      ],
-      "totals": []
-    },
-    "fresno": {
-      "ranks": [
-        4
-      ],
-      "totals": []
-    },
-    "glenn": {
-      "ranks": [
-        16
-      ],
-      "totals": []
-    },
-    "humboldt": {
-      "ranks": [
-        48
-      ],
-      "totals": []
-    },
-    "imperial": {
-      "ranks": [
-        14
-      ],
-      "totals": []
-    },
-    "inyo": {
-      "ranks": [
-        58
-      ],
-      "totals": []
-    },
-    "kern": {
-      "ranks": [
-        7
-      ],
-      "totals": []
-    },
-    "kings": {
-      "ranks": [
-        21
-      ],
-      "totals": []
-    },
-    "lake": {
-      "ranks": [
-        31
-      ],
-      "totals": []
-    },
-    "lassen": {
-      "ranks": [
-        55
-      ],
-      "totals": []
-    },
-    "losAngeles": {
-      "ranks": [
-        38
-      ],
-      "totals": []
-    },
-    "madera": {
-      "ranks": [
-        11
-      ],
-      "totals": []
-    },
-    "marin": {
-      "ranks": [
-        34
-      ],
-      "totals": []
-    },
-    "mariposa": {
-      "ranks": [
-        46
-      ],
-      "totals": []
-    },
-    "mendocino": {
-      "ranks": [
-        40
-      ],
-      "totals": []
-    },
-    "merced": {
-      "ranks": [
-        9
-      ],
-      "totals": []
-    },
-    "modoc": {
-      "ranks": [
-        6
-      ],
-      "totals": []
-    },
-    "mono": {
-      "ranks": [
-        56
-      ],
-      "totals": []
-    },
-    "monterey": {
-      "ranks": [
-        19
-      ],
-      "totals": []
-    },
-    "napa": {
-      "ranks": [
-        50
-      ],
-      "totals": []
-    },
-    "nevada": {
-      "ranks": [
-        57
-      ],
-      "totals": []
-    },
-    "orange": {
-      "ranks": [
-        13
-      ],
-      "totals": []
-    },
-    "placer": {
-      "ranks": [
-        35
-      ],
-      "totals": []
-    },
-    "plumas": {
-      "ranks": [
-        53
-      ],
-      "totals": []
-    },
-    "riverside": {
-      "ranks": [
-        10
-      ],
-      "totals": []
-    },
-    "sacramento": {
-      "ranks": [
-        28
-      ],
-      "totals": []
-    },
-    "sanBenito": {
-      "ranks": [
-        15
-      ],
-      "totals": []
-    },
-    "sanBernardino": {
-      "ranks": [
-        17
-      ],
-      "totals": []
-    },
-    "sanDiego": {
-      "ranks": [
-        42
-      ],
-      "totals": []
-    },
-    "sanFrancisco": {
-      "ranks": [
-        51
-      ],
-      "totals": []
-    },
-    "sanJoaquin": {
-      "ranks": [
-        25
-      ],
-      "totals": []
-    },
-    "sanLuisObispo": {
-      "ranks": [
-        49
-      ],
-      "totals": []
-    },
-    "sanMateo": {
-      "ranks": [
-        36
-      ],
-      "totals": []
-    },
-    "santaBarbara": {
-      "ranks": [
-        12
-      ],
-      "totals": []
-    },
-    "santaClara": {
-      "ranks": [
-        41
-      ],
-      "totals": []
-    },
-    "santaCruz": {
-      "ranks": [
-        44
-      ],
-      "totals": []
-    },
-    "shasta": {
-      "ranks": [
-        26
-      ],
-      "totals": []
-    },
-    "sierra": {
-      "ranks": [
-        23
-      ],
-      "totals": []
-    },
-    "siskiyou": {
-      "ranks": [
-        33
-      ],
-      "totals": []
-    },
-    "solano": {
-      "ranks": [
-        37
-      ],
-      "totals": []
-    },
-    "sonoma": {
-      "ranks": [
-        52
-      ],
-      "totals": []
-    },
-    "stanislaus": {
-      "ranks": [
-        18
-      ],
-      "totals": []
-    },
-    "sutter": {
-      "ranks": [
-        39
-      ],
-      "totals": []
-    },
-    "tehama": {
-      "ranks": [
-        3
-      ],
-      "totals": []
-    },
-    "trinity": {
-      "ranks": [
-        22
-      ],
-      "totals": []
-    },
-    "tulare": {
-      "ranks": [
-        8
-      ],
-      "totals": []
-    },
-    "tuolumne": {
-      "ranks": [
-        29
-      ],
-      "totals": []
-    },
-    "ventura": {
-      "ranks": [
-        27
-      ],
-      "totals": []
-    },
-    "yolo": {
-      "ranks": [
-        20
-      ],
-      "totals": []
-    },
-    "yuba": {
-      "ranks": [
-        5
-      ],
-      "totals": []
-    },
-    "": {
-      "ranks": [
-        ""
-      ],
-      "totals": []
-    }
+[
+  {
+    "Location": "California",
+    "SchoolYear_2016": 54,
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Alameda",
+    "SchoolYear_2016": 41,
+    "Rank_2016": 54
+  },
+  {
+    "Location": "Alpine",
+    "SchoolYear_2016": 96,
+    "Rank_2016": 1
+  },
+  {
+    "Location": "Amador",
+    "SchoolYear_2016": 48,
+    "Rank_2016": 45
+  },
+  {
+    "Location": "Butte",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 24
+  },
+  {
+    "Location": "Calaveras",
+    "SchoolYear_2016": 46,
+    "Rank_2016": 47
+  },
+  {
+    "Location": "Colusa",
+    "SchoolYear_2016": 69,
+    "Rank_2016": 2
+  },
+  {
+    "Location": "Contra Costa",
+    "SchoolYear_2016": 53,
+    "Rank_2016": 30
+  },
+  {
+    "Location": "Del Norte",
+    "SchoolYear_2016": 48,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "El Dorado",
+    "SchoolYear_2016": 53,
+    "Rank_2016": 32
+  },
+  {
+    "Location": "Fresno",
+    "SchoolYear_2016": 65,
+    "Rank_2016": 4
+  },
+  {
+    "Location": "Glenn",
+    "SchoolYear_2016": 58,
+    "Rank_2016": 16
+  },
+  {
+    "Location": "Humboldt",
+    "SchoolYear_2016": 46,
+    "Rank_2016": 48
+  },
+  {
+    "Location": "Imperial",
+    "SchoolYear_2016": 58,
+    "Rank_2016": 14
+  },
+  {
+    "Location": "Inyo",
+    "SchoolYear_2016": 22,
+    "Rank_2016": 58
+  },
+  {
+    "Location": "Kern",
+    "SchoolYear_2016": 63,
+    "Rank_2016": 7
+  },
+  {
+    "Location": "Kings",
+    "SchoolYear_2016": 57,
+    "Rank_2016": 21
+  },
+  {
+    "Location": "Lake",
+    "SchoolYear_2016": 53,
+    "Rank_2016": 31
+  },
+  {
+    "Location": "Lassen",
+    "SchoolYear_2016": 39,
+    "Rank_2016": 55
+  },
+  {
+    "Location": "Los Angeles",
+    "SchoolYear_2016": 49,
+    "Rank_2016": 38
+  },
+  {
+    "Location": "Madera",
+    "SchoolYear_2016": 61,
+    "Rank_2016": 11
+  },
+  {
+    "Location": "Marin",
+    "SchoolYear_2016": 52,
+    "Rank_2016": 34
+  },
+  {
+    "Location": "Mariposa",
+    "SchoolYear_2016": 46,
+    "Rank_2016": 46
+  },
+  {
+    "Location": "Mendocino",
+    "SchoolYear_2016": 49,
+    "Rank_2016": 40
+  },
+  {
+    "Location": "Merced",
+    "SchoolYear_2016": 62,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "Modoc",
+    "SchoolYear_2016": 63,
+    "Rank_2016": 6
+  },
+  {
+    "Location": "Mono",
+    "SchoolYear_2016": 33,
+    "Rank_2016": 56
+  },
+  {
+    "Location": "Monterey",
+    "SchoolYear_2016": 57,
+    "Rank_2016": 19
+  },
+  {
+    "Location": "Napa",
+    "SchoolYear_2016": 45,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "Nevada",
+    "SchoolYear_2016": 26,
+    "Rank_2016": 57
+  },
+  {
+    "Location": "Orange",
+    "SchoolYear_2016": 60,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "Placer",
+    "SchoolYear_2016": 52,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Plumas",
+    "SchoolYear_2016": 42,
+    "Rank_2016": 53
+  },
+  {
+    "Location": "Riverside",
+    "SchoolYear_2016": 61,
+    "Rank_2016": 10
+  },
+  {
+    "Location": "Sacramento",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 28
+  },
+  {
+    "Location": "San Benito",
+    "SchoolYear_2016": 58,
+    "Rank_2016": 15
+  },
+  {
+    "Location": "San Bernardino",
+    "SchoolYear_2016": 58,
+    "Rank_2016": 17
+  },
+  {
+    "Location": "San Diego",
+    "SchoolYear_2016": 49,
+    "Rank_2016": 42
+  },
+  {
+    "Location": "San Francisco",
+    "SchoolYear_2016": 44,
+    "Rank_2016": 51
+  },
+  {
+    "Location": "San Joaquin",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 25
+  },
+  {
+    "Location": "San Luis Obispo",
+    "SchoolYear_2016": 45,
+    "Rank_2016": 49
+  },
+  {
+    "Location": "San Mateo",
+    "SchoolYear_2016": 52,
+    "Rank_2016": 36
+  },
+  {
+    "Location": "Santa Barbara",
+    "SchoolYear_2016": 60,
+    "Rank_2016": 12
+  },
+  {
+    "Location": "Santa Clara",
+    "SchoolYear_2016": 49,
+    "Rank_2016": 41
+  },
+  {
+    "Location": "Santa Cruz",
+    "SchoolYear_2016": 48,
+    "Rank_2016": 44
+  },
+  {
+    "Location": "Shasta",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 26
+  },
+  {
+    "Location": "Sierra",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 23
+  },
+  {
+    "Location": "Siskiyou",
+    "SchoolYear_2016": 52,
+    "Rank_2016": 33
+  },
+  {
+    "Location": "Solano",
+    "SchoolYear_2016": 50,
+    "Rank_2016": 37
+  },
+  {
+    "Location": "Sonoma",
+    "SchoolYear_2016": 44,
+    "Rank_2016": 52
+  },
+  {
+    "Location": "Stanislaus",
+    "SchoolYear_2016": 58,
+    "Rank_2016": 18
+  },
+  {
+    "Location": "Sutter",
+    "SchoolYear_2016": 49,
+    "Rank_2016": 39
+  },
+  {
+    "Location": "Tehama",
+    "SchoolYear_2016": 66,
+    "Rank_2016": 3
+  },
+  {
+    "Location": "Trinity",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 22
+  },
+  {
+    "Location": "Tulare",
+    "SchoolYear_2016": 62,
+    "Rank_2016": 8
+  },
+  {
+    "Location": "Tuolumne",
+    "SchoolYear_2016": 54,
+    "Rank_2016": 29
+  },
+  {
+    "Location": "Ventura",
+    "SchoolYear_2016": 55,
+    "Rank_2016": 27
+  },
+  {
+    "Location": "Yolo",
+    "SchoolYear_2016": 57,
+    "Rank_2016": 20
+  },
+  {
+    "Location": "Yuba",
+    "SchoolYear_2016": 64,
+    "Rank_2016": 5
+  },
+  {
+    "Location": "",
+    "SchoolYear_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "",
+    "SchoolYear_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Data Source: CFPA’s analysis of NSLP (public, non-charter school), SFSP, and SSFO data from March, April and July 2016 provided by the California Department of Education. See technical appendix for details.",
+    "SchoolYear_2016": "",
+    "Rank_2016": ""
   }
-}
+]

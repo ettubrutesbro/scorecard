@@ -34,35 +34,43 @@ const GridItem = styled.li`
 `
 
 
-const CountyList = (props) => {
-    const {indicator, county, race, year} = props.store
-    return(
-        <GridList>
-            <ReactTooltip effect = "solid" />
-            {counties.sort((a,b)=>{
-                if(a.id < b.id) return -1
-                else if (a.id > b.id) return 1
-                else return 0
-            }).map((cty)=>{
-                let disabled = false 
-                if(indicator){
-                    // console.log(indicators[indicator].counties[cty])
-                    const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
-                    
-                    if(!value || value === '*') disabled = true
+class CountyList extends React.Component{
+    
+    handleSelection = (cty) => {
+        this.props.store.completeWorkflow('county', cty)
+        this.props.closeNav()
+    }
+    render(){
+        const {indicator, county, race, year} = this.props.store
+
+        return(
+            <GridList>
+                <ReactTooltip effect = "solid" />
+                {counties.sort((a,b)=>{
+                    if(a.id < b.id) return -1
+                    else if (a.id > b.id) return 1
+                    else return 0
+                }).map((cty)=>{
+                    let disabled = false 
+                    if(indicator){
+                        // console.log(indicators[indicator].counties[cty])
+                        const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
+                        
+                        if(!value || value === '*') disabled = true
+                    }
+                    return <GridItem
+                        disabled = {disabled}
+                        key = {"countylist"+cty.id}
+                        onClick = {()=>{this.handleSelection(cty.id)}}
+                        data-tip = {disabled? `${indicator} data is not available for ${cty.label}.` : null}
+                    > 
+                        {cty.label}
+                    </GridItem>
+                })
                 }
-                return <GridItem
-                    disabled = {disabled}
-                    key = {"countylist"+cty.id}
-                    onClick = {()=>{props.store.completeWorkflow('county',cty.id)}}
-                    data-tip = {disabled? `${indicator} data is not available for ${cty.label}.` : null}
-                > 
-                    {cty.label}
-                </GridItem>
-            })
-            }
-        </GridList>
-    )
+            </GridList>
+        )
+    }
 }
 
 export default CountyList

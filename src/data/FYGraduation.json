@@ -1,0 +1,415 @@
+[
+  {
+    "": "California",
+    "FYGraduation_2015": 50,
+    "Rank_2015": "",
+    "FY_2016": 51,
+    "Rank_2016": ""
+  },
+  {
+    "": "Alameda",
+    "FYGraduation_2015": 45,
+    "Rank_2015": 42,
+    "FY_2016": 42,
+    "Rank_2016": 52
+  },
+  {
+    "": "Alpine",
+    "FYGraduation_2015": "",
+    "Rank_2015": "",
+    "FY_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "": "Amador",
+    "FYGraduation_2015": 100,
+    "Rank_2015": 1,
+    "FY_2016": 43,
+    "Rank_2016": 51
+  },
+  {
+    "": "Butte",
+    "FYGraduation_2015": 74,
+    "Rank_2015": 12,
+    "FY_2016": 78,
+    "Rank_2016": 11
+  },
+  {
+    "": "Calaveras",
+    "FYGraduation_2015": 88,
+    "Rank_2015": 5,
+    "FY_2016": 94,
+    "Rank_2016": 6
+  },
+  {
+    "": "Colusa",
+    "FYGraduation_2015": "",
+    "Rank_2015": "",
+    "FY_2016": 100,
+    "Rank_2016": 1
+  },
+  {
+    "": "Contra Costa",
+    "FYGraduation_2015": 65,
+    "Rank_2015": 23,
+    "FY_2016": 57,
+    "Rank_2016": 33
+  },
+  {
+    "": "Del Norte",
+    "FYGraduation_2015": 56,
+    "Rank_2015": 29,
+    "FY_2016": 71,
+    "Rank_2016": 14
+  },
+  {
+    "": "El Dorado",
+    "FYGraduation_2015": 66,
+    "Rank_2015": 21,
+    "FY_2016": 63,
+    "Rank_2016": 20
+  },
+  {
+    "": "Fresno",
+    "FYGraduation_2015": 60,
+    "Rank_2015": 27,
+    "FY_2016": 55,
+    "Rank_2016": 34
+  },
+  {
+    "": "Glenn",
+    "FYGraduation_2015": 67,
+    "Rank_2015": 19,
+    "FY_2016": 71,
+    "Rank_2016": 14
+  },
+  {
+    "": "Humboldt",
+    "FYGraduation_2015": 41,
+    "Rank_2015": 49,
+    "FY_2016": 69,
+    "Rank_2016": 16
+  },
+  {
+    "": "Imperial",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 35,
+    "FY_2016": 63,
+    "Rank_2016": 22
+  },
+  {
+    "": "Inyo",
+    "FYGraduation_2015": 17,
+    "Rank_2015": 54,
+    "FY_2016": 33,
+    "Rank_2016": 55
+  },
+  {
+    "": "Kern",
+    "FYGraduation_2015": 54,
+    "Rank_2015": 32,
+    "FY_2016": 52,
+    "Rank_2016": 40
+  },
+  {
+    "": "Kings",
+    "FYGraduation_2015": 75,
+    "Rank_2015": 9,
+    "FY_2016": 55,
+    "Rank_2016": 36
+  },
+  {
+    "": "Lake",
+    "FYGraduation_2015": 0,
+    "Rank_2015": 55,
+    "FY_2016": 57,
+    "Rank_2016": 31
+  },
+  {
+    "": "Lassen",
+    "FYGraduation_2015": 67,
+    "Rank_2015": 19,
+    "FY_2016": 63,
+    "Rank_2016": 22
+  },
+  {
+    "": "Los Angeles",
+    "FYGraduation_2015": 45,
+    "Rank_2015": 43,
+    "FY_2016": 47,
+    "Rank_2016": 46
+  },
+  {
+    "": "Madera",
+    "FYGraduation_2015": 71,
+    "Rank_2015": 16,
+    "FY_2016": 44,
+    "Rank_2016": 49
+  },
+  {
+    "": "Marin",
+    "FYGraduation_2015": 73,
+    "Rank_2015": 13,
+    "FY_2016": 67,
+    "Rank_2016": 18
+  },
+  {
+    "": "Mariposa",
+    "FYGraduation_2015": 75,
+    "Rank_2015": 9,
+    "FY_2016": 75,
+    "Rank_2016": 12
+  },
+  {
+    "": "Mendocino",
+    "FYGraduation_2015": 75,
+    "Rank_2015": 9,
+    "FY_2016": 42,
+    "Rank_2016": 52
+  },
+  {
+    "": "Merced",
+    "FYGraduation_2015": 61,
+    "Rank_2015": 26,
+    "FY_2016": 63,
+    "Rank_2016": 21
+  },
+  {
+    "": "Modoc",
+    "FYGraduation_2015": 80,
+    "Rank_2015": 8,
+    "FY_2016": 100,
+    "Rank_2016": 1
+  },
+  {
+    "": "Mono",
+    "FYGraduation_2015": 43,
+    "Rank_2015": 46,
+    "FY_2016": 46,
+    "Rank_2016": 47
+  },
+  {
+    "": "Monterey",
+    "FYGraduation_2015": 48,
+    "Rank_2015": 41,
+    "FY_2016": 57,
+    "Rank_2016": 31
+  },
+  {
+    "": "Napa",
+    "FYGraduation_2015": 73,
+    "Rank_2015": 14,
+    "FY_2016": 81,
+    "Rank_2016": 9
+  },
+  {
+    "": "Nevada",
+    "FYGraduation_2015": 37,
+    "Rank_2015": 53,
+    "FY_2016": 14,
+    "Rank_2016": 56
+  },
+  {
+    "": "Orange",
+    "FYGraduation_2015": 59,
+    "Rank_2015": 28,
+    "FY_2016": 60,
+    "Rank_2016": 28
+  },
+  {
+    "": "Placer",
+    "FYGraduation_2015": 82,
+    "Rank_2015": 7,
+    "FY_2016": 67,
+    "Rank_2016": 17
+  },
+  {
+    "": "Plumas",
+    "FYGraduation_2015": 100,
+    "Rank_2015": 1,
+    "FY_2016": 100,
+    "Rank_2016": 1
+  },
+  {
+    "": "Riverside",
+    "FYGraduation_2015": 55,
+    "Rank_2015": 30,
+    "FY_2016": 54,
+    "Rank_2016": 37
+  },
+  {
+    "": "Sacramento",
+    "FYGraduation_2015": 44,
+    "Rank_2015": 44,
+    "FY_2016": 48,
+    "Rank_2016": 45
+  },
+  {
+    "": "San Benito",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 35,
+    "FY_2016": 100,
+    "Rank_2016": 1
+  },
+  {
+    "": "San Bernardino",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 34,
+    "FY_2016": 51,
+    "Rank_2016": 41
+  },
+  {
+    "": "San Diego",
+    "FYGraduation_2015": 40,
+    "Rank_2015": 50,
+    "FY_2016": 50,
+    "Rank_2016": 43
+  },
+  {
+    "": "San Francisco",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 35,
+    "FY_2016": 42,
+    "Rank_2016": 54
+  },
+  {
+    "": "San Joaquin",
+    "FYGraduation_2015": 42,
+    "Rank_2015": 48,
+    "FY_2016": 53,
+    "Rank_2016": 38
+  },
+  {
+    "": "San Luis Obispo",
+    "FYGraduation_2015": 83,
+    "Rank_2015": 6,
+    "FY_2016": 93,
+    "Rank_2016": 7
+  },
+  {
+    "": "San Mateo",
+    "FYGraduation_2015": 70,
+    "Rank_2015": 17,
+    "FY_2016": 62,
+    "Rank_2016": 24
+  },
+  {
+    "": "Santa Barbara",
+    "FYGraduation_2015": 69,
+    "Rank_2015": 18,
+    "FY_2016": 55,
+    "Rank_2016": 35
+  },
+  {
+    "": "Santa Clara",
+    "FYGraduation_2015": 53,
+    "Rank_2015": 33,
+    "FY_2016": 43,
+    "Rank_2016": 50
+  },
+  {
+    "": "Santa Cruz",
+    "FYGraduation_2015": 66,
+    "Rank_2015": 22,
+    "FY_2016": 62,
+    "Rank_2016": 25
+  },
+  {
+    "": "Shasta",
+    "FYGraduation_2015": 71,
+    "Rank_2015": 15,
+    "FY_2016": 75,
+    "Rank_2016": 12
+  },
+  {
+    "": "Sierra",
+    "FYGraduation_2015": "",
+    "Rank_2015": "",
+    "FY_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "": "Siskiyou",
+    "FYGraduation_2015": 100,
+    "Rank_2015": 1,
+    "FY_2016": 86,
+    "Rank_2016": 8
+  },
+  {
+    "": "Solano",
+    "FYGraduation_2015": 39,
+    "Rank_2015": 51,
+    "FY_2016": 57,
+    "Rank_2016": 30
+  },
+  {
+    "": "Sonoma",
+    "FYGraduation_2015": 37,
+    "Rank_2015": 52,
+    "FY_2016": 53,
+    "Rank_2016": 39
+  },
+  {
+    "": "Stanislaus",
+    "FYGraduation_2015": 54,
+    "Rank_2015": 31,
+    "FY_2016": 48,
+    "Rank_2016": 44
+  },
+  {
+    "": "Sutter",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 35,
+    "FY_2016": 50,
+    "Rank_2016": 42
+  },
+  {
+    "": "Tehama",
+    "FYGraduation_2015": 62,
+    "Rank_2015": 25,
+    "FY_2016": 80,
+    "Rank_2016": 10
+  },
+  {
+    "": "Trinity",
+    "FYGraduation_2015": 50,
+    "Rank_2015": 35,
+    "FY_2016": 67,
+    "Rank_2016": 18
+  },
+  {
+    "": "Tulare",
+    "FYGraduation_2015": 49,
+    "Rank_2015": 40,
+    "FY_2016": 61,
+    "Rank_2016": 26
+  },
+  {
+    "": "Tuolumne",
+    "FYGraduation_2015": 100,
+    "Rank_2015": 1,
+    "FY_2016": 100,
+    "Rank_2016": 1
+  },
+  {
+    "": "Ventura",
+    "FYGraduation_2015": 42,
+    "Rank_2015": 47,
+    "FY_2016": 45,
+    "Rank_2016": 48
+  },
+  {
+    "": "Yolo",
+    "FYGraduation_2015": 44,
+    "Rank_2015": 45,
+    "FY_2016": 58,
+    "Rank_2016": 29
+  },
+  {
+    "": "Yuba",
+    "FYGraduation_2015": 63,
+    "Rank_2015": 24,
+    "FY_2016": 61,
+    "Rank_2016": 26
+  }
+]

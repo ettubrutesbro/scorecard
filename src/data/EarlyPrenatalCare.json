@@ -1,1783 +1,1175 @@
-{
-  "indicator": "earlyPrenatalCare",
-  "years": [
-    "2015",
-    "2016"
-  ],
-  "categories": [
-    "hasRace",
-    "health"
-  ],
-  "counties": {
-    "california": {
-      "ranks": [
-        "",
-        ""
-      ],
-      "black": [
-        79,
-        79
-      ],
-      "white": [
-        87,
-        88
-      ],
-      "asian": [
-        85,
-        85
-      ],
-      "latinx": [
-        81,
-        82
-      ],
-      "other": [
-        81,
-        82
-      ],
-      "totals": [
-        83,
-        84
-      ]
-    },
-    "alameda": {
-      "ranks": [
-        1,
-        2
-      ],
-      "black": [
-        88,
-        85
-      ],
-      "white": [
-        92,
-        92
-      ],
-      "asian": [
-        92,
-        91
-      ],
-      "latinx": [
-        89,
-        87
-      ],
-      "other": [
-        86,
-        88
-      ],
-      "totals": [
-        90,
-        89
-      ]
-    },
-    "alpine": {
-      "ranks": [
-        "",
-        ""
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        "",
-        "*"
-      ],
-      "asian": [
-        "",
-        ""
-      ],
-      "latinx": [
-        "",
-        ""
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        "*",
-        "*"
-      ]
-    },
-    "amador": {
-      "ranks": [
-        10,
-        7
-      ],
-      "black": [
-        "*",
-        ""
-      ],
-      "white": [
-        84,
-        88
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        88,
-        83
-      ],
-      "other": [
-        96,
-        86
-      ],
-      "totals": [
-        85,
-        88
-      ]
-    },
-    "butte": {
-      "ranks": [
-        44,
-        46
-      ],
-      "black": [
-        46,
-        60
-      ],
-      "white": [
-        74,
-        73
-      ],
-      "asian": [
-        47,
-        52
-      ],
-      "latinx": [
-        68,
-        61
-      ],
-      "other": [
-        56,
-        71
-      ],
-      "totals": [
-        69,
-        69
-      ]
-    },
-    "calaveras": {
-      "ranks": [
-        24,
-        24
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        82,
-        83
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        65,
-        77
-      ],
-      "other": [
-        77,
-        67
-      ],
-      "totals": [
-        79,
-        80
-      ]
-    },
-    "colusa": {
-      "ranks": [
-        38,
-        52
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        78,
-        75
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        72,
-        63
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        72,
-        65
-      ]
-    },
-    "contraCosta": {
-      "ranks": [
-        8,
-        6
-      ],
-      "black": [
-        83,
-        84
-      ],
-      "white": [
-        91,
-        92
-      ],
-      "asian": [
-        88,
-        87
-      ],
-      "latinx": [
-        83,
-        84
-      ],
-      "other": [
-        87,
-        87
-      ],
-      "totals": [
-        87,
-        88
-      ]
-    },
-    "delNorte": {
-      "ranks": [
-        52,
-        34
-      ],
-      "black": [
-        "",
-        ""
-      ],
-      "white": [
-        71,
-        75
-      ],
-      "asian": [
-        84,
-        93
-      ],
-      "latinx": [
-        70,
-        77
-      ],
-      "other": [
-        41,
-        67
-      ],
-      "totals": [
-        65,
-        75
-      ]
-    },
-    "elDorado": {
-      "ranks": [
-        22,
-        30
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        84,
-        81
-      ],
-      "asian": [
-        89,
-        87
-      ],
-      "latinx": [
-        76,
-        65
-      ],
-      "other": [
-        76,
-        82
-      ],
-      "totals": [
-        82,
-        78
-      ]
-    },
-    "fresno": {
-      "ranks": [
-        4,
-        4
-      ],
-      "black": [
-        90,
-        84
-      ],
-      "white": [
-        92,
-        92
-      ],
-      "asian": [
-        89,
-        88
-      ],
-      "latinx": [
-        87,
-        87
-      ],
-      "other": [
-        87,
-        87
-      ],
-      "totals": [
-        88,
-        88
-      ]
-    },
-    "glenn": {
-      "ranks": [
-        44,
-        53
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        77,
-        72
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        65,
-        57
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        69,
-        65
-      ]
-    },
-    "humboldt": {
-      "ranks": [
-        31,
-        26
-      ],
-      "black": [
-        "*",
-        63
-      ],
-      "white": [
-        80,
-        83
-      ],
-      "asian": [
-        71,
-        82
-      ],
-      "latinx": [
-        74,
-        81
-      ],
-      "other": [
-        66,
-        65
-      ],
-      "totals": [
-        76,
-        80
-      ]
-    },
-    "imperial": {
-      "ranks": [
-        57,
-        56
-      ],
-      "black": [
-        52,
-        "*"
-      ],
-      "white": [
-        54,
-        66
-      ],
-      "asian": [
-        57,
-        66
-      ],
-      "latinx": [
-        39,
-        58
-      ],
-      "other": [
-        44,
-        57
-      ],
-      "totals": [
-        41,
-        59
-      ]
-    },
-    "inyo": {
-      "ranks": [
-        33,
-        31
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        80,
-        84
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        76,
-        90
-      ],
-      "other": [
-        67,
-        57
-      ],
-      "totals": [
-        75,
-        78
-      ]
-    },
-    "kern": {
-      "ranks": [
-        32,
-        32
-      ],
-      "black": [
-        66,
-        70
-      ],
-      "white": [
-        80,
-        82
-      ],
-      "asian": [
-        83,
-        85
-      ],
-      "latinx": [
-        75,
-        76
-      ],
-      "other": [
-        66,
-        66
-      ],
-      "totals": [
-        76,
-        78
-      ]
-    },
-    "kings": {
-      "ranks": [
-        44,
-        46
-      ],
-      "black": [
-        71,
-        65
-      ],
-      "white": [
-        73,
-        76
-      ],
-      "asian": [
-        72,
-        80
-      ],
-      "latinx": [
-        67,
-        65
-      ],
-      "other": [
-        76,
-        74
-      ],
-      "totals": [
-        69,
-        69
-      ]
-    },
-    "lake": {
-      "ranks": [
-        43,
-        45
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        73,
-        73
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        67,
-        66
-      ],
-      "other": [
-        58,
-        56
-      ],
-      "totals": [
-        70,
-        69
-      ]
-    },
-    "lassen": {
-      "ranks": [
-        51,
-        41
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        69,
-        75
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        56,
-        64
-      ],
-      "other": [
-        73,
-        59
-      ],
-      "totals": [
-        66,
-        71
-      ]
-    },
-    "losAngeles": {
-      "ranks": [
-        12,
-        13
-      ],
-      "black": [
-        76,
-        77
-      ],
-      "white": [
-        90,
-        90
-      ],
-      "asian": [
-        85,
-        86
-      ],
-      "latinx": [
-        84,
-        84
-      ],
-      "other": [
-        83,
-        84
-      ],
-      "totals": [
-        85,
-        85
-      ]
-    },
-    "madera": {
-      "ranks": [
-        30,
-        35
-      ],
-      "black": [
-        59,
-        54
-      ],
-      "white": [
-        82,
-        85
-      ],
-      "asian": [
-        70,
-        74
-      ],
-      "latinx": [
-        75,
-        72
-      ],
-      "other": [
-        86,
-        80
-      ],
-      "totals": [
-        77,
-        74
-      ]
-    },
-    "marin": {
-      "ranks": [
-        3,
-        12
-      ],
-      "black": [
-        79,
-        69
-      ],
-      "white": [
-        92,
-        89
-      ],
-      "asian": [
-        86,
-        84
-      ],
-      "latinx": [
-        84,
-        82
-      ],
-      "other": [
-        86,
-        84
-      ],
-      "totals": [
-        89,
-        86
-      ]
-    },
-    "mariposa": {
-      "ranks": [
-        56,
-        55
-      ],
-      "black": [
-        "",
-        ""
-      ],
-      "white": [
-        63,
-        64
-      ],
-      "asian": [
-        "*",
-        ""
-      ],
-      "latinx": [
-        46,
-        55
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        62,
-        62
-      ]
-    },
-    "mendocino": {
-      "ranks": [
-        50,
-        40
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        68,
-        72
-      ],
-      "asian": [
-        73,
-        "*"
-      ],
-      "latinx": [
-        67,
-        76
-      ],
-      "other": [
-        63,
-        57
-      ],
-      "totals": [
-        67,
-        71
-      ]
-    },
-    "merced": {
-      "ranks": [
-        49,
-        50
-      ],
-      "black": [
-        62,
-        62
-      ],
-      "white": [
-        75,
-        72
-      ],
-      "asian": [
-        57,
-        55
-      ],
-      "latinx": [
-        67,
-        68
-      ],
-      "other": [
-        74,
-        69
-      ],
-      "totals": [
-        68,
-        68
-      ]
-    },
-    "modoc": {
-      "ranks": [
-        53,
-        57
-      ],
-      "black": [
-        "",
-        ""
-      ],
-      "white": [
-        70,
-        47
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        "*",
-        "*"
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        64,
-        50
-      ]
-    },
-    "mono": {
-      "ranks": [
-        34,
-        44
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        77,
-        67
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        76,
-        72
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        75,
-        70
-      ]
-    },
-    "monterey": {
-      "ranks": [
-        37,
-        33
-      ],
-      "black": [
-        74,
-        79
-      ],
-      "white": [
-        85,
-        90
-      ],
-      "asian": [
-        75,
-        85
-      ],
-      "latinx": [
-        69,
-        72
-      ],
-      "other": [
-        81,
-        82
-      ],
-      "totals": [
-        73,
-        76
-      ]
-    },
-    "napa": {
-      "ranks": [
-        7,
-        3
-      ],
-      "black": [
-        92,
-        "*"
-      ],
-      "white": [
-        90,
-        91
-      ],
-      "asian": [
-        86,
-        93
-      ],
-      "latinx": [
-        86,
-        85
-      ],
-      "other": [
-        86,
-        96
-      ],
-      "totals": [
-        87,
-        89
-      ]
-    },
-    "nevada": {
-      "ranks": [
-        42,
-        29
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        71,
-        79
-      ],
-      "asian": [
-        "*",
-        79
-      ],
-      "latinx": [
-        70,
-        80
-      ],
-      "other": [
-        61,
-        66
-      ],
-      "totals": [
-        70,
-        78
-      ]
-    },
-    "orange": {
-      "ranks": [
-        8,
-        11
-      ],
-      "black": [
-        84,
-        81
-      ],
-      "white": [
-        93,
-        92
-      ],
-      "asian": [
-        81,
-        78
-      ],
-      "latinx": [
-        87,
-        87
-      ],
-      "other": [
-        85,
-        88
-      ],
-      "totals": [
-        87,
-        86
-      ]
-    },
-    "placer": {
-      "ranks": [
-        21,
-        19
-      ],
-      "black": [
-        79,
-        80
-      ],
-      "white": [
-        84,
-        85
-      ],
-      "asian": [
-        85,
-        87
-      ],
-      "latinx": [
-        72,
-        74
-      ],
-      "other": [
-        85,
-        81
-      ],
-      "totals": [
-        82,
-        83
-      ]
-    },
-    "plumas": {
-      "ranks": [
-        48,
-        39
-      ],
-      "black": [
-        "",
-        "*"
-      ],
-      "white": [
-        69,
-        74
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        "*",
-        75
-      ],
-      "other": [
-        "*",
-        61
-      ],
-      "totals": [
-        68,
-        72
-      ]
-    },
-    "riverside": {
-      "ranks": [
-        18,
-        17
-      ],
-      "black": [
-        81,
-        82
-      ],
-      "white": [
-        86,
-        87
-      ],
-      "asian": [
-        80,
-        80
-      ],
-      "latinx": [
-        83,
-        83
-      ],
-      "other": [
-        81,
-        81
-      ],
-      "totals": [
-        83,
-        83
-      ]
-    },
-    "sacramento": {
-      "ranks": [
-        13,
-        15
-      ],
-      "black": [
-        84,
-        83
-      ],
-      "white": [
-        84,
-        85
-      ],
-      "asian": [
-        86,
-        85
-      ],
-      "latinx": [
-        82,
-        85
-      ],
-      "other": [
-        84,
-        82
-      ],
-      "totals": [
-        84,
-        85
-      ]
-    },
-    "sanBenito": {
-      "ranks": [
-        15,
-        8
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        86,
-        88
-      ],
-      "asian": [
-        85,
-        100
-      ],
-      "latinx": [
-        83,
-        86
-      ],
-      "other": [
-        76,
-        91
-      ],
-      "totals": [
-        84,
-        87
-      ]
-    },
-    "sanBernardino": {
-      "ranks": [
-        14,
-        18
-      ],
-      "black": [
-        79,
-        77
-      ],
-      "white": [
-        85,
-        84
-      ],
-      "asian": [
-        80,
-        80
-      ],
-      "latinx": [
-        85,
-        84
-      ],
-      "other": [
-        81,
-        81
-      ],
-      "totals": [
-        84,
-        83
-      ]
-    },
-    "sanDiego": {
-      "ranks": [
-        17,
-        16
-      ],
-      "black": [
-        83,
-        80
-      ],
-      "white": [
-        89,
-        90
-      ],
-      "asian": [
-        89,
-        88
-      ],
-      "latinx": [
-        79,
-        80
-      ],
-      "other": [
-        75,
-        78
-      ],
-      "totals": [
-        84,
-        84
-      ]
-    },
-    "sanFrancisco": {
-      "ranks": [
-        5,
-        9
-      ],
-      "black": [
-        68,
-        72
-      ],
-      "white": [
-        94,
-        93
-      ],
-      "asian": [
-        88,
-        88
-      ],
-      "latinx": [
-        77,
-        77
-      ],
-      "other": [
-        87,
-        84
-      ],
-      "totals": [
-        87,
-        87
-      ]
-    },
-    "sanJoaquin": {
-      "ranks": [
-        29,
-        25
-      ],
-      "black": [
-        70,
-        74
-      ],
-      "white": [
-        81,
-        84
-      ],
-      "asian": [
-        78,
-        81
-      ],
-      "latinx": [
-        75,
-        78
-      ],
-      "other": [
-        81,
-        80
-      ],
-      "totals": [
-        77,
-        80
-      ]
-    },
-    "sanLuisObispo": {
-      "ranks": [
-        23,
-        27
-      ],
-      "black": [
-        81,
-        88
-      ],
-      "white": [
-        83,
-        84
-      ],
-      "asian": [
-        83,
-        68
-      ],
-      "latinx": [
-        79,
-        75
-      ],
-      "other": [
-        81,
-        75
-      ],
-      "totals": [
-        82,
-        79
-      ]
-    },
-    "sanMateo": {
-      "ranks": [
-        2,
-        1
-      ],
-      "black": [
-        86,
-        88
-      ],
-      "white": [
-        94,
-        94
-      ],
-      "asian": [
-        88,
-        90
-      ],
-      "latinx": [
-        88,
-        88
-      ],
-      "other": [
-        88,
-        89
-      ],
-      "totals": [
-        90,
-        91
-      ]
-    },
-    "santaBarbara": {
-      "ranks": [
-        28,
-        28
-      ],
-      "black": [
-        80,
-        72
-      ],
-      "white": [
-        88,
-        87
-      ],
-      "asian": [
-        84,
-        89
-      ],
-      "latinx": [
-        73,
-        74
-      ],
-      "other": [
-        80,
-        88
-      ],
-      "totals": [
-        77,
-        79
-      ]
-    },
-    "santaClara": {
-      "ranks": [
-        10,
-        10
-      ],
-      "black": [
-        74,
-        79
-      ],
-      "white": [
-        92,
-        92
-      ],
-      "asian": [
-        88,
-        89
-      ],
-      "latinx": [
-        76,
-        78
-      ],
-      "other": [
-        90,
-        90
-      ],
-      "totals": [
-        85,
-        87
-      ]
-    },
-    "santaCruz": {
-      "ranks": [
-        15,
-        20
-      ],
-      "black": [
-        77,
-        79
-      ],
-      "white": [
-        94,
-        91
-      ],
-      "asian": [
-        85,
-        93
-      ],
-      "latinx": [
-        77,
-        75
-      ],
-      "other": [
-        88,
-        84
-      ],
-      "totals": [
-        84,
-        82
-      ]
-    },
-    "shasta": {
-      "ranks": [
-        36,
-        38
-      ],
-      "black": [
-        61,
-        68
-      ],
-      "white": [
-        75,
-        75
-      ],
-      "asian": [
-        68,
-        58
-      ],
-      "latinx": [
-        72,
-        65
-      ],
-      "other": [
-        65,
-        61
-      ],
-      "totals": [
-        73,
-        72
-      ]
-    },
-    "sierra": {
-      "ranks": [
-        55,
-        54
-      ],
-      "black": [
-        "",
-        ""
-      ],
-      "white": [
-        67,
-        68
-      ],
-      "asian": [
-        "",
-        ""
-      ],
-      "latinx": [
-        "*",
-        "*"
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        62,
-        65
-      ]
-    },
-    "siskiyou": {
-      "ranks": [
-        27,
-        36
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        79,
-        78
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        79,
-        60
-      ],
-      "other": [
-        71,
-        73
-      ],
-      "totals": [
-        78,
-        73
-      ]
-    },
-    "solano": {
-      "ranks": [
-        26,
-        23
-      ],
-      "black": [
-        80,
-        79
-      ],
-      "white": [
-        83,
-        84
-      ],
-      "asian": [
-        81,
-        84
-      ],
-      "latinx": [
-        74,
-        77
-      ],
-      "other": [
-        80,
-        81
-      ],
-      "totals": [
-        79,
-        81
-      ]
-    },
-    "sonoma": {
-      "ranks": [
-        5,
-        5
-      ],
-      "black": [
-        80,
-        75
-      ],
-      "white": [
-        90,
-        89
-      ],
-      "asian": [
-        84,
-        82
-      ],
-      "latinx": [
-        86,
-        87
-      ],
-      "other": [
-        86,
-        87
-      ],
-      "totals": [
-        87,
-        88
-      ]
-    },
-    "stanislaus": {
-      "ranks": [
-        25,
-        22
-      ],
-      "black": [
-        68,
-        75
-      ],
-      "white": [
-        84,
-        84
-      ],
-      "asian": [
-        76,
-        82
-      ],
-      "latinx": [
-        78,
-        79
-      ],
-      "other": [
-        72,
-        80
-      ],
-      "totals": [
-        79,
-        81
-      ]
-    },
-    "sutter": {
-      "ranks": [
-        39,
-        42
-      ],
-      "black": [
-        73,
-        57
-      ],
-      "white": [
-        75,
-        78
-      ],
-      "asian": [
-        70,
-        75
-      ],
-      "latinx": [
-        66,
-        61
-      ],
-      "other": [
-        78,
-        75
-      ],
-      "totals": [
-        71,
-        71
-      ]
-    },
-    "tehama": {
-      "ranks": [
-        41,
-        49
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        72,
-        71
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        69,
-        64
-      ],
-      "other": [
-        68,
-        71
-      ],
-      "totals": [
-        70,
-        68
-      ]
-    },
-    "trinity": {
-      "ranks": [
-        54,
-        51
-      ],
-      "black": [
-        "",
-        ""
-      ],
-      "white": [
-        66,
-        68
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        "*",
-        "*"
-      ],
-      "other": [
-        "*",
-        "*"
-      ],
-      "totals": [
-        62,
-        66
-      ]
-    },
-    "tulare": {
-      "ranks": [
-        35,
-        37
-      ],
-      "black": [
-        68,
-        63
-      ],
-      "white": [
-        74,
-        72
-      ],
-      "asian": [
-        66,
-        71
-      ],
-      "latinx": [
-        75,
-        74
-      ],
-      "other": [
-        67,
-        64
-      ],
-      "totals": [
-        74,
-        73
-      ]
-    },
-    "tuolumne": {
-      "ranks": [
-        40,
-        46
-      ],
-      "black": [
-        "*",
-        "*"
-      ],
-      "white": [
-        74,
-        72
-      ],
-      "asian": [
-        "*",
-        "*"
-      ],
-      "latinx": [
-        59,
-        61
-      ],
-      "other": [
-        54,
-        59
-      ],
-      "totals": [
-        70,
-        69
-      ]
-    },
-    "ventura": {
-      "ranks": [
-        19,
-        14
-      ],
-      "black": [
-        78,
-        86
-      ],
-      "white": [
-        92,
-        92
-      ],
-      "asian": [
-        90,
-        92
-      ],
-      "latinx": [
-        77,
-        80
-      ],
-      "other": [
-        83,
-        83
-      ],
-      "totals": [
-        83,
-        85
-      ]
-    },
-    "yolo": {
-      "ranks": [
-        20,
-        21
-      ],
-      "black": [
-        81,
-        79
-      ],
-      "white": [
-        84,
-        85
-      ],
-      "asian": [
-        84,
-        84
-      ],
-      "latinx": [
-        82,
-        79
-      ],
-      "other": [
-        77,
-        77
-      ],
-      "totals": [
-        83,
-        82
-      ]
-    },
-    "yuba": {
-      "ranks": [
-        47,
-        43
-      ],
-      "black": [
-        69,
-        61
-      ],
-      "white": [
-        72,
-        74
-      ],
-      "asian": [
-        67,
-        61
-      ],
-      "latinx": [
-        64,
-        66
-      ],
-      "other": [
-        64,
-        74
-      ],
-      "totals": [
-        69,
-        70
-      ]
-    }
+[
+  {
+    "": "California",
+    "EarlyPrenatalCare_2015": 83,
+    "Rank_2015": "",
+    "Latino_2015": 81,
+    "White_2015": 87,
+    "Black_2015": 79,
+    "Asian_2015": 85,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 84,
+    "Rank_2016": "",
+    "Latino_2016": 82,
+    "White_2016": 88,
+    "Black_2016": 79,
+    "Asian_2016": 85,
+    "Other_2016": 82
+  },
+  {
+    "": "Alameda",
+    "EarlyPrenatalCare_2015": 90,
+    "Rank_2015": 1,
+    "Latino_2015": 89,
+    "White_2015": 92,
+    "Black_2015": 88,
+    "Asian_2015": 92,
+    "Other_2015": 86,
+    "EarlyPrenatalCare_2016": 89,
+    "Rank_2016": 2,
+    "Latino_2016": 87,
+    "White_2016": 92,
+    "Black_2016": 85,
+    "Asian_2016": 91,
+    "Other_2016": 88
+  },
+  {
+    "": "Alpine",
+    "EarlyPrenatalCare_2015": "*",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": "*",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "*",
+    "Black_2016": "*",
+    "Asian_2016": "",
+    "Other_2016": "*"
+  },
+  {
+    "": "Amador",
+    "EarlyPrenatalCare_2015": 85,
+    "Rank_2015": 10,
+    "Latino_2015": 88,
+    "White_2015": 84,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 96,
+    "EarlyPrenatalCare_2016": 88,
+    "Rank_2016": 7,
+    "Latino_2016": 83,
+    "White_2016": 88,
+    "Black_2016": "",
+    "Asian_2016": "*",
+    "Other_2016": 86
+  },
+  {
+    "": "Butte",
+    "EarlyPrenatalCare_2015": 69,
+    "Rank_2015": 44,
+    "Latino_2015": 68,
+    "White_2015": 74,
+    "Black_2015": 46,
+    "Asian_2015": 47,
+    "Other_2015": 56,
+    "EarlyPrenatalCare_2016": 69,
+    "Rank_2016": 46,
+    "Latino_2016": 61,
+    "White_2016": 73,
+    "Black_2016": 60,
+    "Asian_2016": 52,
+    "Other_2016": 71
+  },
+  {
+    "": "Calaveras",
+    "EarlyPrenatalCare_2015": 79,
+    "Rank_2015": 24,
+    "Latino_2015": 65,
+    "White_2015": 82,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": 77,
+    "EarlyPrenatalCare_2016": 80,
+    "Rank_2016": 24,
+    "Latino_2016": 77,
+    "White_2016": 83,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 67
+  },
+  {
+    "": "Colusa",
+    "EarlyPrenatalCare_2015": 72,
+    "Rank_2015": 38,
+    "Latino_2015": 72,
+    "White_2015": 78,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 65,
+    "Rank_2016": 52,
+    "Latino_2016": 63,
+    "White_2016": 75,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": "*"
+  },
+  {
+    "": "Contra Costa",
+    "EarlyPrenatalCare_2015": 87,
+    "Rank_2015": 8,
+    "Latino_2015": 83,
+    "White_2015": 91,
+    "Black_2015": 83,
+    "Asian_2015": 88,
+    "Other_2015": 87,
+    "EarlyPrenatalCare_2016": 88,
+    "Rank_2016": 6,
+    "Latino_2016": 84,
+    "White_2016": 92,
+    "Black_2016": 84,
+    "Asian_2016": 87,
+    "Other_2016": 87
+  },
+  {
+    "": "Del Norte",
+    "EarlyPrenatalCare_2015": 65,
+    "Rank_2015": 52,
+    "Latino_2015": 70,
+    "White_2015": 71,
+    "Black_2015": "",
+    "Asian_2015": 84,
+    "Other_2015": 41,
+    "EarlyPrenatalCare_2016": 75,
+    "Rank_2016": 34,
+    "Latino_2016": 77,
+    "White_2016": 75,
+    "Black_2016": "",
+    "Asian_2016": 93,
+    "Other_2016": 67
+  },
+  {
+    "": "El Dorado",
+    "EarlyPrenatalCare_2015": 82,
+    "Rank_2015": 22,
+    "Latino_2015": 76,
+    "White_2015": 84,
+    "Black_2015": "*",
+    "Asian_2015": 89,
+    "Other_2015": 76,
+    "EarlyPrenatalCare_2016": 78,
+    "Rank_2016": 30,
+    "Latino_2016": 65,
+    "White_2016": 81,
+    "Black_2016": "*",
+    "Asian_2016": 87,
+    "Other_2016": 82
+  },
+  {
+    "": "Fresno",
+    "EarlyPrenatalCare_2015": 88,
+    "Rank_2015": 4,
+    "Latino_2015": 87,
+    "White_2015": 92,
+    "Black_2015": 90,
+    "Asian_2015": 89,
+    "Other_2015": 87,
+    "EarlyPrenatalCare_2016": 88,
+    "Rank_2016": 4,
+    "Latino_2016": 87,
+    "White_2016": 92,
+    "Black_2016": 84,
+    "Asian_2016": 88,
+    "Other_2016": 87
+  },
+  {
+    "": "Glenn",
+    "EarlyPrenatalCare_2015": 69,
+    "Rank_2015": 44,
+    "Latino_2015": 65,
+    "White_2015": 77,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 65,
+    "Rank_2016": 53,
+    "Latino_2016": 57,
+    "White_2016": 72,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": "*"
+  },
+  {
+    "": "Humboldt",
+    "EarlyPrenatalCare_2015": 76,
+    "Rank_2015": 31,
+    "Latino_2015": 74,
+    "White_2015": 80,
+    "Black_2015": "*",
+    "Asian_2015": 71,
+    "Other_2015": 66,
+    "EarlyPrenatalCare_2016": 80,
+    "Rank_2016": 26,
+    "Latino_2016": 81,
+    "White_2016": 83,
+    "Black_2016": 63,
+    "Asian_2016": 82,
+    "Other_2016": 65
+  },
+  {
+    "": "Imperial",
+    "EarlyPrenatalCare_2015": 41,
+    "Rank_2015": 57,
+    "Latino_2015": 39,
+    "White_2015": 54,
+    "Black_2015": 52,
+    "Asian_2015": 57,
+    "Other_2015": 44,
+    "EarlyPrenatalCare_2016": 59,
+    "Rank_2016": 56,
+    "Latino_2016": 58,
+    "White_2016": 66,
+    "Black_2016": "*",
+    "Asian_2016": 66,
+    "Other_2016": 57
+  },
+  {
+    "": "Inyo",
+    "EarlyPrenatalCare_2015": 75,
+    "Rank_2015": 33,
+    "Latino_2015": 76,
+    "White_2015": 80,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": 67,
+    "EarlyPrenatalCare_2016": 78,
+    "Rank_2016": 31,
+    "Latino_2016": 90,
+    "White_2016": 84,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 57
+  },
+  {
+    "": "Kern",
+    "EarlyPrenatalCare_2015": 76,
+    "Rank_2015": 32,
+    "Latino_2015": 75,
+    "White_2015": 80,
+    "Black_2015": 66,
+    "Asian_2015": 83,
+    "Other_2015": 66,
+    "EarlyPrenatalCare_2016": 78,
+    "Rank_2016": 32,
+    "Latino_2016": 76,
+    "White_2016": 82,
+    "Black_2016": 70,
+    "Asian_2016": 85,
+    "Other_2016": 66
+  },
+  {
+    "": "Kings",
+    "EarlyPrenatalCare_2015": 69,
+    "Rank_2015": 44,
+    "Latino_2015": 67,
+    "White_2015": 73,
+    "Black_2015": 71,
+    "Asian_2015": 72,
+    "Other_2015": 76,
+    "EarlyPrenatalCare_2016": 69,
+    "Rank_2016": 46,
+    "Latino_2016": 65,
+    "White_2016": 76,
+    "Black_2016": 65,
+    "Asian_2016": 80,
+    "Other_2016": 74
+  },
+  {
+    "": "Lake",
+    "EarlyPrenatalCare_2015": 70,
+    "Rank_2015": 43,
+    "Latino_2015": 67,
+    "White_2015": 73,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 58,
+    "EarlyPrenatalCare_2016": 69,
+    "Rank_2016": 45,
+    "Latino_2016": 66,
+    "White_2016": 73,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 56
+  },
+  {
+    "": "Lassen",
+    "EarlyPrenatalCare_2015": 66,
+    "Rank_2015": 51,
+    "Latino_2015": 56,
+    "White_2015": 69,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 73,
+    "EarlyPrenatalCare_2016": 71,
+    "Rank_2016": 41,
+    "Latino_2016": 64,
+    "White_2016": 75,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 59
+  },
+  {
+    "": "Los Angeles",
+    "EarlyPrenatalCare_2015": 85,
+    "Rank_2015": 12,
+    "Latino_2015": 84,
+    "White_2015": 90,
+    "Black_2015": 76,
+    "Asian_2015": 85,
+    "Other_2015": 83,
+    "EarlyPrenatalCare_2016": 85,
+    "Rank_2016": 13,
+    "Latino_2016": 84,
+    "White_2016": 90,
+    "Black_2016": 77,
+    "Asian_2016": 86,
+    "Other_2016": 84
+  },
+  {
+    "": "Madera",
+    "EarlyPrenatalCare_2015": 77,
+    "Rank_2015": 30,
+    "Latino_2015": 75,
+    "White_2015": 82,
+    "Black_2015": 59,
+    "Asian_2015": 70,
+    "Other_2015": 86,
+    "EarlyPrenatalCare_2016": 74,
+    "Rank_2016": 35,
+    "Latino_2016": 72,
+    "White_2016": 85,
+    "Black_2016": 54,
+    "Asian_2016": 74,
+    "Other_2016": 80
+  },
+  {
+    "": "Marin",
+    "EarlyPrenatalCare_2015": 89,
+    "Rank_2015": 3,
+    "Latino_2015": 84,
+    "White_2015": 92,
+    "Black_2015": 79,
+    "Asian_2015": 86,
+    "Other_2015": 86,
+    "EarlyPrenatalCare_2016": 86,
+    "Rank_2016": 12,
+    "Latino_2016": 82,
+    "White_2016": 89,
+    "Black_2016": 69,
+    "Asian_2016": 84,
+    "Other_2016": 84
+  },
+  {
+    "": "Mariposa",
+    "EarlyPrenatalCare_2015": 62,
+    "Rank_2015": 56,
+    "Latino_2015": 46,
+    "White_2015": 63,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 62,
+    "Rank_2016": 55,
+    "Latino_2016": 55,
+    "White_2016": 64,
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": "*"
+  },
+  {
+    "": "Mendocino",
+    "EarlyPrenatalCare_2015": 67,
+    "Rank_2015": 50,
+    "Latino_2015": 67,
+    "White_2015": 68,
+    "Black_2015": "*",
+    "Asian_2015": 73,
+    "Other_2015": 63,
+    "EarlyPrenatalCare_2016": 71,
+    "Rank_2016": 40,
+    "Latino_2016": 76,
+    "White_2016": 72,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 57
+  },
+  {
+    "": "Merced",
+    "EarlyPrenatalCare_2015": 68,
+    "Rank_2015": 49,
+    "Latino_2015": 67,
+    "White_2015": 75,
+    "Black_2015": 62,
+    "Asian_2015": 57,
+    "Other_2015": 74,
+    "EarlyPrenatalCare_2016": 68,
+    "Rank_2016": 50,
+    "Latino_2016": 68,
+    "White_2016": 72,
+    "Black_2016": 62,
+    "Asian_2016": 55,
+    "Other_2016": 69
+  },
+  {
+    "": "Modoc",
+    "EarlyPrenatalCare_2015": 64,
+    "Rank_2015": 53,
+    "Latino_2015": "*",
+    "White_2015": 70,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 50,
+    "Rank_2016": 57,
+    "Latino_2016": "*",
+    "White_2016": 47,
+    "Black_2016": "",
+    "Asian_2016": "*",
+    "Other_2016": "*"
+  },
+  {
+    "": "Mono",
+    "EarlyPrenatalCare_2015": 75,
+    "Rank_2015": 34,
+    "Latino_2015": 76,
+    "White_2015": 77,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 70,
+    "Rank_2016": 44,
+    "Latino_2016": 72,
+    "White_2016": 67,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": "*"
+  },
+  {
+    "": "Monterey",
+    "EarlyPrenatalCare_2015": 73,
+    "Rank_2015": 37,
+    "Latino_2015": 69,
+    "White_2015": 85,
+    "Black_2015": 74,
+    "Asian_2015": 75,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 76,
+    "Rank_2016": 33,
+    "Latino_2016": 72,
+    "White_2016": 90,
+    "Black_2016": 79,
+    "Asian_2016": 85,
+    "Other_2016": 82
+  },
+  {
+    "": "Napa",
+    "EarlyPrenatalCare_2015": 87,
+    "Rank_2015": 7,
+    "Latino_2015": 86,
+    "White_2015": 90,
+    "Black_2015": 92,
+    "Asian_2015": 86,
+    "Other_2015": 86,
+    "EarlyPrenatalCare_2016": 89,
+    "Rank_2016": 3,
+    "Latino_2016": 85,
+    "White_2016": 91,
+    "Black_2016": "*",
+    "Asian_2016": 93,
+    "Other_2016": 96
+  },
+  {
+    "": "Nevada",
+    "EarlyPrenatalCare_2015": 70,
+    "Rank_2015": 42,
+    "Latino_2015": 70,
+    "White_2015": 71,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 61,
+    "EarlyPrenatalCare_2016": 78,
+    "Rank_2016": 29,
+    "Latino_2016": 80,
+    "White_2016": 79,
+    "Black_2016": "*",
+    "Asian_2016": 79,
+    "Other_2016": 66
+  },
+  {
+    "": "Orange",
+    "EarlyPrenatalCare_2015": 87,
+    "Rank_2015": 8,
+    "Latino_2015": 87,
+    "White_2015": 93,
+    "Black_2015": 84,
+    "Asian_2015": 81,
+    "Other_2015": 85,
+    "EarlyPrenatalCare_2016": 86,
+    "Rank_2016": 11,
+    "Latino_2016": 87,
+    "White_2016": 92,
+    "Black_2016": 81,
+    "Asian_2016": 78,
+    "Other_2016": 88
+  },
+  {
+    "": "Placer",
+    "EarlyPrenatalCare_2015": 82,
+    "Rank_2015": 21,
+    "Latino_2015": 72,
+    "White_2015": 84,
+    "Black_2015": 79,
+    "Asian_2015": 85,
+    "Other_2015": 85,
+    "EarlyPrenatalCare_2016": 83,
+    "Rank_2016": 19,
+    "Latino_2016": 74,
+    "White_2016": 85,
+    "Black_2016": 80,
+    "Asian_2016": 87,
+    "Other_2016": 81
+  },
+  {
+    "": "Plumas",
+    "EarlyPrenatalCare_2015": 68,
+    "Rank_2015": 48,
+    "Latino_2015": "*",
+    "White_2015": 69,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 72,
+    "Rank_2016": 39,
+    "Latino_2016": 75,
+    "White_2016": 74,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 61
+  },
+  {
+    "": "Riverside",
+    "EarlyPrenatalCare_2015": 83,
+    "Rank_2015": 18,
+    "Latino_2015": 83,
+    "White_2015": 86,
+    "Black_2015": 81,
+    "Asian_2015": 80,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 83,
+    "Rank_2016": 17,
+    "Latino_2016": 83,
+    "White_2016": 87,
+    "Black_2016": 82,
+    "Asian_2016": 80,
+    "Other_2016": 81
+  },
+  {
+    "": "Sacramento",
+    "EarlyPrenatalCare_2015": 84,
+    "Rank_2015": 13,
+    "Latino_2015": 82,
+    "White_2015": 84,
+    "Black_2015": 84,
+    "Asian_2015": 86,
+    "Other_2015": 84,
+    "EarlyPrenatalCare_2016": 85,
+    "Rank_2016": 15,
+    "Latino_2016": 85,
+    "White_2016": 85,
+    "Black_2016": 83,
+    "Asian_2016": 85,
+    "Other_2016": 82
+  },
+  {
+    "": "San Benito",
+    "EarlyPrenatalCare_2015": 84,
+    "Rank_2015": 15,
+    "Latino_2015": 83,
+    "White_2015": 86,
+    "Black_2015": "*",
+    "Asian_2015": 85,
+    "Other_2015": 76,
+    "EarlyPrenatalCare_2016": 87,
+    "Rank_2016": 8,
+    "Latino_2016": 86,
+    "White_2016": 88,
+    "Black_2016": "*",
+    "Asian_2016": 100,
+    "Other_2016": 91
+  },
+  {
+    "": "San Bernardino",
+    "EarlyPrenatalCare_2015": 84,
+    "Rank_2015": 14,
+    "Latino_2015": 85,
+    "White_2015": 85,
+    "Black_2015": 79,
+    "Asian_2015": 80,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 83,
+    "Rank_2016": 18,
+    "Latino_2016": 84,
+    "White_2016": 84,
+    "Black_2016": 77,
+    "Asian_2016": 80,
+    "Other_2016": 81
+  },
+  {
+    "": "San Diego",
+    "EarlyPrenatalCare_2015": 84,
+    "Rank_2015": 17,
+    "Latino_2015": 79,
+    "White_2015": 89,
+    "Black_2015": 83,
+    "Asian_2015": 89,
+    "Other_2015": 75,
+    "EarlyPrenatalCare_2016": 84,
+    "Rank_2016": 16,
+    "Latino_2016": 80,
+    "White_2016": 90,
+    "Black_2016": 80,
+    "Asian_2016": 88,
+    "Other_2016": 78
+  },
+  {
+    "": "San Francisco",
+    "EarlyPrenatalCare_2015": 87,
+    "Rank_2015": 5,
+    "Latino_2015": 77,
+    "White_2015": 94,
+    "Black_2015": 68,
+    "Asian_2015": 88,
+    "Other_2015": 87,
+    "EarlyPrenatalCare_2016": 87,
+    "Rank_2016": 9,
+    "Latino_2016": 77,
+    "White_2016": 93,
+    "Black_2016": 72,
+    "Asian_2016": 88,
+    "Other_2016": 84
+  },
+  {
+    "": "San Joaquin",
+    "EarlyPrenatalCare_2015": 77,
+    "Rank_2015": 29,
+    "Latino_2015": 75,
+    "White_2015": 81,
+    "Black_2015": 70,
+    "Asian_2015": 78,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 80,
+    "Rank_2016": 25,
+    "Latino_2016": 78,
+    "White_2016": 84,
+    "Black_2016": 74,
+    "Asian_2016": 81,
+    "Other_2016": 80
+  },
+  {
+    "": "San Luis Obispo",
+    "EarlyPrenatalCare_2015": 82,
+    "Rank_2015": 23,
+    "Latino_2015": 79,
+    "White_2015": 83,
+    "Black_2015": 81,
+    "Asian_2015": 83,
+    "Other_2015": 81,
+    "EarlyPrenatalCare_2016": 79,
+    "Rank_2016": 27,
+    "Latino_2016": 75,
+    "White_2016": 84,
+    "Black_2016": 88,
+    "Asian_2016": 68,
+    "Other_2016": 75
+  },
+  {
+    "": "San Mateo",
+    "EarlyPrenatalCare_2015": 90,
+    "Rank_2015": 2,
+    "Latino_2015": 88,
+    "White_2015": 94,
+    "Black_2015": 86,
+    "Asian_2015": 88,
+    "Other_2015": 88,
+    "EarlyPrenatalCare_2016": 91,
+    "Rank_2016": 1,
+    "Latino_2016": 88,
+    "White_2016": 94,
+    "Black_2016": 88,
+    "Asian_2016": 90,
+    "Other_2016": 89
+  },
+  {
+    "": "Santa Barbara",
+    "EarlyPrenatalCare_2015": 77,
+    "Rank_2015": 28,
+    "Latino_2015": 73,
+    "White_2015": 88,
+    "Black_2015": 80,
+    "Asian_2015": 84,
+    "Other_2015": 80,
+    "EarlyPrenatalCare_2016": 79,
+    "Rank_2016": 28,
+    "Latino_2016": 74,
+    "White_2016": 87,
+    "Black_2016": 72,
+    "Asian_2016": 89,
+    "Other_2016": 88
+  },
+  {
+    "": "Santa Clara",
+    "EarlyPrenatalCare_2015": 85,
+    "Rank_2015": 10,
+    "Latino_2015": 76,
+    "White_2015": 92,
+    "Black_2015": 74,
+    "Asian_2015": 88,
+    "Other_2015": 90,
+    "EarlyPrenatalCare_2016": 87,
+    "Rank_2016": 10,
+    "Latino_2016": 78,
+    "White_2016": 92,
+    "Black_2016": 79,
+    "Asian_2016": 89,
+    "Other_2016": 90
+  },
+  {
+    "": "Santa Cruz",
+    "EarlyPrenatalCare_2015": 84,
+    "Rank_2015": 15,
+    "Latino_2015": 77,
+    "White_2015": 94,
+    "Black_2015": 77,
+    "Asian_2015": 85,
+    "Other_2015": 88,
+    "EarlyPrenatalCare_2016": 82,
+    "Rank_2016": 20,
+    "Latino_2016": 75,
+    "White_2016": 91,
+    "Black_2016": 79,
+    "Asian_2016": 93,
+    "Other_2016": 84
+  },
+  {
+    "": "Shasta",
+    "EarlyPrenatalCare_2015": 73,
+    "Rank_2015": 36,
+    "Latino_2015": 72,
+    "White_2015": 75,
+    "Black_2015": 61,
+    "Asian_2015": 68,
+    "Other_2015": 65,
+    "EarlyPrenatalCare_2016": 72,
+    "Rank_2016": 38,
+    "Latino_2016": 65,
+    "White_2016": 75,
+    "Black_2016": 68,
+    "Asian_2016": 58,
+    "Other_2016": 61
+  },
+  {
+    "": "Sierra",
+    "EarlyPrenatalCare_2015": 62,
+    "Rank_2015": 55,
+    "Latino_2015": "*",
+    "White_2015": 67,
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 65,
+    "Rank_2016": 54,
+    "Latino_2016": "*",
+    "White_2016": 68,
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": "*"
+  },
+  {
+    "": "Siskiyou",
+    "EarlyPrenatalCare_2015": 78,
+    "Rank_2015": 27,
+    "Latino_2015": 79,
+    "White_2015": 79,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 71,
+    "EarlyPrenatalCare_2016": 73,
+    "Rank_2016": 36,
+    "Latino_2016": 60,
+    "White_2016": 78,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 73
+  },
+  {
+    "": "Solano",
+    "EarlyPrenatalCare_2015": 79,
+    "Rank_2015": 26,
+    "Latino_2015": 74,
+    "White_2015": 83,
+    "Black_2015": 80,
+    "Asian_2015": 81,
+    "Other_2015": 80,
+    "EarlyPrenatalCare_2016": 81,
+    "Rank_2016": 23,
+    "Latino_2016": 77,
+    "White_2016": 84,
+    "Black_2016": 79,
+    "Asian_2016": 84,
+    "Other_2016": 81
+  },
+  {
+    "": "Sonoma",
+    "EarlyPrenatalCare_2015": 87,
+    "Rank_2015": 5,
+    "Latino_2015": 86,
+    "White_2015": 90,
+    "Black_2015": 80,
+    "Asian_2015": 84,
+    "Other_2015": 86,
+    "EarlyPrenatalCare_2016": 88,
+    "Rank_2016": 5,
+    "Latino_2016": 87,
+    "White_2016": 89,
+    "Black_2016": 75,
+    "Asian_2016": 82,
+    "Other_2016": 87
+  },
+  {
+    "": "Stanislaus",
+    "EarlyPrenatalCare_2015": 79,
+    "Rank_2015": 25,
+    "Latino_2015": 78,
+    "White_2015": 84,
+    "Black_2015": 68,
+    "Asian_2015": 76,
+    "Other_2015": 72,
+    "EarlyPrenatalCare_2016": 81,
+    "Rank_2016": 22,
+    "Latino_2016": 79,
+    "White_2016": 84,
+    "Black_2016": 75,
+    "Asian_2016": 82,
+    "Other_2016": 80
+  },
+  {
+    "": "Sutter",
+    "EarlyPrenatalCare_2015": 71,
+    "Rank_2015": 39,
+    "Latino_2015": 66,
+    "White_2015": 75,
+    "Black_2015": 73,
+    "Asian_2015": 70,
+    "Other_2015": 78,
+    "EarlyPrenatalCare_2016": 71,
+    "Rank_2016": 42,
+    "Latino_2016": 61,
+    "White_2016": 78,
+    "Black_2016": 57,
+    "Asian_2016": 75,
+    "Other_2016": 75
+  },
+  {
+    "": "Tehama",
+    "EarlyPrenatalCare_2015": 70,
+    "Rank_2015": 41,
+    "Latino_2015": 69,
+    "White_2015": 72,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 68,
+    "EarlyPrenatalCare_2016": 68,
+    "Rank_2016": 49,
+    "Latino_2016": 64,
+    "White_2016": 71,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 71
+  },
+  {
+    "": "Trinity",
+    "EarlyPrenatalCare_2015": 62,
+    "Rank_2015": 54,
+    "Latino_2015": "*",
+    "White_2015": 66,
+    "Black_2015": "",
+    "Asian_2015": "*",
+    "Other_2015": "*",
+    "EarlyPrenatalCare_2016": 66,
+    "Rank_2016": 51,
+    "Latino_2016": "*",
+    "White_2016": 68,
+    "Black_2016": "",
+    "Asian_2016": "*",
+    "Other_2016": "*"
+  },
+  {
+    "": "Tulare",
+    "EarlyPrenatalCare_2015": 74,
+    "Rank_2015": 35,
+    "Latino_2015": 75,
+    "White_2015": 74,
+    "Black_2015": 68,
+    "Asian_2015": 66,
+    "Other_2015": 67,
+    "EarlyPrenatalCare_2016": 73,
+    "Rank_2016": 37,
+    "Latino_2016": 74,
+    "White_2016": 72,
+    "Black_2016": 63,
+    "Asian_2016": 71,
+    "Other_2016": 64
+  },
+  {
+    "": "Tuolumne",
+    "EarlyPrenatalCare_2015": 70,
+    "Rank_2015": 40,
+    "Latino_2015": 59,
+    "White_2015": 74,
+    "Black_2015": "*",
+    "Asian_2015": "*",
+    "Other_2015": 54,
+    "EarlyPrenatalCare_2016": 69,
+    "Rank_2016": 46,
+    "Latino_2016": 61,
+    "White_2016": 72,
+    "Black_2016": "*",
+    "Asian_2016": "*",
+    "Other_2016": 59
+  },
+  {
+    "": "Ventura",
+    "EarlyPrenatalCare_2015": 83,
+    "Rank_2015": 19,
+    "Latino_2015": 77,
+    "White_2015": 92,
+    "Black_2015": 78,
+    "Asian_2015": 90,
+    "Other_2015": 83,
+    "EarlyPrenatalCare_2016": 85,
+    "Rank_2016": 14,
+    "Latino_2016": 80,
+    "White_2016": 92,
+    "Black_2016": 86,
+    "Asian_2016": 92,
+    "Other_2016": 83
+  },
+  {
+    "": "Yolo",
+    "EarlyPrenatalCare_2015": 83,
+    "Rank_2015": 20,
+    "Latino_2015": 82,
+    "White_2015": 84,
+    "Black_2015": 81,
+    "Asian_2015": 84,
+    "Other_2015": 77,
+    "EarlyPrenatalCare_2016": 82,
+    "Rank_2016": 21,
+    "Latino_2016": 79,
+    "White_2016": 85,
+    "Black_2016": 79,
+    "Asian_2016": 84,
+    "Other_2016": 77
+  },
+  {
+    "": "Yuba",
+    "EarlyPrenatalCare_2015": 69,
+    "Rank_2015": 47,
+    "Latino_2015": 64,
+    "White_2015": 72,
+    "Black_2015": 69,
+    "Asian_2015": 67,
+    "Other_2015": 64,
+    "EarlyPrenatalCare_2016": 70,
+    "Rank_2016": 43,
+    "Latino_2016": 66,
+    "White_2016": 74,
+    "Black_2016": 61,
+    "Asian_2016": 61,
+    "Other_2016": 74
+  },
+  {
+    "": "",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Notes:",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Numerators and percents not shown for fewer than 10 events in the numerator",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Other category includes other, multiple race, American Indian and unknown",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Excludes births with missing/unknown PNC initiation",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Data source: 2015 Birth Statistical Master File",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Prepared by Epidemiology, Surveillance and Federal Reporting Branch",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Maternal, Child and Adolescent Health",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "Center for Family Health",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
+  },
+  {
+    "": "California Department of Public Health",
+    "EarlyPrenatalCare_2015": "",
+    "Rank_2015": "",
+    "Latino_2015": "",
+    "White_2015": "",
+    "Black_2015": "",
+    "Asian_2015": "",
+    "Other_2015": "",
+    "EarlyPrenatalCare_2016": "",
+    "Rank_2016": "",
+    "Latino_2016": "",
+    "White_2016": "",
+    "Black_2016": "",
+    "Asian_2016": "",
+    "Other_2016": ""
   }
-}
+]

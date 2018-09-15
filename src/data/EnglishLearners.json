@@ -1,0 +1,415 @@
+[
+  {
+    "Location": "California",
+    "EnglishLearners_2017": 44,
+    "Rank_2017": "",
+    "EnglishLearners_2018": 47,
+    "Rank_2018": ""
+  },
+  {
+    "Location": "Alameda",
+    "EnglishLearners_2017": 47,
+    "Rank_2017": 6,
+    "EnglishLearners_2018": 49,
+    "Rank_2018": 8
+  },
+  {
+    "Location": "Alpine",
+    "EnglishLearners_2017": "",
+    "Rank_2017": "",
+    "EnglishLearners_2018": "",
+    "Rank_2018": ""
+  },
+  {
+    "Location": "Amador",
+    "EnglishLearners_2017": 72,
+    "Rank_2017": 1,
+    "EnglishLearners_2018": 63,
+    "Rank_2018": 1
+  },
+  {
+    "Location": "Butte",
+    "EnglishLearners_2017": 46,
+    "Rank_2017": 9,
+    "EnglishLearners_2018": 52,
+    "Rank_2018": 2
+  },
+  {
+    "Location": "Calaveras",
+    "EnglishLearners_2017": 51,
+    "Rank_2017": 2,
+    "EnglishLearners_2018": 45,
+    "Rank_2018": 20
+  },
+  {
+    "Location": "Colusa",
+    "EnglishLearners_2017": 41,
+    "Rank_2017": 25,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "Contra Costa",
+    "EnglishLearners_2017": 40,
+    "Rank_2017": 29,
+    "EnglishLearners_2018": 42,
+    "Rank_2018": 29
+  },
+  {
+    "Location": "Del Norte",
+    "EnglishLearners_2017": 38,
+    "Rank_2017": 36,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "El Dorado",
+    "EnglishLearners_2017": 36,
+    "Rank_2017": 41,
+    "EnglishLearners_2018": 41,
+    "Rank_2018": 34
+  },
+  {
+    "Location": "Fresno",
+    "EnglishLearners_2017": 44,
+    "Rank_2017": 16,
+    "EnglishLearners_2018": 46,
+    "Rank_2018": 16
+  },
+  {
+    "Location": "Glenn",
+    "EnglishLearners_2017": 42,
+    "Rank_2017": 21,
+    "EnglishLearners_2018": 52,
+    "Rank_2018": 2
+  },
+  {
+    "Location": "Humboldt",
+    "EnglishLearners_2017": 29,
+    "Rank_2017": 55,
+    "EnglishLearners_2018": 30,
+    "Rank_2018": 54
+  },
+  {
+    "Location": "Imperial",
+    "EnglishLearners_2017": 31,
+    "Rank_2017": 54,
+    "EnglishLearners_2018": 33,
+    "Rank_2018": 50
+  },
+  {
+    "Location": "Inyo",
+    "EnglishLearners_2017": 41,
+    "Rank_2017": 25,
+    "EnglishLearners_2018": 51,
+    "Rank_2018": 5
+  },
+  {
+    "Location": "Kern",
+    "EnglishLearners_2017": 45,
+    "Rank_2017": 13,
+    "EnglishLearners_2018": 48,
+    "Rank_2018": 9
+  },
+  {
+    "Location": "Kings",
+    "EnglishLearners_2017": 38,
+    "Rank_2017": 36,
+    "EnglishLearners_2018": 43,
+    "Rank_2018": 26
+  },
+  {
+    "Location": "Lake",
+    "EnglishLearners_2017": 32,
+    "Rank_2017": 50,
+    "EnglishLearners_2018": 33,
+    "Rank_2018": 50
+  },
+  {
+    "Location": "Lassen",
+    "EnglishLearners_2017": 35,
+    "Rank_2017": 45,
+    "EnglishLearners_2018": 41,
+    "Rank_2018": 34
+  },
+  {
+    "Location": "Los Angeles",
+    "EnglishLearners_2017": 49,
+    "Rank_2017": 3,
+    "EnglishLearners_2018": 52,
+    "Rank_2018": 2
+  },
+  {
+    "Location": "Madera",
+    "EnglishLearners_2017": 46,
+    "Rank_2017": 9,
+    "EnglishLearners_2018": 46,
+    "Rank_2018": 16
+  },
+  {
+    "Location": "Marin",
+    "EnglishLearners_2017": 38,
+    "Rank_2017": 36,
+    "EnglishLearners_2018": 43,
+    "Rank_2018": 26
+  },
+  {
+    "Location": "Mariposa",
+    "EnglishLearners_2017": 36,
+    "Rank_2017": 41,
+    "EnglishLearners_2018": 33,
+    "Rank_2018": 50
+  },
+  {
+    "Location": "Mendocino",
+    "EnglishLearners_2017": 33,
+    "Rank_2017": 48,
+    "EnglishLearners_2018": 33,
+    "Rank_2018": 50
+  },
+  {
+    "Location": "Merced",
+    "EnglishLearners_2017": 45,
+    "Rank_2017": 13,
+    "EnglishLearners_2018": 48,
+    "Rank_2018": 9
+  },
+  {
+    "Location": "Modoc",
+    "EnglishLearners_2017": 24,
+    "Rank_2017": 56,
+    "EnglishLearners_2018": 25,
+    "Rank_2018": 57
+  },
+  {
+    "Location": "Mono",
+    "EnglishLearners_2017": 46,
+    "Rank_2017": 9,
+    "EnglishLearners_2018": 46,
+    "Rank_2018": 16
+  },
+  {
+    "Location": "Monterey",
+    "EnglishLearners_2017": 37,
+    "Rank_2017": 40,
+    "EnglishLearners_2018": 38,
+    "Rank_2018": 44
+  },
+  {
+    "Location": "Napa",
+    "EnglishLearners_2017": 46,
+    "Rank_2017": 9,
+    "EnglishLearners_2018": 48,
+    "Rank_2018": 9
+  },
+  {
+    "Location": "Nevada",
+    "EnglishLearners_2017": 32,
+    "Rank_2017": 50,
+    "EnglishLearners_2018": 36,
+    "Rank_2018": 46
+  },
+  {
+    "Location": "Orange",
+    "EnglishLearners_2017": 44,
+    "Rank_2017": 16,
+    "EnglishLearners_2018": 46,
+    "Rank_2018": 16
+  },
+  {
+    "Location": "Placer",
+    "EnglishLearners_2017": 47,
+    "Rank_2017": 6,
+    "EnglishLearners_2018": 50,
+    "Rank_2018": 6
+  },
+  {
+    "Location": "Plumas",
+    "EnglishLearners_2017": 32,
+    "Rank_2017": 50,
+    "EnglishLearners_2018": 28,
+    "Rank_2018": 56
+  },
+  {
+    "Location": "Riverside",
+    "EnglishLearners_2017": 42,
+    "Rank_2017": 21,
+    "EnglishLearners_2018": 45,
+    "Rank_2018": 20
+  },
+  {
+    "Location": "Sacramento",
+    "EnglishLearners_2017": 42,
+    "Rank_2017": 21,
+    "EnglishLearners_2018": 44,
+    "Rank_2018": 24
+  },
+  {
+    "Location": "San Benito",
+    "EnglishLearners_2017": 35,
+    "Rank_2017": 45,
+    "EnglishLearners_2018": 39,
+    "Rank_2018": 42
+  },
+  {
+    "Location": "San Bernardino",
+    "EnglishLearners_2017": 44,
+    "Rank_2017": 16,
+    "EnglishLearners_2018": 47,
+    "Rank_2018": 13
+  },
+  {
+    "Location": "San Diego",
+    "EnglishLearners_2017": 41,
+    "Rank_2017": 25,
+    "EnglishLearners_2018": 44,
+    "Rank_2018": 24
+  },
+  {
+    "Location": "San Francisco",
+    "EnglishLearners_2017": 43,
+    "Rank_2017": 19,
+    "EnglishLearners_2018": 42,
+    "Rank_2018": 29
+  },
+  {
+    "Location": "San Joaquin",
+    "EnglishLearners_2017": 39,
+    "Rank_2017": 31,
+    "EnglishLearners_2018": 43,
+    "Rank_2018": 26
+  },
+  {
+    "Location": "San Luis Obispo",
+    "EnglishLearners_2017": 41,
+    "Rank_2017": 25,
+    "EnglishLearners_2018": 45,
+    "Rank_2018": 20
+  },
+  {
+    "Location": "San Mateo",
+    "EnglishLearners_2017": 42,
+    "Rank_2017": 21,
+    "EnglishLearners_2018": 45,
+    "Rank_2018": 20
+  },
+  {
+    "Location": "Santa Barbara",
+    "EnglishLearners_2017": 35,
+    "Rank_2017": 45,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "Santa Clara",
+    "EnglishLearners_2017": 48,
+    "Rank_2017": 5,
+    "EnglishLearners_2018": 48,
+    "Rank_2018": 9
+  },
+  {
+    "Location": "Santa Cruz",
+    "EnglishLearners_2017": 36,
+    "Rank_2017": 41,
+    "EnglishLearners_2018": 38,
+    "Rank_2018": 44
+  },
+  {
+    "Location": "Shasta",
+    "EnglishLearners_2017": 39,
+    "Rank_2017": 31,
+    "EnglishLearners_2018": 42,
+    "Rank_2018": 29
+  },
+  {
+    "Location": "Sierra",
+    "EnglishLearners_2017": 40,
+    "Rank_2017": 29,
+    "EnglishLearners_2018": 39,
+    "Rank_2018": 42
+  },
+  {
+    "Location": "Siskiyou",
+    "EnglishLearners_2017": 39,
+    "Rank_2017": 31,
+    "EnglishLearners_2018": 35,
+    "Rank_2018": 48
+  },
+  {
+    "Location": "Solano",
+    "EnglishLearners_2017": 49,
+    "Rank_2017": 3,
+    "EnglishLearners_2018": 50,
+    "Rank_2018": 6
+  },
+  {
+    "Location": "Sonoma",
+    "EnglishLearners_2017": 39,
+    "Rank_2017": 31,
+    "EnglishLearners_2018": 42,
+    "Rank_2018": 29
+  },
+  {
+    "Location": "Stanislaus",
+    "EnglishLearners_2017": 38,
+    "Rank_2017": 36,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "Sutter",
+    "EnglishLearners_2017": 45,
+    "Rank_2017": 13,
+    "EnglishLearners_2018": 47,
+    "Rank_2018": 13
+  },
+  {
+    "Location": "Tehama",
+    "EnglishLearners_2017": 33,
+    "Rank_2017": 48,
+    "EnglishLearners_2018": 35,
+    "Rank_2018": 48
+  },
+  {
+    "Location": "Trinity",
+    "EnglishLearners_2017": 21,
+    "Rank_2017": 57,
+    "EnglishLearners_2018": 30,
+    "Rank_2018": 54
+  },
+  {
+    "Location": "Tulare",
+    "EnglishLearners_2017": 36,
+    "Rank_2017": 41,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "Tuolumne",
+    "EnglishLearners_2017": 47,
+    "Rank_2017": 6,
+    "EnglishLearners_2018": 40,
+    "Rank_2018": 36
+  },
+  {
+    "Location": "Ventura",
+    "EnglishLearners_2017": 39,
+    "Rank_2017": 31,
+    "EnglishLearners_2018": 42,
+    "Rank_2018": 29
+  },
+  {
+    "Location": "Yolo",
+    "EnglishLearners_2017": 43,
+    "Rank_2017": 19,
+    "EnglishLearners_2018": 47,
+    "Rank_2018": 13
+  },
+  {
+    "Location": "Yuba",
+    "EnglishLearners_2017": 32,
+    "Rank_2017": 50,
+    "EnglishLearners_2018": 36,
+    "Rank_2018": 46
+  }
+]

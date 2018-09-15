@@ -1,0 +1,312 @@
+[
+  {
+    "Location": "California",
+    "Summer_2016": 8,
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Alameda",
+    "Summer_2016": 11,
+    "Rank_2016": 9
+  },
+  {
+    "Location": "Alpine",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Amador",
+    "Summer_2016": 0,
+    "Rank_2016": 55
+  },
+  {
+    "Location": "Butte",
+    "Summer_2016": 6,
+    "Rank_2016": 23
+  },
+  {
+    "Location": "Calaveras",
+    "Summer_2016": 8,
+    "Rank_2016": 18
+  },
+  {
+    "Location": "Colusa",
+    "Summer_2016": 6,
+    "Rank_2016": 27
+  },
+  {
+    "Location": "Contra Costa",
+    "Summer_2016": 11,
+    "Rank_2016": 7
+  },
+  {
+    "Location": "Del Norte",
+    "Summer_2016": 13,
+    "Rank_2016": 4
+  },
+  {
+    "Location": "El Dorado",
+    "Summer_2016": 5,
+    "Rank_2016": 33
+  },
+  {
+    "Location": "Fresno",
+    "Summer_2016": 5,
+    "Rank_2016": 35
+  },
+  {
+    "Location": "Glenn",
+    "Summer_2016": 4,
+    "Rank_2016": 39
+  },
+  {
+    "Location": "Humboldt",
+    "Summer_2016": 5,
+    "Rank_2016": 30
+  },
+  {
+    "Location": "Imperial",
+    "Summer_2016": 6,
+    "Rank_2016": 24
+  },
+  {
+    "Location": "Inyo",
+    "Summer_2016": 3,
+    "Rank_2016": 49
+  },
+  {
+    "Location": "Kern",
+    "Summer_2016": 3,
+    "Rank_2016": 47
+  },
+  {
+    "Location": "Kings",
+    "Summer_2016": 3,
+    "Rank_2016": 48
+  },
+  {
+    "Location": "Lake",
+    "Summer_2016": 6,
+    "Rank_2016": 26
+  },
+  {
+    "Location": "Lassen",
+    "Summer_2016": 1,
+    "Rank_2016": 51
+  },
+  {
+    "Location": "Los Angeles",
+    "Summer_2016": 11,
+    "Rank_2016": 8
+  },
+  {
+    "Location": "Madera",
+    "Summer_2016": 5,
+    "Rank_2016": 32
+  },
+  {
+    "Location": "Marin",
+    "Summer_2016": 8,
+    "Rank_2016": 16
+  },
+  {
+    "Location": "Mariposa",
+    "Summer_2016": 0,
+    "Rank_2016": 54
+  },
+  {
+    "Location": "Mendocino",
+    "Summer_2016": 11,
+    "Rank_2016": 10
+  },
+  {
+    "Location": "Merced",
+    "Summer_2016": 6,
+    "Rank_2016": 22
+  },
+  {
+    "Location": "Modoc",
+    "Summer_2016": 8,
+    "Rank_2016": 17
+  },
+  {
+    "Location": "Mono",
+    "Summer_2016": 0,
+    "Rank_2016": 53
+  },
+  {
+    "Location": "Monterey",
+    "Summer_2016": 5,
+    "Rank_2016": 29
+  },
+  {
+    "Location": "Napa",
+    "Summer_2016": 4,
+    "Rank_2016": 36
+  },
+  {
+    "Location": "Nevada",
+    "Summer_2016": 3,
+    "Rank_2016": 42
+  },
+  {
+    "Location": "Orange",
+    "Summer_2016": 8,
+    "Rank_2016": 15
+  },
+  {
+    "Location": "Placer",
+    "Summer_2016": 5,
+    "Rank_2016": 34
+  },
+  {
+    "Location": "Plumas",
+    "Summer_2016": 11,
+    "Rank_2016": 6
+  },
+  {
+    "Location": "Riverside",
+    "Summer_2016": 6,
+    "Rank_2016": 25
+  },
+  {
+    "Location": "Sacramento",
+    "Summer_2016": 7,
+    "Rank_2016": 21
+  },
+  {
+    "Location": "San Benito",
+    "Summer_2016": 13,
+    "Rank_2016": 5
+  },
+  {
+    "Location": "San Bernardino",
+    "Summer_2016": 2,
+    "Rank_2016": 50
+  },
+  {
+    "Location": "San Diego",
+    "Summer_2016": 13,
+    "Rank_2016": 3
+  },
+  {
+    "Location": "San Francisco",
+    "Summer_2016": 18,
+    "Rank_2016": 1
+  },
+  {
+    "Location": "San Joaquin",
+    "Summer_2016": 4,
+    "Rank_2016": 38
+  },
+  {
+    "Location": "San Luis Obispo",
+    "Summer_2016": 4,
+    "Rank_2016": 41
+  },
+  {
+    "Location": "San Mateo",
+    "Summer_2016": 13,
+    "Rank_2016": 2
+  },
+  {
+    "Location": "Santa Barbara",
+    "Summer_2016": 9,
+    "Rank_2016": 12
+  },
+  {
+    "Location": "Santa Clara",
+    "Summer_2016": 8,
+    "Rank_2016": 14
+  },
+  {
+    "Location": "Santa Cruz",
+    "Summer_2016": 7,
+    "Rank_2016": 20
+  },
+  {
+    "Location": "Shasta",
+    "Summer_2016": 4,
+    "Rank_2016": 37
+  },
+  {
+    "Location": "Sierra",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Siskiyou",
+    "Summer_2016": 5,
+    "Rank_2016": 31
+  },
+  {
+    "Location": "Solano",
+    "Summer_2016": 6,
+    "Rank_2016": 28
+  },
+  {
+    "Location": "Sonoma",
+    "Summer_2016": 10,
+    "Rank_2016": 11
+  },
+  {
+    "Location": "Stanislaus",
+    "Summer_2016": 3,
+    "Rank_2016": 45
+  },
+  {
+    "Location": "Sutter",
+    "Summer_2016": 3,
+    "Rank_2016": 43
+  },
+  {
+    "Location": "Tehama",
+    "Summer_2016": 4,
+    "Rank_2016": 40
+  },
+  {
+    "Location": "Trinity",
+    "Summer_2016": 3,
+    "Rank_2016": 46
+  },
+  {
+    "Location": "Tulare",
+    "Summer_2016": 3,
+    "Rank_2016": 44
+  },
+  {
+    "Location": "Tuolumne",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Ventura",
+    "Summer_2016": 8,
+    "Rank_2016": 19
+  },
+  {
+    "Location": "Yolo",
+    "Summer_2016": 9,
+    "Rank_2016": 13
+  },
+  {
+    "Location": "Yuba",
+    "Summer_2016": 1,
+    "Rank_2016": 52
+  },
+  {
+    "Location": "",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  },
+  {
+    "Location": "Data Source: CFPA’s analysis of NSLP (public, non-charter school), SFSP, and SSFO data from March, April and July 2016 provided by the California Department of Education. See technical appendix for details.",
+    "Summer_2016": "",
+    "Rank_2016": ""
+  }
+]

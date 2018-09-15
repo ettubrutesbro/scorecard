@@ -1,0 +1,592 @@
+[
+  {
+    "": "California",
+    "ReadtoEveryday_2013-2014": 61,
+    "Latino": 55,
+    "White": 84,
+    "Black": 62,
+    "Asian": 63,
+    "Other": 68,
+    "Read to Everyday_ 2015-2016": 64
+  },
+  {
+    "": "Alameda",
+    "ReadtoEveryday_2013-2014": "74*",
+    "Latino": "78*",
+    "White": "86*",
+    "Black": "56*",
+    "Asian": "90*",
+    "Other": "94*",
+    "Read to Everyday_ 2015-2016": "79*"
+  },
+  {
+    "": "Alpine",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Amador",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Butte",
+    "ReadtoEveryday_2013-2014": "72*",
+    "Latino": "48*",
+    "White": "94*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "90*"
+  },
+  {
+    "": "Calaveras",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Colusa",
+    "ReadtoEveryday_2013-2014": 64,
+    "Latino": "71*",
+    "White": "69*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "64*"
+  },
+  {
+    "": "Contra Costa",
+    "ReadtoEveryday_2013-2014": "79*",
+    "Latino": "68*",
+    "White": "88*",
+    "Black": "30*",
+    "Asian": "17*",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "73*"
+  },
+  {
+    "": "Del Norte",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "El Dorado",
+    "ReadtoEveryday_2013-2014": "87*",
+    "Latino": "53*",
+    "White": "91*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "77*"
+  },
+  {
+    "": "Fresno",
+    "ReadtoEveryday_2013-2014": "64*",
+    "Latino": "75*",
+    "White": "83*",
+    "Black": "100*",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "80*"
+  },
+  {
+    "": "Glenn",
+    "ReadtoEveryday_2013-2014": 64,
+    "Latino": "71*",
+    "White": "69*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "64*"
+  },
+  {
+    "": "Humboldt",
+    "ReadtoEveryday_2013-2014": "83*",
+    "Latino": "100*",
+    "White": "53*",
+    "Black": "",
+    "Asian": "100*",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "73*"
+  },
+  {
+    "": "Imperial",
+    "ReadtoEveryday_2013-2014": "38*",
+    "Latino": "34*",
+    "White": "",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "34*"
+  },
+  {
+    "": "Inyo",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Kern",
+    "ReadtoEveryday_2013-2014": "57*",
+    "Latino": "37*",
+    "White": "87*",
+    "Black": "100*",
+    "Asian": "",
+    "Other": "73*",
+    "Read to Everyday_ 2015-2016": 52
+  },
+  {
+    "": "Kings",
+    "ReadtoEveryday_2013-2014": "71*",
+    "Latino": "32*",
+    "White": "76*",
+    "Black": "",
+    "Asian": "",
+    "Other": "50*",
+    "Read to Everyday_ 2015-2016": "41*"
+  },
+  {
+    "": "Lake",
+    "ReadtoEveryday_2013-2014": "98*",
+    "Latino": "76*",
+    "White": "76*",
+    "Black": "100*",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "85*"
+  },
+  {
+    "": "Lassen",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Los Angeles",
+    "ReadtoEveryday_2013-2014": 61,
+    "Latino": 56,
+    "White": "89*",
+    "Black": "46*",
+    "Asian": "73*",
+    "Other": "47*",
+    "Read to Everyday_ 2015-2016": 60
+  },
+  {
+    "": "Madera",
+    "ReadtoEveryday_2013-2014": "73*",
+    "Latino": "17*",
+    "White": "",
+    "Black": "",
+    "Asian": "100*",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "29*"
+  },
+  {
+    "": "Marin",
+    "ReadtoEveryday_2013-2014": 51,
+    "Latino": "63*",
+    "White": "75*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "72*"
+  },
+  {
+    "": "Mariposa",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Mendocino",
+    "ReadtoEveryday_2013-2014": "63*",
+    "Latino": "49*",
+    "White": "76*",
+    "Black": "",
+    "Asian": "",
+    "Other": "57*",
+    "Read to Everyday_ 2015-2016": "52*"
+  },
+  {
+    "": "Merced",
+    "ReadtoEveryday_2013-2014": "46*",
+    "Latino": "26*",
+    "White": "60*",
+    "Black": "100*",
+    "Asian": "48*",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "32*"
+  },
+  {
+    "": "Modoc",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Mono",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Monterey",
+    "ReadtoEveryday_2013-2014": 54,
+    "Latino": "40*",
+    "White": "100*",
+    "Black": "",
+    "Asian": "100*",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "42*"
+  },
+  {
+    "": "Napa",
+    "ReadtoEveryday_2013-2014": "58*",
+    "Latino": "",
+    "White": "86*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "61*"
+  },
+  {
+    "": "Nevada",
+    "ReadtoEveryday_2013-2014": "88*",
+    "Latino": "",
+    "White": "88*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "83*"
+  },
+  {
+    "": "Orange",
+    "ReadtoEveryday_2013-2014": 46,
+    "Latino": "62*",
+    "White": "83*",
+    "Black": "50.0*",
+    "Asian": "46*",
+    "Other": "95*",
+    "Read to Everyday_ 2015-2016": "71*"
+  },
+  {
+    "": "Placer",
+    "ReadtoEveryday_2013-2014": "86*",
+    "Latino": "",
+    "White": "29*",
+    "Black": "",
+    "Asian": "",
+    "Other": "54*",
+    "Read to Everyday_ 2015-2016": "30*"
+  },
+  {
+    "": "Plumas",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Riverside",
+    "ReadtoEveryday_2013-2014": 62,
+    "Latino": 48,
+    "White": "87*",
+    "Black": "83*",
+    "Asian": "64*",
+    "Other": "42*",
+    "Read to Everyday_ 2015-2016": 60
+  },
+  {
+    "": "Sacramento",
+    "ReadtoEveryday_2013-2014": "84*",
+    "Latino": "75*",
+    "White": "80*",
+    "Black": "71*",
+    "Asian": "86*",
+    "Other": "68*",
+    "Read to Everyday_ 2015-2016": "78*"
+  },
+  {
+    "": "San Benito",
+    "ReadtoEveryday_2013-2014": "56*",
+    "Latino": "69*",
+    "White": "64*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "67*"
+  },
+  {
+    "": "San Bernardino",
+    "ReadtoEveryday_2013-2014": 56,
+    "Latino": 48,
+    "White": "70*",
+    "Black": "61*",
+    "Asian": "63*",
+    "Other": "66*",
+    "Read to Everyday_ 2015-2016": 54
+  },
+  {
+    "": "San Diego",
+    "ReadtoEveryday_2013-2014": 68,
+    "Latino": 57,
+    "White": "88*",
+    "Black": "52*",
+    "Asian": "57*",
+    "Other": "90*",
+    "Read to Everyday_ 2015-2016": 68
+  },
+  {
+    "": "San Francisco",
+    "ReadtoEveryday_2013-2014": "71*",
+    "Latino": "72*",
+    "White": "93*",
+    "Black": "93*",
+    "Asian": "75*",
+    "Other": "50*",
+    "Read to Everyday_ 2015-2016": "72*"
+  },
+  {
+    "": "San Joaquin",
+    "ReadtoEveryday_2013-2014": 42,
+    "Latino": "49*",
+    "White": "74*",
+    "Black": "100*",
+    "Asian": "100*",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "57*"
+  },
+  {
+    "": "San Luis Obispo",
+    "ReadtoEveryday_2013-2014": "41*",
+    "Latino": "63*",
+    "White": "36*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "50*"
+  },
+  {
+    "": "San Mateo",
+    "ReadtoEveryday_2013-2014": "73*",
+    "Latino": "59*",
+    "White": "81*",
+    "Black": "",
+    "Asian": "50*",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "62*"
+  },
+  {
+    "": "Santa Barbara",
+    "ReadtoEveryday_2013-2014": "64*",
+    "Latino": "48*",
+    "White": "74*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "53*"
+  },
+  {
+    "": "Santa Clara",
+    "ReadtoEveryday_2013-2014": 55,
+    "Latino": "72*",
+    "White": "80*",
+    "Black": "100*",
+    "Asian": "70*",
+    "Other": "88*",
+    "Read to Everyday_ 2015-2016": "73*"
+  },
+  {
+    "": "Santa Cruz",
+    "ReadtoEveryday_2013-2014": "53*",
+    "Latino": "44*",
+    "White": "100*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "67*"
+  },
+  {
+    "": "Shasta",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "24*",
+    "White": "90*",
+    "Black": "",
+    "Asian": "",
+    "Other": "91*",
+    "Read to Everyday_ 2015-2016": "70*"
+  },
+  {
+    "": "Sierra",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Siskiyou",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Solano",
+    "ReadtoEveryday_2013-2014": "59*",
+    "Latino": "39*",
+    "White": "74*",
+    "Black": "100*",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "57*"
+  },
+  {
+    "": "Sonoma",
+    "ReadtoEveryday_2013-2014": 76,
+    "Latino": "57*",
+    "White": "73*",
+    "Black": "",
+    "Asian": "",
+    "Other": "55*",
+    "Read to Everyday_ 2015-2016": "60*"
+  },
+  {
+    "": "Stanislaus",
+    "ReadtoEveryday_2013-2014": 53,
+    "Latino": "38*",
+    "White": "100*",
+    "Black": "",
+    "Asian": "",
+    "Other": "50*",
+    "Read to Everyday_ 2015-2016": 55
+  },
+  {
+    "": "Sutter",
+    "ReadtoEveryday_2013-2014": "67*",
+    "Latino": 64,
+    "White": "63*",
+    "Black": "",
+    "Asian": "100*",
+    "Other": "67*",
+    "Read to Everyday_ 2015-2016": "75*"
+  },
+  {
+    "": "Tehama",
+    "ReadtoEveryday_2013-2014": 64,
+    "Latino": "71*",
+    "White": "69*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "64*"
+  },
+  {
+    "": "Trinity",
+    "ReadtoEveryday_2013-2014": "78*",
+    "Latino": "40*",
+    "White": "95*",
+    "Black": "",
+    "Asian": "",
+    "Other": "100*",
+    "Read to Everyday_ 2015-2016": "86*"
+  },
+  {
+    "": "Tulare",
+    "ReadtoEveryday_2013-2014": "36*",
+    "Latino": "65*",
+    "White": "80*",
+    "Black": "",
+    "Asian": "",
+    "Other": "81*",
+    "Read to Everyday_ 2015-2016": "66*"
+  },
+  {
+    "": "Tuolumne",
+    "ReadtoEveryday_2013-2014": "92*",
+    "Latino": "100*",
+    "White": "96*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "97*"
+  },
+  {
+    "": "Ventura",
+    "ReadtoEveryday_2013-2014": 50,
+    "Latino": "48*",
+    "White": "77*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "59*"
+  },
+  {
+    "": "Yolo",
+    "ReadtoEveryday_2013-2014": "67*",
+    "Latino": "39*",
+    "White": "100*",
+    "Black": "",
+    "Asian": "100*",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "79*"
+  },
+  {
+    "": "Yuba",
+    "ReadtoEveryday_2013-2014": "73*",
+    "Latino": "62*",
+    "White": "83*",
+    "Black": "",
+    "Asian": "",
+    "Other": "",
+    "Read to Everyday_ 2015-2016": "73*"
+  }
+]

@@ -1,0 +1,415 @@
+[
+  {
+    "": "California",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": "",
+    "AvailbleSlot_2017": 23,
+    "Rank_2017": ""
+  },
+  {
+    "": "Alameda",
+    "AvailbleSlot_2015": 31,
+    "Rank_2015": 13,
+    "AvailbleSlot_2017": 34,
+    "Rank_2017": 8
+  },
+  {
+    "": "Alpine",
+    "AvailbleSlot_2015": 13,
+    "Rank_2015": 57,
+    "AvailbleSlot_2017": 41,
+    "Rank_2017": 3
+  },
+  {
+    "": "Amador",
+    "AvailbleSlot_2015": 24,
+    "Rank_2015": 38,
+    "AvailbleSlot_2017": 28,
+    "Rank_2017": 14
+  },
+  {
+    "": "Butte",
+    "AvailbleSlot_2015": 26,
+    "Rank_2015": 25,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Calaveras",
+    "AvailbleSlot_2015": 30,
+    "Rank_2015": 17,
+    "AvailbleSlot_2017": 26,
+    "Rank_2017": 21
+  },
+  {
+    "": "Colusa",
+    "AvailbleSlot_2015": 34,
+    "Rank_2015": 8,
+    "AvailbleSlot_2017": 35,
+    "Rank_2017": 5
+  },
+  {
+    "": "Contra Costa",
+    "AvailbleSlot_2015": 30,
+    "Rank_2015": 17,
+    "AvailbleSlot_2017": 28,
+    "Rank_2017": 14
+  },
+  {
+    "": "Del Norte",
+    "AvailbleSlot_2015": 36,
+    "Rank_2015": 5,
+    "AvailbleSlot_2017": 25,
+    "Rank_2017": 23
+  },
+  {
+    "": "El Dorado",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 23,
+    "Rank_2017": 34
+  },
+  {
+    "": "Fresno",
+    "AvailbleSlot_2015": 18,
+    "Rank_2015": 48,
+    "AvailbleSlot_2017": 18,
+    "Rank_2017": 51
+  },
+  {
+    "": "Glenn",
+    "AvailbleSlot_2015": 26,
+    "Rank_2015": 25,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Humboldt",
+    "AvailbleSlot_2015": 24,
+    "Rank_2015": 38,
+    "AvailbleSlot_2017": 21,
+    "Rank_2017": 40
+  },
+  {
+    "": "Imperial",
+    "AvailbleSlot_2015": 28,
+    "Rank_2015": 21,
+    "AvailbleSlot_2017": 20,
+    "Rank_2017": 44
+  },
+  {
+    "": "Inyo",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Kern",
+    "AvailbleSlot_2015": 18,
+    "Rank_2015": 48,
+    "AvailbleSlot_2017": 17,
+    "Rank_2017": 53
+  },
+  {
+    "": "Kings",
+    "AvailbleSlot_2015": 15,
+    "Rank_2015": 56,
+    "AvailbleSlot_2017": 11,
+    "Rank_2017": 58
+  },
+  {
+    "": "Lake",
+    "AvailbleSlot_2015": 18,
+    "Rank_2015": 48,
+    "AvailbleSlot_2017": 23,
+    "Rank_2017": 34
+  },
+  {
+    "": "Lassen",
+    "AvailbleSlot_2015": 26,
+    "Rank_2015": 25,
+    "AvailbleSlot_2017": 28,
+    "Rank_2017": 14
+  },
+  {
+    "": "Los Angeles",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 22,
+    "Rank_2017": 38
+  },
+  {
+    "": "Madera",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 20,
+    "Rank_2017": 44
+  },
+  {
+    "": "Marin",
+    "AvailbleSlot_2015": 45,
+    "Rank_2015": 2,
+    "AvailbleSlot_2017": 40,
+    "Rank_2017": 4
+  },
+  {
+    "": "Mariposa",
+    "AvailbleSlot_2015": 20,
+    "Rank_2015": 44,
+    "AvailbleSlot_2017": 19,
+    "Rank_2017": 48
+  },
+  {
+    "": "Mendocino",
+    "AvailbleSlot_2015": 22,
+    "Rank_2015": 43,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Merced",
+    "AvailbleSlot_2015": 18,
+    "Rank_2015": 48,
+    "AvailbleSlot_2017": 19,
+    "Rank_2017": 48
+  },
+  {
+    "": "Modoc",
+    "AvailbleSlot_2015": 84,
+    "Rank_2015": 1,
+    "AvailbleSlot_2017": 62,
+    "Rank_2017": 1
+  },
+  {
+    "": "Mono",
+    "AvailbleSlot_2015": 17,
+    "Rank_2015": 53,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Monterey",
+    "AvailbleSlot_2015": 23,
+    "Rank_2015": 41,
+    "AvailbleSlot_2017": 19,
+    "Rank_2017": 48
+  },
+  {
+    "": "Napa",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 21,
+    "Rank_2017": 40
+  },
+  {
+    "": "Nevada",
+    "AvailbleSlot_2015": 38,
+    "Rank_2015": 4,
+    "AvailbleSlot_2017": 25,
+    "Rank_2017": 23
+  },
+  {
+    "": "Orange",
+    "AvailbleSlot_2015": 26,
+    "Rank_2015": 25,
+    "AvailbleSlot_2017": 25,
+    "Rank_2017": 23
+  },
+  {
+    "": "Placer",
+    "AvailbleSlot_2015": 32,
+    "Rank_2015": 9,
+    "AvailbleSlot_2017": 35,
+    "Rank_2017": 5
+  },
+  {
+    "": "Plumas",
+    "AvailbleSlot_2015": 36,
+    "Rank_2015": 5,
+    "AvailbleSlot_2017": 33,
+    "Rank_2017": 9
+  },
+  {
+    "": "Riverside",
+    "AvailbleSlot_2015": 13,
+    "Rank_2015": 57,
+    "AvailbleSlot_2017": 18,
+    "Rank_2017": 51
+  },
+  {
+    "": "Sacramento",
+    "AvailbleSlot_2015": 28,
+    "Rank_2015": 21,
+    "AvailbleSlot_2017": 27,
+    "Rank_2017": 18
+  },
+  {
+    "": "San Benito",
+    "AvailbleSlot_2015": 28,
+    "Rank_2015": 21,
+    "AvailbleSlot_2017": 23,
+    "Rank_2017": 34
+  },
+  {
+    "": "San Bernardino",
+    "AvailbleSlot_2015": 19,
+    "Rank_2015": 47,
+    "AvailbleSlot_2017": 15,
+    "Rank_2017": 56
+  },
+  {
+    "": "San Diego",
+    "AvailbleSlot_2015": 31,
+    "Rank_2015": 13,
+    "AvailbleSlot_2017": 27,
+    "Rank_2017": 18
+  },
+  {
+    "": "San Francisco",
+    "AvailbleSlot_2015": 40,
+    "Rank_2015": 3,
+    "AvailbleSlot_2017": 42,
+    "Rank_2017": 2
+  },
+  {
+    "": "San Joaquin",
+    "AvailbleSlot_2015": 18,
+    "Rank_2015": 48,
+    "AvailbleSlot_2017": 22,
+    "Rank_2017": 38
+  },
+  {
+    "": "San Luis Obispo",
+    "AvailbleSlot_2015": 32,
+    "Rank_2015": 9,
+    "AvailbleSlot_2017": 30,
+    "Rank_2017": 10
+  },
+  {
+    "": "San Mateo",
+    "AvailbleSlot_2015": 28,
+    "Rank_2015": 21,
+    "AvailbleSlot_2017": 26,
+    "Rank_2017": 21
+  },
+  {
+    "": "Santa Barbara",
+    "AvailbleSlot_2015": 29,
+    "Rank_2015": 19,
+    "AvailbleSlot_2017": 23,
+    "Rank_2017": 34
+  },
+  {
+    "": "Santa Clara",
+    "AvailbleSlot_2015": 31,
+    "Rank_2015": 13,
+    "AvailbleSlot_2017": 29,
+    "Rank_2017": 11
+  },
+  {
+    "": "Santa Cruz",
+    "AvailbleSlot_2015": 32,
+    "Rank_2015": 9,
+    "AvailbleSlot_2017": 29,
+    "Rank_2017": 11
+  },
+  {
+    "": "Shasta",
+    "AvailbleSlot_2015": 26,
+    "Rank_2015": 25,
+    "AvailbleSlot_2017": 35,
+    "Rank_2017": 5
+  },
+  {
+    "": "Sierra",
+    "AvailbleSlot_2015": 32,
+    "Rank_2015": 9,
+    "AvailbleSlot_2017": 29,
+    "Rank_2017": 11
+  },
+  {
+    "": "Siskiyou",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 25,
+    "Rank_2017": 23
+  },
+  {
+    "": "Solano",
+    "AvailbleSlot_2015": 17,
+    "Rank_2015": 53,
+    "AvailbleSlot_2017": 21,
+    "Rank_2017": 40
+  },
+  {
+    "": "Sonoma",
+    "AvailbleSlot_2015": 24,
+    "Rank_2015": 38,
+    "AvailbleSlot_2017": 25,
+    "Rank_2017": 23
+  },
+  {
+    "": "Stanislaus",
+    "AvailbleSlot_2015": 17,
+    "Rank_2015": 53,
+    "AvailbleSlot_2017": 16,
+    "Rank_2017": 55
+  },
+  {
+    "": "Sutter",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 20,
+    "Rank_2017": 44
+  },
+  {
+    "": "Tehama",
+    "AvailbleSlot_2015": 20,
+    "Rank_2015": 44,
+    "AvailbleSlot_2017": 21,
+    "Rank_2017": 40
+  },
+  {
+    "": "Trinity",
+    "AvailbleSlot_2015": 31,
+    "Rank_2015": 13,
+    "AvailbleSlot_2017": 20,
+    "Rank_2017": 44
+  },
+  {
+    "": "Tulare",
+    "AvailbleSlot_2015": 20,
+    "Rank_2015": 44,
+    "AvailbleSlot_2017": 17,
+    "Rank_2017": 53
+  },
+  {
+    "": "Tuolumne",
+    "AvailbleSlot_2015": 29,
+    "Rank_2015": 19,
+    "AvailbleSlot_2017": 27,
+    "Rank_2017": 18
+  },
+  {
+    "": "Ventura",
+    "AvailbleSlot_2015": 25,
+    "Rank_2015": 30,
+    "AvailbleSlot_2017": 24,
+    "Rank_2017": 28
+  },
+  {
+    "": "Yolo",
+    "AvailbleSlot_2015": 35,
+    "Rank_2015": 7,
+    "AvailbleSlot_2017": 28,
+    "Rank_2017": 14
+  },
+  {
+    "": "Yuba",
+    "AvailbleSlot_2015": 23,
+    "Rank_2015": 41,
+    "AvailbleSlot_2017": 15,
+    "Rank_2017": 56
+  }
+]

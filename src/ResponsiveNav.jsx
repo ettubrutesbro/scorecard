@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
-import { findIndex } from 'lodash'
+import { findIndex, find } from 'lodash'
 import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
@@ -65,11 +65,17 @@ export default class ResponsiveNav extends React.Component{
 		const {openNav, open, store} = this.props
 		return(
 			<Nav>
-				<IndicatorSelect onClick = {()=>openNav('indicator')}> Indicator </IndicatorSelect>
-				<CountySelect onClick = {()=>openNav('county')}> All counties </CountySelect>
-				<NormalDropdown> All races </NormalDropdown>
+				<IndicatorSelect onClick = {()=>openNav('indicator')} >
+					{store.indicator? semanticTitles[store.indicator].shorthand : 'Pick an indicator'}
+				</IndicatorSelect>
+				<CountySelect onClick = {()=>openNav('county')}>
+					{store.county? find(counties, (o)=>{return o.id===store.county}).label : 'All counties' }
+				</CountySelect>
+				<NormalDropdown> 
+					{store.race || 'All races'}
+				</NormalDropdown>
 
-				{open && <PickingWorkflow store = {store} open = {open}/>}
+				{open && <PickingWorkflow store = {store} open = {open} close = {()=>openNav(false)} />}
 			</Nav>
 
 		)
@@ -79,8 +85,6 @@ export default class ResponsiveNav extends React.Component{
 const LargeWorkflow = styled.div`
 	position: absolute;
 	top: 75px;
-	// left: 0;
-	padding: 50px;
 	background: white;
 	border: 1px solid var(--bordergrey);
 	@media ${media.optimal}{
@@ -94,12 +98,13 @@ const LargeWorkflow = styled.div`
 
 export class PickingWorkflow extends React.Component{
 	render(){
-		const {store} = this.props
+		const {store, close} = this.props
+		console.log(close)
 		const which = this.props.open
 		return(
 			<LargeWorkflow> 
-				{which === 'indicator' && <IndicatorList store = {store}/>}
-				{which === 'county' && <CountyList store = {store}/>}
+				{which === 'indicator' && <IndicatorList store = {store} closeNav = {this.props.close}/>}
+				{which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
 			</LargeWorkflow>
 		)
 	}

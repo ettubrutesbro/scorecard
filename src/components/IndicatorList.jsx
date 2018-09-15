@@ -49,8 +49,7 @@ const IndicatorListHeader = styled.div`
     }
 `
 const HeaderRight = styled.div`
-    display: flex;
-    align-items: center;
+    
 `
 const IndLeft = styled.div``
 const Categories = styled.div`  
@@ -123,24 +122,46 @@ const indicatorFilterOptions = [
     {label: 'Welfare', value: 'welfare'},
     {label: 'Early Childhood', value: 'earlyChildhood'},
 ]
+
+const SearchIndicators = styled.input`
+    appearance: none;
+    position: relative;
+    padding: 10px 20px 10px 45px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--bordergrey);
+`
+const Caption = styled.div`
+    color: var(--fainttext);
+    font-size: 13px;
+    margin-bottom: 5px;
+`
 @observer
 export default class IndicatorList extends React.Component{
     @observable filter = 'all'
     @action setFilter = (value) => this.filter = value
+
+    handleSelection = (ind) =>{
+        this.props.store.completeWorkflow('indicator' , ind)
+        this.props.closeNav() 
+    }
+
     render(){
         const {county, indicator, race} = this.props.store
         return(
             <React.Fragment>
-            <IndicatorListHeader>
+
                 <h1> Choose an indicator. </h1>
-                <HeaderRight>
-                    Topics: 
-                    <Toggle
-                        options = {indicatorFilterOptions}
-                        onClick = {this.setFilter}
-                        selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===this.filter})}
-                    />
-                </HeaderRight>
+            <IndicatorListHeader>
+                <SearchIndicators placeholder = "Search indicators..."/>
+                <div>
+                <Caption>Topics: </Caption>
+                <Toggle
+                    options = {indicatorFilterOptions}
+                    onClick = {this.setFilter}
+                    selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===this.filter})}
+                />
+                </div>
 
             </IndicatorListHeader>
             <ColumnList>
@@ -160,7 +181,8 @@ export default class IndicatorList extends React.Component{
                             noRaceNeedRace = {!cats.includes('hasRace') && race}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
-                                this.props.store.completeWorkflow('indicator',ind)
+                                // this.props.store.completeWorkflow('indicator',ind)
+                                this.handleSelection(ind)
                             }}
                         > 
                             <IndLeft>

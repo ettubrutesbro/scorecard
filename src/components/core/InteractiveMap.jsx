@@ -35,7 +35,8 @@ const OverlapBox = styled.polyline`
     opacity: ${props => props.wire? 0 : 1};
 `
 const FullState = styled.polygon`
-    display: ${props => props.wire? 'block' : 'none'};
+    opacity: ${props => props.wire? 1 : 0};
+    transition: opacity 5s;
     fill: black;
     stroke: black;
     stroke-width: 2;
@@ -123,7 +124,8 @@ const CountyPath = styled.path`${CountyStyle}`
                         const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const fill = child.type === 'polyline'? 'none' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
+                        const wire = !data && this.props.mode === 'wire'
+                        const fill = child.type === 'polyline'? 'none' : wire? 'var(--offwhitebg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
                         const full = child.props.id==='full'
                         return(
                             <InteractivePolygonOrPath
@@ -134,11 +136,11 @@ const CountyPath = styled.path`${CountyStyle}`
                                 points = {points}
                                 d = {d}
                                 style = {{
-                                    fill: full && this.props.mode === 'wire'? 'black': this.props.mode !=='wire'? fill : 'white', // between 0 and 1
-                                    transition: data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s',
+                                    fill: full? 'black': fill, // between 0 and 1
+                                    transition: full? 'opacity .5s' : data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s',
                                     // strokeWidth: this.props.selected? 1.25 : 2.5
                                 }}
-                                wire = {this.props.mode==='wire'}
+                                wire = {wire}
                                 selected = {selected===id}
                                 highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
                                 onClick = {

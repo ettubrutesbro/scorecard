@@ -23,8 +23,8 @@ window.store = store
 
 const Quadrant = styled.div`
 	position: relative;
-	border: 1px solid black;
 	display: flex;
+	// border: 1px solid grey;
 `
 
 const App = styled.div`
@@ -48,7 +48,7 @@ const Row = styled.div`
 	display: flex;
 `
 const TopRow = styled(Row)`
-
+	height: 70px;
 	margin-top: 100px;
 	flex-grow: 1;
 `
@@ -75,6 +75,7 @@ const Readout = styled(Quadrant)`
 	}
 	@media ${media.compact}{
 		width: 70%;
+		height: 80px;
 	}
 	@media ${media.mobile}{}
 `
@@ -100,7 +101,7 @@ const MapContainer = styled(Quadrant)`
 	@media ${media.optimal}{}
 	@media ${media.compact}{
 		width: 70%;
-		transform: translate(${props => props.offset? '250px, -25px' : 0}) scale(${props=>props.offset?1.1:1});
+		transform: translateX(${props => props.offset? '250px' : 0}) scale(${props=>props.offset?1.2:1});
 	}
 	@media ${media.mobile}{}
 `
@@ -115,6 +116,7 @@ const GreyMask = styled.div`
 	transform: scaleY(${props=>props.show?1 : 0});
 	background: var(--offwhitebg);
 	z-index: 1;
+	// opacity: 0.5;
 `
 
 
