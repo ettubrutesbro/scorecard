@@ -32,6 +32,13 @@ const CountyStyle = css`
 const OverlapBox = styled.polyline`
     stroke: black;
     stroke-width: 1;
+    opacity: ${props => props.wire? 0 : 1};
+`
+const FullState = styled.polygon`
+    display: ${props => props.wire? 'block' : 'none'};
+    fill: black;
+    stroke: black;
+    stroke-width: 2;
 `
 
 const CountyPolygon = styled.polygon`${CountyStyle}`
@@ -59,20 +66,12 @@ const CountyPath = styled.path`${CountyStyle}`
     setDims = () => {
         console.log('setting box coords for map underlap')
         const box = document.getElementById('overlapbox').getBoundingClientRect()
-        if(this.props.returnBoxCoords){
-            this.props.returnBoxCoords({
+        if(this.props.getDataBoxDims){
+            this.props.getDataBoxDims({
                 left: box.left,
                 top: box.top,
                 width: box.width,
                 height: box.height,
-            })
-        }
-        const svg = document.getElementById('svg').getBoundingClientRect()
-        console.log(svg)
-        if(this.props.reportSVGDims){
-            this.props.reportSVGDims({
-                width: svg.width,
-                height: svg.height
             })
         }
 
@@ -121,11 +120,11 @@ const CountyPath = styled.path`${CountyStyle}`
                     }}
                 >
                     {this.props.children.map((child,i)=>{
-                        const InteractivePolygonOrPath = SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
+                        const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
                         const fill = child.type === 'polyline'? 'none' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
-
+                        const full = child.props.id==='full'
                         return(
                             <InteractivePolygonOrPath
                                 {...childProps}
@@ -135,10 +134,11 @@ const CountyPath = styled.path`${CountyStyle}`
                                 points = {points}
                                 d = {d}
                                 style = {{
-                                    fill: fill, // between 0 and 1
+                                    fill: full && this.props.mode === 'wire'? 'black': this.props.mode !=='wire'? fill : 'white', // between 0 and 1
                                     transition: data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s',
                                     // strokeWidth: this.props.selected? 1.25 : 2.5
                                 }}
+                                wire = {this.props.mode==='wire'}
                                 selected = {selected===id}
                                 highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
                                 onClick = {
@@ -166,7 +166,9 @@ InteractiveMap.defaultProps = {
 let SVGComponents = {
     InteractivePolygon: (props) => <CountyPolygon {...props} />,
     InteractivePath: (props) => <CountyPath {...props}  />,
-    InteractivePolyline: (props) => <OverlapBox {...props} />
+    InteractivePolyline: (props) => <OverlapBox {...props} />,
+    full: (props) => <FullState {...props} />
+
 }
 
 export default class CaliforniaCountyMap extends React.Component{
@@ -176,6 +178,22 @@ export default class CaliforniaCountyMap extends React.Component{
             <InteractiveMap
                 {...this.props}
             >
+            <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
+    246.6,221.4 231.5,208 231.5,207.9 226.8,199.7 226.7,199.7 226.5,184.5 226.6,184.5 226.7,176.6 226.6,176.5 226.7,159.4 
+    226.8,159.3 226.8,67.6 226.8,15.9 157.7,15.7 123.8,15 58.8,15.4 58.8,15.4 20.2,15.7 22.3,24.6 19.5,30.4 25.8,36 29.4,49.8 
+    24.3,58.3 28.2,60.9 24,72.8 27.2,79.3 25.7,85.2 13.2,113.3 15.5,126.4 29.4,141.9 29.4,141.9 40.1,154.6 43.8,170.1 41,183.2 
+    47.3,201.5 46.2,210.5 53.4,218.7 53.4,218.7 53.4,218.7 53.5,218.8 53.5,218.8 59.8,224.2 66.3,233.9 73.1,238.1 77.2,246.9 
+    82.8,255.9 79.4,264.5 81.1,268.2 88.2,266.4 102.1,276.3 106,275.7 104.7,269.7 106.8,266 103.9,264.2 106.8,258.8 106.7,258.7 
+    108.7,253.3 114.6,253.2 114.6,253.3 115.6,255.4 116.2,255.4 118,260.2 129.3,256.2 133.9,260.4 137.9,260.9 145.3,259.5 
+    145.4,259.4 151.3,259.1 146.6,260.7 142.1,264.4 125.5,262.7 114.2,265.6 110.7,269.2 113.6,271.9 117.9,282.5 127.6,296.2 
+    127.4,296.4 124.6,297.7 124,298.8 123.9,298.9 112.3,289.9 111.8,283.7 112.3,283.7 109,277.3 104.3,278.3 103.9,283.8 
+    104.2,293.9 109.2,304 108.5,311.3 113.5,321.1 116.3,321.8 116.3,321.8 127.7,330.4 133.7,329.7 137.1,333.9 137.8,339.9 
+    131,346.2 128.9,349.5 132.9,367.2 142.3,375.2 149.2,386.4 157.9,396.6 158,396.8 163.5,406.8 169.3,409.2 176.9,418.8 
+    182.1,420.4 180.7,428.7 185.3,434.7 193.7,437.5 193.1,443.3 193.2,443.4 191.8,448.9 194.6,452.5 195.1,460.8 192.8,468.2 
+    205,478.4 213.1,477 225.6,477.4 240.4,481.6 250.6,482.2 258.6,487.4 264.1,497.4 276.8,501.5 283.4,504 295.7,501.7 301.1,510.3 
+    300,516.8 305.8,520.4 316.3,518.5 340.9,539.3 349.4,548 354.8,563.7 354.9,575.8 360.4,584.9 412.7,579.9 412.7,580 478.8,574.4 
+    488,572.1 491.1,563.5 488.3,556.6 479.5,553.3 480.5,542.6 478.6,535.4 483.3,533.6 483.2,533.4 483.5,533.4 488.3,526.7 
+    489.7,518.4 487.8,505.2 492.4,496.5 492.5,496.5 506.9,486.2 "/>
 <polygon id = "sierra" points="201.7,174.7 223.2,175.9 226.1,175.9 226.2,160 219.9,160.9 195.4,161.2 185.4,156.7 181.6,163.1 
     179.3,164.8 178.7,178.9 189.2,175.8 190.6,175.2 190.8,175.1 198.8,171 199.3,171.1 199.9,171.1 199.9,171.6 "/>
 <polygon id = "sacramento" points="173,222.1 172.4,222.2 172.3,222.2 156,220.8 150.7,220.7 149.5,222.6 155.2,231.9 154.8,243.2 
@@ -313,6 +331,8 @@ export default class CaliforniaCountyMap extends React.Component{
     181.5,428.3 185.9,434 194.6,436.9 193.9,442.9 196.7,444.8 206.2,443.2 211.7,447.1 210.7,441.6 217.5,440.8 222.9,435.8 "/>
 
 <polyline id="overlapbox" points="338.3,244.5 338.3,26.3 905.5,26.3 905.5,399.1 500.5,399.1 " />
+
+
 
             </InteractiveMap>
             </React.Fragment>

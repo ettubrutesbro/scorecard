@@ -10,6 +10,7 @@ import IndicatorByRaces from './IndicatorByRaces'
 import IndicatorByCounties from './IndicatorByCounties'
 import CountiesByRacePopulation from './CountiesByRacePopulation'
 
+
 import DemoDataTable from './DemoDataTable'
 
 
@@ -20,7 +21,6 @@ const Wrapper = styled.div`
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 `
 
 const BreakdownBox = styled.div`

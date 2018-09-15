@@ -3,19 +3,28 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import {mapValues, find} from 'lodash'
+
+import ScorecardStore from './ScorecardStore'
+import NavComponent, {PickingWorkflow} from './ResponsiveNav'
 import ReadoutComponent from './components/Readout'
 import BreakdownComponent from './components/Breakdown'
+import MapComponent from './components/core/InteractiveMap'
 
-const media = {
-	optimal: '(min-width: 1600px)',
-	compact: '(min-width: 1280px) and (max-width: 1599px)', //max 1599?
-	mobile: '(max-width: 1279px)'
-}
+import indicators from './data/indicators'
+import {counties} from './assets/counties'
+import demopop from './data/demographicsAndPopulation'
+
+import media from './utilities/media'
+
+
+const store = new ScorecardStore()
+window.store = store
 
 const Quadrant = styled.div`
+	position: relative;
 	border: 1px solid black;
 	display: flex;
-	align-items: center;
 `
 
 const App = styled.div`
@@ -39,15 +48,25 @@ const Row = styled.div`
 	display: flex;
 `
 const TopRow = styled(Row)`
+
+	margin-top: 100px;
 	flex-grow: 1;
 `
 const BottomRow = styled(Row)`
-	flex-grow: 4;
+	flex-grow: 6;
 `
 const Nav = styled(Row)`
-	background: black;
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 0;
+	background: var(--offwhitebg);
 	height: 75px;
 	flex-grow: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2;
 `
 
 const Readout = styled(Quadrant)`
@@ -69,35 +88,75 @@ const Breakdown = styled(Quadrant)`
 const Legend = styled(Quadrant)`
 	@media ${media.optimal}{}
 	@media ${media.compact}{
-		width: 50%;
+		width: 466px;
+		flex-shrink: 0;
 	}
 	@media ${media.mobile}{}
 `
-const SVGMap = styled(Quadrant)`
+const MapContainer = styled(Quadrant)`
+	z-index: 2;
+	transform-origin: 0% 100%;
+	transition: transform .5s;
 	@media ${media.optimal}{}
 	@media ${media.compact}{
 		width: 70%;
+		transform: translate(${props => props.offset? '250px, -25px' : 0}) scale(${props=>props.offset?1.1:1});
 	}
 	@media ${media.mobile}{}
 `
+const GreyMask = styled.div`
+	position: absolute;
+	left: 0;
+	top: 75px;
+	width: 100%;
+	height: 100%;
+	transform-origin: 50% 0%;
+	transition: transform .5s;
+	transform: scaleY(${props=>props.show?1 : 0});
+	background: var(--offwhitebg);
+	z-index: 1;
+`
 
 
-
-
+@observer
 export default class ResponsiveScorecard extends React.Component{
-	
+	@observable navOpen = false
+	@action openNav = (val) => this.navOpen = val
+
 	render(){
-		const store = this.props.store
+        const {indicator, year, race} = store
+        const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
+            return county[race||'totals'][year]
+        }): ''
 		return(
 			<App>
-				<Nav />
+				<Nav> 
+					<NavComponent 
+						store = {store}
+						open = {this.navOpen}
+						openNav = {this.openNav}
+					/> 
+				</Nav>
+				<GreyMask show = {this.navOpen}/>
 				<TopRow>
 					<Readout> <ReadoutComponent store = {store}/> </Readout>
 					<Legend />
 				</TopRow>
 				<BottomRow>
 					<Breakdown> <BreakdownComponent store = {store} /> </Breakdown>
-					<SVGMap />
+					<MapContainer offset = {this.navOpen}>
+						<MapComponent 
+							store = {store}
+							getDataBoxDims = {this.getDataBoxDims}
+	                        onHoverCounty = {this.onHoverCounty}
+	                        hoveredCounty = {this.hoveredCounty}
+	                        onSelect = {store.completeWorkflow}
+	                        selected = {store.county}
+	                        data = {dataForMap}
+	                        mode = {this.navOpen? 'wire' : dataForMap?'heat':''}
+	                        // mode = 'wire'
+						/>
+					</MapContainer>
 				</BottomRow>
 			</App>
 		)

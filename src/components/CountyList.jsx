@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip'
 
 const GridList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     // grid-template-columns: repeat(auto-fill, 1fr);
     // grid-template-columns: minmax(100px, 1fr);
     grid-gap: 10px;
@@ -22,7 +22,7 @@ const GridList = styled.ul`
 const GridItem = styled.li`
     // margin: 1%;
     color: ${props => props.disabled? '#d7d7d7' : 'black'};
-    padding: 10px 15px;
+    padding: 6px 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
