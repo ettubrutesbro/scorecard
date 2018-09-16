@@ -22,10 +22,10 @@ const TheMap = styled.svg`
 
 const CountyStyle = css`
     cursor: pointer;
-    stroke: ${props => props.selected?'red': props.highlighted?'pink': 'transparent'};
+    stroke: ${props => props.selected?'var(--peach)': props.highlighted?'pink': 'transparent'};
     stroke-alignment: ${props => props.selected? 'inner' : 'center'}
     fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
-    stroke-width: 2.25;
+    stroke-width: ${props => props.selected? 3.5 : 2.25};
 `
 const OverlapBox = styled.polyline`
     fill: transparent;
@@ -131,7 +131,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 <ReactTooltip disable = {!indicator}/>
                 <TheMap 
                     id = "svg"
-                    viewBox = '0 0 906.5 620'
+                    viewBox = '0 15 906.5 620'
                     {...domProps}
                     version="1.1"
                     style = {{

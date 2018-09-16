@@ -21,6 +21,7 @@ const ReadoutBlock = styled.div`
     transform-origin: 50% 0%;
     font-size: 24px;
     position: absolute;
+    padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
     b{
         font-weight: 600;

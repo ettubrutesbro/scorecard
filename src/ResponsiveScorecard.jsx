@@ -79,6 +79,7 @@ const Readout = styled(Quadrant)`
     @media ${media.compact}{
         width: calc(100% - 460px);
         height: 80px;
+        padding-right: 30px;
     }
     @media ${media.mobile}{}
 `
@@ -94,12 +95,12 @@ const Breakdown = styled(Quadrant)`
 const Legend = styled(Quadrant)`
     @media ${media.optimal}{}
     @media ${media.compact}{
-        border: 1px solid black;
+        /*border: 1px solid black;*/
+        padding-top: 30px;
         width: 481px;
         height: 80px;
         right: 0;
         top: 0;
-        padding-right: 30px;
         flex-shrink: 0;
     }
     @media ${media.mobile}{}
@@ -153,7 +154,7 @@ export default class ResponsiveScorecard extends React.Component{
                 <GreyMask show = {this.navOpen}/>
                 <TopRow>
                     <Readout> <ReadoutComponent store = {store}/> </Readout>
-                    <Legend />
+                    <Legend> <LegendComponent store = {store} /> </Legend>
                 </TopRow>
                 <BottomRow>
                     <Breakdown> <BreakdownComponent store = {store} /> </Breakdown>

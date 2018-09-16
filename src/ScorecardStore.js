@@ -15,7 +15,7 @@ export default class AppStore{
     @observable colorOptions = {
         scheme: 'OrRd',
         padLo: 0, padHi: 0,
-        classes: 5,
+        classes: 4,
         breakAlgorithm: 'e' //equidistant (also l or q)
     }
 

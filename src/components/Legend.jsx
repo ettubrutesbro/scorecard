@@ -9,6 +9,8 @@ export default class Legend extends React.Component{
     render(){
         const {store} = this.props
         const {indicator, race, colorScale, colorOptions,year} = store
+
+        if(indicator){
         const ind = indicators[indicator]
 
         const allNums = Object.keys(ind.counties).map((cty)=>{
@@ -45,11 +47,18 @@ export default class Legend extends React.Component{
                 }
             </Lgd>
         )
+        }
+        else {
+            return(
+                <div> No data yet </div>
+            )
+        }
     }
 }
 
 const Lgd = styled.div`
     display: flex;
+    width: 100%;
     max-width: 640px;
 `
 
@@ -71,7 +80,7 @@ const Swatch = styled.div`
 `
 const Label = styled.div`
     color: var(--fainttext);
-    letter-spacing: 0.1px;
+    letter-spacing: 0.05px;
     margin-top: 5px;
     font-size: 13px;
     display: flex;

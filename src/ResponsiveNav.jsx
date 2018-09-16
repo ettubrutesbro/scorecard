@@ -185,10 +185,10 @@ export default class ResponsiveNav extends React.Component{
 
         const noRace = indicator && !ind.categories.includes('hasRace')
 
-        const noazn = indicator && county && (ind.counties[county].asian[year] === '' || ind.counties[county].asian[year]==='*')
-        const noblk = indicator && county && (ind.counties[county].black[year] === '' || ind.counties[county].black[year]==='*')
-        const noltx = indicator && county && (ind.counties[county].latinx[year] === '' || ind.counties[county].latinx[year]==='*')
-        const nowht = indicator && county && (ind.counties[county].white[year] === '' || ind.counties[county].white[year]==='*')
+        const noazn = !noRace && indicator && county && (ind.counties[county].asian[year] === '' || ind.counties[county].asian[year]==='*')
+        const noblk = !noRace && indicator && county && (ind.counties[county].black[year] === '' || ind.counties[county].black[year]==='*')
+        const noltx = !noRace && indicator && county && (ind.counties[county].latinx[year] === '' || ind.counties[county].latinx[year]==='*')
+        const nowht = !noRace && indicator && county && (ind.counties[county].white[year] === '' || ind.counties[county].white[year]==='*')
 
 
         return(
