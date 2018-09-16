@@ -9,6 +9,7 @@ import ScorecardStore from './ScorecardStore'
 import NavComponent, {PickingWorkflow} from './ResponsiveNav'
 import ReadoutComponent from './components/Readout'
 import BreakdownComponent from './components/Breakdown'
+import LegendComponent from './components/Legend'
 import MapComponent from './components/core/InteractiveMap'
 
 import indicators from './data/indicators'

@@ -15,16 +15,27 @@ export default class AppStore{
     @observable colorOptions = {
         scheme: 'OrRd',
         padLo: 0, padHi: 0,
-        classes: 5
+        classes: 5,
+        breakAlgorithm: 'e' //equidistant (also l or q)
     }
 
 
     @computed get colorScale(){
         const opts = this.colorOptions
+
+        const allNums = this.indicator? Object.keys(indicators[this.indicator].counties).map((cty)=>{
+            return indicators[this.indicator].counties[cty][this.race||'totals'][this.year]
+        }).filter((o)=>{
+            const inv = o==='' || o==='*'
+            return inv?false : true
+        }): [0,100]
+
+        const classes = chroma.limits(allNums, opts.breakAlgorithm, opts.classes)
+
         return chroma.scale(opts.scheme)
             .domain([0,100])
             .padding([opts.padLo, opts.padHi])
-            .classes(opts.classes)
+            .classes(classes)
     } 
 
     @action setColor = (which,what) => this.colorOptions[which] = what
@@ -83,8 +94,11 @@ export default class AppStore{
                 // if(inv) invalids++
                 return inv?false : true
             })
+            console.log(allNums)
+            console.log(Math.min(...allNums) / 100)
             this.setColor('padLo',Math.min(...allNums)/100)
             this.setColor('padHi',1 - Math.max(...allNums)/100)
+            console.log('set padding: ', this.padLo, this.padHi)
         }
         if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
             //if race/indicator/county selected -> no race data, unset race

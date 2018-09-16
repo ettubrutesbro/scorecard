@@ -33,13 +33,15 @@ const Swatch = styled.div`
     background: ${props => props.fill};
 `
 const MapContainer = styled.div`
+    position: relative;
     max-width: 650px;
+    height: 350px;
     flex-basis: 650px;
     flex-shrink: 0;
     /*max-height: 500px;*/
 `
 const ColorMocks = styled.div`
-    // display: flex;
+    /*display: flex;*/
     /*height: 900px;*/
     /*border: 1px solid black;*/
 `
@@ -99,7 +101,7 @@ storiesOf('Design Tooling', module)
 
     const computedStore = {indicator: indicator, race: race, year: year, colorScale: scale}
     return(
-        <React.Fragment>
+        <AllShit>
         <Note> Data lowest number: {Math.min(...allNums)} Highest: {Math.max(...allNums)} </Note> <br />
         <Note> Reporting counties: {allNums.length} (invalid: {invalids}) </Note> <br />
         <Swatches>
@@ -128,14 +130,19 @@ storiesOf('Design Tooling', module)
             // mode = {dataForMap? 'heat' : ''}
         />
         </MapContainer>
+        <br />
         <IndicatorByCounties
             store = {computedStore}
         />
         </ColorMocks>
-        </React.Fragment>
+        </AllShit>
     )
 })
 
+const AllShit = styled.div`
+    width: 100vw; height: 100vh;
+
+`
 
 // .add('componentized color preview?',()=>{
 //     const indicator = select('indicator', Object.keys(indicators), 'notFoodInsecure')
