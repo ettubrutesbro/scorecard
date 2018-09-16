@@ -93,6 +93,7 @@ const Breakdown = styled(Quadrant)`
     @media ${media.mobile}{}
 `
 const Legend = styled(Quadrant)`
+    z-index: 0;
     @media ${media.optimal}{}
     @media ${media.compact}{
         width: 481px;

@@ -7,6 +7,8 @@ import chroma from 'chroma-js'
 
 import indicators from '../data/indicators'
 
+import media from '../'
+
 @observer
 export default class Legend extends React.Component{
 
@@ -120,6 +122,7 @@ const Lgd = styled.div`
     width: 100%;
     max-width: 640px;
     overflow: hidden;
+    cursor: pointer;
 `
 
 const Dash = styled.div`
@@ -143,7 +146,7 @@ const Swatch = styled.div`
     left: -100%;
     width: 100%;
     z-index: ${props => props.classes - props.index};
-    transition: transform ${props=> .25 + (props.index*.05)}s;
+    transition: all ${props=> .25 + (props.index*.05)}s;
     transform: translateX(${props=>props.mode==='truescale'?((props.scale+ props.offset)*100): (100/props.classes)*(props.index+1)}%);
 `
 const Label = styled.div`

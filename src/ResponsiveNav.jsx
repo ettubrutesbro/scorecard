@@ -33,7 +33,7 @@ z-index: 3;
 `
 const Dropdown = styled.div`
     position: relative;
-    padding: 15px 45px 15px 20px;
+    padding: 10px 45px 10px 20px;
     background: white;
     display: flex;
     align-items: center;
@@ -64,21 +64,20 @@ const CountySelect = styled(DropdownWorkflow)`
     transform: ${props=>props.offset?'translateX(15px)':''};
 `
 const NormalDropdown = styled(Dropdown)`
-    width: ${props=>props.mode==='horz'? 100 : 130}px;
+    width: 130px;
 
     transform: translateX(${props=>props.offset*15}px);
     &::before{
         content: '';
         position: absolute;
-        border: none;
+        
         z-index: 10;
     }
-    background:${props => props.allRacesSelected? 'var(--faintpeach)' : 'white'};
+    /*background:${props => props.allRacesSelected? 'var(--faintpeach)' : 'white'};*/
+    background: white;
     color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'black'};
-    outline-color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'var(--bordergrey)'};
+    // outline-color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'var(--bordergrey)'};
     ${props => props.mode==='horz'? `
-        width: 105px;
-        padding-right: 20px;
         &::after{
             display: none;
         }
@@ -86,26 +85,33 @@ const NormalDropdown = styled(Dropdown)`
     ${props => props.allRacesSelected && props.mode==='vert'? `
         &::before{
             width: 100%;
-            height: 0;
-            left: 0; bottom: 1px;
-            border-top: 1px solid var(--strokepeach);
+            height: 100%;
+            left: 0; top: 0px;
+            outline: 1px solid var(--strokepeach);
+            background: var(--faintpeach);
         }
     ` : props.allRacesSelected && props.mode==='horz'? `
         &::before{
             height: 100%;
-            width: 0;
-            right: 0px; top: 0px;
-            border-left: 1px solid var(--strokepeach);
+            width: 77%;
+            left: 0px; top: 0px;
+            outline: 1px solid var(--strokepeach);
+            background: var(--faintpeach);
         }
     `: ''}
 `
+const DropdownReading = styled.span`
+    z-index: 11;
+
+`
+
 const RaceList = styled.ul`
     width: calc(100% + 2px);
     border: 1px solid var(--bordergrey);
     background: white;
     position: absolute;
     z-index: 4;
-    top: 45px;
+    top: 35px;
     border-top: none;
     left: -1px;
     padding: 0;
@@ -135,12 +141,13 @@ const Race = styled.li`
     `: ''}
     outline: 1px solid ${props=>props.selected?'var(--strokepeach)': 'transparent'};
     color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
-    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'}
+    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
+    pointer-events: ${props=>props.disabled? 'none' : 'auto'};
 
 `
 const RaceToggle = styled.div`
     position: absolute;
-    left: 100%;
+    left: 77%;
     top: -1px;
     height: calc(100% + 2px);
     display: flex;
@@ -163,9 +170,8 @@ const HorzRace = styled.div`
     transition: transform ${props=> .2 + (props.index*.1)}s;
     z-index: ${props=> props.selected? 8 : 8 - props.index};
     background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
-
     color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
- 
+    pointer-events: ${props=>props.disabled? 'none' : 'auto'};
 
 `
 
@@ -209,17 +215,17 @@ export default class ResponsiveNav extends React.Component{
                     <NormalDropdown 
                         onClick = {!open? this.openRaceDropdown : ()=>{}} 
                         offset = { open? 2 : 0 }
-                        allRacesSelected = {(open || this.raceDropdown) && !race}
+                        allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
-                    >   <span onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
+                    >   <DropdownReading onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
                             {!open && !this.raceDropdown && store.race? capitalize(store.race) : 'All races'}
-                        </span>
+                        </DropdownReading>
                         
-                            <RaceList disabled = {noRace} vertOpen = {!noRace && this.raceDropdown && !open} >
-                                <Race selected = {race==='asian'} disabled = {noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
-                                <Race selected = {race==='black'} disabled = {noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
-                                <Race selected = {race==='latinx'} disabled = {noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 
-                                <Race selected = {race==='white'} disabled = {nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
+                            <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
+                                <Race selected = {race==='asian'} disabled = {noRace || noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
+                                <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
+                                <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 
+                                <Race selected = {race==='white'} disabled = {noRace || nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
                             </RaceList>
 
                             <RaceToggle disabled = {noRace} open = {open} >
