@@ -17,9 +17,7 @@ const Wrapper = styled.div`
 ` 
 const TheMap = styled.svg`
     position: absolute;
-    width: 100%;
-    top: 0;
-    height: 100%;
+    right: 0;
 `
 
 const CountyStyle = css`
@@ -34,13 +32,32 @@ const OverlapBox = styled.polyline`
     stroke: black;
     stroke-width: 1;
     stroke-dasharray: 1600;
-    stroke-dashoffset: 1600;
+
+    transition: opacity .5s, transform .5s;
     opacity: ${props => props.offset? 0 : 1};
+    transform: ${props => !props.offset? 'translate(0,0) scale(1)' : 'translate(-25%, 15%) scale(0.85)'};
+
+    /*stroke-dashoffset: ${props => props.offset? 1600 : 0};*/
+/*    ${props => props.offset? `
+            transition: opacity .5s, stroke-dashoffset .5s;
+            opacity: 0;
+        ` : `
+            transition: stroke-dashoffset 1s;
+            transition-delay: .2s;
+            opacity: 1;
+        `
+    }
+*/
+
 `
 const FullState = styled.polygon`
     opacity: ${props => props.wire? 1 : 0};
-    transition: opacity 5s;
+    transition: opacity ${props => props.wire? 1 : 0.25}s;
     fill: black;
+
+
+
+
     stroke: black;
     stroke-width: 2;
 `
@@ -136,7 +153,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 // data-tip: {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null}
                                 style: {
                                     fill: fill,
-                                    transition: data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s'
+                                    transition: data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
                                 },
                                 selected: selected===id,
                                 highlighted: this.highlighted===id || this.props.hoveredCounty===id,

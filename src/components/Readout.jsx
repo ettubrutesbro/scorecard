@@ -14,6 +14,7 @@ import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 import demopop from '../data/demographicsAndPopulation.json'
 
+
 const ReadoutBlock = styled.div`
     left: 0;
     top: 0;
@@ -88,6 +89,9 @@ export default class Readout extends React.Component{
                 : !county && !race? ind.counties.california.totals[year]
                 : 'wat'
         }
+
+        const computedString = `${raceString} ${who} live in ${countyString}`
+
         return(
             <ReadoutBlock
                 compact = {this.props.store.activeWorkflow}
@@ -95,7 +99,7 @@ export default class Readout extends React.Component{
                 {!indicator && (county || race) && 
                     <React.Fragment>
                     <b>{commaNumber(popCount)} </b> 
-                    {raceString} {who} live in {countyString}.
+                    {computedString}.
                     </React.Fragment>
                 }
                 {indicator && 
