@@ -64,7 +64,8 @@ const CountySelect = styled(DropdownWorkflow)`
     transform: ${props=>props.offset?'translateX(15px)':''};
 `
 const NormalDropdown = styled(Dropdown)`
-    width: 130px;
+    width: ${props=>props.mode==='horz'? 100 : 130}px;
+
     transform: translateX(${props=>props.offset*15}px);
     &::before{
         content: '';
@@ -75,6 +76,13 @@ const NormalDropdown = styled(Dropdown)`
     background:${props => props.allRacesSelected? 'var(--faintpeach)' : 'white'};
     color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'black'};
     outline-color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'var(--bordergrey)'};
+    ${props => props.mode==='horz'? `
+        width: 105px;
+        padding-right: 20px;
+        &::after{
+            display: none;
+        }
+    `: ''}
     ${props => props.allRacesSelected && props.mode==='vert'? `
         &::before{
             width: 100%;
@@ -86,7 +94,7 @@ const NormalDropdown = styled(Dropdown)`
         &::before{
             height: 100%;
             width: 0;
-            right: 29px; top: 0px;
+            right: 0px; top: 0px;
             border-left: 1px solid var(--strokepeach);
         }
     `: ''}
@@ -132,7 +140,7 @@ const Race = styled.li`
 `
 const RaceToggle = styled.div`
     position: absolute;
-    left: 77%;
+    left: 100%;
     top: -1px;
     height: calc(100% + 2px);
     display: flex;
@@ -156,12 +164,8 @@ const HorzRace = styled.div`
     z-index: ${props=> props.selected? 8 : 8 - props.index};
     background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
 
-    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'}
-  
-
-    ${props => props.disabled? `
-       color: var(--inactivegrey);
-    `: ''}
+    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
+ 
 
 `
 
@@ -218,11 +222,11 @@ export default class ResponsiveNav extends React.Component{
                                 <Race selected = {race==='white'} disabled = {nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
                             </RaceList>
 
-                            <RaceToggle disabled = {noRace} open = {!noRace && open} >
-                                <HorzRace selected = {race==='asian'} disabled = {noazn} index = {0} open = {open} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{console.log('nazn')}}> Asian </HorzRace>
-                                <HorzRace selected = {race==='black'} disabled = {noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
-                                <HorzRace selected = {race==='latinx'} disabled = {noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
-                                <HorzRace selected = {race==='white'} disabled = {nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
+                            <RaceToggle disabled = {noRace} open = {open} >
+                                <HorzRace selected = {race==='asian'} disabled = {noRace || noazn} index = {0} open = {open} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{console.log('nazn')}}> Asian </HorzRace>
+                                <HorzRace selected = {race==='black'} disabled = {noRace || noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
+                                <HorzRace selected = {race==='latinx'} disabled = {noRace || noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
+                                <HorzRace selected = {race==='white'} disabled = {noRace || nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
                             </RaceToggle>
 
                         
