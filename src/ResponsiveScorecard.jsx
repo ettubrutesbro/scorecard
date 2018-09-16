@@ -95,8 +95,6 @@ const Breakdown = styled(Quadrant)`
 const Legend = styled(Quadrant)`
     @media ${media.optimal}{}
     @media ${media.compact}{
-        /*border: 1px solid black;*/
-        padding-top: 30px;
         width: 481px;
         height: 80px;
         right: 0;

@@ -29,14 +29,14 @@ const CountyStyle = css`
 `
 const OverlapBox = styled.polyline`
     fill: transparent;
-    stroke: black;
-    stroke-width: 1;
+    stroke: var(--bordergrey);
+    stroke-width: 2;
     stroke-dasharray: 1600;
 
     transition: opacity .5s, transform .5s;
     opacity: ${props => props.offset? 0 : 1};
     transform: ${props => !props.offset? 'translate(0,0) scale(1)' : 'translate(-25%, 15%) scale(0.85)'};
-
+    // transform-origin: 0% 100%;
     /*stroke-dashoffset: ${props => props.offset? 1600 : 0};*/
 /*    ${props => props.offset? `
             transition: opacity .5s, stroke-dashoffset .5s;
