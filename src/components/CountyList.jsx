@@ -21,7 +21,7 @@ const GridList = styled.ul`
 `
 const GridItem = styled.li`
     // margin: 1%;
-    color: ${props => props.disabled? '#d7d7d7' : 'black'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? '#d7d7d7' : 'black'};
     padding: 8px 15px;
     cursor: pointer;
     display: flex;
@@ -29,6 +29,8 @@ const GridItem = styled.li`
     // justify-content: center;
     white-space: nowrap;
     font-size: 13px;
+    background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
+    border: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'transparent'};
     &:hover{
         background: #f3f3f5;
     }
@@ -94,6 +96,7 @@ class CountyList extends React.Component{
                         else return 0
                     }).map((cty)=>{
                         let disabled = false 
+                        const selected = cty.id === county
                         if(indicator){
                             // console.log(indicators[indicator].counties[cty])
                             const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
@@ -101,6 +104,7 @@ class CountyList extends React.Component{
                             if(!value || value === '*') disabled = true
                         }
                         return <GridItem
+                            selected = {selected}
                             disabled = {disabled}
                             key = {"countylist"+cty.id}
                             onClick = {()=>{this.handleSelection(cty.id)}}

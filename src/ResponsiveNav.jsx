@@ -66,6 +66,30 @@ const CountySelect = styled(DropdownWorkflow)`
 const NormalDropdown = styled(Dropdown)`
     width: 130px;
     transform: translateX(${props=>props.offset*15}px);
+    &::before{
+        content: '';
+        position: absolute;
+        border: none;
+        z-index: 10;
+    }
+    background:${props => props.allRacesSelected? 'var(--faintpeach)' : 'white'};
+    color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'black'};
+    outline-color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'var(--bordergrey)'};
+    ${props => props.allRacesSelected && props.mode==='vert'? `
+        &::before{
+            width: 100%;
+            height: 0;
+            left: 0; bottom: 1px;
+            border-top: 1px solid var(--strokepeach);
+        }
+    ` : props.allRacesSelected && props.mode==='horz'? `
+        &::before{
+            height: 100%;
+            width: 0;
+            right: 29px; top: 0px;
+            border-left: 1px solid var(--strokepeach);
+        }
+    `: ''}
 `
 const RaceList = styled.ul`
     width: calc(100% + 2px);
@@ -101,6 +125,9 @@ const Race = styled.li`
     ${props => props.disabled? `
        color: var(--inactivegrey);
     `: ''}
+    outline: 1px solid ${props=>props.selected?'var(--strokepeach)': 'transparent'};
+    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
+    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'}
 
 `
 const RaceToggle = styled.div`
@@ -122,12 +149,16 @@ const HorzRace = styled.div`
     height: 100%;
     display: flex;
     align-items: center; justify-content: center;
-    border: 1px solid var(--bordergrey);
+    border: 1px solid ${props=> props.selected?'var(--strokepeach)':'var(--bordergrey)'};
     left: 0;
     transform: translateX(${props=>props.open?( props.index*85) - (props.index) : 0}px);
     transition: transform ${props=> .2 + (props.index*.1)}s;
-    z-index: ${props=> 8 - props.index};
-    background: white;
+    z-index: ${props=> props.selected? 8 : 8 - props.index};
+    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
+
+    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'}
+  
+
     ${props => props.disabled? `
        color: var(--inactivegrey);
     `: ''}
@@ -138,6 +169,11 @@ const HorzRace = styled.div`
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
     @action openRaceDropdown = () => this.raceDropdown = !this.raceDropdown
+
+    componentDidUpdate(){
+        if(this.props.open && this.raceDropdown) this.openRaceDropdown()
+    }
+
     render(){
         const {openNav, open, store} = this.props
         const {indicator, county, year, race} = store
@@ -167,10 +203,13 @@ export default class ResponsiveNav extends React.Component{
                 </CountySelect>
                 
                     <NormalDropdown 
-                        onClick = {open? ()=>store.completeWorkflow('race',null) : !open? this.openRaceDropdown : ()=>{}} 
+                        onClick = {!open? this.openRaceDropdown : ()=>{}} 
                         offset = { open? 2 : 0 }
-                    > 
-                        {!open && !this.raceDropdown && store.race? capitalize(store.race) : 'All races'}
+                        allRacesSelected = {(open || this.raceDropdown) && !race}
+                        mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
+                    >   <span onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
+                            {!open && !this.raceDropdown && store.race? capitalize(store.race) : 'All races'}
+                        </span>
                         
                             <RaceList disabled = {noRace} vertOpen = {!noRace && this.raceDropdown && !open} >
                                 <Race selected = {race==='asian'} disabled = {noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
@@ -179,8 +218,8 @@ export default class ResponsiveNav extends React.Component{
                                 <Race selected = {race==='white'} disabled = {nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
                             </RaceList>
 
-                            <RaceToggle  disabled = {noRace} open = {!noRace && open} >
-                                <HorzRace selected = {race==='asian'} disabled = {noazn} index = {0} open = {open} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </HorzRace>
+                            <RaceToggle disabled = {noRace} open = {!noRace && open} >
+                                <HorzRace selected = {race==='asian'} disabled = {noazn} index = {0} open = {open} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{console.log('nazn')}}> Asian </HorzRace>
                                 <HorzRace selected = {race==='black'} disabled = {noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
                                 <HorzRace selected = {race==='latinx'} disabled = {noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
                                 <HorzRace selected = {race==='white'} disabled = {nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
@@ -210,12 +249,20 @@ export default class ResponsiveNav extends React.Component{
                 >
                 {open && <PickingWorkflow store = {store} open = {open} close = {()=>openNav(false)} />}
                 </FlipMove>
+                {open && <X onClick = {()=>openNav(false)}/>}
             </Nav>
 
         )
     }
 }
+const X = styled.div`
+    position: absolute;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid red;
 
+`
 const YearToggle = (props) =>{
     const {indicator} = props.store
     const years = indicator? indicators[indicator].years.map((yr,i)=>{
@@ -260,7 +307,6 @@ const LargeWorkflow = styled.div`
 export class PickingWorkflow extends React.Component{
     render(){
         const {store, close} = this.props
-        console.log(close)
         const which = this.props.open
         return(
             <LargeWorkflow> 

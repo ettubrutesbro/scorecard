@@ -32,8 +32,10 @@ const ColumnItem = styled.li`
     padding: 15px 20px;
     // margin: 10px;
     list-style-type: none;
-    border: 1px solid #dedede;
-    background: ${props => props.noRaceNeedRace? '#d7d7d7' : 'white'};
+    border: 1px solid ${props=>props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
+    color: ${props=> props.selected? 'var(--strokepeach)' : 'black'};
+    background: ${props => props.selected? 'var(--faintpeach)' : props.noRaceNeedRace? '#d7d7d7' : 'white'};
+
     // box-shadow: var(--shadow);
 
 ` 
@@ -159,7 +161,7 @@ export default class IndicatorList extends React.Component{
     }
 
     render(){
-        const {county, indicator, race} = this.props.store
+        const {county, race} = this.props.store
         return(
             <div>
 
@@ -186,7 +188,9 @@ export default class IndicatorList extends React.Component{
                     }).map((ind)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
+                        const selected = this.props.store.indicator === ind
                         return <ColumnItem
+                            selected = {selected}
                             noRaceNeedRace = {!cats.includes('hasRace') && race}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
