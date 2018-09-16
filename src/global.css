@@ -1,29 +1,29 @@
 *{
-	font-family: 'Heebo', sans-serif;
-	box-sizing: border-box;
+    font-family: 'Heebo', sans-serif;
+    box-sizing: border-box;
 }
 
 html{
-	--strokepurple: #6E016B;
-	--inactivegrey: #EFEFEF;
-	--bordergrey: #d7d7d7;
-	--fainttext: #919191;
-	--normtext: #1e1e1e;
-	--offwhitebg: #f3f3f5;
-	--offwhitefg: #fbfbfc;
-	--shadow: 0 3px 5px rgba(0,0,0,0.25);
-	--highlightshadow: 0 5px 8px rgba(0,0,0,0.375);
-	--faintpeach: #FFF6F2;
-	--peach: #FCBBA1;
-	--strokepeach: #ef6732;
+    --strokepurple: #6E016B;
+    --inactivegrey: #EFEFEF;
+    --bordergrey: #d7d7d7;
+    --fainttext: #919191;
+    --normtext: #1e1e1e;
+    --offwhitebg: #f3f3f5;
+    --offwhitefg: #fbfbfc;
+    --shadow: 0 3px 5px rgba(0,0,0,0.25);
+    --highlightshadow: 0 5px 8px rgba(0,0,0,0.375);
+    --faintpeach: #FFF6F2;
+    --peach: #FCBBA1;
+    --strokepeach: #ef6732;
 
-	overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 body{
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: flex-start;
-	justify-content: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }

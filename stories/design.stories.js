@@ -63,10 +63,10 @@ storiesOf('Design Tooling', module)
     }): ''
     console.log(dataForMap)
 
-    const brewerScheme = select('brewer scheme', ['OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'PuBu')
+    const brewerScheme = select('brewer scheme', ['BuGn','OrRd','YlGnBu','Spectral','BuPu','GnBu','PuBu','PuBuGn','PuRd','YlGn','YlOrBr','YlOrRd','Blues','Oranges','Reds','Purples'], 'PuBu')
     const classes = number('# of colors in spectrum', 5)
 
-    const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'l')
+    const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'e')
     console.log(dataClassing)
 
     let invalids = 0
@@ -103,16 +103,17 @@ storiesOf('Design Tooling', module)
     return(
         <AllShit>
         <Note> Data lowest number: {Math.min(...allNums)} Highest: {Math.max(...allNums)} </Note> <br />
+        <Note> Data pad: {padLeft} Right: {padRight} </Note> <br />
         <Note> Reporting counties: {allNums.length} (invalid: {invalids}) </Note> <br />
         <Swatches>
             {classBreaks.map((ele,i,arr)=>{
                 const range = i===0? `0-${ele.toFixed(1)}` : `${arr[i-1].toFixed(1)} - ${ele.toFixed(1)}` 
                 
                 const countiesInClass = allNums.filter((num)=>{
-                    return num===ele || (num<ele && num>arr[i-1])
+                    return num==ele || (num<ele && num>arr[i-1])
                 }).length
 
-                return i===0? null : <Swatch
+                return <Swatch
                     fill = {scale(ele)}
                 >
                     {range} <br />

@@ -31,33 +31,39 @@ storiesOf('Major sections', module)
 
     const schemes = {welfare: 'PuRd', health: 'BuGn', education: 'Purples', earlyChildhood: 'PuBu'}
     const mainCategory = indicators[indicator].categories.filter((o)=>{return o!=='hasRace'})[0]
-            
+    
     const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
-                return indicators[indicator].counties[cty][race||'totals'][year]
-            }).filter((o)=>{
-                const inv = o==='' || o==='*'
-                // if(inv) invalids++
-                return inv?false : true
-            })
+            return indicators[indicator].counties[cty][race||'totals'][year]
+        }).filter((o)=>{
+            const inv = o==='' || o==='*'
+            // if(inv) invalids++
+            return inv?false : true
+        })
     console.log(allNums)
     const padLo = Math.min(...allNums)/100
-    const padHi = Math.max(...allNums)/100
+    const padHi = 1- (Math.max(...allNums)/100)
+
+    const dataClassing = select('data classing', {logarithmic: 'l', equidistant: 'e', quantile: 'q'}, 'e')
+   
+
+    const breaks = chroma.limits(allNums, dataClassing, classes)
 
     const colorScale = chroma.scale(schemes[mainCategory])
         .domain([0,100])
         .padding([padLo, padHi])
-        .classes(5)
+        .classes(breaks)
     
     return(
         <Void>
-        <div> {padLo} - {padHi} </div>
+        <Note> padleft:{padLo.toFixed(2)}  padright:{padHi.toFixed(2)} </Note>
+        <Note> breaks: {breaks.join(', ')} </Note>
         <Legend 
             store = {{
                 indicator: indicator,
                 race: race,
                 year: year,
                 colorScale: colorScale,
-                colorOptions: {classes: 5, breakAlgorithm: 'e'}
+                colorOptions: {classes: classes, breakAlgorithm: dataClassing}
             }}
         />
         </Void>
