@@ -22,12 +22,13 @@ const store = new ScorecardStore()
 window.store = store
 
 const Quadrant = styled.div`
-	position: relative;
+	position: absolute;
 	display: flex;
 	// border: 1px solid grey;
 `
 
 const App = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -66,7 +67,7 @@ const Nav = styled(Row)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	z-index: 2;
+	z-index: 3;
 `
 
 const Readout = styled(Quadrant)`
@@ -80,9 +81,11 @@ const Readout = styled(Quadrant)`
 	@media ${media.mobile}{}
 `
 const Breakdown = styled(Quadrant)`
+	bottom: 0; left: 0;
 	@media ${media.optimal}{}
 	@media ${media.compact}{
-		width: 50%;
+		width: 40%;
+		height: 70%;
 	}
 	@media ${media.mobile}{}
 `
@@ -95,24 +98,26 @@ const Legend = styled(Quadrant)`
 	@media ${media.mobile}{}
 `
 const MapContainer = styled(Quadrant)`
+	right: 0;
+	bottom: 0;
 	z-index: 2;
 	transform-origin: 0% 100%;
 	transition: transform .5s;
 	@media ${media.optimal}{}
 	@media ${media.compact}{
-		width: 70%;
+		width: 60%; height: 70%;
 		transform: translateX(${props => props.offset? '250px' : 0}) scale(${props=>props.offset?1.2:1});
 	}
 	@media ${media.mobile}{}
 `
 const GreyMask = styled.div`
-	position: absolute;
+	position: fixed;
 	left: 0;
 	top: 75px;
 	width: 100%;
 	height: 100%;
 	transform-origin: 50% 0%;
-	transition: transform .5s;
+	transition: transform ${props=>props.show?1:0.5}s;
 	transform: scaleY(${props=>props.show?1 : 0});
 	background: var(--offwhitebg);
 	z-index: 1;
@@ -155,7 +160,7 @@ export default class ResponsiveScorecard extends React.Component{
 	                        onSelect = {store.completeWorkflow}
 	                        selected = {store.county}
 	                        data = {dataForMap}
-	                        mode = {this.navOpen? 'wire' : dataForMap?'heat':''}
+	                        mode = {this.navOpen? 'offset' : dataForMap?'heat':''}
 	                        // mode = 'wire'
 						/>
 					</MapContainer>

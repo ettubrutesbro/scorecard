@@ -32,7 +32,7 @@ const semanticTitles = {
         descriptor: 'Low-income',
         who: 'children, ages 0-5,',
         what: 'had visited a dentist within the last year',
-        label: 'Children, ages 0-5, who are low-income and have visited a dentist in the last year',
+        label: 'Low-income children, age 0-5, who saw a dentist in the last year',
         shorthand: 'Dental visits for low-income children'
     },
     'upToDateVaccinations': {

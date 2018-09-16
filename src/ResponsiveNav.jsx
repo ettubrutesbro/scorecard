@@ -19,6 +19,7 @@ import IndicatorList from './components/IndicatorList'
 import media from './utilities/media'
 
 const Nav = styled.div`
+z-index: 3;
 	display: flex;
 	align-items: center;
 	@media ${media.optimal}{
@@ -50,7 +51,7 @@ const DropdownWorkflow = styled(Dropdown)`
 
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
-	width: 300px;
+	width: 350px;
 
 `
 const CountySelect = styled(DropdownWorkflow)`
@@ -74,8 +75,19 @@ export default class ResponsiveNav extends React.Component{
 				<NormalDropdown> 
 					{store.race || 'All races'}
 				</NormalDropdown>
-
+				<FlipMove 
+					typeName = {null}
+					enterAnimation = {{
+						from: {opacity: 0, transform: 'translateY(-50px)'},
+						to: {opacity: 1, transform: 'translateY(0px)'}
+					}}
+					leaveAnimation = {{
+						from: {opacity: 1, transform: 'translateY(0px)'},
+						to: {opacity: 0, transform: 'translateY(-50px)'}
+					}}
+				>
 				{open && <PickingWorkflow store = {store} open = {open} close = {()=>openNav(false)} />}
+				</FlipMove>
 			</Nav>
 
 		)
@@ -84,9 +96,12 @@ export default class ResponsiveNav extends React.Component{
 
 const LargeWorkflow = styled.div`
 	position: absolute;
+	overflow: hidden;
 	top: 75px;
 	background: white;
 	border: 1px solid var(--bordergrey);
+	padding: 30px;
+	z-index: 3;
 	@media ${media.optimal}{
 		width: 1000px;
 	}
@@ -103,8 +118,20 @@ export class PickingWorkflow extends React.Component{
 		const which = this.props.open
 		return(
 			<LargeWorkflow> 
-				{which === 'indicator' && <IndicatorList store = {store} closeNav = {this.props.close}/>}
-				{which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
+				<FlipMove
+					typeName = {null}
+					enterAnimation = {{
+						from: {opacity: 0, transform: `translateX(${which==='indicator'?-150:150}px)`},
+						to: {opacity: 1, transform: `translateX(0px)`},
+					}}
+					leaveAnimation = {{
+						from: {opacity: 1, transform: `translateX(0px)`},
+						to: {opacity: -1, transform: `translateX(${which==='indicator'?150:-150}px)`},
+					}}
+				>
+					{which === 'indicator' && <IndicatorList store = {store} closeNav = {this.props.close}/>}
+					{which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
+				</FlipMove>
 			</LargeWorkflow>
 		)
 	}

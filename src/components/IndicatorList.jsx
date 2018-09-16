@@ -34,6 +34,7 @@ const ColumnItem = styled.li`
     list-style-type: none;
     border: 1px solid #dedede;
     background: ${props => props.noRaceNeedRace? '#d7d7d7' : 'white'};
+    // box-shadow: var(--shadow);
 
 ` 
 const IndicatorListHeader = styled.div`
@@ -41,7 +42,7 @@ const IndicatorListHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     h1{
         font-size: 24px;
         font-weight: 400;
@@ -51,16 +52,19 @@ const IndicatorListHeader = styled.div`
 const HeaderRight = styled.div`
     
 `
-const IndLeft = styled.div``
+const IndLeft = styled.div`
+    font-size: 13px;
+    line-height: 150%;
+`
 const Categories = styled.div`  
     margin-top: 4px;
     display: flex;
     align-items: center;
 `
-const Years = styled.div`
+const Years = styled.span`
+    margin-left: 6px;
     font-size: 13px;
     color: #b1b1b1;
-    margin-left: 8px;
 `
 const NoRace = styled.div`
     color: #b1b1b1;
@@ -108,15 +112,16 @@ const IndRight = styled.div`
 `
 const Where = styled.div`
     color: #b1b1b1;
-    margin-top: 4px;
+    margin-top: 3px;
     font-size: 13px;
 `
 const Percentage = styled.div`
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: .05rem;
 `
 const indicatorFilterOptions = [
-    {label: 'All', value: 'all'},
+    {label: 'All topics', value: 'all'},
     {label: 'Health', value: 'health'},
     {label: 'Education', value: 'education'},
     {label: 'Welfare', value: 'welfare'},
@@ -131,10 +136,17 @@ const SearchIndicators = styled.input`
     outline: none;
     border-bottom: 1px solid var(--bordergrey);
 `
+const ToggleBlock = styled.div`
+
+`
 const Caption = styled.div`
     color: var(--fainttext);
     font-size: 13px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
+`
+const Title = styled.h1`
+    font-size: 24px;
+    font-weight: normal;
 `
 @observer
 export default class IndicatorList extends React.Component{
@@ -149,19 +161,16 @@ export default class IndicatorList extends React.Component{
     render(){
         const {county, indicator, race} = this.props.store
         return(
-            <React.Fragment>
+            <div>
 
-                <h1> Choose an indicator. </h1>
             <IndicatorListHeader>
-                <SearchIndicators placeholder = "Search indicators..."/>
-                <div>
-                <Caption>Topics: </Caption>
+
+                <Title> Choose an indicator. </Title>
                 <Toggle
                     options = {indicatorFilterOptions}
                     onClick = {this.setFilter}
                     selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===this.filter})}
                 />
-                </div>
 
             </IndicatorListHeader>
             <ColumnList>
@@ -187,21 +196,11 @@ export default class IndicatorList extends React.Component{
                         > 
                             <IndLeft>
                                 {semanticTitles[ind].label}
-                                <Categories>
-                                    
-                                    {cats.includes('health') && <HealthTag />}
-                                    {cats.includes('education') && <EduTag />}
-                                    {cats.includes('welfare') && <WelfTag />}
-                                    {cats.includes('early') && <EarlTag />}
-                                    {!cats.includes('hasRace') && 
-                                        <NoRace needRace = {race}> No race data </NoRace>
-                                    }
-                                    <Years>
-                                        {indicator.years.map((yr)=>{
-                                            return yr
-                                        }).join(', ')}
-                                    </Years>
-                                </Categories>
+                                <Years>
+                                    {indicator.years.map((yr)=>{
+                                        return yr
+                                    }).join(', ')}
+                                </Years>
                             </IndLeft>
                             <IndRight>
                                 <Percentage>
@@ -218,7 +217,7 @@ export default class IndicatorList extends React.Component{
                     })}
                 </FlipMove>
             </ColumnList>
-            </React.Fragment>
+            </div>
         )
     }
 }

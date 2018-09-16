@@ -30,9 +30,12 @@ const CountyStyle = css`
     stroke-width: 2.25;
 `
 const OverlapBox = styled.polyline`
+    fill: transparent;
     stroke: black;
     stroke-width: 1;
-    opacity: ${props => props.wire? 0 : 1};
+    stroke-dasharray: 1600;
+    stroke-dashoffset: 1600;
+    opacity: ${props => props.offset? 0 : 1};
 `
 const FullState = styled.polygon`
     opacity: ${props => props.wire? 1 : 0};
@@ -124,29 +127,34 @@ const CountyPath = styled.path`${CountyStyle}`
                         const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
-                        const wire = !data && this.props.mode === 'wire'
-                        const fill = child.type === 'polyline'? 'none' : wire? 'var(--offwhitebg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
-                        const full = child.props.id==='full'
+                        const wire = !data && this.props.mode === 'offset'
+                        const fill = wire? 'var(--offwhitebg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
+
+
+                        
+                            const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
+                                // data-tip: {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null}
+                                style: {
+                                    fill: fill,
+                                    transition: data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s'
+                                },
+                                selected: selected===id,
+                                highlighted: this.highlighted===id || this.props.hoveredCounty===id,
+                                onClick: ()=> this.handleClick(id)
+                            } : {}
+                        
+
                         return(
                             <InteractivePolygonOrPath
                                 {...childProps}
+                                {...foistProps}
                                 id = {id}
-                                data-tip = {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null}
                                 key = {id}
                                 points = {points}
                                 d = {d}
-                                style = {{
-                                    fill: full? 'black': fill, // between 0 and 1
-                                    transition: full? 'opacity .5s' : data? `fill ${0.15+i*0.025}s, stroke 0s` : '0s',
-                                    // strokeWidth: this.props.selected? 1.25 : 2.5
-                                }}
                                 wire = {wire}
-                                selected = {selected===id}
-                                highlighted = {this.highlighted===id || this.props.hoveredCounty===id}
-                                onClick = {
-                                    //indicator && (data[id]==='*' || data[id]==='') ? ()=>console.log('county has no data'): 
-                                    ()=> this.handleClick(id)
-                                }
+                                offset = {this.props.mode === 'offset'}
+
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
                                 onMouseEnter = {()=> this.props.onHoverCounty(id)}
                                 onMouseLeave = {()=> this.props.onHoverCounty()}
@@ -180,6 +188,7 @@ export default class CaliforniaCountyMap extends React.Component{
             <InteractiveMap
                 {...this.props}
             >
+            <polyline id="overlapbox" points="338.3,244.5 338.3,26.3 905.5,26.3 905.5,399.1 500.5,399.1 " />
             <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
     246.6,221.4 231.5,208 231.5,207.9 226.8,199.7 226.7,199.7 226.5,184.5 226.6,184.5 226.7,176.6 226.6,176.5 226.7,159.4 
     226.8,159.3 226.8,67.6 226.8,15.9 157.7,15.7 123.8,15 58.8,15.4 58.8,15.4 20.2,15.7 22.3,24.6 19.5,30.4 25.8,36 29.4,49.8 
@@ -332,7 +341,7 @@ export default class CaliforniaCountyMap extends React.Component{
     232.2,418.1 226.6,418 222.3,407.8 216.9,407.8 216.9,397.4 216.6,397.4 159.2,397.1 164.1,406.1 169.9,408.4 177.5,418 183,419.7 
     181.5,428.3 185.9,434 194.6,436.9 193.9,442.9 196.7,444.8 206.2,443.2 211.7,447.1 210.7,441.6 217.5,440.8 222.9,435.8 "/>
 
-<polyline id="overlapbox" points="338.3,244.5 338.3,26.3 905.5,26.3 905.5,399.1 500.5,399.1 " />
+
 
 
 
