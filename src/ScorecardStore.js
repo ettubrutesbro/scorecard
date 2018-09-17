@@ -38,7 +38,7 @@ export default class AppStore{
             .classes(classes)
     } 
 
-    @action setColor = (which,what) => this.colorOptions[which] = what
+    @action setColorOption = (which,what) => this.colorOptions[which] = what
     @action setYearIndex = () => {
         const newYears = indicators[this.indicator].years
         if(!this.year && newYears.length>1) this.year = newYears.length-1
@@ -85,7 +85,7 @@ export default class AppStore{
             //set color scheme for indicator category
             const catColors = {welfare: 'PuRd', health: 'BuGn', education: 'Purples', earlyChildhood: 'PuBu'}
             const mainCategory = indicators[this.indicator].categories.filter((o)=>{return o!=='hasRace'})[0]
-            this.setColor('scheme', catColors[mainCategory])
+            this.setColorOption('scheme', catColors[mainCategory])
             //assign padding values 
             const allNums = Object.keys(indicators[this.indicator].counties).map((cty)=>{
                 return indicators[this.indicator].counties[cty][this.race||'totals'][this.year]
@@ -94,10 +94,39 @@ export default class AppStore{
                 // if(inv) invalids++
                 return inv?false : true
             })
-            console.log(allNums)
-            console.log(Math.min(...allNums) / 100)
-            this.setColor('padLo',Math.min(...allNums)/100)
-            this.setColor('padHi',1 - Math.max(...allNums)/100)
+            const lo = Math.min(...allNums)
+            const hi = Math.max(...allNums)
+            const range = hi - lo 
+
+            // cases: small range, small range low % (too light), 
+            let adjustLo = 0
+            let adjustHi = 0
+
+            if(range < 25){
+                console.log('adjusting colors for small range')
+                //small range
+                if((100 - hi) > lo){
+                    //small range low end (too light)
+                    adjustLo = ((100-hi) / 2)/100
+                    adjustHi = -(((100-hi) / 2)/100)
+                    console.log('adjusting light', adjustLo, 'dark: ', adjustHi)
+                }else{
+                    adjustLo = -(lo/2)/100
+                    // adjustHi = 0.1
+                    //small range high end (too dark)
+                }
+            }
+            else{ //if the range is normal, but some items are too faint, make adjustment
+                if(lo<30){
+                    adjustLo = 0.2
+                    adjustHi = -(((100-hi)/3)/100) 
+                }
+            }
+            console.log(range)
+            this.setColorOption('padLo',(lo/100) + adjustLo)
+            this.setColorOption('padHi',(1 - hi/100) + adjustHi)
+            
+
             console.log('set padding: ', this.padLo, this.padHi)
         }
         if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
