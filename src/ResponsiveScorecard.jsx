@@ -17,6 +17,7 @@ import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 
 import media from './utilities/media'
+import {camelLower} from './utilities/toLowerCase'
 
 
 const store = new ScorecardStore()
@@ -135,6 +136,24 @@ const GreyMask = styled.div`
 export default class ResponsiveScorecard extends React.Component{
     @observable navOpen = false
     @action openNav = (val) => this.navOpen = val
+    @observable hoveredCounty = null
+    @observable demoBoxDims = {
+    	left: 0,
+    	top:0,
+    	width: 0,
+    	height: 0,
+    }
+    @action openNav = (status) => {
+    	this.navOpen = status
+    }
+    @action onHoverCounty = (id) => {
+        if(id) this.hoveredCounty = camelLower(id)
+        else this.hoveredCounty = null
+    }
+	@action drawDemoBox = (coords) => {
+		this.demoBoxDims = {...coords}
+		console.log(...coords)
+	}
 
     render(){
         const {indicator, year, race} = store
@@ -160,7 +179,7 @@ export default class ResponsiveScorecard extends React.Component{
                     <MapContainer offset = {this.navOpen}>
                         <MapComponent 
                             store = {store}
-                            getDataBoxDims = {this.getDataBoxDims}
+                            getDataBoxDims = {this.drawDemoBox}
                             onHoverCounty = {this.onHoverCounty}
                             hoveredCounty = {this.hoveredCounty}
                             onSelect = {store.completeWorkflow}

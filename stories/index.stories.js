@@ -32,7 +32,6 @@ import Info from '../src/components/Info'
 import CAMap from '../src/components/core/InteractiveMap'
 import Toggle from '../src/components/Toggle'
 
-import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
 import PickerBar from '../src/components/PickerBar'
 import ResponsiveScorecard from '../src/ResponsiveScorecard'
@@ -155,22 +154,8 @@ storiesOf('Scorecard Prototypes', module)
 })
 
 .add('responsivescorecard', ()=>{
-    const ind = select('indicator', Object.keys(indicators), null)
-    const cties = counties.map((cty)=>{return cty.id})
-    console.log(cties)
-    const coun = select('county', cties, null)
-    const race = select('race',['asian','black','latinx','white'], null)
-    const yr = 0
-    const mockStore = {
-        indicator: ind,
-        county: coun,
-        race: race,
-        year: yr
-    }
     return(
-        <ResponsiveScorecard 
-            store = {mockStore}
-        />
+        <ResponsiveScorecard />
     )
 })
 

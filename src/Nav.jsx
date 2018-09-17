@@ -4,7 +4,7 @@ import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
 // const PickerBar = styled.div`
-// 	width: 70%;
+// 	width: 70%
 // 	background: white;
 // 	height: 40px;
 // 	border: 1px solid #d7d7d7;
@@ -95,6 +95,7 @@ const Wrapper = styled.div`
 	}
 
 	render(){
+		const store = this.props.store
 		const offset = this.props.expanded && this.props.expanded !== 'race'
 		return(
 			<React.Fragment>
