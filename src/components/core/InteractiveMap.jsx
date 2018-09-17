@@ -80,7 +80,7 @@ const CountyPath = styled.path`${CountyStyle}`
     componentDidMount(){
         // console.log(document.getElementById('overlapbox').getBBox())
        this.setDims()
-       document.addEventListener('resize',()=>this.setDims)
+       // document.addEventListener('resize',()=>this.setDims)
         
     }
 

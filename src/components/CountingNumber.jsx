@@ -35,7 +35,7 @@ export default class CountingNumber extends React.Component{
 	render(){
 		return(
 			<CountUp
-				className = {styles.absolute}
+				className = {this.props.relative? styles.relative : styles.absolute}
 				start = {this.previousNumber}
 				end = {this.props.number}
 				separator = ','

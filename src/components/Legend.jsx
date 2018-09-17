@@ -30,15 +30,10 @@ export default class Legend extends React.Component{
                 // if(inv) invalids++
                 return inv?false : true
             })
-        console.log(allNums.length)
         const breaks = chroma.limits(allNums, colorOptions.breakAlgorithm, colorOptions.classes)
         
         const mode = this.hovered? 'true' : ''
 
-        // const los = breaks.map((e,i)=>{return e})
-        // const his = breaks.map((e,i,a)=>{return i<a.length-1? a[i+1] : 100})
-        // console.log(los)
-        // console.log(his)
         const nums = breaks.map((e,i,a)=>{
             const count = allNums.filter((num)=>{ 
                 if(i < a.length-2) return num >=breaks[i] && num < breaks[i+1]
@@ -46,11 +41,9 @@ export default class Legend extends React.Component{
             }).length 
             return count
         })
-        console.log(nums.reduce((a,b)=>a+b))
         const pcts = breaks.map((e,i,a)=>{
             return (nums[i] / allNums.length)
         })
-        console.log(pcts.reduce((a,b)=>a+b))
 
 
         return(

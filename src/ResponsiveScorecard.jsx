@@ -11,6 +11,8 @@ import ReadoutComponent from './components/Readout'
 import BreakdownComponent from './components/Breakdown'
 import LegendComponent from './components/Legend'
 import MapComponent from './components/core/InteractiveMap'
+import DemoDataTable from './components/DemoDataTable'
+import RaceBreakdownBar from './components/RaceBreakdownBar'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
@@ -130,7 +132,13 @@ const GreyMask = styled.div`
     background: var(--offwhitebg);
     z-index: 1;
 `
-
+const MapOverlapBox = styled.div`
+	position: absolute;
+	// border: 1px solid red;
+	display: flex;
+	padding: 20px;
+	z-index: 10;
+`
 
 @observer
 export default class ResponsiveScorecard extends React.Component{
@@ -151,8 +159,8 @@ export default class ResponsiveScorecard extends React.Component{
         else this.hoveredCounty = null
     }
 	@action drawDemoBox = (coords) => {
+		console.log('draw demo box')
 		this.demoBoxDims = {...coords}
-		console.log(...coords)
 	}
 
     render(){
@@ -176,6 +184,25 @@ export default class ResponsiveScorecard extends React.Component{
                 </TopRow>
                 <BottomRow>
                     <Breakdown> <BreakdownComponent store = {store} /> </Breakdown>
+                    <MapOverlapBox
+								style = {{
+									left: this.demoBoxDims.left,
+									top: this.demoBoxDims.top,
+									width: this.demoBoxDims.width,
+									height: this.demoBoxDims.height,
+								}}
+							>
+								<DemoDataTable
+									store = {store}
+								/>
+
+								<RaceBreakdownBar 
+									height = {this.demoBoxDims.height}
+									store = {store}
+
+								/>
+
+					</MapOverlapBox>
                     <MapContainer offset = {this.navOpen}>
                         <MapComponent 
                             store = {store}
