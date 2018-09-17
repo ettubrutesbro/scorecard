@@ -132,12 +132,20 @@ const GreyMask = styled.div`
     background: var(--offwhitebg);
     z-index: 1;
 `
-const MapOverlapBox = styled.div`
+const DemoBox = styled.div`
 	position: absolute;
-	// border: 1px solid red;
+	border: 2px solid var(--bordergrey);
 	display: flex;
 	padding: 20px;
 	z-index: 10;
+	transition: transform .4s, opacity .4s;
+	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
+	z-index: 1;
+	@media ${media.compact}{
+	    transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
+	    opacity: ${props => props.hide? 0 : 1};
+	    // transform-origin: 100% 0%;
+	}
 `
 
 @observer
@@ -169,6 +177,7 @@ export default class ResponsiveScorecard extends React.Component{
             return county[race||'totals'][year]
         }): ''
         return(
+        	<React.Fragment>
             <App>
                 <Nav> 
                     <NavComponent 
@@ -182,27 +191,11 @@ export default class ResponsiveScorecard extends React.Component{
                     <Readout> <ReadoutComponent store = {store}/> </Readout>
                     <Legend> <LegendComponent store = {store} /> </Legend>
                 </TopRow>
+
                 <BottomRow>
+
                     <Breakdown> <BreakdownComponent store = {store} /> </Breakdown>
-                    <MapOverlapBox
-								style = {{
-									left: this.demoBoxDims.left,
-									top: this.demoBoxDims.top,
-									width: this.demoBoxDims.width,
-									height: this.demoBoxDims.height,
-								}}
-							>
-								<DemoDataTable
-									store = {store}
-								/>
 
-								<RaceBreakdownBar 
-									height = {this.demoBoxDims.height}
-									store = {store}
-
-								/>
-
-					</MapOverlapBox>
                     <MapContainer offset = {this.navOpen}>
                         <MapComponent 
                             store = {store}
@@ -218,6 +211,28 @@ export default class ResponsiveScorecard extends React.Component{
                     </MapContainer>
                 </BottomRow>
             </App>
+            <DemoBox
+            	id = "demobox"
+            	hide = {this.navOpen}
+				style = {{
+					left: this.demoBoxDims.left,
+					top: this.demoBoxDims.top,
+					width: this.demoBoxDims.width,
+					height: this.demoBoxDims.height,
+				}}
+			>
+				<DemoDataTable
+					store = {store}
+				/>
+
+				<RaceBreakdownBar 
+					height = {this.demoBoxDims.height}
+					store = {store}
+
+				/>
+
+			</DemoBox>
+            </React.Fragment>
         )
     }
 }

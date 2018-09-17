@@ -29,12 +29,14 @@ const CountyStyle = css`
 `
 const OverlapBox = styled.polyline`
     fill: transparent;
+    opacity: 0;
+    // display: none;
     stroke: var(--bordergrey);
     stroke-width: 2;
     stroke-dasharray: 1600;
 
-    transition: opacity .5s, transform .5s;
-    opacity: ${props => props.offset? 0 : 1};
+    // transition: opacity .5s, transform .5s;
+    // opacity: ${props => props.offset? 0 : 1};
     transform: ${props => !props.offset? 'translate(0,0) scale(1)' : 'translate(-25%, 15%) scale(0.85)'};
     // transform-origin: 0% 100%;
     /*stroke-dashoffset: ${props => props.offset? 1600 : 0};*/
@@ -80,7 +82,7 @@ const CountyPath = styled.path`${CountyStyle}`
     componentDidMount(){
         // console.log(document.getElementById('overlapbox').getBBox())
        this.setDims()
-       // document.addEventListener('resize',()=>this.setDims)
+       document.addEventListener('resize',()=>this.setDims)
         
     }
 
@@ -95,6 +97,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 height: box.height,
             })
         }
+        console.log(box)
 
 
     }
