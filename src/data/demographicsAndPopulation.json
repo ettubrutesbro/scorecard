@@ -1,11 +1,11 @@
 {
   "california": {
     "population": "9118201",
-    "asian": 8,
+    "asian": 9,
     "black": 12,
     "latinx": 18,
     "white": 50,
-    "other": 22,
+    "other": 11,
     "poverty_2016": 15,
     "immigrantFamilies": 600699,
     "studentHomeless_2018": 14

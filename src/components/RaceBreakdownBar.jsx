@@ -173,6 +173,28 @@ export default class RaceBreakdownBar extends React.Component{
             >
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
+
+                    //let offsets = []
+                    // if(numOfCompressedLabels===4){
+                    //     offsets = ['-250%', '-150%','-75%','25%']
+                    // }
+                    // else if(numOfCompressedLabels===3){
+                    //     offsets = ['-60%', '-20%', '20%']
+                    // }
+                    // else if(numOfCompressedLabels===2){
+                    //     offsets = ['-25%','25%']
+
+                    // }
+                    // else if(numOfCompressedLabels===1){
+                    //     // offsets = [-250, -150,-50]
+                    //     offsets = [-50]
+                    // }
+                    // const firstCompressed = findIndex(arr,(r)=>{return r.percentage < clt})
+
+                    // const afterCompressed = i>0 && race.percentage > 10 && arr[i-1].percentage < clt
+                    // console.log(i, race.percentage, i>0?arr[i-1].percentage:'')
+                    // console.log(afterCompressed)
+
                     return(
 
                         <LabelSection 
@@ -215,7 +237,6 @@ const LabelSection = styled.div`
     // height: 13px;
     height: ${props => props.pct}%;
     min-height: 15px;
-    // border: 1px solid blue;
 `
 
 RaceBreakdownBar.defaultProps = {

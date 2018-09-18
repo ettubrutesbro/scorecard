@@ -37,7 +37,6 @@ const App = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
-    border: 1px solid green;
     margin-top: 90px;
     @media ${media.optimal}{
         width: 1600px;
