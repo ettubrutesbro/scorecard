@@ -149,7 +149,6 @@ const DemoBox = styled.div`
 	z-index: 1;
 	transition: transform .4s, opacity .4s;
 	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
-	z-index: 1100;
 	@media ${media.compact}{
 	    // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
 	    // opacity: ${props => props.hide? 0 : 1};

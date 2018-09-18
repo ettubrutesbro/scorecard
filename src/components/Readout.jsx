@@ -109,6 +109,8 @@ export default class Readout extends React.Component{
                             <ShadowNum>{displayNum}%</ShadowNum>
                             <CountingNumber
                                 number = {displayNum}
+                                suffix = '%'
+                                absolute
                             />
                             
                         </h1>

@@ -35,11 +35,11 @@ export default class CountingNumber extends React.Component{
 	render(){
 		return(
 			<CountUp
-				className = {this.props.relative? styles.relative : styles.absolute}
+				className = {this.props.absolute? styles.absolute : styles.relative}
 				start = {this.previousNumber}
 				end = {this.props.number}
 				separator = ','
-				suffix = '%'
+				suffix = {this.props.suffix}
 				duration = {this.speed}
 				easingFn = {
 					(t, b, c, d)=>{

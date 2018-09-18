@@ -84,6 +84,7 @@ const VertBar = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: var(--offwhitebg);
 `
 const Segment = styled.div`
     position: absolute;
@@ -165,9 +166,6 @@ export default class RaceBreakdownBar extends React.Component{
             <Container 
                 // innerRef = {(container)=>{this.container = container}}
             >
-            <Title>
-                Race breakdown
-            </Title>
             <Content>
             <LabelColumn
                 innerRef = {(column) => this.labelcolumn = column}
