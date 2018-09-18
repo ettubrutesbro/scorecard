@@ -178,6 +178,7 @@ export default class RaceBreakdownBar extends React.Component{
                     return(
 
                         <LabelSection 
+                            hide = {race.percentage === 0}
                             pct = {race.percentage}
                         >
                             <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
@@ -210,7 +211,7 @@ export default class RaceBreakdownBar extends React.Component{
 }
 
 const LabelSection = styled.div`
-    display: flex;
+    display: ${props=>!props.hide?'flex':'none'};
     align-items: center;
     font-size: 13px;
     // height: 13px;
