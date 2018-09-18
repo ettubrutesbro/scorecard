@@ -1,9 +1,9 @@
 {
   "california": {
     "population": "9118201",
-    "asian": 4,
+    "asian": 12,
     "black": 4,
-    "latinx": 5,
+    "latinx": 4,
     "white": 50,
     "other": 22,
     "poverty_2016": 15,

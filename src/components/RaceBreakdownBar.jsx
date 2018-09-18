@@ -12,7 +12,7 @@ import FlipMove from 'react-flip-move'
 
 const Container = styled.div`
     display: flex;
-    border: 1px solid black;
+    // border: 1px solid black;
     // padding: 30px;
     box-sizing: border-box;
     flex-direction: column;
@@ -130,6 +130,9 @@ const races = [
     'white',
     'other'
 ]
+
+const clt = 12 //compressed label threshold
+
 @observer
 export default class RaceBreakdownBar extends React.Component{
 
@@ -151,7 +154,7 @@ export default class RaceBreakdownBar extends React.Component{
 
         const racePercentages = races.map((race)=>{
             const pct = county[race]
-            if(pct < 6 && pct > 0) numOfCompressedLabels++
+            if(pct < clt && pct > 0) numOfCompressedLabels++
             return {label:race, percentage: pct}
         }).sort((a,b)=>{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
@@ -172,27 +175,10 @@ export default class RaceBreakdownBar extends React.Component{
             >
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
-                    // const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
-                    // return <RaceLabel
-                    //     key = {race.label}
-                    //     centerText = {this.props.centerText}
-                    //     style = {{visibility: race.percentage===0?'hidden' : 'visible'}}
-                    //     className = {race.percentage < 4? 'compressed'+numOfCompressedLabels : ''}
-                    //     offset = {(offset/100) * 233}
-                    //     height = {race.percentage}
-                    //     // height = {(race.percentage/100) * this.props.height}
-                    // > 
-                    //     <LabelPct>
-                    //         <Label>{race.label[0].toUpperCase()+race.label.substr(1)}</Label>
-                    //         <Percentage>{race.percentage}%</Percentage> 
-                    //     </LabelPct>
-                    // </RaceLabel>  
-
                     return(
 
                         <LabelSection 
                             pct = {race.percentage}
-                            className = {race.percentage < 6? 'compressed'+numOfCompressedLabels : ''}
                         >
                             <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
                             <Percentage> {race.percentage} </Percentage>
@@ -225,11 +211,12 @@ export default class RaceBreakdownBar extends React.Component{
 
 const LabelSection = styled.div`
     display: flex;
+    align-items: center;
     font-size: 13px;
+    // height: 13px;
     height: ${props => props.pct}%;
-    border: 1px solid blue;
-
-    padding-top: ${props => props.offset==='padTop'? '8px' : 0};
+    min-height: 15px;
+    // border: 1px solid blue;
 `
 
 RaceBreakdownBar.defaultProps = {
