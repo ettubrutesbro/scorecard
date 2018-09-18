@@ -35,14 +35,17 @@ const App = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     height: 100%;
+    border: 1px solid green;
+    margin-top: 90px;
     @media ${media.optimal}{
         width: 1600px;
         height: 900px;
     }
     @media ${media.compact}{
         width: 1280px;
-        height: 720px;
+        height: 640px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -51,15 +54,18 @@ const App = styled.div`
 const Row = styled.div`
     width: 100%;
     display: flex;
+    position: relative;
 `
 const TopRow = styled(Row)`
     position: relative;
-    height: 70px;
-    margin-top: 100px;
-    flex-grow: 1;
+    height: 80px;
+    // flex-grow: 1;
+    flex-shrink: 0;
 `
 const BottomRow = styled(Row)`
-    flex-grow: 6;
+	height: 100%;
+	flex-grow: 1;
+    // flex-shrink: 0;
 `
 const Nav = styled(Row)`
     position: fixed;
@@ -87,11 +93,10 @@ const Readout = styled(Quadrant)`
     @media ${media.mobile}{}
 `
 const Breakdown = styled(Quadrant)`
-    bottom: 0; left: 0;
+	top: 0; left: 0;
     @media ${media.optimal}{}
     @media ${media.compact}{
         width: 40%;
-        height: 70%;
     }
     @media ${media.mobile}{}
 `
@@ -99,7 +104,7 @@ const Legend = styled(Quadrant)`
     z-index: 0;
     @media ${media.optimal}{}
     @media ${media.compact}{
-        width: 481px;
+        width: 500px;
         height: 80px;
         right: 0;
         top: 0;
@@ -115,7 +120,7 @@ const MapContainer = styled(Quadrant)`
     transition: transform .5s;
     @media ${media.optimal}{}
     @media ${media.compact}{
-        width: 60%; height: 70%;
+        width: 60%; height: 100%;
         transform: translateX(${props => props.offset? '280px' : 0}) scale(${props=>props.offset?1.13:1});
     }
     @media ${media.mobile}{}
@@ -134,13 +139,17 @@ const GreyMask = styled.div`
 `
 const DemoBox = styled.div`
 	position: absolute;
+	width: 500px;
+	height: 300px;
+	top: 0; 
+	right: 0;
 	border: 2px solid var(--bordergrey);
 	display: flex;
 	padding: 20px;
 	z-index: 1;
 	transition: transform .4s, opacity .4s;
 	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
-	z-index: 1;
+	z-index: 1100;
 	@media ${media.compact}{
 	    // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
 	    // opacity: ${props => props.hide? 0 : 1};
@@ -193,7 +202,20 @@ export default class ResponsiveScorecard extends React.Component{
                 </TopRow>
 
                 <BottomRow>
+    	            <DemoBox
+		            	id = "demobox"
+					>
+						<DemoDataTable
+							store = {store}
+						/>
 
+						<RaceBreakdownBar 
+							height = {this.demoBoxDims.height}
+							store = {store}
+
+						/>
+
+					</DemoBox>
                     <Breakdown> <BreakdownComponent store = {store} /> </Breakdown>
 
                     <MapContainer offset = {this.navOpen}>
@@ -211,27 +233,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </MapContainer>
                 </BottomRow>
             </App>
-            <DemoBox
-            	id = "demobox"
-            	hide = {this.navOpen}
-				style = {{
-					left: this.demoBoxDims.left,
-					top: this.demoBoxDims.top,
-					width: this.demoBoxDims.width,
-					height: this.demoBoxDims.height,
-				}}
-			>
-				<DemoDataTable
-					store = {store}
-				/>
 
-				<RaceBreakdownBar 
-					height = {this.demoBoxDims.height}
-					store = {store}
-
-				/>
-
-			</DemoBox>
             </React.Fragment>
         )
     }

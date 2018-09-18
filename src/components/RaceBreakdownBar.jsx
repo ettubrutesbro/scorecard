@@ -16,6 +16,8 @@ const Container = styled.div`
     // padding: 30px;
     box-sizing: border-box;
     flex-direction: column;
+
+    height: 256px;
 `
 
 const centerText = css`
@@ -29,13 +31,12 @@ const LabelColumn = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    // justify-content: flex-end;
-    justify-content: ${props=>props.centerText? 'flex-start' : 'space-between'};
     width: 100px;
     // outline: 1px solid green;
     margin-right: 30px;
 `
 const RaceLabel = styled.div`
+    font-size: 13px;
     // text-align: right;
     position: absolute;
     // height: 0;
@@ -150,13 +151,13 @@ export default class RaceBreakdownBar extends React.Component{
 
         const racePercentages = races.map((race)=>{
             const pct = county[race]
-            if(pct < 4 && pct > 0) numOfCompressedLabels++
+            if(pct < 6 && pct > 0) numOfCompressedLabels++
             return {label:race, percentage: pct}
         }).sort((a,b)=>{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
         })
 
-        // console.log('number of compressed labels:', numOfCompressedLabels)
+        console.log('number of compressed labels:', numOfCompressedLabels)
         return(
             <Container 
                 // innerRef = {(container)=>{this.container = container}}
@@ -171,21 +172,32 @@ export default class RaceBreakdownBar extends React.Component{
             >
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
-                    const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
-                    return <RaceLabel
-                        key = {race.label}
-                        centerText = {this.props.centerText}
-                        style = {{visibility: race.percentage===0?'hidden' : 'visible'}}
-                        className = {race.percentage < 4? 'compressed'+numOfCompressedLabels : ''}
-                        offset = {(offset/100) * 233}
-                        height = {race.percentage}
-                        // height = {(race.percentage/100) * this.props.height}
-                    > 
-                        <LabelPct>
-                            <Label>{race.label[0].toUpperCase()+race.label.substr(1)}</Label>
-                            <Percentage>{race.percentage}%</Percentage> 
-                        </LabelPct>
-                    </RaceLabel>  
+                    // const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
+                    // return <RaceLabel
+                    //     key = {race.label}
+                    //     centerText = {this.props.centerText}
+                    //     style = {{visibility: race.percentage===0?'hidden' : 'visible'}}
+                    //     className = {race.percentage < 4? 'compressed'+numOfCompressedLabels : ''}
+                    //     offset = {(offset/100) * 233}
+                    //     height = {race.percentage}
+                    //     // height = {(race.percentage/100) * this.props.height}
+                    // > 
+                    //     <LabelPct>
+                    //         <Label>{race.label[0].toUpperCase()+race.label.substr(1)}</Label>
+                    //         <Percentage>{race.percentage}%</Percentage> 
+                    //     </LabelPct>
+                    // </RaceLabel>  
+
+                    return(
+
+                        <LabelSection 
+                            pct = {race.percentage}
+                            className = {race.percentage < 6? 'compressed'+numOfCompressedLabels : ''}
+                        >
+                            <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
+                            <Percentage> {race.percentage} </Percentage>
+                        </LabelSection>
+                    )
                 })}
 
             </LabelColumn>
@@ -210,6 +222,15 @@ export default class RaceBreakdownBar extends React.Component{
         )
     }
 }
+
+const LabelSection = styled.div`
+    display: flex;
+    font-size: 13px;
+    height: ${props => props.pct}%;
+    border: 1px solid blue;
+
+    padding-top: ${props => props.offset==='padTop'? '8px' : 0};
+`
 
 RaceBreakdownBar.defaultProps = {
 

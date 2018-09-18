@@ -27,3 +27,23 @@ body{
     align-items: flex-start;
     justify-content: center;
 }
+
+
+.compressed1{
+
+}
+.compressed2{
+
+}
+.compressed3{
+	color: red;
+}
+.compressed3:first-of-type{
+	color: red;
+}
+.compressed3:nth-of-type(2){
+	color: green;
+}
+.compressed3:nth-of-type(3){
+	color: blue;
+}
