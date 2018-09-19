@@ -160,12 +160,9 @@ export default class ResponsiveScorecard extends React.Component{
     @observable navOpen = false
     @action openNav = (val) => this.navOpen = val
     @observable hoveredCounty = null
-    @observable demoBoxDims = {
-    	left: 0,
-    	top:0,
-    	width: 0,
-    	height: 0,
-    }
+
+    @observable extraReadoutLines = ''
+
     @action openNav = (status) => {
     	this.navOpen = status
     }
@@ -173,10 +170,7 @@ export default class ResponsiveScorecard extends React.Component{
         if(id) this.hoveredCounty = camelLower(id)
         else this.hoveredCounty = null
     }
-	@action drawDemoBox = (coords) => {
-		console.log('draw demo box')
-		this.demoBoxDims = {...coords}
-	}
+
 
     render(){
         const {indicator, year, race} = store
@@ -208,7 +202,7 @@ export default class ResponsiveScorecard extends React.Component{
 						/>
 
 						<RaceBreakdownBar 
-							height = {this.demoBoxDims.height}
+							// height = {this.demoBoxDims.height}
 							store = {store}
 
 						/>
@@ -219,7 +213,6 @@ export default class ResponsiveScorecard extends React.Component{
                     <MapContainer offset = {this.navOpen}>
                         <MapComponent 
                             store = {store}
-                            getDataBoxDims = {this.drawDemoBox}
                             onHoverCounty = {this.onHoverCounty}
                             hoveredCounty = {this.hoveredCounty}
                             onSelect = {store.completeWorkflow}
