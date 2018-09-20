@@ -43,10 +43,21 @@ export default class Breakdown extends React.Component{
 
         //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
 
-        let entryCount
+        let entryCount = 0
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
             console.log(hasRace?'has race chart':'no race graph', 'offset:',offset)
+            if(hasRace){ //halfish of breakdown is used up by race comparison
+                if(offset >= 80) entryCount = 4
+                else if(offset >= 40) entryCount = 6
+                else entryCount = 10
+            }
+            else{
+                if(offset >= 80) entryCount = 10
+                else if(offset >= 40) entryCount = 15
+                else entryCount = 18
+            }
+
         }
 
 
@@ -56,6 +67,8 @@ export default class Breakdown extends React.Component{
                     {indicator && !race &&  
                         // 'county performance distribution and indicator by race'
                         <IndicatorByCounties 
+
+                            entries = {entryCount}
                             // key = {indicator+county+year+race} //kills anims but works
                             store = {store}
                             // indicator = {indicator}

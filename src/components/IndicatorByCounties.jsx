@@ -18,8 +18,8 @@ import ordinal from 'ordinal'
 import HorizontalBarGraph from './HorizontalBarGraph'
 import Button from './Button'
 
-const defaultEntries = 8
-const moreEntries = 12
+// const defaultEntries = 8
+// const moreEntries = 12
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -109,7 +109,7 @@ export default class IndicatorByCounties extends React.Component{
         })
 
         // const entries = this.props.store.county? moreEntries : defaultEntries
-        const entries = defaultEntries
+        const entries = this.props.entries
         const countyCount = validCounties.length
         const unit = parseInt((countyCount / entries).toFixed(0))
         const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
@@ -144,7 +144,7 @@ export default class IndicatorByCounties extends React.Component{
             let replaceIndex = indexOfClosest(distribution, mustInclude)
             // console.log('mustInclude is', mustInclude, 'replaceIndex is', replaceIndex)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
-            if(replaceIndex===defaultEntries-1 && mustInclude !==defaultEntries-1) replaceIndex = defaultEntries-2
+            if(replaceIndex===entries-1 && mustInclude !==entries-1) replaceIndex = entries-2
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
 
@@ -226,6 +226,8 @@ export default class IndicatorByCounties extends React.Component{
                 graphHoverPrompt = 'Click to see full list (47 counties)'
                 expandable
                 selectable
+
+                // entries = {this.props.entries}
             />
             </div>
         )
