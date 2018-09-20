@@ -160,6 +160,8 @@ export default class ResponsiveScorecard extends React.Component{
     @observable navOpen = false
     @action openNav = (val) => this.navOpen = val
     @observable hoveredCounty = null
+    @observable breakdownOffset = 0
+    	@action setBreakdownOffset = (val) => this.breakdownOffset = val
 
     @observable extraReadoutLines = ''
 
@@ -189,7 +191,7 @@ export default class ResponsiveScorecard extends React.Component{
                 </Nav>
                 <GreyMask show = {this.navOpen}/>
                 <TopRow>
-                    <Readout> <ReadoutComponent store = {store}/> </Readout>
+                    <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
                     <Legend> <LegendComponent store = {store} /> </Legend>
                 </TopRow>
 
@@ -208,7 +210,7 @@ export default class ResponsiveScorecard extends React.Component{
 						/>
 
 					</DemoBox>
-                    <Breakdown> <BreakdownComponent store = {store} /> </Breakdown>
+                    <Breakdown> <BreakdownComponent offset = {this.breakdownOffset} store = {store} /> </Breakdown>
 
                     <MapContainer offset = {this.navOpen}>
                         <MapComponent 

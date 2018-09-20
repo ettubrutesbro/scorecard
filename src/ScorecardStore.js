@@ -146,5 +146,10 @@ export default class AppStore{
         console.log(val)
         return val==='*' || !val? false : true
     }
+
+    setBreakdownOffset = (val) => {
+        console.log('setting breakdown offset: ', val)
+        this.breakdownOffset = val   
+    }
     
 }

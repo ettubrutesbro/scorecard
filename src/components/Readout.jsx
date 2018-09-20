@@ -54,6 +54,9 @@ const ShadowNum = styled.div`
 `
 @observer
 export default class Readout extends React.Component{
+    constructor(props){
+        super(props)
+    }
     @observable bigNumberWidth = 0
     @action setBigNumberWidth = () => {
         const width = findDOMNode(this.bigNumber).offsetWidth
@@ -101,16 +104,10 @@ export default class Readout extends React.Component{
         //what if theres less than 3 words?
 
         const words = str.split(' ')
-        if(words.length >= 3){
+        if(words.length >= 2){
 
-            return words.slice(0,words.length-3).join(' ') + ' ' + words.slice(words.length-3).join('\xa0')
+            return words.slice(0,words.length-2).join(' ') + ' ' + words.slice(words.length-2).join('\xa0')
 
-            // const secondLastWord = str.indexOf(words[words.length-2])-1
-            // const lastWord = str.indexOf(words[words.length-1])-1
-            // let newStr = str.slice(0)
-            // newStr = newStr.slice(0,secondLastWord) + '&nbsp;' + newStr.slice(secondLastWord, lastWord) + '&nbsp;' + newStr.slice(lastWord)
-
-            // return newStr
         }
         else return str
     }
@@ -124,7 +121,10 @@ export default class Readout extends React.Component{
         this.computeLineBreaks()
     }
 
-
+    offsetBreakdown = (v) => {
+        console.log('readout offset breakdown', v)
+        // this.props.offsetBreakdown(v)
+    }
     render(){
         const {county, indicator, race, year} = this.props.store
 
@@ -182,7 +182,7 @@ export default class Readout extends React.Component{
                         > 
                             {this.firstLine}
                         </IndentedTitle>
-                        <SubsequentLines>
+                        <SubsequentLines offsetBreakdown = {this.props.setBreakdownOffset} >
                             {this.subsequentLines}
                         </SubsequentLines>
 
@@ -193,8 +193,9 @@ export default class Readout extends React.Component{
     }
 }
 
-const SubsequentLines = styled.div`
-    border: 1px solid red;
+const Sublines = styled.div`
+    // border: 1px solid red;
+    padding-top: 3px;
     line-height: 170%;
     @media ${media.optimal}{
         
@@ -206,3 +207,28 @@ const SubsequentLines = styled.div`
 
     }
 `
+
+
+
+class SubsequentLines extends React.Component{
+    constructor(props){
+        super(props)
+        this.wrapper = React.createRef()
+    }
+    getHeight = () => {
+        this.props.offsetBreakdown(this.wrapper.current.offsetHeight)
+    }
+    // componentDidMount(){
+    //     // this.getHeight()
+    // }
+    componentDidUpdate(oldProps){
+        this.getHeight()
+    }
+    render(){
+        return(
+            <Sublines innerRef = {this.wrapper}>
+                {this.props.children}
+            </Sublines>
+        )
+    }
+}

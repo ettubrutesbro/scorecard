@@ -21,6 +21,9 @@ const Wrapper = styled.div`
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    transition: transform .25s;
+    transform: translateY(${props=>props.offset}px);
+
 `
 
 const BreakdownBox = styled.div`
@@ -34,10 +37,21 @@ const BottomTable = styled.div`
 @observer
 export default class Breakdown extends React.Component{
     render(){
-        const {store} = this.props
+
+        const {store, offset} = this.props
         const {indicator, county, race, year} = store
+
+        //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
+
+        let entryCount
+        if(indicator){
+            const hasRace = indicators[indicator].categories.includes('hasRace')
+            console.log(hasRace?'has race chart':'no race graph', 'offset:',offset)
+        }
+
+
         return(
-            <Wrapper>
+            <Wrapper offset = {this.props.offset}>
 
                     {indicator && !race &&  
                         // 'county performance distribution and indicator by race'
