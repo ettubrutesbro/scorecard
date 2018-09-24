@@ -10,18 +10,33 @@ import demopop from '../data/demographicsAndPopulation'
 import CountingNumber from './CountingNumber'
 
 import {capitalize} from '../utilities/toLowerCase'
+import media from '../utilities/media'
+
 
 const RowTable = styled.div`
-
+    @media ${media.optimal}{
+        padding-right: 20px;
+    }
 
 `
 const DemoRow = styled.div`
     position: relative;
-    margin-top: 15px;   
-    padding-left: 10px;
-    line-height: 150%;
-    font-size: 13px;
-    letter-spacing: 0.5px;
+    @media ${media.optimal}{
+        margin-top: 20px;
+        padding-left: 15px;
+        line-height: 160%;
+        font-size: 16px;
+        letter-spacing: 0.6px;
+    }
+    @media ${media.compact}{
+
+        margin-top: 15px;   
+        padding-left: 10px;
+        line-height: 150%;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+
 `
 const DemoLabel = styled.span`
     margin-left: 5px;
@@ -32,8 +47,16 @@ const DemoValue = styled.span`
 ` 
 
 const Title = styled.div`
-    font-size: 16px;
-    margin-bottom: 20px;    
+    @media ${media.optimal}{
+        font-size: 24px;
+        letter-spacing: 0.5px;
+        margin-bottom: 23px;
+    }
+    @media ${media.compact}{
+
+        font-size: 16px;
+        margin-bottom: 20px;    
+    }
 `
 
 export default class DemoDataTable extends React.Component {

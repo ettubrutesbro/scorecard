@@ -10,14 +10,20 @@ import {find, findIndex} from 'lodash'
 import demopop from '../data/demographicsAndPopulation'
 import FlipMove from 'react-flip-move'
 
+import media from '../utilities/media'
+
 const Container = styled.div`
     display: flex;
     // border: 1px solid black;
     // padding: 30px;
     box-sizing: border-box;
     flex-direction: column;
-
-    height: 256px;
+    @media ${media.optimal}{
+        height: 320px;
+    }
+    @media ${media.compact}{
+        height: 256px;   
+    }
 `
 
 const centerText = css`
@@ -36,7 +42,7 @@ const LabelColumn = styled.div`
     margin-right: 30px;
 `
 const RaceLabel = styled.div`
-    font-size: 13px;
+
     // text-align: right;
     position: absolute;
     // height: 0;
@@ -233,8 +239,13 @@ export default class RaceBreakdownBar extends React.Component{
 const LabelSection = styled.div`
     display: ${props=>!props.hide?'flex':'none'};
     align-items: center;
-    font-size: 13px;
-    // height: 13px;
+
+        @media ${media.optimal}{   
+        font-size: 16px;   
+    }
+    @media ${media.compact}{   
+        font-size: 13px;   
+    }
     height: ${props => props.pct}%;
     min-height: 15px;
 `

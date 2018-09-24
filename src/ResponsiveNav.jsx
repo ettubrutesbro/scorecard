@@ -48,7 +48,7 @@ const Dropdown = styled.div`
         height: 6px;
         background-image: url(${caret});
         background-size: contain;
-        background-repeat: no-repeat;	
+        background-repeat: no-repeat;   
         position: absolute;
     }
     transition: transform .25s;
@@ -174,10 +174,10 @@ const HorzRace = styled.div`
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
     @action openRaceDropdown = () => {
-    	if(this.props.init) return
-    	// this.props.closeSplash()
-    	this.raceDropdown = !this.raceDropdown
-    	// this.props.closeSplash()
+        if(this.props.init) return
+        // this.props.closeSplash()
+        this.raceDropdown = !this.raceDropdown
+        // this.props.closeSplash()
     }
 
     componentDidUpdate(){
@@ -203,11 +203,11 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}
                 >
-                	{this.props.init && '1. '}
+                    {this.props.init && '1. '}
                     {store.indicator? semanticTitles[store.indicator].shorthand : 'Pick an indicator'}
                 </IndicatorSelect>
                 <CountySelect 
-                	disabled = {!indicator}
+                    disabled = {!indicator}
                     onClick = {()=>openNav('county')}
                     offset = {open}
                 >
@@ -215,7 +215,7 @@ export default class ResponsiveNav extends React.Component{
                 </CountySelect>
                 
                     <NormalDropdown
-                    	disabled = {!indicator} 
+                        disabled = {!indicator} 
                         onClick = {!open? this.openRaceDropdown : ()=>{}} 
                         offset = { open? 2 : 0 }
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
@@ -311,6 +311,7 @@ const LargeWorkflow = styled.div`
     z-index: 3;
     @media ${media.optimal}{
         width: 1000px;
+        height: 720px;
     }
     @media ${media.compact}{
         width: 780px;

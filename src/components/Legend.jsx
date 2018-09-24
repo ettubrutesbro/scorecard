@@ -7,7 +7,7 @@ import chroma from 'chroma-js'
 
 import indicators from '../data/indicators'
 
-import media from '../'
+import media from '../utilities/media'
 
 @observer
 export default class Legend extends React.Component{
@@ -113,7 +113,6 @@ const Lgd = styled.div`
     display: flex;
     position: relative;
     width: 100%;
-    max-width: 640px;
     overflow: hidden;
     cursor: pointer;
 `
@@ -152,13 +151,21 @@ const Label = styled.div`
     position: absolute;
     left: 0;
     width: 25%;
-    // left: ${props=> props.mode==='truescale'? props.offset*100 : (100/props.classes) * (props.index)}%;
     justify-content: center;
-    // justify-content: ${props=>props.firstLast==='first'? 'flex-start' : props.firstLast==='last'? 'flex-end' : 'center'};
-    transform: translateX(${p=> p.mode==='truescale'&&p.firstLast==='first'?0:p.mode==='truescale'?  481*((p.offset+(p.scale/2)))+'px' : (481/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40px)' 
-        : p.mode!=='truescale' && p.firstLast === 'last'? 'translateX(70px)'
-        : 'translateX(0)'
-    };
+    @media ${media.optimal}{
+         transform: translateX(${p=> p.mode==='truescale'&&p.firstLast?0
+            :p.mode==='truescale'?  631*((p.offset+(p.scale/2)))+'px' 
+            :p.firstLast? 0 
+            : (631/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' : 'translateX(0)'};
+    }
+    @media ${media.compact}{
+        transform: translateX(${p=> p.mode==='truescale'&&p.firstLast==='first'?0
+            :p.mode==='truescale'?  481*((p.offset+(p.scale/2)))+'px' 
+            : (481/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' 
+            : 'translateX(0)'
+        };        
+    }
+
 
     ${props=>props.firstLast==='last'? `
         right: 0; left: auto;

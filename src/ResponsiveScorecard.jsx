@@ -31,7 +31,6 @@ window.store = store
 const Quadrant = styled.div`
     position: absolute;
     display: flex;
-    // border: 1px solid grey;
 `
 
 const App = styled.div`
@@ -65,8 +64,8 @@ const TopRow = styled(Row)`
     flex-shrink: 0;
 `
 const BottomRow = styled(Row)`
-	height: 100%;
-	flex-grow: 1;
+    height: 100%;
+    flex-grow: 1;
     // flex-shrink: 0;
 `
 const Nav = styled(Row)`
@@ -85,7 +84,9 @@ const Nav = styled(Row)`
 
 const Readout = styled(Quadrant)`
     @media ${media.optimal}{
-
+                width: calc(100% - 460px);
+        height: 80px;
+        padding-right: 30px;
     }
     @media ${media.compact}{
         width: calc(100% - 460px);
@@ -95,8 +96,11 @@ const Readout = styled(Quadrant)`
     @media ${media.mobile}{}
 `
 const Breakdown = styled(Quadrant)`
-	top: 0; left: 0;
-    @media ${media.optimal}{}
+    top: 0; left: 0;
+    @media ${media.optimal}{
+        width: 38%;
+
+    }
     @media ${media.compact}{
         width: 40%;
     }
@@ -104,13 +108,17 @@ const Breakdown = styled(Quadrant)`
 `
 const Legend = styled(Quadrant)`
     z-index: 0;
-    @media ${media.optimal}{}
+    right: 0;
+    top: 0;
+    flex-shrink: 0;
+    @media ${media.optimal}{
+        width: 650px;
+        height: 80px;
+    }
     @media ${media.compact}{
         width: 500px;
         height: 80px;
-        right: 0;
-        top: 0;
-        flex-shrink: 0;
+
     }
     @media ${media.mobile}{}
 `
@@ -120,7 +128,11 @@ const MapContainer = styled(Quadrant)`
     z-index: 2;
     transform-origin: 0% 100%;
     transition: transform .5s;
-    @media ${media.optimal}{}
+    @media ${media.optimal}{
+        width: 60%;
+        height: 100%;
+        transform: translateX(${props => props.init? '-350px' : props.offset? '40%' : 0}) scale(${props=>props.offset?1.05:1});
+    }
     @media ${media.compact}{
         width: 60%; height: 100%;
         transform: translateX(${props => props.init? '-250px' : props.offset? '280px' : 0}) scale(${props=>props.offset?1.13:1});
@@ -140,54 +152,65 @@ const GreyMask = styled.div`
     z-index: 2;
 `
 const DemoBox = styled.div`
-	position: absolute;
-	width: 500px;
-	height: 300px;
-	top: 0; 
-	right: 0;
-	border: 2px solid var(--bordergrey);
-	display: flex;
-	padding: 20px;
-	z-index: 1;
-	transition: transform .4s, opacity .4s;
-	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
-	@media ${media.compact}{
-	    // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
-	    // opacity: ${props => props.hide? 0 : 1};
-	    // transform-origin: 100% 0%;
-	}
+    position: absolute;
+    @media ${media.optimal}{
+        width: 650px;
+        height: 400px;
+        padding: 35px;
+
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 35% 100%, 0% 50%);
+    }
+    @media ${media.compact}{
+
+        padding: 20px;
+        width: 500px;
+        height: 300px;   
+
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
+    }
+    top: 0; 
+    right: 0;
+    border: 2px solid var(--bordergrey);
+    display: flex;
+    z-index: 1;
+    transition: transform .4s, opacity .4s;
+    @media ${media.compact}{
+        // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
+        // opacity: ${props => props.hide? 0 : 1};
+        // transform-origin: 100% 0%;
+    }
 `
 
 @observer
 export default class ResponsiveScorecard extends React.Component{
-	@observable init = true
-	@action closeSplash = () => {
-		this.init = false
-		this.openNav('indicator')
-	}
+    @observable init = true
+    @action closeSplash = () => {
+        this.init = false
+        this.openNav('indicator')
+    }
     @observable navOpen = false
 
     @observable hoveredCounty = null
     @observable breakdownOffset = 0
-    	@action setBreakdownOffset = (val) => this.breakdownOffset = val
+        @action setBreakdownOffset = (val) => this.breakdownOffset = val
 
     @observable extraReadoutLines = ''
 
     @action openNav = (status) => {
-    	if(this.init && status){
-    		console.log('user opened nav while init')
-    		this.init = false
-    	}
-    	if(!store.indicator && this.navOpen === 'indicator' && !status){
-    		this.init = true
-    		store.completeWorkflow('county',null)
-    		store.completeWorkflow('race',null)
-    		this.navOpen = false
-    	}
-    	else if(!status && !store.indicator){
-    		this.navOpen = 'indicator'
-    	}
-    	else this.navOpen = status
+        if(this.init && status){
+            console.log('user opened nav while init')
+            this.init = false
+        }
+        if(!store.indicator && this.navOpen === 'indicator' && !status){
+            this.init = true
+            store.completeWorkflow('county',null)
+            store.completeWorkflow('race',null)
+            this.navOpen = false
+        }
+        else if(!status && !store.indicator){
+            this.navOpen = 'indicator'
+        }
+        else this.navOpen = status
     }
     @action onHoverCounty = (id) => {
         if(id) this.hoveredCounty = camelLower(id)
@@ -201,11 +224,11 @@ export default class ResponsiveScorecard extends React.Component{
             return county[race||'totals'][year]
         }): ''
         return(
-        	<React.Fragment>
+            <React.Fragment>
             <App>
                 <Nav> 
                     <NavComponent 
-                    	init = {this.init}
+                        init = {this.init}
                         store = {store}
                         open = {this.navOpen}
                         openNav = {this.openNav}
@@ -219,22 +242,22 @@ export default class ResponsiveScorecard extends React.Component{
                 </TopRow>
 
                 <BottomRow>
-    	            <DemoBox
-		            	id = "demobox"
-					>
-						<DemoDataTable
-							store = {store}
-						/>
+                    <DemoBox
+                        id = "demobox"
+                    >
+                        <DemoDataTable
+                            store = {store}
+                        />
 
-						<RaceBreakdownBar 
-							// height = {this.demoBoxDims.height}
-							store = {store}
+                        <RaceBreakdownBar 
+                            // height = {this.demoBoxDims.height}
+                            store = {store}
 
-						/>
+                        />
 
-					</DemoBox>
+                    </DemoBox>
                     <Breakdown> 
-                    	<BreakdownComponent offset = {this.breakdownOffset} store = {store} /> 
+                        <BreakdownComponent offset = {this.breakdownOffset} store = {store} /> 
                     </Breakdown>
 
                     <MapContainer offset = {this.navOpen} init = {this.init}>
@@ -252,7 +275,7 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 {this.init &&
-                	<InitBox closeSplash = {this.closeSplash}/>
+                    <InitBox closeSplash = {this.closeSplash}/>
                 }
             </App>
 

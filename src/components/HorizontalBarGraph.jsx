@@ -165,7 +165,7 @@ const GraphTable = styled.div`
     display: flex;
     flex-wrap: wrap;
     /*width: 100%;*/
-    max-width: 480px;
+    /*max-width: 480px;*/
     ${flushHard}
     /*border-radius: 12px;*/
     /*box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};*/
