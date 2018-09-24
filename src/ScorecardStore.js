@@ -56,7 +56,8 @@ export default class AppStore{
             this.county = null
         }
         else if(which==='county' && this.indicator){
-            const val = indicators[this.indicator].counties[value][this.race||'totals'][this.year]
+            console.log(this.indicator, value, this.race, this.year)
+            const val = indicators[this.indicator].counties[value||'california'][this.race||'totals'][this.year]
             if(this.race && (!val || val==='*')){ 
                 const holdOnToRace = this.race
                 this.race = null
@@ -145,11 +146,6 @@ export default class AppStore{
             : demopop[county||'california'][race||'population']
         console.log(val)
         return val==='*' || !val? false : true
-    }
-
-    setBreakdownOffset = (val) => {
-        console.log('setting breakdown offset: ', val)
-        this.breakdownOffset = val   
     }
     
 }

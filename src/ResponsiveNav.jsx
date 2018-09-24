@@ -19,6 +19,8 @@ import IndicatorList from './components/IndicatorList'
 import media from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
 
+import caret from './assets/caret.svg'
+
 
 const Nav = styled.div`
 z-index: 3;
@@ -34,19 +36,23 @@ z-index: 3;
 const Dropdown = styled.div`
     position: relative;
     padding: 10px 45px 10px 20px;
-    background: white;
+    background: ${props => props.disabled? 'var(--offwhitebg)' : 'white'};
+    color: ${props => props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
     align-items: center;
     outline: 1px solid var(--bordergrey);
     &::after{
         content: '';
         right: 15px;
-        width: 15px;
-        height: 15px;
-        border: 1px solid black;
+        width: 13px;
+        height: 6px;
+        background-image: url(${caret});
+        background-size: contain;
+        background-repeat: no-repeat;	
         position: absolute;
     }
     transition: transform .25s;
+
 
 `  
 
@@ -61,22 +67,20 @@ const IndicatorSelect = styled(DropdownWorkflow)`
 `
 const CountySelect = styled(DropdownWorkflow)`
     width: 200px;
-    transform: ${props=>props.offset?'translateX(15px)':''};
+    transform: ${props=>props.offset?'translateX(15px)':'translateX(-1px)'};
 `
 const NormalDropdown = styled(Dropdown)`
-    width: 130px;
+    width: 145px;
 
-    transform: translateX(${props=>props.offset*15}px);
+    transform: translateX(${props=>(props.offset*15)-2}px);
     &::before{
         content: '';
         position: absolute;
         
         z-index: 10;
     }
-    /*background:${props => props.allRacesSelected? 'var(--faintpeach)' : 'white'};*/
-    background: white;
-    color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'black'};
-    // outline-color: ${props => props.allRacesSelected?'var(--strokepeach)' : 'var(--bordergrey)'};
+    
+    color: ${props => props.mode==='horz'&& props.allRacesSelected?'var(--strokepeach)' : props.disabled || props.mode === 'vert'? 'var(--fainttext)' : 'black'};
     ${props => props.mode==='horz'? `
         &::after{
             display: none;
@@ -87,9 +91,12 @@ const NormalDropdown = styled(Dropdown)`
             width: 100%;
             height: 100%;
             left: 0; top: 0px;
-            outline: 1px solid var(--strokepeach);
-            background: var(--faintpeach);
+            outline: 1px solid var(--bordergrey);
+            // background: white;
         }
+    ` : props.mode==='vert' && !props.allRacesSelected? `
+
+
     ` : props.allRacesSelected && props.mode==='horz'? `
         &::before{
             height: 100%;
@@ -111,27 +118,15 @@ const RaceList = styled.ul`
     background: white;
     position: absolute;
     z-index: 4;
-    top: 35px;
+    top: 44px;
     border-top: none;
     left: -1px;
     padding: 0;
-    padding-top: 5px;
     margin: 0;
     transition: clip-path .2s;
-    clip-path: ${props=>props.vertOpen? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'};
-    &::after{
-        content: '';
-        width: 100%;
-        height: 0;
-        left: 0;
-        border: none;
-        border-bottom: 1px solid var(--bordergrey);
-        position: absolute;
-        top: 0;
-        transition: transform .2s;
-        transform: ${props=>props.vertOpen?'translateY(172px)':'translateY(0px)'};
+    z-index: 10;
+    clip-path: ${props=>props.vertOpen? 'polygon(0% -1%, 100% -1%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'};
 
-    }
 `
 const Race = styled.li`
     list-style-type: none;
@@ -178,14 +173,19 @@ const HorzRace = styled.div`
 @observer
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
-    @action openRaceDropdown = () => this.raceDropdown = !this.raceDropdown
+    @action openRaceDropdown = () => {
+    	if(this.props.init) return
+    	// this.props.closeSplash()
+    	this.raceDropdown = !this.raceDropdown
+    	// this.props.closeSplash()
+    }
 
     componentDidUpdate(){
         if(this.props.open && this.raceDropdown) this.openRaceDropdown()
     }
 
     render(){
-        const {openNav, open, store} = this.props
+        const {openNav, open, store, closeInit} = this.props
         const {indicator, county, year, race} = store
         const ind = indicators[indicator]
 
@@ -203,25 +203,29 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}
                 >
+                	{this.props.init && '1. '}
                     {store.indicator? semanticTitles[store.indicator].shorthand : 'Pick an indicator'}
                 </IndicatorSelect>
                 <CountySelect 
+                	disabled = {!indicator}
                     onClick = {()=>openNav('county')}
                     offset = {open}
                 >
                     {store.county? find(counties, (o)=>{return o.id===store.county}).label : 'All counties' }
                 </CountySelect>
                 
-                    <NormalDropdown 
+                    <NormalDropdown
+                    	disabled = {!indicator} 
                         onClick = {!open? this.openRaceDropdown : ()=>{}} 
                         offset = { open? 2 : 0 }
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
                     >   <DropdownReading onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
-                            {!open && !this.raceDropdown && store.race? capitalize(store.race) : 'All races'}
+                            {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : this.raceDropdown? 'Pick race' : 'All races'}
                         </DropdownReading>
                         
                             <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
+                                <Race selected = {!race}  onClick = {!noazn?()=>store.completeWorkflow('race',null):()=>{}}> All Races </Race>
                                 <Race selected = {race==='asian'} disabled = {noRace || noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
                                 <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
                                 <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 

@@ -41,7 +41,7 @@ export default class HorizontalBarGraph extends React.Component{
         // console.log(selectBar)
         return (
             <GraphTable
-                ref = {(graph)=>{this.graph=graph}}
+                innerRef = {(graph)=>{this.graph=graph}}
                 onMouseEnter = {()=>this.handleHoverGraph(true)}
                 onMouseLeave = {()=>this.handleHoverGraph(false)}
                 hovered = {this.hoveredGraph&&!this.expanded}
@@ -289,7 +289,7 @@ const AverageLabel = styled.div`
     color: var(--fainttext);
 
 `
-const AverageValue = styled.span`
+const AverageValue = styled.span`   
     margin-left: 5px;
     color: var(--normtext);
 `

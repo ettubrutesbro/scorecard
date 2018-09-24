@@ -222,10 +222,10 @@ export default class IndicatorByCounties extends React.Component{
                 disableAnim = {this.distribute}
                 selectBar = {this.props.store.completeWorkflow}
                 // onHover = {()=>console.log('hovering graph')}
-                onClickGraph = {this.toggleDistribute}
-                graphHoverPrompt = 'Click to see full list (47 counties)'
-                expandable
-                selectable
+                // onClickGraph = {this.toggleDistribute}
+                // graphHoverPrompt = 'Click to see full list (47 counties)'
+                // expandable
+                // selectable
 
                 // entries = {this.props.entries}
             />

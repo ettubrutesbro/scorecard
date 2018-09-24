@@ -13,6 +13,7 @@ import LegendComponent from './components/Legend'
 import MapComponent from './components/core/InteractiveMap'
 import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
+import InitBox from './components/InitBox'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
@@ -20,6 +21,8 @@ import demopop from './data/demographicsAndPopulation'
 
 import media from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
+
+
 
 
 const store = new ScorecardStore()
@@ -37,7 +40,7 @@ const App = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
-    margin-top: 90px;
+    margin-top: 80px;
     @media ${media.optimal}{
         width: 1600px;
         height: 900px;
@@ -120,7 +123,7 @@ const MapContainer = styled(Quadrant)`
     @media ${media.optimal}{}
     @media ${media.compact}{
         width: 60%; height: 100%;
-        transform: translateX(${props => props.offset? '280px' : 0}) scale(${props=>props.offset?1.13:1});
+        transform: translateX(${props => props.init? '-250px' : props.offset? '280px' : 0}) scale(${props=>props.offset?1.13:1});
     }
     @media ${media.mobile}{}
 `
@@ -157,8 +160,13 @@ const DemoBox = styled.div`
 
 @observer
 export default class ResponsiveScorecard extends React.Component{
+	@observable init = true
+	@action closeSplash = () => {
+		this.init = false
+		this.openNav('indicator')
+	}
     @observable navOpen = false
-    @action openNav = (val) => this.navOpen = val
+
     @observable hoveredCounty = null
     @observable breakdownOffset = 0
     	@action setBreakdownOffset = (val) => this.breakdownOffset = val
@@ -166,7 +174,20 @@ export default class ResponsiveScorecard extends React.Component{
     @observable extraReadoutLines = ''
 
     @action openNav = (status) => {
-    	this.navOpen = status
+    	if(this.init && status){
+    		console.log('user opened nav while init')
+    		this.init = false
+    	}
+    	if(!store.indicator && this.navOpen === 'indicator' && !status){
+    		this.init = true
+    		store.completeWorkflow('county',null)
+    		store.completeWorkflow('race',null)
+    		this.navOpen = false
+    	}
+    	else if(!status && !store.indicator){
+    		this.navOpen = 'indicator'
+    	}
+    	else this.navOpen = status
     }
     @action onHoverCounty = (id) => {
         if(id) this.hoveredCounty = camelLower(id)
@@ -184,12 +205,14 @@ export default class ResponsiveScorecard extends React.Component{
             <App>
                 <Nav> 
                     <NavComponent 
+                    	init = {this.init}
                         store = {store}
                         open = {this.navOpen}
                         openNav = {this.openNav}
+                        closeSplash = {this.closeSplash}
                     /> 
                 </Nav>
-                <GreyMask show = {this.navOpen}/>
+                <GreyMask show = {this.navOpen || this.init}/>
                 <TopRow>
                     <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
                     <Legend> <LegendComponent store = {store} /> </Legend>
@@ -210,9 +233,11 @@ export default class ResponsiveScorecard extends React.Component{
 						/>
 
 					</DemoBox>
-                    <Breakdown> <BreakdownComponent offset = {this.breakdownOffset} store = {store} /> </Breakdown>
+                    <Breakdown> 
+                    	<BreakdownComponent offset = {this.breakdownOffset} store = {store} /> 
+                    </Breakdown>
 
-                    <MapContainer offset = {this.navOpen}>
+                    <MapContainer offset = {this.navOpen} init = {this.init}>
                         <MapComponent 
                             store = {store}
                             onHoverCounty = {this.onHoverCounty}
@@ -225,6 +250,10 @@ export default class ResponsiveScorecard extends React.Component{
                         />
                     </MapContainer>
                 </BottomRow>
+
+                {this.init &&
+                	<InitBox closeSplash = {this.closeSplash}/>
+                }
             </App>
 
             </React.Fragment>

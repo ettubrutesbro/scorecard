@@ -10,7 +10,7 @@ const GridList = styled.ul`
     grid-template-columns: repeat(5, 1fr);
     // grid-template-columns: repeat(auto-fill, 1fr);
     // grid-template-columns: minmax(100px, 1fr);
-    grid-gap: 10px;
+    grid-gap: 8px;
     flex-wrap: wrap;
     // height: 100%;
     justify-content: space-between;
@@ -22,7 +22,7 @@ const GridList = styled.ul`
 const GridItem = styled.li`
     // margin: 1%;
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? '#d7d7d7' : 'black'};
-    padding: 8px 15px;
+    padding: 6px 13px;
     cursor: pointer;
     display: flex;
     align-items: center;

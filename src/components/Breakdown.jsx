@@ -12,7 +12,7 @@ import CountiesByRacePopulation from './CountiesByRacePopulation'
 
 
 import DemoDataTable from './DemoDataTable'
-
+import Sources from './Sources'
 
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     transition: transform .25s;
     transform: translateY(${props=>props.offset}px);
-
+    margin-top: -5px;
 `
 
 const BreakdownBox = styled.div`
@@ -36,6 +36,10 @@ const BottomTable = styled.div`
 
 @observer
 export default class Breakdown extends React.Component{
+
+    @observable sourcesMode = false
+    @action setSourcesMode = (tf) => this.sourcesMode = tf
+
     render(){
 
         const {store, offset} = this.props
@@ -48,13 +52,13 @@ export default class Breakdown extends React.Component{
             const hasRace = indicators[indicator].categories.includes('hasRace')
             console.log(hasRace?'has race chart':'no race graph', 'offset:',offset)
             if(hasRace){ //halfish of breakdown is used up by race comparison
-                if(offset >= 80) entryCount = 4
-                else if(offset >= 40) entryCount = 6
+                if(offset >= 80) entryCount = 3
+                else if(offset >= 40) entryCount = 5
                 else entryCount = 10
             }
             else{
                 if(offset >= 80) entryCount = 10
-                else if(offset >= 40) entryCount = 15
+                else if(offset >= 40) entryCount = 12
                 else entryCount = 18
             }
 
@@ -64,7 +68,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper offset = {this.props.offset}>
 
-                    {indicator && !race &&  
+                    {!this.sourcesMode && indicator &&  
                         // 'county performance distribution and indicator by race'
                         <IndicatorByCounties 
 
@@ -77,7 +81,7 @@ export default class Breakdown extends React.Component{
                             // year = {year}
                         />  
                     }
-                    {indicator && !race && indicators[indicator].categories.includes('hasRace') &&
+                    {!this.sourcesMode && indicator && indicators[indicator].categories.includes('hasRace') &&
                         <BottomTable>
                         <IndicatorByRaces
                             store = {store}
@@ -95,9 +99,16 @@ export default class Breakdown extends React.Component{
                         <DemoDataTable store = {store} />
                         </React.Fragment>
                     */}
-                    {!county && race &&
+                    {/*!county && race &&
                         <CountiesByRacePopulation 
                             store = {store}
+                        />
+                    */}
+                    {indicator &&
+                        <Sources
+                            store = {store}
+                            onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
+                            fullView = {this.sourcesMode}
                         />
                     }
 
