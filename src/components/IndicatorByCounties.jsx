@@ -5,6 +5,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import {find, findIndex} from 'lodash'
+import commaNumber from 'comma-number'
 
 import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
@@ -209,15 +210,62 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
+        const raceCtyRanksByIndPerf = indicator && race? Object.keys(indicators[indicator].counties).map((cty)=>{
+            return {name: cty, value: indicators[indicator].counties[cty][race][year]}
+        }).filter((o)=>{
+            return o.value!=='*'&&o.value
+        }).sort((a,b)=>{
+            return a.value>b.value?-1:a.value<b.value?1:0
+        }).map((o,i)=>{
+            return {...o, rank: i+1}
+        }): ''
+
+        let highestValue = 0
+
+        const withRace = !race? '' : Object.keys(demopop)
+            .filter((cty)=> {return cty!=='california'})
+            .map((cty)=>{
+                const pop = parseInt(((demopop[cty][race]/100) * demopop[cty].population).toFixed(0))
+                if(pop > highestValue) highestValue = pop
+                return {
+                    id: cty,
+                    label: find(counties, (c)=>{return c.id===cty}).label,
+                    value: pop,
+                    trueValue: commaNumber(pop),
+                }
+            })
+            .sort((a,b)=>{
+                return a.value>b.value? -1: a.value<b.value? 1 : 0
+            })
+            .slice(0,5)
+            .map((cty)=>{
+                //if indicator active, value is indicator perf.
+
+                //TODO: right now, most populous county is '100%'
+                //and the rest are fractions of it, but a true, static 100% should
+                //be the largest % of the largest county (hmm, maybe?)
+
+                //or it could be the total of all [race] in CA
+                return {
+                    ...cty, 
+                    label: cty.label,
+                    // label: !indicator? cty.label 
+                        // : `${cty.label} ${ordinal(find(raceCtyRanksByIndPerf,(o)=>{return o.name===cty.id}).rank)}`,
+                    value: !indicator? (cty.value/highestValue)*100
+                        : indicators[indicator].counties[cty.id][race][year],
+
+                }
+            })
+
         return (
             <div>
             <HorizontalBarGraph
                 selected = {county}
-                header = {'By Counties'}
+                header = {race? `In counties with the most ${capitalize(race)} children:` : 'By Counties'}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
                 labelWidth = {120}
-                bars = {performance}
+                bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
                 selectBar = {this.props.store.completeWorkflow}
