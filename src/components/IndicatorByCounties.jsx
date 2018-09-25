@@ -194,7 +194,6 @@ export default class IndicatorByCounties extends React.Component{
 
         performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-            console.log(e)
             if(!this.distribute) return e
             else if(distrib.includes(i)){ 
                 return {
@@ -220,7 +219,7 @@ export default class IndicatorByCounties extends React.Component{
 
 
         let highestValue = 0
-        const withRace = !race? '' : Object.keys(demopop)
+        let withRace = !race? '' : Object.keys(demopop)
             .filter((cty)=> {return cty!=='california'})
             .map((cty)=>{
                 const pop = parseInt(((demopop[cty][race]/100) * demopop[cty].population).toFixed(0))
@@ -234,7 +233,7 @@ export default class IndicatorByCounties extends React.Component{
             .sort((a,b)=>{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
-            .slice(0,5)
+            .slice(0,5) //TODO: use entries instead of 5 (but needs to be responsive)
             .map((cty)=>{
                 //if indicator active, value is indicator perf.
 
@@ -244,15 +243,28 @@ export default class IndicatorByCounties extends React.Component{
 
                 //or it could be the total of all [race] in CA
                 const val = indicators[indicator].counties[cty.id][race][year]
+                const selected = cty.id===county
                 return {
                     ...cty, 
-                    label: cty.label,   
+                    label: selected? <SelectedCounty>{cty.label}</SelectedCounty> : cty.label,   
                     value: val,
-                    fill: colorScale? colorScale(val): '',
+                    fill: selected? 'var(--peach)'  : colorScale? colorScale(val): '',
                     trueValue: val + '%'
 
                 }
             })
+        if(race && county){
+            if(find(withRace, (o)=>{return o.id===county})){
+                console.log('withRace bars already includes selected county, no need to replace last')
+            }
+            else{
+                withRace[withRace.length-1] = {
+                    label: <SelectedCounty>{find(counties,(o)=>{return o.id===county}).label}</SelectedCounty>,
+                    value: indicators[indicator].counties[county][race][year],
+                    fill: 'var(--peach)',
+                }
+            }
+        }
 
         return (
             <div>
@@ -300,4 +312,8 @@ const Faint = styled.span`
 const SelectedNum = styled.span`
     color: var(--peach);
     margin-right: 4px;
+`
+const SelectedCounty = styled.span`
+    color: var(--strokepeach);
+    // margin-right: 4px;
 `
