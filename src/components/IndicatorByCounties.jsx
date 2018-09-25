@@ -145,7 +145,9 @@ export default class IndicatorByCounties extends React.Component{
             let replaceIndex = indexOfClosest(distribution, mustInclude)
             // console.log('mustInclude is', mustInclude, 'replaceIndex is', replaceIndex)
             if(replaceIndex===0 && mustInclude !==0) replaceIndex = 1 //don't replace the first-ranked item
-            if(replaceIndex===entries-1 && mustInclude !==entries-1) replaceIndex = entries-2
+            if(replaceIndex===entries-1 && mustInclude !== distribution[entries-1]) replaceIndex = entries-2
+            else if(replaceIndex===entries-1 && mustInclude === distribution[entries-1]) console.log('last one')
+
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
 
@@ -184,7 +186,7 @@ export default class IndicatorByCounties extends React.Component{
 
     render(){
 
-        const {county, race, year, indicator, completeWorkflow} = this.props.store
+        const {county, race, year, indicator, completeWorkflow, colorScale} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
 
@@ -210,18 +212,8 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
-        const raceCtyRanksByIndPerf = indicator && race? Object.keys(indicators[indicator].counties).map((cty)=>{
-            return {name: cty, value: indicators[indicator].counties[cty][race][year]}
-        }).filter((o)=>{
-            return o.value!=='*'&&o.value
-        }).sort((a,b)=>{
-            return a.value>b.value?-1:a.value<b.value?1:0
-        }).map((o,i)=>{
-            return {...o, rank: i+1}
-        }): ''
 
         let highestValue = 0
-
         const withRace = !race? '' : Object.keys(demopop)
             .filter((cty)=> {return cty!=='california'})
             .map((cty)=>{
@@ -231,7 +223,6 @@ export default class IndicatorByCounties extends React.Component{
                     id: cty,
                     label: find(counties, (c)=>{return c.id===cty}).label,
                     value: pop,
-                    trueValue: commaNumber(pop),
                 }
             })
             .sort((a,b)=>{
@@ -246,13 +237,13 @@ export default class IndicatorByCounties extends React.Component{
                 //be the largest % of the largest county (hmm, maybe?)
 
                 //or it could be the total of all [race] in CA
+                const val = indicators[indicator].counties[cty.id][race][year]
                 return {
                     ...cty, 
-                    label: cty.label,
-                    // label: !indicator? cty.label 
-                        // : `${cty.label} ${ordinal(find(raceCtyRanksByIndPerf,(o)=>{return o.name===cty.id}).rank)}`,
-                    value: !indicator? (cty.value/highestValue)*100
-                        : indicators[indicator].counties[cty.id][race][year],
+                    label: cty.label,   
+                    value: val,
+                    fill: colorScale? colorScale(val): '',
+                    trueValue: val + '%'
 
                 }
             })
