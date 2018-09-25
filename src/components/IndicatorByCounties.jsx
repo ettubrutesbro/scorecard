@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, {Fragment} from 'react'
 import {observable, action, autorun} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
@@ -194,12 +194,18 @@ export default class IndicatorByCounties extends React.Component{
 
         performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-
+            console.log(e)
             if(!this.distribute) return e
-            // else if(this.condensed.includes(i)){
-            //     return {...e, condensed: true}
-            // }
-            else if(distrib.includes(i)) return e
+            else if(distrib.includes(i)){ 
+                return {
+                    ...e,
+                    label: i===0? (<Fragment> <Faint>1.</Faint> {e.label}  </Fragment>)
+                        : i===arr.length-1? <Fragment><Faint>{arr.length}.</Faint> {e.label} </Fragment>
+                        : e.id===county? <Fragment><SelectedNum>{e.rank}.</SelectedNum> {e.label} </Fragment>
+                        : e.label,
+                }
+
+            }
             else return null
         })
         .filter((e,i)=>{
@@ -284,3 +290,14 @@ const Prompt = styled.div`
 // IndicatorByCounties.defaultProps = {
 //     entries: 12,
 // }
+
+
+const Faint = styled.span`
+    color: var(--fainttext);
+    margin-right: 4px;
+`
+
+const SelectedNum = styled.span`
+    color: var(--peach);
+    margin-right: 4px;
+`

@@ -216,12 +216,12 @@ const Label = styled.div`
     width: ${props => props.labelWidth}px;
     align-items: center;
     flex-shrink: 0;
-    // justify-content: flex-end;
-    justify-content: space-between;
+    justify-content: flex-end;
+    // justify-content: space-between;
     padding-right: 10px;
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
-
+    white-space: nowrap;
 `
 const LeftLabel = styled.div`
     font-weight: bold;
