@@ -27,6 +27,10 @@ const DemoRow = styled.div`
         line-height: 160%;
         font-size: 16px;
         letter-spacing: 0.6px;
+        &.last{
+            margin-left: 70px;
+            text-indent: -35px;
+        }
     }
     @media ${media.compact}{
 
@@ -77,9 +81,9 @@ export default class DemoDataTable extends React.Component {
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo['poverty_2016']}% </DemoValue>
-                    are living 200% below the federal poverty level.
+                    are living 200% below the federal poverty&nbsp;level.
                 </DemoRow>
-                <DemoRow> 
+                <DemoRow className = 'last'> 
                     <DemoValue> <CountingNumber number = {demo['studentHomeless_2018']} />% </DemoValue>
                     of students are experiencing homelessness.
                 </DemoRow>

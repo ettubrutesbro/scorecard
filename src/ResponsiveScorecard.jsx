@@ -14,6 +14,7 @@ import MapComponent from './components/core/InteractiveMap'
 import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
+import SourcesButton, {DemoSources} from './components/Sources'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
@@ -39,12 +40,14 @@ const App = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
-    margin-top: 80px;
     @media ${media.optimal}{
         width: 1600px;
-        height: 900px;
+        height: 800px;
+        margin-top: 110px;
     }
     @media ${media.compact}{
+
+    margin-top: 80px;
         width: 1280px;
         height: 640px;
     }
@@ -74,7 +77,12 @@ const Nav = styled(Row)`
     left: 0;
     top: 0;
     background: var(--offwhitebg);
-    height: 75px;
+    @media ${media.optimal}{
+        height: 95px;
+    }
+    @media ${media.compact}{
+        height: 75px;
+    }
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -85,7 +93,7 @@ const Nav = styled(Row)`
 const Readout = styled(Quadrant)`
     @media ${media.optimal}{
                 width: calc(100% - 460px);
-        height: 80px;
+        height: 120px;
         padding-right: 30px;
     }
     @media ${media.compact}{
@@ -112,7 +120,7 @@ const Legend = styled(Quadrant)`
     top: 0;
     flex-shrink: 0;
     @media ${media.optimal}{
-        width: 650px;
+        width: 500px;
         height: 80px;
     }
     @media ${media.compact}{
@@ -130,7 +138,7 @@ const MapContainer = styled(Quadrant)`
     transition: transform .5s;
     @media ${media.optimal}{
         width: 60%;
-        height: 100%;
+        height: 97%;
         transform: translateX(${props => props.init? '-350px' : props.offset? '40%' : 0}) scale(${props=>props.offset?1.05:1});
     }
     @media ${media.compact}{
@@ -157,18 +165,15 @@ const DemoBox = styled.div`
         width: 650px;
         height: 400px;
         padding: 35px;
-
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 35% 100%, 0% 50%);
+        top: 35px;
     }
     @media ${media.compact}{
-
+        top: 0;
         padding: 20px;
         width: 500px;
         height: 300px;   
 
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 65%);
     }
-    top: 0; 
     right: 0;
     border: 2px solid var(--bordergrey);
     display: flex;
@@ -217,6 +222,9 @@ export default class ResponsiveScorecard extends React.Component{
         else this.hoveredCounty = null
     }
 
+    @observable sourcesMode = false
+    @action setSourcesMode = (tf) => this.sourcesMode = tf
+
 
     render(){
         const {indicator, year, race} = store
@@ -245,19 +253,30 @@ export default class ResponsiveScorecard extends React.Component{
                     <DemoBox
                         id = "demobox"
                     >
-                        <DemoDataTable
-                            store = {store}
-                        />
+                        {!this.sourcesMode &&
+                            <React.Fragment>
+                                <DemoDataTable
+                                    store = {store}
+                                />
 
-                        <RaceBreakdownBar 
-                            // height = {this.demoBoxDims.height}
-                            store = {store}
+                                <RaceBreakdownBar 
+                                    // height = {this.demoBoxDims.height}
+                                    store = {store}
 
-                        />
+                                />
+                            </React.Fragment>
+                        }
+                        {this.sourcesMode &&
+                            <DemoSources />
+                        }
 
                     </DemoBox>
                     <Breakdown> 
-                        <BreakdownComponent offset = {this.breakdownOffset} store = {store} /> 
+                        <BreakdownComponent 
+                            offset = {this.breakdownOffset} 
+                            store = {store} 
+                            sources = {this.sourcesMode}
+                        /> 
                     </Breakdown>
 
                     <MapContainer offset = {this.navOpen} init = {this.init}>
@@ -276,6 +295,14 @@ export default class ResponsiveScorecard extends React.Component{
 
                 {this.init &&
                     <InitBox closeSplash = {this.closeSplash}/>
+                }
+                {indicator && !this.navOpen &&
+                    <SourcesButton
+                        sources = {this.sourcesMode}
+                        store = {store}
+                        onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
+                        fullView = {this.sourcesMode}
+                    />
                 }
             </App>
 

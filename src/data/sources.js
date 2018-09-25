@@ -245,7 +245,42 @@ const sources = [
     "notes2": "",
     "notes3": "",
     "": ""
-  }
+  },
+  {
+    "indicator": "population",
+    "source": "California Department of Population or Some Shit",
+    "url": "http://www.california.org/",
+    "dateRetrieved": 'July 2016',
+    "notes1": "Includes fake data and made up stuff and will be obsolete in a year.",
+  },
+  {
+    "indicator": "poverty",
+    "source": "The Center for The Po' (n.d.). DataQuest.",
+    "url": "http://www.therentistoodamnhigh.com/",
+    "notes1": "",
+    "notes2": "",
+    "notes3": "",
+    "": ""
+  },
+  {
+    "indicator": "homeless",
+    "source": "Coalition on Homelessness",
+    "url": "http://www.cohsf.org/",
+    "notes1": "",
+    "notes2": "",
+    "notes3": "",
+    "": ""
+  },
+  {
+    "indicator": "immigrantFamilies",
+    "source": "Abolish ICE",
+    "url": "http://www.abolishice.com/",
+    "notes1": "",
+    "notes2": "",
+    "notes3": "",
+    "": ""
+  },
+
 ]
 
 export default sources

@@ -27,13 +27,20 @@ export default class HorizontalBarGraph extends React.Component{
         if(this.props.onClickGraph) this.props.onClickGraph()
     }
 
+    constructor(props){
+        super(props)
+        this.graph = React.createRef()
+    }
+
     componentDidMount(){
         this.setGraphDimensions()
         window.addEventListener('resize', this.setGraphDimensions)
     }
 
     setGraphDimensions = () => {
-        this.width = findDOMNode(this.graph).offsetWidth 
+        if(!this.graph) return
+        if(!this.graph.current) return
+        this.width = findDOMNode(this.graph.current).offsetWidth 
     }
 
     render(){
@@ -41,7 +48,7 @@ export default class HorizontalBarGraph extends React.Component{
         // console.log(selectBar)
         return (
             <GraphTable
-                innerRef = {(graph)=>{this.graph=graph}}
+                innerRef = {this.graph}
                 onMouseEnter = {()=>this.handleHoverGraph(true)}
                 onMouseLeave = {()=>this.handleHoverGraph(false)}
                 hovered = {this.hoveredGraph&&!this.expanded}

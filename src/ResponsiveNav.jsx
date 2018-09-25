@@ -23,7 +23,7 @@ import caret from './assets/caret.svg'
 
 
 const Nav = styled.div`
-z-index: 3;
+    z-index: 3;
     display: flex;
     align-items: center;
     @media ${media.optimal}{

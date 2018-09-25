@@ -12,7 +12,7 @@ import CountiesByRacePopulation from './CountiesByRacePopulation'
 
 
 import DemoDataTable from './DemoDataTable'
-import Sources from './Sources'
+import {FullSourcesView} from './Sources'
 
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
@@ -36,9 +36,6 @@ const BottomTable = styled.div`
 
 @observer
 export default class Breakdown extends React.Component{
-
-    @observable sourcesMode = false
-    @action setSourcesMode = (tf) => this.sourcesMode = tf
 
     render(){
 
@@ -68,7 +65,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper offset = {this.props.offset}>
 
-                    {!this.sourcesMode && indicator &&  
+                    {!this.props.sources && indicator &&  
                         // 'county performance distribution and indicator by race'
                         <IndicatorByCounties 
 
@@ -81,7 +78,7 @@ export default class Breakdown extends React.Component{
                             // year = {year}
                         />  
                     }
-                    {!this.sourcesMode && indicator && indicators[indicator].categories.includes('hasRace') &&
+                    {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
                         <BottomTable>
                         <IndicatorByRaces
                             store = {store}
@@ -104,13 +101,10 @@ export default class Breakdown extends React.Component{
                             store = {store}
                         />
                     */}
-                    {indicator &&
-                        <Sources
-                            store = {store}
-                            onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
-                            fullView = {this.sourcesMode}
-                        />
+                    {indicator && this.props.sources &&
+                        <FullSourcesView indicator = {indicator} />
                     }
+
 
            
 

@@ -126,7 +126,13 @@ const Dash = styled.div`
 
 
 const Section = styled.div`
-    padding-top: 30px;
+    @media ${media.optimal}{
+        padding-top: 35px;
+    }
+    @media ${media.compact}{
+
+        padding-top: 30px;   
+    }
     width: ${props=>100/props.classes}%;
 `
 
@@ -152,19 +158,13 @@ const Label = styled.div`
     left: 0;
     width: 25%;
     justify-content: center;
-    @media ${media.optimal}{
-         transform: translateX(${p=> p.mode==='truescale'&&p.firstLast?0
-            :p.mode==='truescale'?  631*((p.offset+(p.scale/2)))+'px' 
-            :p.firstLast? 0 
-            : (631/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' : 'translateX(0)'};
-    }
-    @media ${media.compact}{
+
         transform: translateX(${p=> p.mode==='truescale'&&p.firstLast==='first'?0
             :p.mode==='truescale'?  481*((p.offset+(p.scale/2)))+'px' 
             : (481/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' 
             : 'translateX(0)'
         };        
-    }
+    
 
 
     ${props=>props.firstLast==='last'? `

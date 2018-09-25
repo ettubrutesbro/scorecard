@@ -1,4 +1,5 @@
 import {css} from 'styled-components'
+import media from '../utilities/media'
 
 const floatingCorner = css`
     border-radius: 12px;
