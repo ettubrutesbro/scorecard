@@ -81,22 +81,22 @@ export const DemoSources = (props) => {
             <DemoSourceBlock>
                 <h3>child population & race </h3>
                 <h1>{srcs[0].source}</h1>
-                <Link href = {srcs[0].url}>{srcs[0].url}</Link>
+                <a href = {srcs[0].url}>{srcs[0].url}</a>
             </DemoSourceBlock>  
             <DemoSourceBlock>
                 <h3>foreign-born parents</h3>
                 <h1>{srcs[3].source}</h1>
-                <Link href = {srcs[3].url}>{srcs[1].url}</Link>
+                <a href = {srcs[3].url}>{srcs[1].url}</a>
             </DemoSourceBlock>  
             <DemoSourceBlock className = 'indent'>
                 <h3>children in poverty </h3>
                 <h1>{srcs[1].source}</h1>
-                <Link href = {srcs[1].url}>{srcs[2].url}</Link>
+                <a href = {srcs[1].url}>{srcs[2].url}</a>
             </DemoSourceBlock>  
             <DemoSourceBlock className = 'bigindent'>
                 <h3>student homelessness </h3>
                 <h1>{srcs[2].source}</h1>
-                <Link href = {srcs[2].url}>{srcs[3].url}</Link>
+                <a href = {srcs[2].url}>{srcs[3].url}</a>
             </DemoSourceBlock>  
             <h4> Further details available in PDF.</h4>
         </DemoSourcesContent>
@@ -114,6 +114,10 @@ const DemoSourcesContent = styled.div`
         font-weight: normal;
         margin: 0;
         margin-bottom: 15px;
+        @media ${media.compact}{
+            font-size: 16px;
+            // display: none;
+        }
     }
     h4{
         width: 100%;
@@ -124,10 +128,6 @@ const DemoSourcesContent = styled.div`
         margin: 0;
     }
 
-`
-
-const Link = styled.a`
-    
 `
 
 const FullView = styled.div`
@@ -206,6 +206,17 @@ const DemoSourceBlock = styled(SourceBlock)`
             }
             a{ padding-left: 50px; }
         }
+    }
+    @media ${media.compact}{
+        &.indent{
+            h1{
+                padding-left: 15px;
+            }
+            a{ padding-left: 30px; }
+        }
+    }
+    a{
+        max-width: 200px;
     }
   
 

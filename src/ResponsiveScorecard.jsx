@@ -110,7 +110,7 @@ const Breakdown = styled(Quadrant)`
 
     }
     @media ${media.compact}{
-        width: 40%;
+        width: 480px;
     }
     @media ${media.mobile}{}
 `
