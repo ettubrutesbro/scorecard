@@ -69,7 +69,7 @@ export default class Readout extends React.Component{
     @action computeLineBreaks = (str) => {
         const {county, indicator, race, year} = this.props.store
 
-        const raceString = race? `${race!=='white'? race.charAt(0).toUpperCase() + race.substr(1):race}` : ''
+        const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
@@ -77,7 +77,7 @@ export default class Readout extends React.Component{
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
 
-        const readout = `of ${descriptor||''} ${raceString} ${who} ${what} in ${countyString} in ${actualYear}.`
+        const readout = `of ${descriptor||''} ${race!=='other'? raceString : ''} ${who} ${race==='other'?raceString:''} ${what} in ${countyString} in ${actualYear}.`
 
         const screen = getMedia()
         const firstLineBreakPoint = screen==='optimal'? 95  : screen==='compact'? 60 : 40
@@ -162,12 +162,12 @@ export default class Readout extends React.Component{
             <ReadoutBlock
                 compact = {this.props.store.activeWorkflow}
             >
-                {!indicator && (county || race) && 
+                {/*!indicator && (county || race) && 
                     <React.Fragment>
                     <b>{commaNumber(popCount)} </b> 
                     {computedString}.
                     </React.Fragment>
-                }
+                */}
                 {indicator && 
                     <div style = {{position: 'relative'}}>
                         <h1 ref = {(h1)=>{this.bigNumber = h1}}>

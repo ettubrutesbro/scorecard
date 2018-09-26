@@ -35,9 +35,9 @@ const ColumnItem = styled.li`
     padding: 15px 20px;
     // margin: 10px;
     list-style-type: none;
-    border: 1px solid ${props=>props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
-    color: ${props=> props.selected? 'var(--strokepeach)' : 'black'};
-    background: ${props => props.selected? 'var(--faintpeach)' : props.noRaceNeedRace? '#d7d7d7' : 'white'};
+    border: 1px solid ${props=>props.noRaceNeedRace? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
+    color: ${props=> props.selected? 'var(--strokepeach)' : props.noRaceNeedRace? 'var(--fainttext)' : 'black'};
+    background: ${props => props.selected? 'var(--faintpeach)' : props.noRaceNeedRace? 'var(--offwhitebg)' : 'white'};
 
     // box-shadow: var(--shadow);
 
@@ -271,13 +271,13 @@ export default class IndicatorList extends React.Component{
             </ColumnList>
             
                 <PageControls>
-                <Prev onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}>
+                <Prev disabled = {this.currentPage===0} onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}>
                     back 
                 </Prev>
                 <Readout>
                    Viewing indicators {(this.currentPage * this.pageSize) + 1} - {this.currentPage !== this.pages.length-1? (this.currentPage+1) * this.pageSize : numInds} of {numInds}
                 </Readout>
-                <Next onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}>
+                <Next disabled = {this.currentPage===this.pages.length-1} onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}>
                     next page
                 </Next>
                 </PageControls>
@@ -304,9 +304,10 @@ const Readout = styled.div `
 `
 const PageBtn = styled.div`
     padding: 10px 25px;
-    border: 1px solid black;
+    border: 1px solid ${props => props.disabled?'var(--bordergrey)':'black'};
     display: flex;
     align-items: center;
+
 
 `
 const Prev = styled(PageBtn)`

@@ -270,7 +270,7 @@ export default class IndicatorByCounties extends React.Component{
             <div>
             <HorizontalBarGraph
                 selected = {county}
-                header = {race? `In counties with the most ${capitalize(race)} children:` : 'By Counties'}
+                header = {race==='other'? 'In counties with the most children of other races' : race? `In counties with the most ${capitalize(race)} children:` : 'By Counties'}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
                 labelWidth = {120}
