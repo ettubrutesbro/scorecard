@@ -7,6 +7,13 @@ import registeredToVote from './RegisteredToVote.json'
 import upToDateVaccinations from './UpToDateVaccinations.json'
 import lowIncomeDental from './LowIncomeDental.json'
 import collegeCareerReady from './CollegeCareerReady.json'
+import allegations from './Allegations.json'
+// import availableSlot from './AvailableSlot.json'
+// import breastFeeding from './BreastFeeding.json'
+import childCareSlots from './ChildCareSlots.json'
+import collegeLevelMath from './CollegeLevelMath.json'
+import englishLearners from './EnglishLearners.json'
+import enrolled34 from './Enrolled34.json'
 
 const indicators = {
 
@@ -16,6 +23,17 @@ const indicators = {
     upToDateVaccinations: upToDateVaccinations,
     lowIncomeDental: lowIncomeDental,
     collegeCareerReady: collegeCareerReady,
+
+
+
+    //final batch?
+    collegeLevelMath: collegeLevelMath,
+    englishLearners: englishLearners,
+    enrolled34: enrolled34,
+    // availableSlot: availableSlot,
+    allegations: allegations,
+    // breastFeeding: breastFeeding,
+    childCareSlots: childCareSlots,
 
     // //welfare
     // welfareMock: welfare.welfareMock,

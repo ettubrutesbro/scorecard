@@ -1,415 +1,602 @@
-[
-  {
-    "Location": "California",
-    "EnglishLearners_2017": 44,
-    "Rank_2017": "",
-    "EnglishLearners_2018": 47,
-    "Rank_2018": ""
-  },
-  {
-    "Location": "Alameda",
-    "EnglishLearners_2017": 47,
-    "Rank_2017": 6,
-    "EnglishLearners_2018": 49,
-    "Rank_2018": 8
-  },
-  {
-    "Location": "Alpine",
-    "EnglishLearners_2017": "",
-    "Rank_2017": "",
-    "EnglishLearners_2018": "",
-    "Rank_2018": ""
-  },
-  {
-    "Location": "Amador",
-    "EnglishLearners_2017": 72,
-    "Rank_2017": 1,
-    "EnglishLearners_2018": 63,
-    "Rank_2018": 1
-  },
-  {
-    "Location": "Butte",
-    "EnglishLearners_2017": 46,
-    "Rank_2017": 9,
-    "EnglishLearners_2018": 52,
-    "Rank_2018": 2
-  },
-  {
-    "Location": "Calaveras",
-    "EnglishLearners_2017": 51,
-    "Rank_2017": 2,
-    "EnglishLearners_2018": 45,
-    "Rank_2018": 20
-  },
-  {
-    "Location": "Colusa",
-    "EnglishLearners_2017": 41,
-    "Rank_2017": 25,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "Contra Costa",
-    "EnglishLearners_2017": 40,
-    "Rank_2017": 29,
-    "EnglishLearners_2018": 42,
-    "Rank_2018": 29
-  },
-  {
-    "Location": "Del Norte",
-    "EnglishLearners_2017": 38,
-    "Rank_2017": 36,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "El Dorado",
-    "EnglishLearners_2017": 36,
-    "Rank_2017": 41,
-    "EnglishLearners_2018": 41,
-    "Rank_2018": 34
-  },
-  {
-    "Location": "Fresno",
-    "EnglishLearners_2017": 44,
-    "Rank_2017": 16,
-    "EnglishLearners_2018": 46,
-    "Rank_2018": 16
-  },
-  {
-    "Location": "Glenn",
-    "EnglishLearners_2017": 42,
-    "Rank_2017": 21,
-    "EnglishLearners_2018": 52,
-    "Rank_2018": 2
-  },
-  {
-    "Location": "Humboldt",
-    "EnglishLearners_2017": 29,
-    "Rank_2017": 55,
-    "EnglishLearners_2018": 30,
-    "Rank_2018": 54
-  },
-  {
-    "Location": "Imperial",
-    "EnglishLearners_2017": 31,
-    "Rank_2017": 54,
-    "EnglishLearners_2018": 33,
-    "Rank_2018": 50
-  },
-  {
-    "Location": "Inyo",
-    "EnglishLearners_2017": 41,
-    "Rank_2017": 25,
-    "EnglishLearners_2018": 51,
-    "Rank_2018": 5
-  },
-  {
-    "Location": "Kern",
-    "EnglishLearners_2017": 45,
-    "Rank_2017": 13,
-    "EnglishLearners_2018": 48,
-    "Rank_2018": 9
-  },
-  {
-    "Location": "Kings",
-    "EnglishLearners_2017": 38,
-    "Rank_2017": 36,
-    "EnglishLearners_2018": 43,
-    "Rank_2018": 26
-  },
-  {
-    "Location": "Lake",
-    "EnglishLearners_2017": 32,
-    "Rank_2017": 50,
-    "EnglishLearners_2018": 33,
-    "Rank_2018": 50
-  },
-  {
-    "Location": "Lassen",
-    "EnglishLearners_2017": 35,
-    "Rank_2017": 45,
-    "EnglishLearners_2018": 41,
-    "Rank_2018": 34
-  },
-  {
-    "Location": "Los Angeles",
-    "EnglishLearners_2017": 49,
-    "Rank_2017": 3,
-    "EnglishLearners_2018": 52,
-    "Rank_2018": 2
-  },
-  {
-    "Location": "Madera",
-    "EnglishLearners_2017": 46,
-    "Rank_2017": 9,
-    "EnglishLearners_2018": 46,
-    "Rank_2018": 16
-  },
-  {
-    "Location": "Marin",
-    "EnglishLearners_2017": 38,
-    "Rank_2017": 36,
-    "EnglishLearners_2018": 43,
-    "Rank_2018": 26
-  },
-  {
-    "Location": "Mariposa",
-    "EnglishLearners_2017": 36,
-    "Rank_2017": 41,
-    "EnglishLearners_2018": 33,
-    "Rank_2018": 50
-  },
-  {
-    "Location": "Mendocino",
-    "EnglishLearners_2017": 33,
-    "Rank_2017": 48,
-    "EnglishLearners_2018": 33,
-    "Rank_2018": 50
-  },
-  {
-    "Location": "Merced",
-    "EnglishLearners_2017": 45,
-    "Rank_2017": 13,
-    "EnglishLearners_2018": 48,
-    "Rank_2018": 9
-  },
-  {
-    "Location": "Modoc",
-    "EnglishLearners_2017": 24,
-    "Rank_2017": 56,
-    "EnglishLearners_2018": 25,
-    "Rank_2018": 57
-  },
-  {
-    "Location": "Mono",
-    "EnglishLearners_2017": 46,
-    "Rank_2017": 9,
-    "EnglishLearners_2018": 46,
-    "Rank_2018": 16
-  },
-  {
-    "Location": "Monterey",
-    "EnglishLearners_2017": 37,
-    "Rank_2017": 40,
-    "EnglishLearners_2018": 38,
-    "Rank_2018": 44
-  },
-  {
-    "Location": "Napa",
-    "EnglishLearners_2017": 46,
-    "Rank_2017": 9,
-    "EnglishLearners_2018": 48,
-    "Rank_2018": 9
-  },
-  {
-    "Location": "Nevada",
-    "EnglishLearners_2017": 32,
-    "Rank_2017": 50,
-    "EnglishLearners_2018": 36,
-    "Rank_2018": 46
-  },
-  {
-    "Location": "Orange",
-    "EnglishLearners_2017": 44,
-    "Rank_2017": 16,
-    "EnglishLearners_2018": 46,
-    "Rank_2018": 16
-  },
-  {
-    "Location": "Placer",
-    "EnglishLearners_2017": 47,
-    "Rank_2017": 6,
-    "EnglishLearners_2018": 50,
-    "Rank_2018": 6
-  },
-  {
-    "Location": "Plumas",
-    "EnglishLearners_2017": 32,
-    "Rank_2017": 50,
-    "EnglishLearners_2018": 28,
-    "Rank_2018": 56
-  },
-  {
-    "Location": "Riverside",
-    "EnglishLearners_2017": 42,
-    "Rank_2017": 21,
-    "EnglishLearners_2018": 45,
-    "Rank_2018": 20
-  },
-  {
-    "Location": "Sacramento",
-    "EnglishLearners_2017": 42,
-    "Rank_2017": 21,
-    "EnglishLearners_2018": 44,
-    "Rank_2018": 24
-  },
-  {
-    "Location": "San Benito",
-    "EnglishLearners_2017": 35,
-    "Rank_2017": 45,
-    "EnglishLearners_2018": 39,
-    "Rank_2018": 42
-  },
-  {
-    "Location": "San Bernardino",
-    "EnglishLearners_2017": 44,
-    "Rank_2017": 16,
-    "EnglishLearners_2018": 47,
-    "Rank_2018": 13
-  },
-  {
-    "Location": "San Diego",
-    "EnglishLearners_2017": 41,
-    "Rank_2017": 25,
-    "EnglishLearners_2018": 44,
-    "Rank_2018": 24
-  },
-  {
-    "Location": "San Francisco",
-    "EnglishLearners_2017": 43,
-    "Rank_2017": 19,
-    "EnglishLearners_2018": 42,
-    "Rank_2018": 29
-  },
-  {
-    "Location": "San Joaquin",
-    "EnglishLearners_2017": 39,
-    "Rank_2017": 31,
-    "EnglishLearners_2018": 43,
-    "Rank_2018": 26
-  },
-  {
-    "Location": "San Luis Obispo",
-    "EnglishLearners_2017": 41,
-    "Rank_2017": 25,
-    "EnglishLearners_2018": 45,
-    "Rank_2018": 20
-  },
-  {
-    "Location": "San Mateo",
-    "EnglishLearners_2017": 42,
-    "Rank_2017": 21,
-    "EnglishLearners_2018": 45,
-    "Rank_2018": 20
-  },
-  {
-    "Location": "Santa Barbara",
-    "EnglishLearners_2017": 35,
-    "Rank_2017": 45,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "Santa Clara",
-    "EnglishLearners_2017": 48,
-    "Rank_2017": 5,
-    "EnglishLearners_2018": 48,
-    "Rank_2018": 9
-  },
-  {
-    "Location": "Santa Cruz",
-    "EnglishLearners_2017": 36,
-    "Rank_2017": 41,
-    "EnglishLearners_2018": 38,
-    "Rank_2018": 44
-  },
-  {
-    "Location": "Shasta",
-    "EnglishLearners_2017": 39,
-    "Rank_2017": 31,
-    "EnglishLearners_2018": 42,
-    "Rank_2018": 29
-  },
-  {
-    "Location": "Sierra",
-    "EnglishLearners_2017": 40,
-    "Rank_2017": 29,
-    "EnglishLearners_2018": 39,
-    "Rank_2018": 42
-  },
-  {
-    "Location": "Siskiyou",
-    "EnglishLearners_2017": 39,
-    "Rank_2017": 31,
-    "EnglishLearners_2018": 35,
-    "Rank_2018": 48
-  },
-  {
-    "Location": "Solano",
-    "EnglishLearners_2017": 49,
-    "Rank_2017": 3,
-    "EnglishLearners_2018": 50,
-    "Rank_2018": 6
-  },
-  {
-    "Location": "Sonoma",
-    "EnglishLearners_2017": 39,
-    "Rank_2017": 31,
-    "EnglishLearners_2018": 42,
-    "Rank_2018": 29
-  },
-  {
-    "Location": "Stanislaus",
-    "EnglishLearners_2017": 38,
-    "Rank_2017": 36,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "Sutter",
-    "EnglishLearners_2017": 45,
-    "Rank_2017": 13,
-    "EnglishLearners_2018": 47,
-    "Rank_2018": 13
-  },
-  {
-    "Location": "Tehama",
-    "EnglishLearners_2017": 33,
-    "Rank_2017": 48,
-    "EnglishLearners_2018": 35,
-    "Rank_2018": 48
-  },
-  {
-    "Location": "Trinity",
-    "EnglishLearners_2017": 21,
-    "Rank_2017": 57,
-    "EnglishLearners_2018": 30,
-    "Rank_2018": 54
-  },
-  {
-    "Location": "Tulare",
-    "EnglishLearners_2017": 36,
-    "Rank_2017": 41,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "Tuolumne",
-    "EnglishLearners_2017": 47,
-    "Rank_2017": 6,
-    "EnglishLearners_2018": 40,
-    "Rank_2018": 36
-  },
-  {
-    "Location": "Ventura",
-    "EnglishLearners_2017": 39,
-    "Rank_2017": 31,
-    "EnglishLearners_2018": 42,
-    "Rank_2018": 29
-  },
-  {
-    "Location": "Yolo",
-    "EnglishLearners_2017": 43,
-    "Rank_2017": 19,
-    "EnglishLearners_2018": 47,
-    "Rank_2018": 13
-  },
-  {
-    "Location": "Yuba",
-    "EnglishLearners_2017": 32,
-    "Rank_2017": 50,
-    "EnglishLearners_2018": 36,
-    "Rank_2018": 46
+{
+  "indicator": "englishLearners",
+  "years": [
+    "2017",
+    "2018"
+  ],
+  "categories": [
+    "education"
+  ],
+  "counties": {
+    "california": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "totals": [
+        44,
+        47
+      ]
+    },
+    "alameda": {
+      "ranks": [
+        6,
+        8
+      ],
+      "totals": [
+        47,
+        49
+      ]
+    },
+    "alpine": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "totals": [
+        "",
+        ""
+      ]
+    },
+    "amador": {
+      "ranks": [
+        1,
+        1
+      ],
+      "totals": [
+        72,
+        63
+      ]
+    },
+    "butte": {
+      "ranks": [
+        9,
+        2
+      ],
+      "totals": [
+        46,
+        52
+      ]
+    },
+    "calaveras": {
+      "ranks": [
+        2,
+        20
+      ],
+      "totals": [
+        51,
+        45
+      ]
+    },
+    "colusa": {
+      "ranks": [
+        25,
+        36
+      ],
+      "totals": [
+        41,
+        40
+      ]
+    },
+    "contraCosta": {
+      "ranks": [
+        29,
+        29
+      ],
+      "totals": [
+        40,
+        42
+      ]
+    },
+    "delNorte": {
+      "ranks": [
+        36,
+        36
+      ],
+      "totals": [
+        38,
+        40
+      ]
+    },
+    "elDorado": {
+      "ranks": [
+        41,
+        34
+      ],
+      "totals": [
+        36,
+        41
+      ]
+    },
+    "fresno": {
+      "ranks": [
+        16,
+        16
+      ],
+      "totals": [
+        44,
+        46
+      ]
+    },
+    "glenn": {
+      "ranks": [
+        21,
+        2
+      ],
+      "totals": [
+        42,
+        52
+      ]
+    },
+    "humboldt": {
+      "ranks": [
+        55,
+        54
+      ],
+      "totals": [
+        29,
+        30
+      ]
+    },
+    "imperial": {
+      "ranks": [
+        54,
+        50
+      ],
+      "totals": [
+        31,
+        33
+      ]
+    },
+    "inyo": {
+      "ranks": [
+        25,
+        5
+      ],
+      "totals": [
+        41,
+        51
+      ]
+    },
+    "kern": {
+      "ranks": [
+        13,
+        9
+      ],
+      "totals": [
+        45,
+        48
+      ]
+    },
+    "kings": {
+      "ranks": [
+        36,
+        26
+      ],
+      "totals": [
+        38,
+        43
+      ]
+    },
+    "lake": {
+      "ranks": [
+        50,
+        50
+      ],
+      "totals": [
+        32,
+        33
+      ]
+    },
+    "lassen": {
+      "ranks": [
+        45,
+        34
+      ],
+      "totals": [
+        35,
+        41
+      ]
+    },
+    "losAngeles": {
+      "ranks": [
+        3,
+        2
+      ],
+      "totals": [
+        49,
+        52
+      ]
+    },
+    "madera": {
+      "ranks": [
+        9,
+        16
+      ],
+      "totals": [
+        46,
+        46
+      ]
+    },
+    "marin": {
+      "ranks": [
+        36,
+        26
+      ],
+      "totals": [
+        38,
+        43
+      ]
+    },
+    "mariposa": {
+      "ranks": [
+        41,
+        50
+      ],
+      "totals": [
+        36,
+        33
+      ]
+    },
+    "mendocino": {
+      "ranks": [
+        48,
+        50
+      ],
+      "totals": [
+        33,
+        33
+      ]
+    },
+    "merced": {
+      "ranks": [
+        13,
+        9
+      ],
+      "totals": [
+        45,
+        48
+      ]
+    },
+    "modoc": {
+      "ranks": [
+        56,
+        57
+      ],
+      "totals": [
+        24,
+        25
+      ]
+    },
+    "mono": {
+      "ranks": [
+        9,
+        16
+      ],
+      "totals": [
+        46,
+        46
+      ]
+    },
+    "monterey": {
+      "ranks": [
+        40,
+        44
+      ],
+      "totals": [
+        37,
+        38
+      ]
+    },
+    "napa": {
+      "ranks": [
+        9,
+        9
+      ],
+      "totals": [
+        46,
+        48
+      ]
+    },
+    "nevada": {
+      "ranks": [
+        50,
+        46
+      ],
+      "totals": [
+        32,
+        36
+      ]
+    },
+    "orange": {
+      "ranks": [
+        16,
+        16
+      ],
+      "totals": [
+        44,
+        46
+      ]
+    },
+    "placer": {
+      "ranks": [
+        6,
+        6
+      ],
+      "totals": [
+        47,
+        50
+      ]
+    },
+    "plumas": {
+      "ranks": [
+        50,
+        56
+      ],
+      "totals": [
+        32,
+        28
+      ]
+    },
+    "riverside": {
+      "ranks": [
+        21,
+        20
+      ],
+      "totals": [
+        42,
+        45
+      ]
+    },
+    "sacramento": {
+      "ranks": [
+        21,
+        24
+      ],
+      "totals": [
+        42,
+        44
+      ]
+    },
+    "sanBenito": {
+      "ranks": [
+        45,
+        42
+      ],
+      "totals": [
+        35,
+        39
+      ]
+    },
+    "sanBernardino": {
+      "ranks": [
+        16,
+        13
+      ],
+      "totals": [
+        44,
+        47
+      ]
+    },
+    "sanDiego": {
+      "ranks": [
+        25,
+        24
+      ],
+      "totals": [
+        41,
+        44
+      ]
+    },
+    "sanFrancisco": {
+      "ranks": [
+        19,
+        29
+      ],
+      "totals": [
+        43,
+        42
+      ]
+    },
+    "sanJoaquin": {
+      "ranks": [
+        31,
+        26
+      ],
+      "totals": [
+        39,
+        43
+      ]
+    },
+    "sanLuisObispo": {
+      "ranks": [
+        25,
+        20
+      ],
+      "totals": [
+        41,
+        45
+      ]
+    },
+    "sanMateo": {
+      "ranks": [
+        21,
+        20
+      ],
+      "totals": [
+        42,
+        45
+      ]
+    },
+    "santaBarbara": {
+      "ranks": [
+        45,
+        36
+      ],
+      "totals": [
+        35,
+        40
+      ]
+    },
+    "santaClara": {
+      "ranks": [
+        5,
+        9
+      ],
+      "totals": [
+        48,
+        48
+      ]
+    },
+    "santaCruz": {
+      "ranks": [
+        41,
+        44
+      ],
+      "totals": [
+        36,
+        38
+      ]
+    },
+    "shasta": {
+      "ranks": [
+        31,
+        29
+      ],
+      "totals": [
+        39,
+        42
+      ]
+    },
+    "sierra": {
+      "ranks": [
+        29,
+        42
+      ],
+      "totals": [
+        40,
+        39
+      ]
+    },
+    "siskiyou": {
+      "ranks": [
+        31,
+        48
+      ],
+      "totals": [
+        39,
+        35
+      ]
+    },
+    "solano": {
+      "ranks": [
+        3,
+        6
+      ],
+      "totals": [
+        49,
+        50
+      ]
+    },
+    "sonoma": {
+      "ranks": [
+        31,
+        29
+      ],
+      "totals": [
+        39,
+        42
+      ]
+    },
+    "stanislaus": {
+      "ranks": [
+        36,
+        36
+      ],
+      "totals": [
+        38,
+        40
+      ]
+    },
+    "sutter": {
+      "ranks": [
+        13,
+        13
+      ],
+      "totals": [
+        45,
+        47
+      ]
+    },
+    "tehama": {
+      "ranks": [
+        48,
+        48
+      ],
+      "totals": [
+        33,
+        35
+      ]
+    },
+    "trinity": {
+      "ranks": [
+        57,
+        54
+      ],
+      "totals": [
+        21,
+        30
+      ]
+    },
+    "tulare": {
+      "ranks": [
+        41,
+        36
+      ],
+      "totals": [
+        36,
+        40
+      ]
+    },
+    "tuolumne": {
+      "ranks": [
+        6,
+        36
+      ],
+      "totals": [
+        47,
+        40
+      ]
+    },
+    "ventura": {
+      "ranks": [
+        31,
+        29
+      ],
+      "totals": [
+        39,
+        42
+      ]
+    },
+    "yolo": {
+      "ranks": [
+        19,
+        13
+      ],
+      "totals": [
+        43,
+        47
+      ]
+    },
+    "yuba": {
+      "ranks": [
+        50,
+        46
+      ],
+      "totals": [
+        32,
+        36
+      ]
+    }
   }
-]
+}

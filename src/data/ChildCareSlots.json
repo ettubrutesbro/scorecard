@@ -1,483 +1,601 @@
 {
-  "indicator": "fRPMSummer",
+  "indicator": "childCareSlots",
   "years": [
-    "2016"
+    "2015",
+    "2017"
   ],
   "categories": [
-    "health",
-    "education"
+    "earlyChildhood"
   ],
   "counties": {
     "california": {
       "ranks": [
+        "",
         ""
       ],
       "totals": [
-        8
+        25,
+        23
       ]
     },
     "alameda": {
       "ranks": [
-        9
+        13,
+        8
       ],
       "totals": [
-        11
+        31,
+        34
       ]
     },
     "alpine": {
       "ranks": [
-        ""
+        57,
+        3
       ],
       "totals": [
-        ""
+        13,
+        41
       ]
     },
     "amador": {
       "ranks": [
-        55
+        38,
+        14
       ],
       "totals": [
-        0
+        24,
+        28
       ]
     },
     "butte": {
       "ranks": [
-        23
+        25,
+        28
       ],
       "totals": [
-        6
+        26,
+        24
       ]
     },
     "calaveras": {
       "ranks": [
-        18
+        17,
+        21
       ],
       "totals": [
-        8
+        30,
+        26
       ]
     },
     "colusa": {
       "ranks": [
-        27
+        8,
+        5
       ],
       "totals": [
-        6
+        34,
+        35
       ]
     },
     "contraCosta": {
       "ranks": [
-        7
+        17,
+        14
       ],
       "totals": [
-        11
+        30,
+        28
       ]
     },
     "delNorte": {
       "ranks": [
-        4
+        5,
+        23
       ],
       "totals": [
-        13
+        36,
+        25
       ]
     },
     "elDorado": {
       "ranks": [
-        33
+        30,
+        34
       ],
       "totals": [
-        5
+        25,
+        23
       ]
     },
     "fresno": {
       "ranks": [
-        35
+        48,
+        51
       ],
       "totals": [
-        5
+        18,
+        18
       ]
     },
     "glenn": {
       "ranks": [
-        39
+        25,
+        28
       ],
       "totals": [
-        4
+        26,
+        24
       ]
     },
     "humboldt": {
       "ranks": [
-        30
+        38,
+        40
       ],
       "totals": [
-        5
+        24,
+        21
       ]
     },
     "imperial": {
       "ranks": [
-        24
+        21,
+        44
       ],
       "totals": [
-        6
+        28,
+        20
       ]
     },
     "inyo": {
       "ranks": [
-        49
+        30,
+        28
       ],
       "totals": [
-        3
+        25,
+        24
       ]
     },
     "kern": {
       "ranks": [
-        47
+        48,
+        53
       ],
       "totals": [
-        3
+        18,
+        17
       ]
     },
     "kings": {
       "ranks": [
-        48
+        56,
+        58
       ],
       "totals": [
-        3
+        15,
+        11
       ]
     },
     "lake": {
       "ranks": [
-        26
+        48,
+        34
       ],
       "totals": [
-        6
+        18,
+        23
       ]
     },
     "lassen": {
       "ranks": [
-        51
+        25,
+        14
       ],
       "totals": [
-        1
+        26,
+        28
       ]
     },
     "losAngeles": {
       "ranks": [
-        8
+        30,
+        38
       ],
       "totals": [
-        11
+        25,
+        22
       ]
     },
     "madera": {
       "ranks": [
-        32
+        30,
+        44
       ],
       "totals": [
-        5
+        25,
+        20
       ]
     },
     "marin": {
       "ranks": [
-        16
+        2,
+        4
       ],
       "totals": [
-        8
+        45,
+        40
       ]
     },
     "mariposa": {
       "ranks": [
-        54
+        44,
+        48
       ],
       "totals": [
-        0
+        20,
+        19
       ]
     },
     "mendocino": {
       "ranks": [
-        10
+        43,
+        28
       ],
       "totals": [
-        11
+        22,
+        24
       ]
     },
     "merced": {
       "ranks": [
-        22
+        48,
+        48
       ],
       "totals": [
-        6
+        18,
+        19
       ]
     },
     "modoc": {
       "ranks": [
-        17
+        1,
+        1
       ],
       "totals": [
-        8
+        84,
+        62
       ]
     },
     "mono": {
       "ranks": [
-        53
+        53,
+        28
       ],
       "totals": [
-        0
+        17,
+        24
       ]
     },
     "monterey": {
       "ranks": [
-        29
+        41,
+        48
       ],
       "totals": [
-        5
+        23,
+        19
       ]
     },
     "napa": {
       "ranks": [
-        36
+        30,
+        40
       ],
       "totals": [
-        4
+        25,
+        21
       ]
     },
     "nevada": {
       "ranks": [
-        42
+        4,
+        23
       ],
       "totals": [
-        3
+        38,
+        25
       ]
     },
     "orange": {
       "ranks": [
-        15
+        25,
+        23
       ],
       "totals": [
-        8
+        26,
+        25
       ]
     },
     "placer": {
       "ranks": [
-        34
+        9,
+        5
       ],
       "totals": [
-        5
+        32,
+        35
       ]
     },
     "plumas": {
       "ranks": [
-        6
+        5,
+        9
       ],
       "totals": [
-        11
+        36,
+        33
       ]
     },
     "riverside": {
       "ranks": [
-        25
+        57,
+        51
       ],
       "totals": [
-        6
+        13,
+        18
       ]
     },
     "sacramento": {
       "ranks": [
-        21
+        21,
+        18
       ],
       "totals": [
-        7
+        28,
+        27
       ]
     },
     "sanBenito": {
       "ranks": [
-        5
+        21,
+        34
       ],
       "totals": [
-        13
+        28,
+        23
       ]
     },
     "sanBernardino": {
       "ranks": [
-        50
+        47,
+        56
       ],
       "totals": [
-        2
+        19,
+        15
       ]
     },
     "sanDiego": {
       "ranks": [
-        3
+        13,
+        18
       ],
       "totals": [
-        13
+        31,
+        27
       ]
     },
     "sanFrancisco": {
       "ranks": [
-        1
+        3,
+        2
       ],
       "totals": [
-        18
+        40,
+        42
       ]
     },
     "sanJoaquin": {
       "ranks": [
+        48,
         38
       ],
       "totals": [
-        4
+        18,
+        22
       ]
     },
     "sanLuisObispo": {
       "ranks": [
-        41
+        9,
+        10
       ],
       "totals": [
-        4
+        32,
+        30
       ]
     },
     "sanMateo": {
       "ranks": [
-        2
+        21,
+        21
       ],
       "totals": [
-        13
+        28,
+        26
       ]
     },
     "santaBarbara": {
       "ranks": [
-        12
+        19,
+        34
       ],
       "totals": [
-        9
+        29,
+        23
       ]
     },
     "santaClara": {
       "ranks": [
-        14
+        13,
+        11
       ],
       "totals": [
-        8
+        31,
+        29
       ]
     },
     "santaCruz": {
       "ranks": [
-        20
+        9,
+        11
       ],
       "totals": [
-        7
+        32,
+        29
       ]
     },
     "shasta": {
       "ranks": [
-        37
+        25,
+        5
       ],
       "totals": [
-        4
+        26,
+        35
       ]
     },
     "sierra": {
       "ranks": [
-        ""
+        9,
+        11
       ],
       "totals": [
-        ""
+        32,
+        29
       ]
     },
     "siskiyou": {
       "ranks": [
-        31
+        30,
+        23
       ],
       "totals": [
-        5
+        25,
+        25
       ]
     },
     "solano": {
       "ranks": [
-        28
+        53,
+        40
       ],
       "totals": [
-        6
+        17,
+        21
       ]
     },
     "sonoma": {
       "ranks": [
-        11
+        38,
+        23
       ],
       "totals": [
-        10
+        24,
+        25
       ]
     },
     "stanislaus": {
       "ranks": [
-        45
+        53,
+        55
       ],
       "totals": [
-        3
+        17,
+        16
       ]
     },
     "sutter": {
       "ranks": [
-        43
+        30,
+        44
       ],
       "totals": [
-        3
+        25,
+        20
       ]
     },
     "tehama": {
       "ranks": [
+        44,
         40
       ],
       "totals": [
-        4
+        20,
+        21
       ]
     },
     "trinity": {
       "ranks": [
-        46
+        13,
+        44
       ],
       "totals": [
-        3
+        31,
+        20
       ]
     },
     "tulare": {
       "ranks": [
-        44
+        44,
+        53
       ],
       "totals": [
-        3
+        20,
+        17
       ]
     },
     "tuolumne": {
       "ranks": [
-        ""
+        19,
+        18
       ],
       "totals": [
-        ""
+        29,
+        27
       ]
     },
     "ventura": {
       "ranks": [
-        19
+        30,
+        28
       ],
       "totals": [
-        8
+        25,
+        24
       ]
     },
     "yolo": {
       "ranks": [
-        13
+        7,
+        14
       ],
       "totals": [
-        9
+        35,
+        28
       ]
     },
     "yuba": {
       "ranks": [
-        52
+        41,
+        56
       ],
       "totals": [
-        1
+        23,
+        15
       ]
     }
   }
