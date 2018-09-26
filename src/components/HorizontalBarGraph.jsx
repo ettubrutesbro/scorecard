@@ -126,6 +126,7 @@ export default class HorizontalBarGraph extends React.Component{
                                         </Bar>
                                         {!condensed && 
                                         <Value
+                                            percentage = {item.value}
                                             hovered = {item.id === this.hoveredRow}
                                             alignValue = {this.props.alignValue}
                                             offset = {this.props.alignValue === 'outside'? this.props.labelWidth + (((this.width-60) - this.props.labelWidth) * (item.value/100) ) 
@@ -326,7 +327,7 @@ const Value = styled.div`
     // right: 0;
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
-    margin-left: 8px;
+    margin-left: ${props => props.percentage===0? 0 : 8}px;
 `
 const Prompt = styled.div`
     position: absolute;
