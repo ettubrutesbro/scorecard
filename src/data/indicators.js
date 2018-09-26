@@ -83,7 +83,7 @@ const indicators = {
     PlacementStability: PlacementStability,
     ReadingStandards: ReadingStandards,
     // ReadToEveryday: ReadToEveryday,
-    // Suspension: Suspension,
+    Suspension: Suspension,
 
 
 }

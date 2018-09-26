@@ -125,7 +125,8 @@ const RaceList = styled.ul`
     margin: 0;
     transition: clip-path .2s;
     z-index: 10;
-    clip-path: ${props=>props.vertOpen? 'polygon(0% -1%, 100% -1%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'};
+    // clip-path: ${props=>props.vertOpen? 'polygon(0% -1%, 100% -1%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'};
+    display: ${props=>props.vertOpen? 'block' : 'none'};
 
 `
 const Race = styled.li`
@@ -149,7 +150,8 @@ const RaceToggle = styled.div`
     align-items: center;
     width: 340px;
     transition: clip-path .45s;
-    clip-path: ${props=>props.open? 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)' : 'polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%)'};
+    // clip-path: ${props=>props.open? 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)' : 'polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%)'};
+    display: ${props=>props.open? 'flex' : 'none'};
     
 
 `
@@ -239,7 +241,7 @@ export default class ResponsiveNav extends React.Component{
                                 <HorzRace selected = {race==='black'} disabled = {noRace || noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
                                 <HorzRace selected = {race==='latinx'} disabled = {noRace || noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
                                 <HorzRace selected = {race==='white'} disabled = {noRace || nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
-                                <HorzRace selected = {race==='other'} disabled = {noRace || nooth} index = {3} open = {open} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </HorzRace>
+                                <HorzRace selected = {race==='other'} disabled = {noRace || nooth} index = {4} open = {open} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </HorzRace>
                             </RaceToggle>
 
                         
@@ -307,7 +309,7 @@ const YrToggle = styled.div`
 const LargeWorkflow = styled.div`
     position: absolute;
     overflow: hidden;
-    top: 75px;
+    top: 65px;
     background: white;
     border: 1px solid var(--bordergrey);
     padding: 30px;
@@ -318,7 +320,7 @@ const LargeWorkflow = styled.div`
     }
     @media ${media.compact}{
         width: 780px;
-        height: 640px;
+        height: 575px;
     }
 `
 

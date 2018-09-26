@@ -19,12 +19,13 @@ const ColumnList = styled.ul`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
+    flex-grow: 1;
+    padding: 20px 0;
 
     // display: flex;
     // flex-wrap: wrap;
     // justify-content: space-between;
     margin: 0;
-    padding: 0;
 `
 const ColumnItem = styled.li`
     // width: 50%;
@@ -46,7 +47,6 @@ const IndicatorListHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 25px;
     h1{
         font-size: 24px;
         font-weight: 400;
@@ -157,13 +157,18 @@ export default class IndicatorList extends React.Component{
     @observable filter = 'all'
     @observable currentPage = 0
     @observable pages = []
+    @observable pageSize = 24
     @action goToPage = (pg) => {
         console.log('going to page', pg)
         console.log(this.pages[pg])
         this.currentPage = pg
 
     }
-    @action setFilter = (value) => this.filter = value
+    @action setFilter = (value) =>{ 
+        this.filter = value
+        this.goToPage(0)
+        this.paginate()
+    }
 
     handleSelection = (ind) =>{
         this.props.store.completeWorkflow('indicator' , ind)
@@ -183,21 +188,20 @@ export default class IndicatorList extends React.Component{
     @action
     paginate = () => {
         const screen = getMedia()
-        let pageSize
         let pages = []
         if(screen==='optimal'){
-            pageSize = 12
+            this.pageSize = 12
         }
         else if(screen==='compact'){
-            pageSize = 8
+            this.pageSize = 8
         }
         const indKeys = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
             return this.filter === 'all'? true : cats.includes(this.filter)
         })
         console.log('total inds:', indKeys.length)
-        for(var i = 0; i<indKeys.length/pageSize; i++){
-            pages.push(indKeys.slice(i*pageSize, (i+1)*pageSize))
+        for(var i = 0; i<indKeys.length/this.pageSize; i++){
+            pages.push(indKeys.slice(i*this.pageSize, (i+1)*this.pageSize))
         }
 
         this.pages = pages
@@ -208,9 +212,15 @@ export default class IndicatorList extends React.Component{
         const {county, race} = this.props.store
 
         const page = this.pages[this.currentPage]
+        console.log(page)
+
+        const numInds = Object.keys(indicators).filter((ind)=>{
+            const cats = indicators[ind].categories
+            return this.filter === 'all'? true : cats.includes(this.filter)
+        }).length
 
         return(
-            <div>
+            <IndList>
 
             <IndicatorListHeader>
 
@@ -223,12 +233,6 @@ export default class IndicatorList extends React.Component{
 
             </IndicatorListHeader>
             <ColumnList>
-                <FlipMove
-                    typeName = {null}
-                    staggerDelayBy = {15}
-                    enterAnimation = 'fade'
-                    leaveAnimation = {null}
-                >
                     {page.map((ind)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
@@ -263,26 +267,52 @@ export default class IndicatorList extends React.Component{
                             </IndRight>
                         </ColumnItem>
                     })}
-                </FlipMove>
 
-                <PagePrev onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}/>
-                <PageNext onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}/>
             </ColumnList>
-            </div>
+            
+                <PageControls>
+                <Prev onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}>
+                    back 
+                </Prev>
+                <Readout>
+                   Viewing indicators {(this.currentPage * this.pageSize) + 1} - {this.currentPage !== this.pages.length-1? (this.currentPage+1) * this.pageSize : numInds} of {numInds}
+                </Readout>
+                <Next onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}>
+                    next page
+                </Next>
+                </PageControls>
+            </IndList>
         )
     }
 }
 
+const IndList = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+`
 
+const PageControls = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+const Readout = styled.div `
+    color: var(--fainttext);
+`
 const PageBtn = styled.div`
-    width: 20px; height: 20px;
-    background: red;
-    margin: 10px;
+    padding: 10px 25px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+
 `
-const PagePrev = styled(PageBtn)`
+const Prev = styled(PageBtn)`
 
 `
 
-const PageNext = styled(PageBtn)`
+const Next = styled(PageBtn)`
 
 `
