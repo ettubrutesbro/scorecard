@@ -225,7 +225,7 @@ export default class ResponsiveNav extends React.Component{
                         </DropdownReading>
                         
                             <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
-                                <Race selected = {!race}  onClick = {!noazn?()=>store.completeWorkflow('race',null):()=>{}}> All Races </Race>
+                                <Race selected = {!race}  onClick = {()=>store.completeWorkflow('race',null)}> All Races </Race>
                                 <Race selected = {race==='asian'} disabled = {noRace || noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
                                 <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
                                 <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 
