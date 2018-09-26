@@ -8,12 +8,26 @@ import upToDateVaccinations from './UpToDateVaccinations.json'
 import lowIncomeDental from './LowIncomeDental.json'
 import collegeCareerReady from './CollegeCareerReady.json'
 import allegations from './Allegations.json'
+
+
+//formatting issues
 // import availableSlot from './AvailableSlot.json'
 // import breastFeeding from './BreastFeeding.json'
+
+//year rank discrepancy
+// import collegeLevelMath from './CollegeLevelMath.json'
+
+// black/AA issue
+// import FamilyLike from './FamilyLike.json'
+
 import childCareSlots from './ChildCareSlots.json'
-import collegeLevelMath from './CollegeLevelMath.json'
 import englishLearners from './EnglishLearners.json'
 import enrolled34 from './Enrolled34.json'
+import FosterYouthGraduation from './FosterYouthGraduation.json'
+import FRPMSchoolYear from './FRPMSchoolYear.json'
+import FRPMSummer from './FRPMSummer.json'
+import FYTimelyDental from './FYTimelyDental.json'
+import FYTimelyMedical from './FYTimelyMedical.json'
 
 const indicators = {
 
@@ -25,21 +39,25 @@ const indicators = {
     collegeCareerReady: collegeCareerReady,
 
 
+    //final batch:
 
-    //final batch?
-    collegeLevelMath: collegeLevelMath,
+    //non-working
+    // collegeLevelMath: collegeLevelMath,
+    // availableSlot: availableSlot,
+    // breastFeeding: breastFeeding,
+    // FamilyLike: FamilyLike,
+
+    //working: 
     englishLearners: englishLearners,
     enrolled34: enrolled34,
-    // availableSlot: availableSlot,
     allegations: allegations,
-    // breastFeeding: breastFeeding,
     childCareSlots: childCareSlots,
+    FosterYouthGraduation: FosterYouthGraduation,
+    FRPMSchoolYear: FRPMSchoolYear,
+    FRPMSummer: FRPMSummer,
+    FYTimelyDental: FYTimelyDental,
+    FYTimelyMedical: FYTimelyMedical,
 
-    // //welfare
-    // welfareMock: welfare.welfareMock,
-    // noFoodInsecurity: welfare.noFoodInsecurity,
-    // //education
-    // edumacation: education.edumacation,
 
 }
 console.log(indicators)

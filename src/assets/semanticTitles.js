@@ -77,6 +77,44 @@ const semanticTitles = {
         label: '3- and 4-year-olds enrolled in preschool or transitional kindergarten',
         shorthand: 'Preschool and kindergarten enrollment'
     },
+    'FamilyLike': {
+        who: 'adolescents in the child welfare system',
+        what: 'were placed in family-like settings',
+        label: 'Adolescents in the child welfare system who are placed in family-like settings',
+        shorthand: 'bar'
+    },
+    'FosterYouthGraduation': {
+        who: 'foster youth',
+        what: 'graduated high school on time',
+        label: 'Foster youth who graduate high school on time',
+        shorthand: 'Foster youth high school graduation'
+    },
+    'FRPMSchoolYear': {
+        descriptor: 'eligible',
+        who: 'students',
+        what: 'received free and reduced price meals during the school year',
+        label: 'Eligible students who receive free and reduced price meals during the school year',
+        shorthand: 'bar'
+    },
+    'FRPMSummer': {
+        descriptor: 'eligible',
+        who: 'students',
+        what: 'recieved free and reduced price meals during the summer',
+        label: 'Eligible students who receive free and reduced price meals during the summer',
+        shorthand: 'bar'
+    },
+    'FYTimelyDental': {
+        who: 'children in the child welfare system',
+        what: 'had a timely dental exam',
+        label: 'Children in the child welfare system who have had a timely dental exam',
+        shorthand: 'Child welfare dental exams'
+    },
+    'FYTimelyMedical': {
+        who: 'children in the child welfare system',
+        what: 'had a timely medical exam',
+        label: 'Children in the child welfare system who have had a timely medical exam',
+        shorthand: 'Child welfare medical exams'
+    },
     'foo': {
         who: 'bar',
         what: 'bar',
