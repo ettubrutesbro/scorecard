@@ -43,7 +43,7 @@ const semanticTitles = {
     },
     'allegations': {
         who: 'children, ages birth-18',
-        what: 'with no report of abuse or neflect in a 12 month time period',
+        what: 'with no report of abuse or neglect in a 12 month time period',
         label: 'Children, ages birth-18, with no report of abuse or neglect in a 12 month time period',
         shorthand: 'Abuse and neglect'
     },
@@ -81,39 +81,105 @@ const semanticTitles = {
         who: 'adolescents in the child welfare system',
         what: 'were placed in family-like settings',
         label: 'Adolescents in the child welfare system who are placed in family-like settings',
-        shorthand: 'bar'
+        shorthand: 'Family-like settings for adolescents'
     },
     'FosterYouthGraduation': {
         who: 'foster youth',
         what: 'graduated high school on time',
         label: 'Foster youth who graduate high school on time',
-        shorthand: 'Foster youth high school graduation'
+        shorthand: 'Foster youth HS graduation'
     },
     'FRPMSchoolYear': {
         descriptor: 'eligible',
         who: 'students',
         what: 'received free and reduced price meals during the school year',
         label: 'Eligible students who receive free and reduced price meals during the school year',
-        shorthand: 'bar'
+        shorthand: 'School Year: Free/Discounted Meals'
     },
     'FRPMSummer': {
         descriptor: 'eligible',
         who: 'students',
         what: 'recieved free and reduced price meals during the summer',
         label: 'Eligible students who receive free and reduced price meals during the summer',
-        shorthand: 'bar'
+        shorthand: 'Summer: Free/Discounted Meals'
     },
     'FYTimelyDental': {
         who: 'children in the child welfare system',
         what: 'had a timely dental exam',
-        label: 'Children in the child welfare system who have had a timely dental exam',
-        shorthand: 'Child welfare dental exams'
+        label: 'Timely dental exams for children in the child welfare system',
+        shorthand: 'Dental exams in child welfare'
     },
     'FYTimelyMedical': {
         who: 'children in the child welfare system',
         what: 'had a timely medical exam',
-        label: 'Children in the child welfare system who have had a timely medical exam',
-        shorthand: 'Child welfare medical exams'
+        label: 'Timely medical exams for children in the child welfare system',
+        shorthand: 'Medical exams in child welfare'
+    },
+    'Graduation': {
+        who: '12th-graders',
+        what: 'graduated high school on time',
+        label: '12th-graders who graduated high school on time',
+        shorthand: 'Timely high school graduation'
+    },
+    'HealthInsurance': {
+        who: 'children',
+        what: 'had health insurance',
+        label: 'Children with health insurance',
+        shorthand: 'Children\'s health insurance' 
+    },
+    'MathStandards8': {
+        who: '8th-graders',
+        what: 'met or exceeded grade-level standards in math',
+        label: '8th-graders who meet or exceed grade-level standards in math',
+        shorthand: '8th grade math excellence'
+    },
+    'NotAbsent': {
+        who: 'students',
+        what: 'were not chronically absent from school',
+        label: 'Students who are not chronically absent from school',
+        shorthand: 'Student chronic absence'
+    },
+    'NotLowBirthWeight': {
+        who: 'newborns',
+        what: 'were not low birthweight',
+        label: 'Newborns who are not low birthweight',
+        shorthand: 'Newborn birthweight'
+    },
+    'NotObese': {
+        who: '7th-graders',
+        what: 'were not overweight or obese',
+        label: '7th graders who are not overweight or obese',
+        shorthand: 'Obesity in 7th graders'
+    },
+    'Permanency': {
+        who: 'children in the child welfare system',
+        what: 'exited to permanency within one year',
+        label: 'Children in the child welfare system who exit to permanency within one year',
+        shorthand: 'Permanency in child welfare'
+    },
+    'PlacementStability': {
+        who: 'children in the child welfare system',
+        what: 'had been in one placement after 24 months in care',
+        label: 'Children in the child welfare system who have been in one placement after 24 months in care',
+        shorthand: 'Placement stability in child welfare'
+    },
+    'ReadingStandards': {
+        who: '3rd-graders',
+        what: 'read near or above grade-level standards',
+        label: '3rd-graders who read near or above grade-level standards',
+        shorthand: '3rd grade reading standards'
+    },
+    'ReadToEveryday': {
+        who: 'children, ages birth-5',
+        what: 'were read to everyday by an adult',
+        label: 'Children, ages birth-5, who are read to everyday by an adult',
+        shorthand: 'Daily reading to children'
+    },
+    'Suspension': {
+        who: 'student suspensions',
+        what: 'were not due to "defiance or disruption"',
+        label: 'Student suspensions not due to "defiance/disruption"',
+        shorthand: 'Suspensions for defiance/disruption'
     },
     'foo': {
         who: 'bar',

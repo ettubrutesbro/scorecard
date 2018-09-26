@@ -97,7 +97,10 @@ export default class Readout extends React.Component{
             this.firstLine = readout.slice(0,actualBreakIndex)
             this.subsequentLines = this.nbspString(readout.slice(actualBreakIndex))
         }
-        else this.firstLine = readout
+        else{
+         this.firstLine = readout
+         this.subsequentLines = ''
+     }
     }
 
     nbspString = (str) => {
