@@ -204,6 +204,7 @@ export default class RaceBreakdownBar extends React.Component{
                     return(
 
                         <LabelSection 
+                            key = {'rbblabelsection'+i}
                             hide = {race.percentage === 0}
                             pct = {race.percentage}
                         >

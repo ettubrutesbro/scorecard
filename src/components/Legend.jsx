@@ -68,7 +68,7 @@ export default class Legend extends React.Component{
 
                         const fill = colorScale((breaks[i] + breaks[i+1]) / 2)
                         return i<arr.length-1?(
-                            <Section classes = {arr.length-1}>
+                            <Section classes = {arr.length-1} key = {'legendsection'+i}>
                                 <Swatch 
                                     fill = {fill}
                                     index = {i}

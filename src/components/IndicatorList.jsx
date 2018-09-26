@@ -13,6 +13,8 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 
+import {getMedia} from '../utilities/media'
+
 const ColumnList = styled.ul`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -153,6 +155,14 @@ const Title = styled.h1`
 @observer
 export default class IndicatorList extends React.Component{
     @observable filter = 'all'
+    @observable currentPage = 0
+    @observable pages = []
+    @action goToPage = (pg) => {
+        console.log('going to page', pg)
+        console.log(this.pages[pg])
+        this.currentPage = pg
+
+    }
     @action setFilter = (value) => this.filter = value
 
     handleSelection = (ind) =>{
@@ -160,8 +170,45 @@ export default class IndicatorList extends React.Component{
         this.props.closeNav() 
     }
 
+    constructor(){
+        super()
+        this.paginate()
+        //resize?
+    }
+
+    // componentDidUpdate(){
+    //     this.paginate()
+    // }
+
+    @action
+    paginate = () => {
+        const screen = getMedia()
+        let pageSize
+        let pages = []
+        if(screen==='optimal'){
+            pageSize = 12
+        }
+        else if(screen==='compact'){
+            pageSize = 8
+        }
+        const indKeys = Object.keys(indicators).filter((ind)=>{
+            const cats = indicators[ind].categories
+            return this.filter === 'all'? true : cats.includes(this.filter)
+        })
+        console.log('total inds:', indKeys.length)
+        for(var i = 0; i<indKeys.length/pageSize; i++){
+            pages.push(indKeys.slice(i*pageSize, (i+1)*pageSize))
+        }
+
+        this.pages = pages
+        console.log(this.pages)
+    }
+
     render(){
         const {county, race} = this.props.store
+
+        const page = this.pages[this.currentPage]
+
         return(
             <div>
 
@@ -182,10 +229,7 @@ export default class IndicatorList extends React.Component{
                     enterAnimation = 'fade'
                     leaveAnimation = {null}
                 >
-                    {Object.keys(indicators).filter((ind)=>{
-                        const cats = indicators[ind].categories
-                        return this.filter === 'all'? true : cats.includes(this.filter)
-                    }).map((ind)=>{
+                    {page.map((ind)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
@@ -220,8 +264,25 @@ export default class IndicatorList extends React.Component{
                         </ColumnItem>
                     })}
                 </FlipMove>
+
+                <PagePrev onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}/>
+                <PageNext onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}/>
             </ColumnList>
             </div>
         )
     }
 }
+
+
+const PageBtn = styled.div`
+    width: 20px; height: 20px;
+    background: red;
+    margin: 10px;
+`
+const PagePrev = styled(PageBtn)`
+
+`
+
+const PageNext = styled(PageBtn)`
+
+`
