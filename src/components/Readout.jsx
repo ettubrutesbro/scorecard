@@ -14,7 +14,7 @@ import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 import demopop from '../data/demographicsAndPopulation.json'
 
-import media from '../utilities/media'
+import media, {getMedia} from '../utilities/media'
 
 const ReadoutBlock = styled.div`
     left: 0;
@@ -79,7 +79,8 @@ export default class Readout extends React.Component{
 
         const readout = `of ${descriptor||''} ${raceString} ${who} ${what} in ${countyString} in ${actualYear}.`
 
-        const firstLineBreakPoint = 60
+        const screen = getMedia()
+        const firstLineBreakPoint = screen==='optimal'? 95  : screen==='compact'? 60 : 40
         const minCharsInSubsequent = 15
 
         if(readout.length > firstLineBreakPoint){

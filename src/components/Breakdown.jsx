@@ -17,6 +17,8 @@ import {FullSourcesView} from './Sources'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 
+import {getMedia} from '../utilities/media'
+
 const Wrapper = styled.div`
     flex-grow: 1;
     display: flex;
@@ -41,24 +43,37 @@ export default class Breakdown extends React.Component{
 
         const {store, offset} = this.props
         const {indicator, county, race, year} = store
-
+        const screen = getMedia()
         //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
 
         let entryCount = 0
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
             console.log(hasRace?'has race chart':'no race graph', 'offset:',offset)
-            if(hasRace){ //halfish of breakdown is used up by race comparison
-                if(offset >= 80) entryCount = 3
-                else if(offset >= 40) entryCount = 5
-                else entryCount = 10
+            if(screen==='optimal'){
+               if(hasRace){ //halfish of breakdown is used up by race comparison
+                    if(offset >= 80) entryCount = 8
+                    else if(offset >= 40) entryCount = 11
+                    else entryCount = 11
+                }
+                else{
+                    if(offset >= 80) entryCount = 15
+                    else if(offset >= 40) entryCount = 20
+                    else entryCount = 20
+                }
+            }if(screen==='compact'){
+               if(hasRace){ //halfish of breakdown is used up by race comparison
+                    if(offset >= 80) entryCount = 3
+                    else if(offset >= 40) entryCount = 5
+                    else entryCount = 10
+                }
+                else{
+                    if(offset >= 80) entryCount = 10
+                    else if(offset >= 40) entryCount = 12
+                    else entryCount = 18
+                }
             }
-            else{
-                if(offset >= 80) entryCount = 10
-                else if(offset >= 40) entryCount = 12
-                else entryCount = 18
-            }
-
+         
         }
 
 

@@ -15,10 +15,15 @@ const races = [
 const FaintLabel = styled.span`
     color: var(--fainttext);
 `
+const SelectLabel = styled.span`
+    color: var(--strokepeach);
+
+`
 
 export default class IndicatorByRaces extends React.Component{
     render(){
         const {indicator, year, county, colorScale} = this.props.store
+        const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
         const indicatorPerformanceByRace = races.map((race)=>{
             let isSomeBullshit = false
@@ -36,11 +41,11 @@ export default class IndicatorByRaces extends React.Component{
 
             return {
                 id: race,
-                label: capitalize(race),
+                label: race===selectedRace? <SelectLabel>{capitalize(race)}</SelectLabel> : capitalize(race),
                 value: val,
                 trueValue: isSomeBullshit || false,
                 // value: ind[race][year],
-                fill: colorScale? colorScale(ind[race][year]) : ''
+                fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
         })
         // console.log(indicatorPerformanceByRace)

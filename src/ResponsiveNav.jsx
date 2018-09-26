@@ -195,6 +195,7 @@ export default class ResponsiveNav extends React.Component{
         const noblk = !noRace && indicator && county && (ind.counties[county].black[year] === '' || ind.counties[county].black[year]==='*')
         const noltx = !noRace && indicator && county && (ind.counties[county].latinx[year] === '' || ind.counties[county].latinx[year]==='*')
         const nowht = !noRace && indicator && county && (ind.counties[county].white[year] === '' || ind.counties[county].white[year]==='*')
+        const nooth = !noRace && indicator && county && (ind.counties[county].other[year] === '' || ind.counties[county].other[year]==='*')
 
 
         return(
@@ -230,6 +231,7 @@ export default class ResponsiveNav extends React.Component{
                                 <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
                                 <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 
                                 <Race selected = {race==='white'} disabled = {noRace || nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
+                                <Race selected = {race==='other'} disabled = {noRace || nooth} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </Race> 
                             </RaceList>
 
                             <RaceToggle disabled = {noRace} open = {open} >
@@ -237,6 +239,7 @@ export default class ResponsiveNav extends React.Component{
                                 <HorzRace selected = {race==='black'} disabled = {noRace || noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
                                 <HorzRace selected = {race==='latinx'} disabled = {noRace || noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
                                 <HorzRace selected = {race==='white'} disabled = {noRace || nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
+                                <HorzRace selected = {race==='other'} disabled = {noRace || nooth} index = {3} open = {open} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </HorzRace>
                             </RaceToggle>
 
                         
