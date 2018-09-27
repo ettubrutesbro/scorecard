@@ -26,6 +26,7 @@ const Nav = styled.div`
     z-index: 3;
     display: flex;
     align-items: center;
+    position: relative;
     @media ${media.optimal}{
         width: 1600px;
     }
@@ -178,6 +179,8 @@ const Logo = (props) => {
     )
 }
 const logoSVG = require('./assets/cnlogo.svg')
+const twIcon = require('./assets/twitter.svg')
+const fbIcon = require('./assets/fb.svg')
 const LogoContainer = styled.div`
     width: 65px;
     height: 50px;
@@ -270,6 +273,11 @@ export default class ResponsiveNav extends React.Component{
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
                     />
+
+                    <Share>
+                        <Fb />
+                        <Twitter />
+                    </Share>
                     
                         
 
@@ -292,6 +300,42 @@ export default class ResponsiveNav extends React.Component{
         )
     }
 }
+const Share = styled.div`
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+        /*border: 1px solid green;*/
+    /*width: 320px;*/
+`
+const ShareIco = styled.div`
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background-color: var(--fainttext);
+    background-position: center;
+    background-size: contain;
+`
+const Fb = styled(ShareIco)`
+    background-image: url(${fbIcon});
+    background-position: center;
+    background-size: contain;
+    margin-right: 15px;
+    border-radius: 2px;
+    width: 19px;
+    height: 19px;
+    &:hover{
+        background-color: #3b5998;
+    }
+`
+const Twitter = styled(ShareIco)`
+    background-image: url(${twIcon});
+    &:hover{
+        background-color:  #00aced;
+    }
+
+`
+
 const X = styled.div`
     position: absolute;
     right: 30px;
