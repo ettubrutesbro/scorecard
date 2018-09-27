@@ -45,14 +45,6 @@ import ReadingStandards from './indicators/ReadingStandards.json'
 import Suspension from './indicators/Suspension.json'
 
 const indicators = {
-
-
-
-
-    //non-working
-
-    //working: 
-
     allegations: allegations,
     breastFeeding: breastFeeding,
     childCareSlots: childCareSlots,

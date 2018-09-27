@@ -204,6 +204,9 @@ export default class ResponsiveScorecard extends React.Component{
     @observable extraReadoutLines = ''
 
     @action openNav = (status) => {
+        if(this.sourcesMode && status){
+            this.setSourcesMode(false)
+        }
         if(this.init && status){
             console.log('user opened nav while init')
             this.init = false

@@ -224,7 +224,6 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}
                 >
-                    {this.props.init && '1. '}
                     {store.indicator? semanticTitles[store.indicator].shorthand : 'Pick an indicator'}
                 </IndicatorSelect>
                 <CountySelect 
