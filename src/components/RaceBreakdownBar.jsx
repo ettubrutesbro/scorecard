@@ -211,7 +211,7 @@ export default class RaceBreakdownBar extends React.Component{
                             pct = {race.percentage}
                         >
                             <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
-                            <Percentage> {race.percentage} </Percentage>
+                            <Percentage> {race.percentage}% </Percentage>
                         </LabelSection>
                     )
                 })}

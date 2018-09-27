@@ -274,7 +274,7 @@ export default class ResponsiveNav extends React.Component{
                         selected = {store.year}
                     />
 
-                    <Share>
+                    <Share nav = {open}>
                         <Fb />
                         <Twitter />
                     </Share>
@@ -305,7 +305,10 @@ const Share = styled.div`
     right: 0;
     display: flex;
     align-items: center;
-        /*border: 1px solid green;*/
+    transition: opacity .25s, transform .25s;
+    transform: ${props => props.nav? 'translateX(100%)' : 'translateX(0)'};
+    opacity: ${props => props.nav? 0 : 1};
+
     /*width: 320px;*/
 `
 const ShareIco = styled.div`
@@ -336,12 +339,19 @@ const Twitter = styled(ShareIco)`
 
 `
 
+const xIcon = require('./assets/x.svg')
+
 const X = styled.div`
     position: absolute;
     right: 30px;
-    width: 50px;
-    height: 50px;
-    border: 1px solid red;
+    width:25px;
+    height: 25px;
+    cursor: pointer;
+    background-image: url(${xIcon});
+    opacity: 0.25;
+    &:hover{
+        opacity: 0.5;
+    }
 
 `
 const YearToggle = (props) =>{
