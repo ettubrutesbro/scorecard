@@ -172,6 +172,23 @@ const HorzRace = styled.div`
 
 `
 
+const Logo = (props) => {
+    return(
+        <LogoContainer />
+    )
+}
+const logoSVG = require('./assets/cnlogo.svg')
+const LogoContainer = styled.div`
+    width: 75px;
+    /*border: 1px solid grey;*/
+    height: 50px;
+    margin-right: 25px;
+    background: url(${logoSVG});
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+`
+
 @observer
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
@@ -202,6 +219,7 @@ export default class ResponsiveNav extends React.Component{
 
         return(
             <Nav>
+                <Logo />
                 <IndicatorSelect 
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}

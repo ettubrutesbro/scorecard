@@ -113,6 +113,7 @@ const Breakdown = styled(Quadrant)`
         width: 480px;
     }
     @media ${media.mobile}{}
+    z-index: ${props=>props.sources? 20 : 1}; 
 `
 const Legend = styled(Quadrant)`
     z-index: 0;
@@ -139,11 +140,11 @@ const MapContainer = styled(Quadrant)`
     @media ${media.optimal}{
         width: 60%;
         height: 97%;
-        transform: translateX(${props => props.init? '-350px' : props.offset? '40%' : 0}) scale(${props=>props.offset?1.05:1});
+        transform: translateX(${props => props.init? '-350px' : props.offset? '40%' : 0});
     }
     @media ${media.compact}{
         width: 60%; height: 100%;
-        transform: translateX(${props => props.init? '-250px' : props.offset? '280px' : 0}) scale(${props=>props.offset?1.13:1});
+        transform: translateX(${props => props.init? '-250px' : props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
 `
@@ -161,6 +162,7 @@ const GreyMask = styled.div`
 `
 const DemoBox = styled.div`
     position: absolute;
+    opacity: ${props => props.show? 1 : 0};
     @media ${media.optimal}{
         width: 650px;
         height: 400px;
@@ -252,26 +254,23 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
+                        show = {!this.sourcesMode}
                     >
-                        {!this.sourcesMode &&
-                            <React.Fragment>
-                                <DemoDataTable
-                                    store = {store}
-                                />
+                        <DemoDataTable
+                            store = {store}
+                        />
 
-                                <RaceBreakdownBar 
-                                    // height = {this.demoBoxDims.height}
-                                    store = {store}
+                        <RaceBreakdownBar 
+                            // height = {this.demoBoxDims.height}
+                            store = {store}
 
-                                />
-                            </React.Fragment>
-                        }
-                        {this.sourcesMode &&
-                            <DemoSources />
-                        }
+                        />
+                        
 
                     </DemoBox>
-                    <Breakdown> 
+                    <Breakdown
+                        sources = {this.sourcesMode}
+                    > 
                         <BreakdownComponent 
                             offset = {this.breakdownOffset} 
                             store = {store} 
@@ -279,7 +278,7 @@ export default class ResponsiveScorecard extends React.Component{
                         /> 
                     </Breakdown>
 
-                    <MapContainer offset = {this.navOpen} init = {this.init}>
+                    <MapContainer offset = {this.navOpen || this.sourcesMode} init = {this.init}>
                         <MapComponent 
                             store = {store}
                             onHoverCounty = {this.onHoverCounty}
@@ -297,12 +296,15 @@ export default class ResponsiveScorecard extends React.Component{
                     <InitBox closeSplash = {this.closeSplash}/>
                 }
                 {indicator && !this.navOpen &&
+                    <React.Fragment>
                     <SourcesButton
                         sources = {this.sourcesMode}
                         store = {store}
                         onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
                         fullView = {this.sourcesMode}
                     />
+                    <PDFButton> Export PDF </PDFButton>
+                    </React.Fragment>
                 }
             </App>
 
@@ -310,3 +312,18 @@ export default class ResponsiveScorecard extends React.Component{
         )
     }
 }
+
+const PDFButton = styled.div`
+    position: absolute;
+    right: 0;
+    z-index: 21;
+    @media ${media.optimal}{
+        bottom: 90px;
+    }
+    @media ${media.compact}{
+        bottom: 65px;
+    }}
+    padding: 10px 25px;
+    border: 2px solid var(--bordergrey);
+
+`

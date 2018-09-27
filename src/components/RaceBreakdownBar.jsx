@@ -102,8 +102,9 @@ const Segment = styled.div`
     transform: translateY(${props=>props.offset}%);
     transform-origin: 50% 0%;
     // background-color: ${props=>props.fill};
-    // outline: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
-    &.asian{
+     // outline: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
+     border: 2px solid var(--bordergrey);
+    /*&.asian{
         background-color: red;
     }
     &.black{
@@ -111,7 +112,7 @@ const Segment = styled.div`
     }
     &.latinx{ background-color: green;}
     &.white{background-color: orange;}
-    &.other{background-color: grey;}
+    &.other{background-color: grey;}*/
 `
 const Hatch = styled.div`
     position: absolute;

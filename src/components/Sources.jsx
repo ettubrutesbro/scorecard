@@ -36,88 +36,80 @@ const DefaultSourcesView = (props) => {
 export const FullSourcesView = (props)=> {
     const {indicator} = props
     const src = find(sources, (o)=>{return o.indicator === indicator})
+    const srcs = [
+        find(sources, (o)=>{return o.indicator==='population'}),
+        find(sources, (o)=>{return o.indicator==='poverty'}),
+        find(sources, (o)=>{return o.indicator==='homelessness'}),
+        find(sources, (o)=>{return o.indicator==='immigrantFamilies'}),
+    ]
     return(
         <FullView>
             {!src && `Error: no source for indicator (data typo likely) ${indicator} `}
+            {src && 
+                <React.Fragment>
+                    <Indicator>
+                        <SourceBlock>
+                            <h3>indicator SOURCE</h3>
+                            <h1>{src.source}</h1>
+                            <a href = {src.url} >{src.url}</a>
+                        </SourceBlock>
 
-            <SourceBlock>
-                <h3>SOURCE</h3>
-                <h1>{src.source}</h1>
-                <a href = {src.url} >{src.url}</a>
-            </SourceBlock>
+                        {src.notes && 
+                        <NotesBlock>
+                            <h3>indicator Notes</h3>
+                            <p>{src.notes}</p>
+                        </NotesBlock>
+                        }
+                    </Indicator>
+                    <DemoSourceBlock>
+                        <h3>child population & race </h3>
+                        <h1>{srcs[0].source}</h1>
+                        <a href = {srcs[0].url}>{srcs[0].url}</a>
+                    </DemoSourceBlock>  
+                    <DemoSourceBlock>
+                        <h3>foreign-born parents</h3>
+                        <h1>{srcs[3].source}</h1>
+                        <a href = {srcs[3].url}>{srcs[1].url}</a>
+                    </DemoSourceBlock>  
+                    <DemoSourceBlock>
+                        <h3>children in poverty </h3>
+                        <h1>{srcs[1].source}</h1>
+                        <a href = {srcs[1].url}>{srcs[2].url}</a>
+                    </DemoSourceBlock>  
+                    <DemoSourceBlock>
+                        <h3>student homelessness </h3>
+                        <h1>{srcs[2].source}</h1>
+                        <a href = {srcs[2].url}>{srcs[3].url}</a>
+                    </DemoSourceBlock>  
 
-            {src.project && 
-                <SourceBlock>
-                <h3>project</h3>
-                <h1>{src.project}</h1>
-                <a href = {src.projectURL}>{src.projectURL}</a>
-                </SourceBlock>
-            }
-
-            <SourceBlock>
-                <h3>date retrieved</h3>
-                <h1>{src.dateRetrieved}</h1>
-            </SourceBlock>
-            {src.notes1 && 
-            <SourceBlock>
-                <h3>Notes</h3>
-                <p>{src.notes1}</p>
-            </SourceBlock>
+                    <h4> Further details available in PDF.</h4>
+            </React.Fragment>
             }
         </FullView>
     )
 }
 
-export const DemoSources = (props) => {
-    const srcs = [
-        find(sources, (o)=>{return o.indicator==='population'}),
-        find(sources, (o)=>{return o.indicator==='poverty'}),
-        find(sources, (o)=>{return o.indicator==='homeless'}),
-        find(sources, (o)=>{return o.indicator==='immigrantFamilies'}),
-    ]
-    return(
-        <DemoSourcesContent>
-            <h1> Demographic data sources</h1>
-            <DemoSourceBlock>
-                <h3>child population & race </h3>
-                <h1>{srcs[0].source}</h1>
-                <a href = {srcs[0].url}>{srcs[0].url}</a>
-            </DemoSourceBlock>  
-            <DemoSourceBlock>
-                <h3>foreign-born parents</h3>
-                <h1>{srcs[3].source}</h1>
-                <a href = {srcs[3].url}>{srcs[1].url}</a>
-            </DemoSourceBlock>  
-            <DemoSourceBlock className = 'indent'>
-                <h3>children in poverty </h3>
-                <h1>{srcs[1].source}</h1>
-                <a href = {srcs[1].url}>{srcs[2].url}</a>
-            </DemoSourceBlock>  
-            <DemoSourceBlock className = 'bigindent'>
-                <h3>student homelessness </h3>
-                <h1>{srcs[2].source}</h1>
-                <a href = {srcs[2].url}>{srcs[3].url}</a>
-            </DemoSourceBlock>  
-            <h4> Further details available in PDF.</h4>
-        </DemoSourcesContent>
-    )
-}
+const Indicator = styled.div`
+    display: flex;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--bordergrey);
+    margin-bottom: 25px;
+    justify-content: space-between;
+`
 
-const DemoSourcesContent = styled.div`
+const FullView = styled.div`
+    border: 2px solid var(--bordergrey);
     display: flex;
     flex-wrap: wrap;
-    /*flex-direction: column;*/
-    /*justify-content: space-betw\een;*/
-    h1{
-        width: 100%;
-        font-size: 24px;
-        font-weight: normal;
-        margin: 0;
-        margin-bottom: 15px;
-        @media ${media.compact}{
-            font-size: 16px;
-            // display: none;
-        }
+    justify-content: space-between;
+    background: white;
+    @media ${media.optimal}{
+        padding: 35px;
+        width: 175%;
+    }
+    @media ${media.compact}{
+        padding: 20px;
+        width: 200%;
     }
     h4{
         width: 100%;
@@ -126,17 +118,6 @@ const DemoSourcesContent = styled.div`
         text-align: right;
         font-weight: normal;
         margin: 0;
-    }
-
-`
-
-const FullView = styled.div`
-    border: 2px solid var(--bordergrey);
-    @media ${media.optimal}{
-        padding: 35px;
-    }
-    @media ${media.compact}{
-        padding: 20px;
     }
 
 `
@@ -152,11 +133,12 @@ const SourcesButton = styled.div`
     @media ${media.compact}{
         bottom: 100px;
     }
+
 `
 
 const SourceBlock = styled.div`
-    width: 100%;
-    margin-top: 30px;
+
+    
     &:first-of-type{
         margin-top: 0;
     }
@@ -186,8 +168,22 @@ const SourceBlock = styled.div`
     p{
         margin: 0;
     }
+    @media ${media.optimal}{
+        width: calc(50% - 15px);
+    }
+    @media ${media.compact}{
+        width: calc(50% - 10px);
+        h1{ font-size: 13px; }
+    }
 
 `
+
+const NotesBlock = styled(SourceBlock)`
+    /*font-size: 13px;*/
+    p{ font-size: 13px; }
+
+`
+
 
 const DemoSourceBlock = styled(SourceBlock)`
     &:first-of-type{
@@ -196,8 +192,6 @@ const DemoSourceBlock = styled(SourceBlock)`
     margin-top: 0;
     display: inline-flex;
     flex-direction: column;
-    flex-basis: 50%;
-    flex-shrink: 1;
     margin-bottom: 15px;
     @media ${media.optimal}{
         &.indent{

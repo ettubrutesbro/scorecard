@@ -11,17 +11,17 @@ import allegations from './Allegations.json'
 
 
 //formatting issues
-import breastFeeding from './breastFeeding.json'
-import MathStandards8 from './mathStandards8.json'
+import breastFeeding from './BreastFeeding.json'
+import MathStandards8 from './MathStandards8.json'
 
 //year rank discrepancy
-import collegeLevelMath from './collegeLevelMath.json'
+import collegeLevelMath from './CollegeLevelMath.json'
 
 // black/AA issue
-import FamilyLike from './familyLike.json'
+import FamilyLike from './FamilyLike.json'
 
 //asterisked numbers and no ranks
-import ReadToEveryday from './readToEveryday.json'
+import ReadToEveryday from './ReadToEveryday.json'
 
 
 //provisionally working:
