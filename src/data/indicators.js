@@ -11,19 +11,20 @@ import allegations from './Allegations.json'
 
 
 //formatting issues
-// import availableSlot from './AvailableSlot.json'
-// import breastFeeding from './BreastFeeding.json'
-// import MathStandards8 from './MathStandards8.json'
+import breastFeeding from './breastFeeding.json'
+import MathStandards8 from './mathStandards8.json'
 
 //year rank discrepancy
-// import collegeLevelMath from './CollegeLevelMath.json'
+import collegeLevelMath from './collegeLevelMath.json'
 
 // black/AA issue
-// import FamilyLike from './FamilyLike.json'
+import FamilyLike from './familyLike.json'
 
 //asterisked numbers and no ranks
-// import ReadToEveryday from './ReadToEveryday.json'
+import ReadToEveryday from './readToEveryday.json'
 
+
+//provisionally working:
 import childCareSlots from './ChildCareSlots.json'
 import englishLearners from './EnglishLearners.json'
 import enrolled34 from './Enrolled34.json'
@@ -32,7 +33,6 @@ import FRPMSchoolYear from './FRPMSchoolYear.json'
 import FRPMSummer from './FRPMSummer.json'
 import FYTimelyDental from './FYTimelyDental.json'
 import FYTimelyMedical from './FYTimelyMedical.json'
-
 
 import Graduation from './Graduation.json'
 import HealthInsurance from './HealthInsurance.json'
@@ -46,44 +46,42 @@ import Suspension from './Suspension.json'
 
 const indicators = {
 
-    notFoodInsecure: notFoodInsecure,
-    earlyPrenatalCare: earlyPrenatalCare,   
-    registeredToVote: registeredToVote,
-    upToDateVaccinations: upToDateVaccinations,
-    lowIncomeDental: lowIncomeDental,
-    collegeCareerReady: collegeCareerReady,
 
 
-    //final batch:
 
     //non-working
-    // collegeLevelMath: collegeLevelMath,
-    // availableSlot: availableSlot,
-    // breastFeeding: breastFeeding,
-    // FamilyLike: FamilyLike,
     // MathStandards8: MathStandards8,
 
     //working: 
+
+    allegations: allegations,
+    breastFeeding: breastFeeding,
+    childCareSlots: childCareSlots,
+    collegeCareerReady: collegeCareerReady,
+    collegeLevelMath: collegeLevelMath,
+    earlyPrenatalCare: earlyPrenatalCare,   
     englishLearners: englishLearners,
     enrolled34: enrolled34,
-    allegations: allegations,
-    childCareSlots: childCareSlots,
+    FamilyLike: FamilyLike,
     FosterYouthGraduation: FosterYouthGraduation,
     FRPMSchoolYear: FRPMSchoolYear,
     FRPMSummer: FRPMSummer,
     FYTimelyDental: FYTimelyDental,
     FYTimelyMedical: FYTimelyMedical,
-
     Graduation: Graduation,
     HealthInsurance: HealthInsurance,
+    lowIncomeDental: lowIncomeDental,
     NotAbsent: NotAbsent,
+    notFoodInsecure: notFoodInsecure,
     NotLowBirthWeight: NotLowBirthWeight,
     NotObese: NotObese,
     Permanency: Permanency,
     PlacementStability: PlacementStability,
     ReadingStandards: ReadingStandards,
-    // ReadToEveryday: ReadToEveryday,
+    ReadToEveryday: ReadToEveryday,
+    registeredToVote: registeredToVote,
     Suspension: Suspension,
+    upToDateVaccinations: upToDateVaccinations,
 
 
 }
