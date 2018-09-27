@@ -68,13 +68,14 @@ const Categories = styled.div`
 const Years = styled.span`
     margin-left: 6px;
     font-size: 13px;
-    color: #b1b1b1;
+    color: var(--fainttext);
+    margin-right: 5px;
 `
 const NoRace = styled.div`
     color: #b1b1b1;
     font-size: 13px;
     /*margin-right: 8px;*/
-    margin-left: 8px;
+    margin-left: 5px;
     background:${props => props.needRace? 'red' : ''}
 `
 const HealthTag = styled.div`
@@ -237,9 +238,10 @@ export default class IndicatorList extends React.Component{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
+                        const noRace = !cats.includes('hasRace')
                         return <ColumnItem
                             selected = {selected}
-                            noRaceNeedRace = {!cats.includes('hasRace') && race}
+                            noRaceNeedRace = {noRace && race}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
                                 // this.props.store.completeWorkflow('indicator',ind)
@@ -253,6 +255,11 @@ export default class IndicatorList extends React.Component{
                                         return yr
                                     }).join(', ')}
                                 </Years>
+                                {noRace &&
+                                    <NoRaceBadge>
+                                        (No Race Data)
+                                    </NoRaceBadge>
+                                }
                             </IndLeft>
                             <IndRight>
                                 <Percentage>
@@ -315,5 +322,10 @@ const Prev = styled(PageBtn)`
 `
 
 const Next = styled(PageBtn)`
+
+`
+
+const NoRaceBadge = styled.span`
+    color: var(--fainttext);
 
 `
