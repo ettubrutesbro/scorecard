@@ -140,11 +140,11 @@ const MapContainer = styled(Quadrant)`
     @media ${media.optimal}{
         width: 60%;
         height: 97%;
-        transform: translateX(${props => props.init? '-350px' : props.offset? '40%' : 0});
+        transform: translateX(${props => props.offset? '40%' : 0});
     }
     @media ${media.compact}{
         width: 60%; height: 100%;
-        transform: translateX(${props => props.init? '-250px' : props.offset? '280px' : 0});
+        transform: translateX(${props => props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
 `
@@ -248,7 +248,7 @@ export default class ResponsiveScorecard extends React.Component{
                         closeSplash = {this.closeSplash}
                     /> 
                 </Nav>
-                <GreyMask show = {this.navOpen || this.init}/>
+                <GreyMask show = {this.navOpen}/>
                 <TopRow>
                     <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
                     <Legend> <LegendComponent store = {store} /> </Legend>
@@ -257,7 +257,7 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        show = {!this.sourcesMode}
+                        show = {!this.sourcesMode && !this.init}
                     >
                         <DemoDataTable
                             store = {store}
@@ -271,6 +271,9 @@ export default class ResponsiveScorecard extends React.Component{
                         
 
                     </DemoBox>
+                    {this.init &&
+                       <InitBox closeSplash = {this.closeSplash}/>
+                    }
                     <Breakdown
                         sources = {this.sourcesMode}
                     > 
@@ -281,7 +284,10 @@ export default class ResponsiveScorecard extends React.Component{
                         /> 
                     </Breakdown>
 
-                    <MapContainer offset = {this.navOpen || this.sourcesMode} init = {this.init}>
+                    <MapContainer 
+                        offset = {this.init || this.navOpen || this.sourcesMode} 
+                        // init = {this.init}
+                    >
                         <MapComponent 
                             store = {store}
                             onHoverCounty = {this.onHoverCounty}
@@ -295,9 +301,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </MapContainer>
                 </BottomRow>
 
-                {this.init &&
-                    <InitBox closeSplash = {this.closeSplash}/>
-                }
+
                 {indicator && !this.navOpen &&
                     <React.Fragment>
                     <SourcesButton

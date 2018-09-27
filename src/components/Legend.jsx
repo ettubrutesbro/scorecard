@@ -103,7 +103,7 @@ export default class Legend extends React.Component{
         }
         else {
             return(
-                <div> No data yet </div>
+                <div />                
             )
         }
     }

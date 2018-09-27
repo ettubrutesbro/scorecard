@@ -181,7 +181,7 @@ const logoSVG = require('./assets/cnlogo.svg')
 const LogoContainer = styled.div`
     width: 65px;
     height: 50px;
-    margin-right: 25px;
+    margin-right: 30px;
     background-image: url(${logoSVG});
     background-repeat: no-repeat;
     background-size: contain;
@@ -205,7 +205,7 @@ export default class ResponsiveNav extends React.Component{
     }
 
     render(){
-        const {openNav, open, store, closeInit} = this.props
+        const {openNav, open, store, closeInit, init} = this.props
         const {indicator, county, year, race} = store
         const ind = indicators[indicator]
 
@@ -225,14 +225,14 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}
                 >
-                    {store.indicator? semanticTitles[store.indicator].shorthand : 'Pick an indicator'}
+                    {store.indicator? semanticTitles[store.indicator].shorthand : init? 'Indicator' : 'Pick an indicator'}
                 </IndicatorSelect>
                 <CountySelect 
                     disabled = {!indicator}
                     onClick = {()=>openNav('county')}
                     offset = {open}
                 >
-                    {store.county? find(counties, (o)=>{return o.id===store.county}).label : 'All counties' }
+                    {store.county? find(counties, (o)=>{return o.id===store.county}).label : init? 'County' : 'All counties' }
                 </CountySelect>
                 
                     <NormalDropdown
@@ -242,7 +242,7 @@ export default class ResponsiveNav extends React.Component{
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
                     >   <DropdownReading onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
-                            {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : this.raceDropdown? 'Pick race' : 'All races'}
+                            {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : init? 'Race' : this.raceDropdown? 'Pick race' : 'All races'}
                         </DropdownReading>
                         
                             <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
