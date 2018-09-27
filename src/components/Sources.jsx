@@ -128,7 +128,7 @@ const SourcesButton = styled.div`
     right: 0;
     z-index: 20;
     @media ${media.optimal}{
-        bottom: 150px;
+        bottom: 165px;
     }
     @media ${media.compact}{
         bottom: 100px;

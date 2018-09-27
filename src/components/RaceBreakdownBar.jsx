@@ -84,6 +84,7 @@ const VertBar = styled.div`
     // height: 500px; //arbitrary
     height: ${props => props.height}%;
     // outline: 1px solid #999999;
+    border-top: 2px solid var(--bordergrey);
     // padding: 30px;
     box-sizing: border-box;
     width: 40px;

@@ -179,13 +179,14 @@ const Logo = (props) => {
 }
 const logoSVG = require('./assets/cnlogo.svg')
 const LogoContainer = styled.div`
-    width: 75px;
-    /*border: 1px solid grey;*/
+    width: 65px;
     height: 50px;
     margin-right: 25px;
-    background: url(${logoSVG});
+    background-image: url(${logoSVG});
     background-repeat: no-repeat;
     background-size: contain;
+
+    background-position: center;
     cursor: pointer;
 `
 
