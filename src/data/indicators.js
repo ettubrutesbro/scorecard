@@ -50,7 +50,6 @@ const indicators = {
 
 
     //non-working
-    // MathStandards8: MathStandards8,
 
     //working: 
 
@@ -71,6 +70,7 @@ const indicators = {
     Graduation: Graduation,
     HealthInsurance: HealthInsurance,
     lowIncomeDental: lowIncomeDental,
+    MathStandards8: MathStandards8,
     NotAbsent: NotAbsent,
     notFoodInsecure: notFoodInsecure,
     NotLowBirthWeight: NotLowBirthWeight,
