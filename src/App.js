@@ -19,12 +19,12 @@ import commaNumber from 'comma-number'
 function formatDemographicJSON(file){
   let demographicObject = {}
   file.forEach((blob)=>{
-    let {Location, ...restOfKeyVals} = blob
-    restOfKeyVals.Population = commaNumber(restOfKeyVals.Population).replace(/\,/g,'')
+    let {county, ...restOfKeyVals} = blob
+    restOfKeyVals.population = commaNumber(restOfKeyVals.population).replace(/\,/g,'')
     const formattedKeyVals = mapKeys(restOfKeyVals,(value, key)=>{
       return camelLower(key)
     })
-    demographicObject[camelLower(Location)] = formattedKeyVals
+    demographicObject[camelLower(county)] = formattedKeyVals
   })
   console.log(demographicObject)
   return demographicObject
