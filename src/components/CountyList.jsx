@@ -1,6 +1,8 @@
 import React from 'react'
 import styled, {keyframes} from 'styled-components'
 
+import {find} from 'lodash'
+
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import ReactTooltip from 'react-tooltip'
@@ -49,16 +51,20 @@ const Titleblock = styled.div`
     margin-bottom: 25px;
 `
 const Search = styled.div`
-    width: 250px;
+    // transform: translateY(3px);
+    width: 200px;
     position: relative;
     padding-left: 25px;
-    padding-bottom: 5px;
+    // padding-bottom: 3px;
+    // border: 1px solid red;
     border-bottom: 1px solid var(--bordergrey);
+    display: flex;
+    align-items: center;
 `
 const SearchIcon = styled.div`
-    position: absolute;
-    top: 6px;
-    left: 15px;
+    // position: absolute;
+    // top: 6px;
+    // left: 15px;
     width: 15px; height: 15px;
     border: 1px solid black;
 `
@@ -69,6 +75,24 @@ const SearchInput = styled.input`
     padding: 6px 15px;
 `
 
+const AllCountiesBtn = styled.div`
+    margin-right: 15px;
+    border: ${props => props.btnMode? '1px solid var(--bordergrey)' : ''};
+    cursor: ${props => props.btnMode? 'pointer' : ''};
+    padding: 6px 20px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+`
+const Faint = styled.span`
+    margin-left: 5px;
+    color: var(--fainttext);
+`
+const TitleRight = styled.div`
+    display: flex;
+    align-items: center;
+`
+
 class CountyList extends React.Component{
     
     handleSelection = (cty) => {
@@ -77,18 +101,33 @@ class CountyList extends React.Component{
     }
     render(){
         const {indicator, county, race, year} = this.props.store
+        const ctyLabel = county? find(counties, (c)=>{return c.id === county}).label : ''
 
         return(
             <div>
                 <Titleblock>
+                    
                     <h1>Pick a county.</h1>
+
+                    <TitleRight>
+                    <AllCountiesBtn
+                        onClick= {county? ()=>this.handleSelection(null) : ()=>{}}
+                        btnMode = {county}
+                    >
+                    {county && 'All counties'}
+                        <Faint>
+                            {county && '(Deselect '+ctyLabel+' county)'}
+                            {!county && 'Viewing all counties'}
+                        </Faint>
+                    </AllCountiesBtn>
                     <Search> 
                         <SearchIcon />
-                        <SearchInput placeholder = "Type to search counties..."/>
+                        <SearchInput placeholder = "Search counties..."/>
                     </Search>
+                    </TitleRight>
                 </Titleblock>
-                <GridList>
 
+                <GridList>
                     <ReactTooltip effect = "solid" />
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1

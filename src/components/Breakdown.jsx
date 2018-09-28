@@ -79,50 +79,23 @@ export default class Breakdown extends React.Component{
 
         return(
             <Wrapper offset = {this.props.offset}>
+                {!this.props.sources && indicator &&  
+                    <IndicatorByCounties 
+                        entries = {entryCount}
+                        store = {store}
+                    />  
+                }
+                {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
+                    <BottomTable>
+                    <IndicatorByRaces
+                        store = {store}
+                    />
+                    </BottomTable>
+                }
 
-                    {!this.props.sources && indicator &&  
-                        // 'county performance distribution and indicator by race'
-                        <IndicatorByCounties 
-
-                            entries = {entryCount}
-                            // key = {indicator+county+year+race} //kills anims but works
-                            store = {store}
-                            // indicator = {indicator}
-                            // county = {county}
-                            // race = {race}
-                            // year = {year}
-                        />  
-                    }
-                    {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
-                        <BottomTable>
-                        <IndicatorByRaces
-                            store = {store}
-                        />
-                        </BottomTable>
-                    }
-                    {/*!indicator && county && !race &&
-                         // 'population race % breakdown and county demographic data'
-                         <React.Fragment>
-                         <RaceRowTable 
-                            clickRace = {store.completeWorkflow}
-                            demo = {demopop[county]}
-                        />
-
-                        <DemoDataTable store = {store} />
-                        </React.Fragment>
-                    */}
-                    {/*!county && race &&
-                        <CountiesByRacePopulation 
-                            store = {store}
-                        />
-                    */}
-                    {indicator && this.props.sources &&
-                        <FullSourcesView indicator = {indicator} />
-                    }
-
-
-           
-
+                {indicator && this.props.sources &&
+                    <FullSourcesView indicator = {indicator} />
+                }
             </Wrapper>
         )
     }

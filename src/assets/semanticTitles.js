@@ -77,13 +77,13 @@ const semanticTitles = {
         label: '3- and 4-year-olds enrolled in preschool or transitional kindergarten',
         shorthand: 'Preschool and kindergarten enrollment'
     },
-    'FamilyLike': {
+    'familyLike': {
         who: 'adolescents in the child welfare system',
         what: 'were placed in family-like settings',
         label: 'Adolescents in the child welfare system who are placed in family-like settings',
         shorthand: 'Family-like settings for adolescents'
     },
-    'FosterYouthGraduation': {
+    'fosterYouthGraduation': {
         who: 'foster youth',
         what: 'graduated high school on time',
         label: 'Foster youth who graduate high school on time',
@@ -115,67 +115,67 @@ const semanticTitles = {
         label: 'Timely medical exams for children in the child welfare system',
         shorthand: 'Medical exams in child welfare'
     },
-    'Graduation': {
+    'graduation': {
         who: '12th-graders',
         what: 'graduated high school on time',
         label: '12th-graders who graduated high school on time',
         shorthand: 'Timely high school graduation'
     },
-    'HealthInsurance': {
+    'healthInsurance': {
         who: 'children',
         what: 'had health insurance',
         label: 'Children with health insurance',
         shorthand: 'Children\'s health insurance' 
     },
-    'MathStandards8': {
+    'mathStandards8': {
         who: '8th-graders',
         what: 'met or exceeded grade-level standards in math',
         label: '8th-graders who meet or exceed grade-level standards in math',
         shorthand: '8th grade math excellence'
     },
-    'NotAbsent': {
+    'notAbsent': {
         who: 'students',
         what: 'were not chronically absent from school',
         label: 'Students who are not chronically absent from school',
         shorthand: 'Student chronic absence'
     },
-    'NotLowBirthWeight': {
+    'notLowBirthWeight': {
         who: 'newborns',
         what: 'were not low birthweight',
         label: 'Newborns who are not low birthweight',
         shorthand: 'Newborn birthweight'
     },
-    'NotObese': {
+    'notObese': {
         who: '7th-graders',
         what: 'were not overweight or obese',
         label: '7th graders who are not overweight or obese',
         shorthand: 'Obesity in 7th graders'
     },
-    'Permanency': {
+    'permanency': {
         who: 'children in the child welfare system',
         what: 'exited to permanency within one year',
         label: 'Children in the child welfare system who exit to permanency within one year',
         shorthand: 'Permanency in child welfare'
     },
-    'PlacementStability': {
+    'placementStability': {
         who: 'children in the child welfare system',
         what: 'had been in one placement after 24 months in care',
         label: 'Children in the child welfare system who have been in one placement after 24 months in care',
         shorthand: 'Placement stability in child welfare'
     },
-    'ReadingStandards': {
+    'readingStandards': {
         who: '3rd-graders',
         what: 'read near or above grade-level standards',
         label: '3rd-graders who read near or above grade-level standards',
         shorthand: '3rd grade reading standards'
     },
-    'ReadToEveryday': {
+    'readToEveryday': {
         who: 'children, ages birth-5',
         what: 'were read to everyday by an adult',
         label: 'Children, ages birth-5, who are read to everyday by an adult',
         shorthand: 'Daily reading to children'
     },
-    'Suspension': {
+    'suspension': {
         who: 'student suspensions',
         what: 'were not due to "defiance or disruption"',
         label: 'Student suspensions not due to "defiance/disruption"',
