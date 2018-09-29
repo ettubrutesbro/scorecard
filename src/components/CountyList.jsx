@@ -44,6 +44,7 @@ const Titleblock = styled.div`
         margin-left: 12px;
         font-weight: 400;
         font-size: 24px;
+        margin-right: 10px;
     }
     display: flex;
     align-items: center;
@@ -79,7 +80,7 @@ const AllCountiesBtn = styled.div`
     margin-right: 15px;
     border: ${props => props.btnMode? '1px solid var(--bordergrey)' : ''};
     cursor: ${props => props.btnMode? 'pointer' : ''};
-    padding: 6px 20px;
+    padding: 6px 15px;
     display: inline-flex;
     align-items: center;
     font-size: 13px;
@@ -88,7 +89,7 @@ const Faint = styled.span`
     margin-left: 5px;
     color: var(--fainttext);
 `
-const TitleRight = styled.div`
+const TitleSide = styled.div`
     display: flex;
     align-items: center;
 `
@@ -106,25 +107,27 @@ class CountyList extends React.Component{
         return(
             <div>
                 <Titleblock>
-                    
+                    <TitleSide>
                     <h1>Pick a county.</h1>
-
-                    <TitleRight>
+                    {!county && <Faint> Viewing all counties </Faint>}
+                    </TitleSide>
+                    <TitleSide>
+                    {county && 
                     <AllCountiesBtn
-                        onClick= {county? ()=>this.handleSelection(null) : ()=>{}}
+                        onClick= {()=>this.handleSelection(null)}
                         btnMode = {county}
                     >
-                    {county && 'All counties'}
+                    All counties
                         <Faint>
-                            {county && '(Deselect '+ctyLabel+' county)'}
-                            {!county && 'Viewing all counties'}
+                            (Deselect {ctyLabel} county)
                         </Faint>
                     </AllCountiesBtn>
+                    }
                     <Search> 
                         <SearchIcon />
                         <SearchInput placeholder = "Search counties..."/>
                     </Search>
-                    </TitleRight>
+                    </TitleSide>
                 </Titleblock>
 
                 <GridList>
