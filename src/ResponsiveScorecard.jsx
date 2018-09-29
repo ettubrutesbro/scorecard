@@ -248,7 +248,11 @@ export default class ResponsiveScorecard extends React.Component{
                         closeSplash = {this.closeSplash}
                     /> 
                 </Nav>
-                <GreyMask show = {this.navOpen}/>
+                <GreyMask 
+                    show = {this.navOpen}
+                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ''}
+
+                />
                 <TopRow>
                     <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
                     <Legend> <LegendComponent store = {store} /> </Legend>
@@ -296,6 +300,7 @@ export default class ResponsiveScorecard extends React.Component{
                             selected = {store.county}
                             data = {dataForMap}
                             mode = {this.navOpen? 'offset' : dataForMap?'heat':''}
+                            clickedOutside = {this.navOpen? ()=>this.openNav(false): ''}
                             // mode = 'wire'
                         />
                     </MapContainer>

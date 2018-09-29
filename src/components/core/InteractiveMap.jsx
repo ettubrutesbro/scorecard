@@ -114,7 +114,11 @@ const CountyPath = styled.path`${CountyStyle}`
         //the 
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            this.props.onSelect('county', id)
+            if(id==='svg' || id === 'overlapbox'){
+                this.props.clickedOutside()
+            }
+            else this.props.onSelect('county', id)
+
         }
     }
 
@@ -130,6 +134,8 @@ const CountyPath = styled.path`${CountyStyle}`
             <Wrapper 
                 ref = {(container)=> this.container = container}
                 style = {{overflow: 'hidden'}}
+                // onClick = {()=>console.log('map wrapper clicked')}
+                onClick = {(e)=>this.handleClick(e.target.id)}
             >
                 <ReactTooltip disable = {!indicator}/>
                 <TheMap 
@@ -160,7 +166,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 'data-tip': data[id]==='*'? `${id} county's data set is too small or unstable.` : !data[id]? `${id} has no data` : `${id}: ${data[id]}%`,
                                 selected: selected===id,
                                 highlighted: this.highlighted===id || this.props.hoveredCounty===id,
-                                onClick: ()=> this.handleClick(id)
+                                // onClick: ()=> this.handleClick(id)
                             } : {}
                         
 
@@ -190,7 +196,8 @@ const CountyPath = styled.path`${CountyStyle}`
 InteractiveMap.defaultProps = {
     colorStops: ['#CDFCFE','#135F80',],
     colorInterpolation: 'hcl',
-    quantile: false
+    quantile: false,
+    clickedOutside: ()=>{console.log('clicked map container but no county')}
 }
 
 let SVGComponents = {
