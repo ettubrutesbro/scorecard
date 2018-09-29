@@ -56,6 +56,7 @@ export default class IndicatorByRaces extends React.Component{
                     header = "By Race"
                     bars = {indicatorPerformanceByRace}
                     labelWidth = {100}
+                    selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
             </div>
         )

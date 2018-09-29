@@ -277,7 +277,7 @@ export default class IndicatorByCounties extends React.Component{
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
-                selectBar = {this.props.store.completeWorkflow}
+                selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
                 // onHover = {()=>console.log('hovering graph')}
                 // onClickGraph = {this.toggleDistribute}
                 // graphHoverPrompt = 'Click to see full list (47 counties)'
