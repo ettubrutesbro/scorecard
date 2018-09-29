@@ -1,4 +1,6 @@
 import React from 'react'
+import {observable, action} from 'mobx'
+import {observer} from 'mobx-react'
 import styled, {keyframes} from 'styled-components'
 
 import {find} from 'lodash'
@@ -7,19 +9,22 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import ReactTooltip from 'react-tooltip'
 
+import media from '../utilities/media'
+
 const GridList = styled.ul`
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    // grid-template-columns: repeat(auto-fill, 1fr);
-    // grid-template-columns: minmax(100px, 1fr);
-    grid-gap: 8px;
-    flex-wrap: wrap;
-    // height: 100%;
-    justify-content: space-between;
-    flex-direction: column;
+    @media ${media.optimal}{
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 8px;
+    }
+    @media ${media.compact}{
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 5px;
+    }
     list-style-type: none;
     margin: 0;
     padding: 0;
+
 `
 const GridItem = styled.li`
     // margin: 1%;
@@ -49,25 +54,31 @@ const Titleblock = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 25px;
+    @media ${media.optimal}{
+        margin-bottom: 25px;   
+    }
+    @media ${media.compact}{
+        margin-bottom: 18px;
+    }
 `
 const Search = styled.div`
     // transform: translateY(3px);
     width: 200px;
     position: relative;
-    padding-left: 25px;
+    padding-left: 15px;
     // padding-bottom: 3px;
     // border: 1px solid red;
     border-bottom: 1px solid var(--bordergrey);
     display: flex;
     align-items: center;
 `
+const mag = require('../assets/search.svg')
 const SearchIcon = styled.div`
-    // position: absolute;
-    // top: 6px;
-    // left: 15px;
+    position: absolute;
+    left: 5px;
     width: 15px; height: 15px;
-    border: 1px solid black;
+    background-image: url(${mag});
+
 `
 const SearchInput = styled.input`
     appearance: none;
@@ -87,14 +98,18 @@ const AllCountiesBtn = styled.div`
 `
 const Faint = styled.span`
     margin-left: 5px;
+    font-size: 13px;
     color: var(--fainttext);
 `
 const TitleSide = styled.div`
     display: flex;
     align-items: center;
 `
-
+@observer
 class CountyList extends React.Component{
+
+    @observable searchString = ''
+    @action search = (e) => this.searchString = e.target.value
     
     handleSelection = (cty) => {
         this.props.store.completeWorkflow('county', cty)
@@ -125,7 +140,11 @@ class CountyList extends React.Component{
                     }
                     <Search> 
                         <SearchIcon />
-                        <SearchInput placeholder = "Search counties..."/>
+                        <SearchInput 
+                            placeholder = "Search counties..." 
+                            value = {this.searchString}
+                            onChange = {this.search}
+                        />
                     </Search>
                     </TitleSide>
                 </Titleblock>
@@ -136,6 +155,8 @@ class CountyList extends React.Component{
                         if(a.id < b.id) return -1
                         else if (a.id > b.id) return 1
                         else return 0
+                    }).filter((cty)=>{
+                        return !this.searchString? true : cty.id.includes(this.searchString.toLowerCase())
                     }).map((cty)=>{
                         let disabled = false 
                         const selected = cty.id === county
