@@ -4,10 +4,13 @@ import styled from 'styled-components'
 
 import commaNumber from 'comma-number'
 
+import {counties} from '../assets/counties'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 
 import CountingNumber from './CountingNumber'
+
+import {find} from 'lodash'
 
 import {capitalize} from '../utilities/toLowerCase'
 import media from '../utilities/media'
@@ -67,7 +70,7 @@ export default class DemoDataTable extends React.Component {
     render(){
         const {county} = this.props.store
         const demo = county? demopop[county] : demopop.california
-        const place = county? capitalize(county) + ' county' : 'California'
+        const place = county? find(counties, (c)=>{return c.id===county}).label + ' county' : 'California'
         return(
             <RowTable>
                 <Title> Children in {place} </Title>

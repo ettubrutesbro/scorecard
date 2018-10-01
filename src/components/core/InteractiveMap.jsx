@@ -22,9 +22,7 @@ const TheMap = styled.svg`
 
 const CountyStyle = css`
     cursor: pointer;
-    stroke: ${props => props.selected?'var(--peach)': props.highlighted?'pink': 'transparent'};
-    stroke-alignment: ${props => props.selected? 'inner' : 'center'}
-    fill: ${props => props.selected?'red' : 'var(--inactivegrey)'};
+    stroke: ${props => props.highlighted?'pink': 'transparent'};
     stroke-width: ${props => props.selected? 3.5 : 2.25};
 `
 const OverlapBox = styled.polyline`
@@ -114,7 +112,7 @@ const CountyPath = styled.path`${CountyStyle}`
         //the 
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            if(id==='svg' || id === 'overlapbox'){
+            if(id==='svg' || id === 'overlapbox' || id === 'full'){
                 this.props.clickedOutside()
             }
             else this.props.onSelect('county', id)
@@ -160,7 +158,7 @@ const CountyPath = styled.path`${CountyStyle}`
                             const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
                                 // 'data-tip': {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null},
                                 style: {
-                                    fill: fill,
+                                    fill: selected===id? 'var(--peach)' : fill,
                                     transition: data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
                                 },
                                 'data-tip': data[id]==='*'? `${id} county's data set is too small or unstable.` : !data[id]? `${id} has no data` : `${id}: ${data[id]}%`,

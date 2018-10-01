@@ -29,6 +29,12 @@ import {camelLower} from './utilities/toLowerCase'
 const store = new ScorecardStore()
 window.store = store
 
+window.counties = counties.reduce((obj,item)=>{
+    obj[item.id] = item
+    return obj
+})
+
+
 const Quadrant = styled.div`
     position: absolute;
     display: flex;
