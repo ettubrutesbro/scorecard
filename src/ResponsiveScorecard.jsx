@@ -23,17 +23,8 @@ import demopop from './data/demographicsAndPopulation'
 import media from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
 
-
-
-
 const store = new ScorecardStore()
 window.store = store
-
-window.counties = counties.reduce((obj,item)=>{
-    obj[item.id] = item
-    return obj
-})
-
 
 const Quadrant = styled.div`
     position: absolute;
@@ -149,7 +140,7 @@ const MapContainer = styled(Quadrant)`
         transform: translateX(${props => props.offset? '40%' : 0});
     }
     @media ${media.compact}{
-        width: 60%; height: 100%;
+        width: 768px; height: 560px;
         transform: translateX(${props => props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
@@ -306,7 +297,7 @@ export default class ResponsiveScorecard extends React.Component{
                             selected = {store.county}
                             data = {dataForMap}
                             mode = {this.navOpen? 'offset' : dataForMap?'heat':''}
-                            clickedOutside = {this.navOpen? ()=>this.openNav(false): ''}
+                            clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
                             // mode = 'wire'
                         />
                     </MapContainer>

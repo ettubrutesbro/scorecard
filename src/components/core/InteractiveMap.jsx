@@ -5,13 +5,16 @@ import {observer} from 'mobx-react'
 import styled, {css} from 'styled-components'
 // import styles from './InteractiveMap.module.css'
 
-import {isEqual, map} from 'lodash'
+import {isEqual, map, debounce} from 'lodash'
 import chroma from 'chroma-js'
 
-import ReactTooltip from 'react-tooltip'
+// import ReactTooltip from 'react-tooltip'
+
+import countyLabels from '../../assets/countyLabels'
 
 const Wrapper = styled.div`
     // position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
 ` 
@@ -54,10 +57,6 @@ const FullState = styled.polygon`
     opacity: ${props => props.wire? 1 : 0};
     transition: opacity ${props => props.wire? 1 : 0.25}s;
     fill: black;
-
-
-
-
     stroke: black;
     stroke-width: 2;
 `
@@ -65,58 +64,74 @@ const FullState = styled.polygon`
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
 
+const Tooltip = styled.div`
+    position: absolute;
+    top: 0; left: 0;
+    top: ${props => props.pos.y}px;
+    left: ${props => props.pos.x}px;
+    z-index: 10;
+    width: 175px;
+    height: 40px;
+    transform: translate(-50%, calc(-50% - 45px));
+    background: white;
+    border: 1px solid var(--bordergrey);
+    pointer-events: none;
+`
+
 @observer class InteractiveMap extends React.Component{
 
     @observable targetCoords = {x: 0, y: 0}
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
+    @observable svgRect = null
+
+    constructor(){
+        super()
+        this.container = React.createRef()
+    }
 
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
             console.log('color stop or colorinterp changed')
             this.updateColors()   
         }
-    }
+        if(this.props.hoveredCounty !== prevProps.hoveredCounty){
+            if(this.props.hoveredCounty === 'full' || this.props.hoveredCounty === 'overlapbox' || this.props.hoveredCounty === 'svg'){
+                //hide the tooltip or default to the selected one?
+                if(this.props.selected){ //tooltip goes to selected county's position
+                    const svgRect = document.getElementById('svg').getBoundingClientRect()
+                    this.toggleTooltip(true)
+                    const bbox = document.getElementById(this.props.selected).getBoundingClientRect()
+                    const newX = (bbox.x + (bbox.width/2)) - this.svgRect.x
+                    const newY = (bbox.y + (bbox.height/2)) - this.svgRect.y
+                    this.updateCoords(newX, newY)
+                }
+                else{
+                    this.toggleTooltip(false)
+                }
+            }
+            else if(this.props.hoveredCounty){
+                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                this.toggleTooltip(true)
+                const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
+                const newX = (bbox.x + (bbox.width/2)) - this.svgRect.x
+                const newY = (bbox.y + (bbox.height/2)) - this.svgRect.y
 
-    componentDidMount(){
-        // console.log(document.getElementById('overlapbox').getBBox())
-       this.setDims()
-       document.addEventListener('resize',()=>this.setDims)
-        
-    }
-
-    setDims = () => {
-        console.log('setting box coords for map underlap')
-        const box = document.getElementById('overlapbox').getBoundingClientRect()
-        if(this.props.getDataBoxDims){
-            this.props.getDataBoxDims({
-                left: box.left,
-                top: box.top,
-                width: box.width,
-                height: box.height,
-            })
+                this.updateCoords(newX, newY)
+            }
         }
-        console.log(box)
-
-
     }
+
+
+    @observable tooltip = false
+    @action toggleTooltip = (tf) => this.tooltip = tf
 
     handleClick(id){
-        //for handling tooltips and the like...
-        // const bbox = document.getElementById(id).getBBox()
-        // const newX = (this.container.offsetWidth/2 - (bbox.x + bbox.width/2))
-        // const newY = (this.container.offsetHeight / 2 - (bbox.y + bbox.height/2))
-        // console.log(, )
-        // console.log(newX, newY)
-        // this.updateCoords(newX, newY)
-
-        //the 
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
             if(id==='svg' || id === 'overlapbox' || id === 'full'){
                 this.props.clickedOutside()
             }
             else this.props.onSelect('county', id)
-
         }
     }
 
@@ -124,18 +139,20 @@ const CountyPath = styled.path`${CountyStyle}`
         const {store, colorStops, quantile, selected, ...domProps} = this.props
         const {indicator, colorScale} = store
 
-        // let reorderedChildren = React.Children.toArray(this.props.children).sort((a,b)=>{
-        //     return a.props.id === selected || a.props.id===this.highlighted || a.props.id === this.props.hoveredCounty? 1 : 0
-        // })
-
         return(
             <Wrapper 
-                ref = {(container)=> this.container = container}
+                innerRef = {this.container}
                 style = {{overflow: 'hidden'}}
                 // onClick = {()=>console.log('map wrapper clicked')}
                 onClick = {(e)=>this.handleClick(e.target.id)}
             >
-                <ReactTooltip disable = {!indicator}/>
+                {this.tooltip && 
+                    <Tooltip
+                        pos = {this.targetCoords}
+                    >
+                        {this.targetCoords.x.toFixed(0)},{this.targetCoords.y.toFixed(0)}
+                    </Tooltip>
+                }
                 <TheMap 
                     id = "svg"
                     viewBox = '0 15 906.5 620'
@@ -156,12 +173,11 @@ const CountyPath = styled.path`${CountyStyle}`
 
                         
                             const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
-                                // 'data-tip': {data[id]==='*'? 'asterisk: we cant use this data.' : !data[id]? 'this county didnt report data' : null},
                                 style: {
                                     fill: selected===id? 'var(--peach)' : fill,
                                     transition: data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
                                 },
-                                'data-tip': data[id]==='*'? `${id} county's data set is too small or unstable.` : !data[id]? `${id} has no data` : `${id}: ${data[id]}%`,
+                                // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
                                 selected: selected===id,
                                 highlighted: this.highlighted===id || this.props.hoveredCounty===id,
                                 // onClick: ()=> this.handleClick(id)

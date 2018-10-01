@@ -53,7 +53,12 @@ export default class AppStore{
         if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')) this.race = null
         else if(which==='indicator' && this.county){
             const val = indicators[value].counties[this.county][this.race||'totals'][this.year]
-            if(!val) this.county = null
+
+            if(!val || val==='*'){
+                alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
+                this.county = null
+
+            }
         }
         else if(which==='county' && this.indicator){
             console.log(this.indicator, value, this.race, this.year)

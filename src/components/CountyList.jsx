@@ -161,7 +161,6 @@ class CountyList extends React.Component{
                         let disabled = false 
                         const selected = cty.id === county
                         if(indicator){
-                            // console.log(indicators[indicator].counties[cty])
                             const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
                             
                             if(!value || value === '*') disabled = true

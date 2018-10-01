@@ -1,5 +1,4 @@
 const counties = [
-{label: 'foo',id:'bar'},
 {label: 'Imperial', id: 'imperial'},
 {label: 'Los Angeles', id: 'losAngeles'},
 {label: 'San Diego', id: 'sanDiego'},
