@@ -84,10 +84,6 @@ const Tooltip = styled.div`
         @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
     @observable svgRect = null
 
-    constructor(){
-        super()
-        this.container = React.createRef()
-    }
 
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
@@ -96,25 +92,14 @@ const Tooltip = styled.div`
         }
         if(this.props.hoveredCounty !== prevProps.hoveredCounty){
             if(this.props.hoveredCounty === 'full' || this.props.hoveredCounty === 'overlapbox' || this.props.hoveredCounty === 'svg'){
-                //hide the tooltip or default to the selected one?
-                if(this.props.selected){ //tooltip goes to selected county's position
-                    const svgRect = document.getElementById('svg').getBoundingClientRect()
-                    this.toggleTooltip(true)
-                    const bbox = document.getElementById(this.props.selected).getBoundingClientRect()
-                    const newX = (bbox.x + (bbox.width/2)) - this.svgRect.x
-                    const newY = (bbox.y + (bbox.height/2)) - this.svgRect.y
-                    this.updateCoords(newX, newY)
-                }
-                else{
-                    this.toggleTooltip(false)
-                }
+                this.toggleTooltip(false)
             }
             else if(this.props.hoveredCounty){
                 const svgRect = document.getElementById('svg').getBoundingClientRect()
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
-                const newX = (bbox.x + (bbox.width/2)) - this.svgRect.x
-                const newY = (bbox.y + (bbox.height/2)) - this.svgRect.y
+                const newX = (bbox.x + (bbox.width/2)) - svgRect.x
+                const newY = (bbox.y + (bbox.height/2)) - svgRect.y
 
                 this.updateCoords(newX, newY)
             }
@@ -141,7 +126,6 @@ const Tooltip = styled.div`
 
         return(
             <Wrapper 
-                innerRef = {this.container}
                 style = {{overflow: 'hidden'}}
                 // onClick = {()=>console.log('map wrapper clicked')}
                 onClick = {(e)=>this.handleClick(e.target.id)}
