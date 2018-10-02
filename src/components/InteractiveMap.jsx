@@ -89,14 +89,20 @@ const CountyPath = styled.path`${CountyStyle}`
     @observable tooltip = false
     @action toggleTooltip = (tf) => this.tooltip = tf
 
-    handleClick(id){
+    handleClick(e, id){
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
             if(id==='svg' || id === 'full'){
-                this.props.clickedOutside()
+                // this.props.clickedOutside()
+                // ^ rendered unnecessary by click outside event listener for nav
             }
-            else this.props.onSelect('county', id)
+            else{
+             this.props.onSelect('county', id)
+
+             }
         }
+        e.preventDefault()
+             e.stopPropagation()
     }
 
     render(){
@@ -115,7 +121,7 @@ const CountyPath = styled.path`${CountyStyle}`
         
         return(
             <Wrapper 
-                onClick = {(e)=>this.handleClick(e.target.id)}
+                onClick = {(e)=>this.handleClick(e, e.target.id)}
             >
                 {this.tooltip && 
                     <Tooltip

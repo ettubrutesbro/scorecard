@@ -11,6 +11,7 @@ import Toggle from './components/Toggle'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
+import countyLabels from './assets/countyLabels'
 import semanticTitles from './assets/semanticTitles'
 
 import CountyList from './components/CountyList'
@@ -195,6 +196,8 @@ const LogoContainer = styled.div`
     cursor: pointer;
 `
 
+const countyIds = Object.keys(countyLabels)
+
 @observer
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
@@ -204,9 +207,26 @@ export default class ResponsiveNav extends React.Component{
         this.raceDropdown = !this.raceDropdown
         // this.props.closeSplash()
     }
-
+    constructor(){
+        super()
+        this.nav = React.createRef()
+    }
+    componentDidMount(){
+    }
     componentDidUpdate(){
         if(this.props.open && this.raceDropdown) this.openRaceDropdown()
+        if(this.props.open){
+            document.addEventListener('click',this.handleClickOutside)
+        }
+        else if(!this.props.open){
+            document.removeEventListener('click',this.handleClickOutside)
+        }
+    }
+
+    handleClickOutside = (e) => {
+        if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+            this.props.openNav()
+        }
     }
 
     render(){
@@ -224,7 +244,7 @@ export default class ResponsiveNav extends React.Component{
 
 
         return(
-            <Nav>
+            <Nav innerRef = {this.nav}>
                 <Logo />
                 <IndicatorSelect 
                     onClick = {()=>openNav('indicator')} 
@@ -237,7 +257,7 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('county')}
                     offset = {open}
                 >
-                    {store.county? find(counties, (o)=>{return o.id===store.county}).label : init? 'County' : 'All counties' }
+                    {store.county? countyLabels[store.county] : init? 'County' : 'All counties' }
                     {store.notifications.unselectCounty &&
                         <Tooltip 
                             direction = 'below'

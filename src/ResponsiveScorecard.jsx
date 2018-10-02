@@ -201,6 +201,7 @@ export default class ResponsiveScorecard extends React.Component{
     @observable extraReadoutLines = ''
 
     @action openNav = (status) => {
+        console.log('nav', status)
         if(this.sourcesMode && status){
             this.setSourcesMode(false)
         }
@@ -247,7 +248,7 @@ export default class ResponsiveScorecard extends React.Component{
                 </Nav>
                 <GreyMask 
                     show = {this.navOpen}
-                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ''}
+                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
                 />
                 <TopRow>
