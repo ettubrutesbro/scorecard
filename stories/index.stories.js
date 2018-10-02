@@ -191,32 +191,6 @@ storiesOf('Maps',module)
     )
 })
 
-storiesOf('Generic components',module)
-.add('Toggle', ()=>{
-    return(
-        <div>
-        <Note>(not interactive because its value is controlled by parent store)</Note>
-        <br />
-        <Toggle
-            options = {[
-                {label: 'hello', value: 'hello'},    
-                {label: 'world', value: 'world'},    
-                {label: 'goodbye', value: 'goodbye'},    
-                {label: 'blablabla', value: 'blablabla'},    
-            ]}
-        />
-        <Toggle
-            size = "big"
-            options = {[
-                {label: 'hello', value: 'hello'},    
-                {label: 'world', value: 'world'},    
-                {label: 'goodbye', value: 'goodbye'},    
-                {label: 'blablabla', value: 'blablabla'},    
-            ]}
-        />
-        </div>
-    )
-})
 
 const Note = styled.h3`
     display: inline-flex;

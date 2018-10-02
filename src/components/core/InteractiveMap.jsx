@@ -126,8 +126,6 @@ const Tooltip = styled.div`
 
         return(
             <Wrapper 
-                style = {{overflow: 'hidden'}}
-                // onClick = {()=>console.log('map wrapper clicked')}
                 onClick = {(e)=>this.handleClick(e.target.id)}
             >
                 {this.tooltip && 
@@ -142,11 +140,6 @@ const Tooltip = styled.div`
                     viewBox = '0 15 906.5 620'
                     {...domProps}
                     version="1.1"
-                    style = {{
-                        // transition: 'transform .25s',
-                        // transform: `${this.props.selected? 'scale(2)' : 'scale(1)'} translate(${this.targetCoords.x}px, ${this.targetCoords.y}px)`,
-                        // border: '1px solid blue'
-                    }}
                 >
                     {this.props.children.map((child,i)=>{
                         const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
