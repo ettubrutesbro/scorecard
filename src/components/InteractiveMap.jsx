@@ -7,10 +7,13 @@ import styled, {css} from 'styled-components'
 
 import {isEqual, map, debounce} from 'lodash'
 import chroma from 'chroma-js'
-
+import FlipMove from 'react-flip-move'
 // import ReactTooltip from 'react-tooltip'
 
-import countyLabels from '../../assets/countyLabels'
+import {Tooltip} from './generic/'
+
+import demopop from '../data/demographicsAndPopulation'
+import countyLabels from '../assets/countyLabels'
 
 const Wrapper = styled.div`
     // position: absolute;
@@ -28,31 +31,7 @@ const CountyStyle = css`
     stroke: ${props => props.highlighted?'pink': 'transparent'};
     stroke-width: ${props => props.selected? 3.5 : 2.25};
 `
-const OverlapBox = styled.polyline`
-    fill: transparent;
-    opacity: 0;
-    // display: none;
-    stroke: var(--bordergrey);
-    stroke-width: 2;
-    stroke-dasharray: 1600;
 
-    // transition: opacity .5s, transform .5s;
-    // opacity: ${props => props.offset? 0 : 1};
-    transform: ${props => !props.offset? 'translate(0,0) scale(1)' : 'translate(-25%, 15%) scale(0.85)'};
-    // transform-origin: 0% 100%;
-    /*stroke-dashoffset: ${props => props.offset? 1600 : 0};*/
-/*    ${props => props.offset? `
-            transition: opacity .5s, stroke-dashoffset .5s;
-            opacity: 0;
-        ` : `
-            transition: stroke-dashoffset 1s;
-            transition-delay: .2s;
-            opacity: 1;
-        `
-    }
-*/
-
-`
 const FullState = styled.polygon`
     opacity: ${props => props.wire? 1 : 0};
     transition: opacity ${props => props.wire? 1 : 0.25}s;
@@ -64,19 +43,19 @@ const FullState = styled.polygon`
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
 
-const Tooltip = styled.div`
-    position: absolute;
-    top: 0; left: 0;
-    top: ${props => props.pos.y}px;
-    left: ${props => props.pos.x}px;
-    z-index: 10;
-    width: 175px;
-    height: 40px;
-    transform: translate(-50%, calc(-50% - 45px));
-    background: white;
-    border: 1px solid var(--bordergrey);
-    pointer-events: none;
-`
+// const Tooltip = styled.div`
+//     position: absolute;
+//     top: 0; left: 0;
+//     top: ${props => props.pos.y}px;
+//     left: ${props => props.pos.x}px;
+//     z-index: 10;
+//     width: 175px;
+//     height: 40px;
+//     transform: translate(-50%, calc(-50% - 45px));
+//     background: white;
+//     border: 1px solid var(--bordergrey);
+//     pointer-events: none;
+// `
 
 @observer class InteractiveMap extends React.Component{
 
@@ -91,7 +70,7 @@ const Tooltip = styled.div`
             this.updateColors()   
         }
         if(this.props.hoveredCounty !== prevProps.hoveredCounty){
-            if(this.props.hoveredCounty === 'full' || this.props.hoveredCounty === 'overlapbox' || this.props.hoveredCounty === 'svg'){
+            if(!this.props.hoveredCounty){
                 this.toggleTooltip(false)
             }
             else if(this.props.hoveredCounty){
@@ -99,7 +78,7 @@ const Tooltip = styled.div`
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
                 const newX = (bbox.x + (bbox.width/2)) - svgRect.x
-                const newY = (bbox.y + (bbox.height/2)) - svgRect.y
+                const newY = (bbox.y) - svgRect.y
 
                 this.updateCoords(newX, newY)
             }
@@ -113,7 +92,7 @@ const Tooltip = styled.div`
     handleClick(id){
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            if(id==='svg' || id === 'overlapbox' || id === 'full'){
+            if(id==='svg' || id === 'full'){
                 this.props.clickedOutside()
             }
             else this.props.onSelect('county', id)
@@ -121,20 +100,43 @@ const Tooltip = styled.div`
     }
 
     render(){
-        const {store, colorStops, quantile, selected, ...domProps} = this.props
+        const {store, colorStops, quantile, selected, hoveredCounty, ...domProps} = this.props
         const {indicator, colorScale} = store
-
+        let tipPopulation = hoveredCounty? demopop[hoveredCounty].population :  ''
+        if(tipPopulation >= 1000000) tipPopulation = (tipPopulation/1000000).toFixed(1) + ' million'
+        else if(tipPopulation >=1000) tipPopulation = (tipPopulation/1000).toFixed(1) + 'k'
+        let tipData = this.props.data && hoveredCounty? this.props.data[hoveredCounty] : ''
+        let faintData = false
+        if(tipData === '' || tipData === '*'){
+            tipData = 'N/A'
+            faintData = true
+        }
+        else tipData += '%'
+        
         return(
             <Wrapper 
                 onClick = {(e)=>this.handleClick(e.target.id)}
             >
                 {this.tooltip && 
                     <Tooltip
+                        key = {hoveredCounty}
                         pos = {this.targetCoords}
+                        style = {{pointerEvents: 'none'}}
                     >
-                        {this.targetCoords.x.toFixed(0)},{this.targetCoords.y.toFixed(0)}
+                        <Tip>
+                            <div>
+                                <h2>{countyLabels[hoveredCounty]}</h2>
+                                <Subtip>{tipPopulation} children</Subtip>
+                            </div>
+                            {this.props.data &&
+                            <div>
+                                <Tipnum faint = {faintData}>{tipData}</Tipnum>
+                            </div>
+                            }
+                        </Tip>
                     </Tooltip>
                 }
+                
                 <TheMap 
                     id = "svg"
                     viewBox = '0 15 906.5 620'
@@ -173,8 +175,8 @@ const Tooltip = styled.div`
                                 offset = {this.props.mode === 'offset'}
 
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
-                                onMouseEnter = {()=> this.props.onHoverCounty(id)}
-                                onMouseLeave = {()=> this.props.onHoverCounty()}
+                                onMouseEnter = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty(id) : ''}
+                                onMouseLeave = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty() : ''}
                             />
                         )
                     })}
@@ -191,10 +193,23 @@ InteractiveMap.defaultProps = {
     clickedOutside: ()=>{console.log('clicked map container but no county')}
 }
 
+const Tip = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+const Subtip = styled.h3`
+    margin-top: -3px;
+`
+const Tipnum = styled.h1`
+    padding-left: 20px;
+    color: ${props => props.faint? 'var(--fainttext)' : 'white'};
+`
+
+
 let SVGComponents = {
     InteractivePolygon: (props) => <CountyPolygon {...props} />,
     InteractivePath: (props) => <CountyPath {...props}  />,
-    InteractivePolyline: (props) => <OverlapBox {...props} />,
     full: (props) => <FullState {...props} />
 
 }
@@ -206,7 +221,6 @@ export default class CaliforniaCountyMap extends React.Component{
             <InteractiveMap
                 {...this.props}
             >
-            <polyline id="overlapbox" points="338.3,244.5 338.3,16.3 905.5,16.3 905.5,399.1 500.5,399.1 " />
             <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
     246.6,221.4 231.5,208 231.5,207.9 226.8,199.7 226.7,199.7 226.5,184.5 226.6,184.5 226.7,176.6 226.6,176.5 226.7,159.4 
     226.8,159.3 226.8,67.6 226.8,15.9 157.7,15.7 123.8,15 58.8,15.4 58.8,15.4 20.2,15.7 22.3,24.6 19.5,30.4 25.8,36 29.4,49.8 

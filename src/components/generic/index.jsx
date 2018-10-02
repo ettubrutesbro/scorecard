@@ -1,6 +1,6 @@
 
 import React from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
@@ -121,52 +121,84 @@ Toggle.defaultProps = {
 
 
 export const Tooltip = (props) => {
+    const {theme, direction, children, ...restOfProps} = props
     return(
-        <FlipMove
-            typeName = {null}
-            enterAnimation = {{
-                from: {opacity: 0, transform: 'translateY()'},
-                to: {opacity: 0, transform: 'translateY()'}
-            }}
-            leaveAnimation = {{
-
-            }}
-        >
-            {props.show &&
-                <Tip 
-                    pos = {props.pos}
-                    className = {[
-                        props.theme || 'default',
-                        props.direction || 'above'
-                    ].join(' ')}
-                >
-                    {props.children}
-                </Tip>  
-            }
-        </FlipMove>
+            <Tip 
+                {...restOfProps}
+                className = {[
+                    theme || 'default',
+                    direction || 'above'
+                ].join(' ')}
+            >
+                {children}
+            </Tip>  
+            
     )
 }
-
+const fadeInBelow = keyframes`
+    from {
+        opacity: 0; 
+        transform: translate(-50%, calc(50%));
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, calc(50% + 20px));
+    }
+`
+const fadeInAbove = keyframes`
+    from {
+        opacity: 0; 
+        transform: translate(-50%, calc(-50% - 20px));
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, calc(-50% - 35px));
+    }
+`
 const Tip = styled.div`
+    //display: ${props => props.show? 'block' : 'none'};
     position: absolute;
     top: ${props => props.pos.y}px;
     left: ${props => props.pos.x}px;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    &.above{
+        &::after{ bottom: -19px;}
+        //transform: translate(-50%, calc(-50% - 35px));
+        transform-origin: 50% 100%;
+        animation: ${fadeInAbove} .35s forwards;
+
+    }
+    &.below{
+        &::after{ top: -19px; }
+        //transform: translate(-50%, calc(50% + 20px));   
+        
+        animation: ${fadeInBelow} .75s forwards;
+    }
     z-index: 99;
     padding: 15px 25px;
     &::after{
         left: calc(50% - 9.5px);
+        transform: translateX(${props => props.caretOffset || 0}px);
         position: absolute;
         content: '';
         width: 0; height: 0;
         bottom: -19px;
         border: 9.5px solid transparent;
-        border-top: 9.5px black solid;
     }
     &.default{
         background: var(--black);
         color: white;
+        &.above{
+            &::after{ border-top: 9.5px black solid;  }
+        }
+        &.below{
+            &::after{ border-bottom: 9.5px black solid;  }
+        }
     }
-    h1{ margin: 0; font-size: 24px; }
-    h2{ margin: 0; font-size: 16px;  }
-    h3{ margin: 0; font-size: 13px; color: var(--fainttext);}
+    h1{ margin: 0; font-size: 24px;  font-weight: normal;}
+    h2{ margin: 0; font-size: 16px;   font-weight: normal;}
+    h3{ margin: 0; font-size: 13px; color: var(--fainttext); font-weight: normal;}
+
 `
+

@@ -4,7 +4,6 @@
 }
 
 html{
-
     --fainttext: #919191;
     --normtext: #1e1e1e;
     --faintpeach: #FFF6F2;
@@ -12,9 +11,9 @@ html{
     --strokepeach: #ef6732;
 
     /*NEEDS MODIFICATION*/
-    --offwhitebg: #f3f3f5;
-    --offwhitefg: #fbfbfc;
-    --bordergrey: #d7d7d7;
+    --offwhitebg: #E7E6EB;
+    --offwhitefg: #FCFDFF;
+    --bordergrey: #c2c2c2;
 
     /*TO DEPRECATE: */
     --strokepurple: #6E016B;
@@ -26,6 +25,8 @@ html{
     --black: #1e1e1e;
 
     overflow: hidden;
+
+    background: var(--offwhitefg);
 }
 
 body{
@@ -40,21 +41,9 @@ body{
     border: 1px solid black;
 }
 
-.compressed1{
-
-}
-.compressed2{
-
-}
-.compressed3{
-    color: red;
-}
-.compressed3:first-of-type{
-    color: red;
-}
-.compressed3:nth-of-type(2){
-    color: green;
-}
-.compressed3:nth-of-type(3){
-    color: blue;
+.reactTooltipOverride{
+    background: var(--black) !important;
+    padding: 15px 25px !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
 }

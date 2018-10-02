@@ -29,7 +29,7 @@ import indicators from '../src/data/indicators'
 // import Readout2 from '../src/components/core/Readout2'
 import Info from '../src/components/Info'
 
-import CAMap from '../src/components/core/InteractiveMap'
+import CAMap from '../src/components/InteractiveMap'
 import Toggle from '../src/components/Toggle'
 
 import NeoScorecard from '../src/NeoScorecard'

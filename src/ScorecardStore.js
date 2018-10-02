@@ -3,6 +3,7 @@ import chroma from 'chroma-js'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
+import countyLabels from './assets/countyLabels'
 import demopop from './data/demographicsAndPopulation'
 
 export default class AppStore{
@@ -55,9 +56,9 @@ export default class AppStore{
             const val = indicators[value].counties[this.county][this.race||'totals'][this.year]
 
             if(!val || val==='*'){
-                alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
+                // alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
+                this.notify('unselectCounty', countyLabels[this.county], 8000)
                 this.county = null
-
             }
         }
         else if(which==='county' && this.indicator){
@@ -153,4 +154,14 @@ export default class AppStore{
         return val==='*' || !val? false : true
     }
     
+    @observable notifications = {
+        unselectCounty: null
+    }
+    @action notify = (which, what, time) => {
+        this.notifications[which] = what
+        if(time){
+            setTimeout(()=>{this.notifications[which] = null}, time)
+        }
+    }
+
 }

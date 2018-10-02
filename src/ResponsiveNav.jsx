@@ -15,6 +15,7 @@ import semanticTitles from './assets/semanticTitles'
 
 import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
+import {Tooltip} from './components/generic'
 
 import media from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
@@ -68,6 +69,7 @@ const IndicatorSelect = styled(DropdownWorkflow)`
 `
 const CountySelect = styled(DropdownWorkflow)`
     width: 200px;
+    position: relative;
     transform: ${props=>props.offset?'translateX(15px)':'translateX(-1px)'};
 `
 const NormalDropdown = styled(Dropdown)`
@@ -236,7 +238,20 @@ export default class ResponsiveNav extends React.Component{
                     offset = {open}
                 >
                     {store.county? find(counties, (o)=>{return o.id===store.county}).label : init? 'County' : 'All counties' }
+                    {store.notifications.unselectCounty &&
+                        <Tooltip 
+                            direction = 'below'
+                            pos = {{x: 185, y: 0}}
+                            caretOffset = {-75}
+                        >
+                                <ForcedUnselectTip>
+                                    The indicator you picked doesn’t have any data for {store.notifications.unselectCounty} county, so we’re showing you statewide data now. 
+                                </ForcedUnselectTip>   
+                        </Tooltip>
+                    }
                 </CountySelect>
+                
+
                 
                     <NormalDropdown
                         disabled = {!indicator} 
@@ -300,6 +315,12 @@ export default class ResponsiveNav extends React.Component{
         )
     }
 }
+const ForcedUnselectTip = styled.div`
+    font-size: 13px;
+    width: 325px;
+    line-height: 21px;
+    letter-spacing: 
+`
 const Share = styled.div`
     position: absolute;
     right: 0;

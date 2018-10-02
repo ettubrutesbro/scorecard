@@ -10,7 +10,7 @@ import chroma from 'chroma-js'
 
 import indicators from '../src/data/indicators'
 
-import CAMap from '../src/components/core/InteractiveMap'
+import CAMap from '../src/components/InteractiveMap'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import ColorPreviewer from '../src/utilities/ColorPreviewer'
 

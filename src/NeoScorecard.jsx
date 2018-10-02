@@ -7,7 +7,7 @@ import {observer} from 'mobx-react'
 import {find, mapValues} from 'lodash'
 import chroma from 'chroma-js'
 
-import CAMap from './components/core/InteractiveMap'
+import CAMap from './components/InteractiveMap'
 import Readout from './components/Readout'
 import Breakdown from './components/Breakdown'
 import UniversalPicker from './components/UniversalPicker'

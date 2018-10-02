@@ -27,13 +27,11 @@ const GridList = styled.ul`
 
 `
 const GridItem = styled.li`
-    // margin: 1%;
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? '#d7d7d7' : 'black'};
     padding: 6px 13px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    // justify-content: center;
     white-space: nowrap;
     font-size: 13px;
     background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
@@ -150,7 +148,9 @@ class CountyList extends React.Component{
                 </Titleblock>
 
                 <GridList>
-                    <ReactTooltip effect = "solid" />
+                    <ReactTooltip effect = "solid" 
+                        className = 'reactTooltipOverride'
+                    />
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1
                         else if (a.id > b.id) return 1
