@@ -327,9 +327,9 @@ export default class ResponsiveNav extends React.Component{
                         to: {opacity: 0, transform: 'translateY(-50px)'}
                     }}
                 >
-                {open && <PickingWorkflow store = {store} open = {open} close = {()=>openNav(false)} />}
+                {open && <PickingWorkflow x = {()=>openNav(false)} store = {store} open = {open} close = {()=>openNav(false)} />}
                 </FlipMove>
-                {open && <X onClick = {()=>openNav(false)}/>}
+                {/*open && <X onClick = {()=>openNav(false)}/>*/}
             </Nav>
 
         )
@@ -442,7 +442,8 @@ export class PickingWorkflow extends React.Component{
         const {store, close} = this.props
         const which = this.props.open
         return(
-            <LargeWorkflow> 
+            <LargeWorkflow>
+                <X onClick = {this.props.x} /> 
                 <FlipMove
                     typeName = {null}
                     enterAnimation = {{

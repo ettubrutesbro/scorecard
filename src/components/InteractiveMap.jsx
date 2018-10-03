@@ -14,6 +14,8 @@ import {Tooltip} from './generic/'
 
 import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
+import semanticTitles from '../assets/semanticTitles'
+import {capitalize} from '../utilities/toLowerCase'
 
 const Wrapper = styled.div`
     // position: absolute;
@@ -107,15 +109,27 @@ const CountyPath = styled.path`${CountyStyle}`
 
     render(){
         const {store, colorStops, quantile, selected, hoveredCounty, ...domProps} = this.props
-        const {indicator, colorScale} = store
+        const {indicator, colorScale, race} = store
         let tipPopulation = hoveredCounty? demopop[hoveredCounty].population :  ''
         if(tipPopulation >= 1000000) tipPopulation = (tipPopulation/1000000).toFixed(1) + ' million'
         else if(tipPopulation >=1000) tipPopulation = (tipPopulation/1000).toFixed(1) + 'k'
-        let tipData = this.props.data && hoveredCounty? this.props.data[hoveredCounty] : ''
-        let faintData = false
-        if(tipData === '' || tipData === '*'){
-            tipData = 'N/A'
-            faintData = true
+        let tipData = this.props.data && hoveredCounty? this.props.data[hoveredCounty] : 'other'
+        let noData = false
+
+        const cty = countyLabels[hoveredCounty]
+        if(!tipData){
+            if(race){
+                tipData = `There's no data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} for this indicator.`
+            }
+            else tipData = `There's no data on ${cty} county for this indicator.`
+            noData = true
+        }
+        else if(tipData === '*'){
+            noData = true
+            if(race){
+                tipData = `Indicator data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} is too small or unstable to display.`
+            }
+            else tipData = `Indicator data on ${cty} is too small or unstable to display.`
         }
         else tipData += '%'
         
@@ -129,17 +143,24 @@ const CountyPath = styled.path`${CountyStyle}`
                         pos = {this.targetCoords}
                         style = {{pointerEvents: 'none'}}
                     >
+                    {!noData &&
                         <Tip>
                             <div>
-                                <h2>{countyLabels[hoveredCounty]}</h2>
+                                <h2>{cty}</h2>
                                 <Subtip>{tipPopulation} children</Subtip>
                             </div>
                             {this.props.data &&
                             <div>
-                                <Tipnum faint = {faintData}>{tipData}</Tipnum>
+                                <Tipnum>{tipData}</Tipnum>
                             </div>
                             }
                         </Tip>
+                    }
+                    {noData &&
+                        <NoDataTip>
+                            {tipData}
+                        </NoDataTip>
+                    }
                     </Tooltip>
                 }
                 
@@ -203,6 +224,11 @@ const Tip = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+`
+const NoDataTip = styled.div`
+    width: 200px;
+    display: flex;
+    justify-content: center;
 `
 const Subtip = styled.h3`
     margin-top: -3px;

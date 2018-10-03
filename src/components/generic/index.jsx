@@ -202,3 +202,44 @@ const Tip = styled.div`
 
 `
 
+const SearchWrap = styled.div`
+    
+    position: relative;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+`
+const mag = require('../../assets/search.svg')
+const SearchIcon = styled.div`
+    position: absolute;
+    left: 5px;
+    width: 15px; height: 15px;
+    mask-image: url(${mag});
+    background-color: var(--strokepeach);
+    // background-image: url(${mag});
+
+`
+const SearchInput = styled.input`
+    appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 6px 15px;
+    &::placeholder{
+        color: var(--strokepeach);
+    }
+`
+
+export const Search = (props) => {
+        return(
+            <SearchWrap> 
+                <SearchIcon />
+                <SearchInput 
+                    placeholder = {props.placeholder}
+                    value = {props.value}
+                    onChange = {props.onChange}
+                />
+            </SearchWrap>
+        )
+    
+}

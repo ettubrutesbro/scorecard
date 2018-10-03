@@ -9,30 +9,27 @@ import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
 import Toggle from './Toggle'
 
+import {Search} from './generic'
+
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 
 import {getMedia} from '../utilities/media'
 
-const ColumnList = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 15px;
-    flex-grow: 1;
-    padding: 20px 0;
-
-    // display: flex;
-    // flex-wrap: wrap;
-    // justify-content: space-between;
-    margin: 0;
+const IndRows = styled.ul`
+    padding: 0; 
 `
-const ColumnItem = styled.li`
+const Row = styled.li`
+    &:not(:first-of-type){
+        border-top-color: transparent;
+    }
     // width: 50%;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
+    padding: 15px 30px;
     // margin: 10px;
     list-style-type: none;
     border: 1px solid ${props=>props.noRaceNeedRace? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
@@ -44,7 +41,7 @@ const ColumnItem = styled.li`
 ` 
 const IndicatorListHeader = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     h1{
@@ -66,47 +63,9 @@ const Categories = styled.div`
     align-items: center;
 `
 const Years = styled.span`
-    margin-left: 6px;
+    margin-left: 8px;
     font-size: 13px;
     color: var(--fainttext);
-    margin-right: 5px;
-`
-const NoRace = styled.div`
-    color: #b1b1b1;
-    font-size: 13px;
-    /*margin-right: 8px;*/
-    margin-left: 5px;
-    background:${props => props.needRace? 'red' : ''}
-`
-const HealthTag = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: red;
-`
-const EduTag = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: blue;
-    margin-left: 5px;
-    &:first-child{ margin-left: 0; }
-`
-const WelfTag = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: goldenrod;
-    margin-left: 5px;
-    &:first-child{ margin-left: 0; }
-`
-const EarlTag = styled.div`
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: purple;
-    margin-left: 5px;
-    &:first-child{ margin-left: 0; }
 `
 const IndRight = styled.div`
     display: flex;
@@ -116,14 +75,17 @@ const IndRight = styled.div`
     margin-left: 20px;
 `
 const Where = styled.div`
-    color: #b1b1b1;
-    margin-top: 3px;
+    color: var(--fainttext);
+    margin-top: 0px;
     font-size: 13px;
+
+    margin-right: 2px;
 `
 const Percentage = styled.div`
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .05rem;
+    margin-top: -2px;
+    font-size: 24px;
+    font-weight: normal;
+    letter-spacing: .0rem;
 `
 const indicatorFilterOptions = [
     {label: 'All topics', value: 'all'},
@@ -153,6 +115,22 @@ const Title = styled.h1`
     font-size: 24px;
     font-weight: normal;
 `
+const Label = styled.div`
+    font-size: 16px;
+
+`
+
+const Metadata = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+
+`
+const Missing = styled.div`
+    
+
+`
+
 @observer
 export default class IndicatorList extends React.Component{
     @observable filter = 'all'
@@ -199,10 +177,10 @@ export default class IndicatorList extends React.Component{
         const screen = getMedia()
         let pages = []
         if(screen==='optimal'){
-            this.pageSize = 12
+            this.pageSize = 6
         }
         else if(screen==='compact'){
-            this.pageSize = 8
+            this.pageSize = 5
         }
         const indKeys = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
@@ -234,6 +212,9 @@ export default class IndicatorList extends React.Component{
             <IndicatorListHeader>
 
                 <Title> Choose an indicator. </Title>
+                <Search 
+                    placeholder = "Search indicators..."
+                />
                 <Toggle
                     options = {indicatorFilterOptions}
                     onClick = {this.setFilter}
@@ -241,16 +222,19 @@ export default class IndicatorList extends React.Component{
                 />
 
             </IndicatorListHeader>
-            <ColumnList>
+            <IndRows>
                     {page.map((ind)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
                         const noRace = !cats.includes('hasRace')
 
+                        const missingCounties = true
                         const isolated = ind === this.singledOut
 
-                        return <ColumnItem
+
+
+                        return <Row
                             selected = {selected}
                             noRaceNeedRace = {noRace && race}
                             onClick = {()=>{
@@ -261,17 +245,25 @@ export default class IndicatorList extends React.Component{
                             }}
                         > 
                             <IndLeft>
-                                {semanticTitles[ind].label}
-                                <Years>
-                                    {indicator.years.map((yr)=>{
-                                        return yr
-                                    }).join(', ')}
-                                </Years>
+                                <Label>
+                                    {semanticTitles[ind].label}
+                                    <Years>
+                                        {indicator.years.map((yr)=>{
+                                            return yr
+                                        }).join(', ')}
+                                    </Years>
+                                </Label>
+                                <Metadata>
                                 {noRace &&
                                     <NoRaceBadge>
-                                        (No Race Data)
+                                        No Race Data
                                     </NoRaceBadge>
                                 }
+
+                                {missingCounties &&
+                                    <Missing> X counties are missing data </Missing>
+                                }
+                                </Metadata>
                             </IndLeft>
                             <IndRight>
                                 <Percentage>
@@ -284,10 +276,10 @@ export default class IndicatorList extends React.Component{
                                     
                                 </Where>
                             </IndRight>
-                        </ColumnItem>
+                        </Row>
                     })}
 
-            </ColumnList>
+            </IndRows>
             
                 <PageControls>
                 <Prev disabled = {this.currentPage===0} onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}>
@@ -337,7 +329,11 @@ const Next = styled(PageBtn)`
 
 `
 
-const NoRaceBadge = styled.span`
-    color: var(--fainttext);
-
+const NoRaceBadge = styled.div`
+    color: white;
+    background: var(--fainttext);
+    padding: 3px 6px;
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
 `

@@ -9,17 +9,21 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import ReactTooltip from 'react-tooltip'
 
+import {Search} from './generic'
+
 import media from '../utilities/media'
 
 const GridList = styled.ul`
     display: grid;
     @media ${media.optimal}{
         grid-template-columns: repeat(5, 1fr);
-        grid-gap: 8px;
+        grid-gap: 5px;
+        font-size: 16px;
     }
     @media ${media.compact}{
         grid-template-columns: repeat(5, 1fr);
         grid-gap: 5px;
+        font-size: 13px;
     }
     list-style-type: none;
     margin: 0;
@@ -28,12 +32,16 @@ const GridList = styled.ul`
 `
 const GridItem = styled.li`
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? '#d7d7d7' : 'black'};
-    padding: 6px 13px;
+    @media ${media.optimal}{
+        padding: 8px 13px;
+    }
+    @media ${media.compact}{
+        padding: 6px 13px;    
+    }
     cursor: pointer;
     display: flex;
     align-items: center;
     white-space: nowrap;
-    font-size: 13px;
     background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
     border: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'transparent'};
     &:hover{
@@ -58,31 +66,6 @@ const Titleblock = styled.div`
     @media ${media.compact}{
         margin-bottom: 18px;
     }
-`
-const Search = styled.div`
-    // transform: translateY(3px);
-    width: 200px;
-    position: relative;
-    padding-left: 15px;
-    // padding-bottom: 3px;
-    // border: 1px solid red;
-    border-bottom: 1px solid var(--bordergrey);
-    display: flex;
-    align-items: center;
-`
-const mag = require('../assets/search.svg')
-const SearchIcon = styled.div`
-    position: absolute;
-    left: 5px;
-    width: 15px; height: 15px;
-    background-image: url(${mag});
-
-`
-const SearchInput = styled.input`
-    appearance: none;
-    border: none;
-    outline: none;
-    padding: 6px 15px;
 `
 
 const AllCountiesBtn = styled.div`
@@ -125,25 +108,22 @@ class CountyList extends React.Component{
                     {!county && <Faint> Viewing all counties </Faint>}
                     </TitleSide>
                     <TitleSide>
-                    {county && 
-                    <AllCountiesBtn
-                        onClick= {()=>this.handleSelection(null)}
-                        btnMode = {county}
-                    >
-                    All counties
-                        <Faint>
-                            (Deselect {ctyLabel} county)
-                        </Faint>
-                    </AllCountiesBtn>
-                    }
-                    <Search> 
-                        <SearchIcon />
-                        <SearchInput 
+                        {county && 
+                        <AllCountiesBtn
+                            onClick= {()=>this.handleSelection(null)}
+                            btnMode = {county}
+                        >
+                        All counties
+                            <Faint>
+                                (Deselect {ctyLabel} county)
+                            </Faint>
+                        </AllCountiesBtn>
+                        }
+                        <Search 
                             placeholder = "Search counties..." 
                             value = {this.searchString}
-                            onChange = {this.search}
-                        />
-                    </Search>
+                            onChange = {this.search} 
+                        /> 
                     </TitleSide>
                 </Titleblock>
 
