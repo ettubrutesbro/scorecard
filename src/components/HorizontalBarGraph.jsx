@@ -326,6 +326,7 @@ const Value = styled.div`
     position: absolute;
     // right: 0;
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
+    transition: transform .25s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
     margin-left: ${props => props.percentage===0? 0 : 8}px;
 `
