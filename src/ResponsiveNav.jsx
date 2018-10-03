@@ -423,7 +423,7 @@ const LargeWorkflow = styled.div`
     position: absolute;
     overflow: hidden;
     top: 65px;
-    background: white;
+    background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
     padding: 30px;
     z-index: 3;

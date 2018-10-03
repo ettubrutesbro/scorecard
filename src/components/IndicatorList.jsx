@@ -159,6 +159,14 @@ export default class IndicatorList extends React.Component{
     @observable currentPage = 0
     @observable pages = []
     @observable pageSize = 24
+
+    @observable singledOut = null
+    @action isolateIndicator = (ind) => {
+        //for singling out indicators that've been selected
+        //despite some sort of disabled status:
+        this.singledOut = ind
+    }
+
     @action goToPage = (pg) => {
         console.log('going to page', pg)
         console.log(this.pages[pg])
@@ -239,13 +247,17 @@ export default class IndicatorList extends React.Component{
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
                         const noRace = !cats.includes('hasRace')
+
+                        const isolated = ind === this.singledOut
+
                         return <ColumnItem
                             selected = {selected}
                             noRaceNeedRace = {noRace && race}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
-                                // this.props.store.completeWorkflow('indicator',ind)
+                                this.props.store.completeWorkflow('indicator',ind)
                                 this.handleSelection(ind)
+                                // this.isolateIndicator(ind)
                             }}
                         > 
                             <IndLeft>
