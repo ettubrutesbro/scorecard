@@ -33,7 +33,8 @@ const Row = styled.li`
     border: 1px solid ${props=> props.disabled? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     background: ${props => props.disabled? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
-    transform: translateY(-${props => props.index * 1}px);
+    /*transform: translateY(-${props => props.index * 1}px);*/
+    
     z-index: ${props=>props.selected? 2: 1};
     cursor: ${props => props.disabled? 'auto' : 'pointer'};
     &:hover{
@@ -150,9 +151,10 @@ export default class IndicatorList extends React.Component{
 
     }
     @action setFilter = (value) =>{ 
-        this.filter = value
         this.goToPage(0)
+
         this.paginate()
+        this.filter = value
     }
 
     handleSelection = (ind) =>{
@@ -194,7 +196,7 @@ export default class IndicatorList extends React.Component{
 
     render(){
         const {county, race} = this.props.store
-
+        console.log('attempting to render indicator page', this.props.page, 'of', this.pages.length)
         const page = this.pages[this.props.page]
         console.log(page)
         this.props.setNumPages(this.pages.length)
