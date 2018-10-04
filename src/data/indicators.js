@@ -44,6 +44,9 @@ import PlacementStability from './indicators/placementStability.json'
 import ReadingStandards from './indicators/readingStandards.json'
 import Suspension from './indicators/suspension.json'
 
+import connected from './indicators/connected'
+import difference from './indicators/difference'
+
 const indicators = {
     allegations: allegations,
     breastFeeding: breastFeeding,
@@ -74,6 +77,8 @@ const indicators = {
     registeredToVote: registeredToVote,
     suspension: Suspension,
     upToDateImmunizations: upToDateImmunizations,
+    connected: connected,
+    difference: difference
 
 
 }

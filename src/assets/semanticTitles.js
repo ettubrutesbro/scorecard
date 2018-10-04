@@ -47,6 +47,18 @@ const semanticTitles = {
         label: 'Children, ages birth-18, with no report of abuse or neglect in a 12 month time period',
         shorthand: 'Abuse and neglect'
     },
+    'connected':{
+        who: 'students',
+        what: 'reported feeling connected to their school',
+        label: 'Students who report feeling connected to their school',
+        shorthand: 'Student-school connection'
+    },
+    'difference':{
+        who: 'students',
+        what: 'report feeling like they do things at school that make a difference',
+        label: 'Students who report feeling like they do things at school that make a difference',
+        shorthand: 'Feelings of school making a difference'
+    },
     'breastFeeding': {
         who: 'newborns',
         what: 'were exclusively breastfed while in the hospital',

@@ -80,11 +80,11 @@ export default class DemoDataTable extends React.Component {
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> <CountingNumber number = {demo.immigrantFamilies} /> </DemoValue>
-                    live with foreign-born parents.
+                    live with one or more immigrant parent.
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo['poverty']}% </DemoValue>
-                    are living 200% below the federal poverty&nbsp;level.
+                    are living 2X below the Federal Poverty&nbsp;Level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
                     <DemoValue> <CountingNumber number = {demo['homeless']} /> </DemoValue>
