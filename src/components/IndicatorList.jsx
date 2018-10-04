@@ -34,10 +34,18 @@ const Row = styled.li`
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     background: ${props => props.disabled? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
     transform: translateY(-${props => props.index * 1}px);
-    z-index: ${props=>props.zIndex};
+    z-index: ${props=>props.selected? 2: 1};
+    cursor: ${props => props.disabled? 'auto' : 'pointer'};
+    &:hover{
+        color: ${props => props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
+    }
     // box-shadow: var(--shadow);
 
 ` 
+
+
+
+
 const IndicatorListHeader = styled.div`
     display: flex;
     justify-content: flex-start;
@@ -215,12 +223,13 @@ export default class IndicatorList extends React.Component{
 
             </IndicatorListHeader>
 
-            <ListStatus>
+            <ListStatus className = "caption">
                  <Readout>
                    Viewing indicators {(this.props.page * this.pageSize) + 1} - {this.props.page !== this.pages.length-1? (this.props.page+1) * this.pageSize : numInds} of {numInds}
                 </Readout>
             </ListStatus>
             <IndRows>
+                <FlipMove>
                     {page.map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
@@ -238,15 +247,15 @@ export default class IndicatorList extends React.Component{
                         const isolated = ind === this.singledOut
 
 
-                        return <Row
-                            zIndex = {this.pageSize-i}
+                        return this.singledOut && isolated || !this.singledOut? (<Row
                             index = {i}
                             selected = {selected}
+                            key = {i}
                             // noRaceNeedRace = {noRace && race}
                             disabled = {disabled}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
-                                this.props.store.completeWorkflow('indicator',ind)
+                                // this.props.store.completeWorkflow('indicator',ind)
                                 this.handleSelection(ind)
                                 // this.isolateIndicator(ind)
                             }}
@@ -258,7 +267,7 @@ export default class IndicatorList extends React.Component{
                                     </NoRaceBadge>
                                 }
                                     {semanticTitles[ind].label}
-                                    <Years>
+                                    <Years className = "caption">
                                         {indicator.years.map((yr)=>{
                                             return yr
                                         }).join('\xa0,\xa0')}
@@ -270,9 +279,9 @@ export default class IndicatorList extends React.Component{
                                     <Dashes>{disabled && '\u2014\u2014'}</Dashes>
                                 </Percentage>
                             </IndRight>
-                        </Row>
+                        </Row>) : <div />
                     })}
-
+                    </FlipMove>
             </IndRows>
              
                 
@@ -296,6 +305,7 @@ const IndList = styled.div`
 
 const ListStatus = styled.div`
     font-size: 13px;
+    margin-top: 10px;
 `
 
 

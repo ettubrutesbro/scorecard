@@ -55,6 +55,7 @@ const Dropdown = styled.div`
         position: absolute;
     }
     transition: transform .25s;
+    white-space: nowrap;
 
 
 `  
@@ -63,7 +64,7 @@ const DropdownWorkflow = styled(Dropdown)`
 
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
-    width: 350px;
+    width: 360px;
 
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
@@ -225,9 +226,9 @@ export default class ResponsiveNav extends React.Component{
     }
 
     handleClickOutside = (e) => {
-        if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
-            this.props.openNav()
-        }
+        // if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+        //     this.props.openNav()
+        // }
     }
 
     render(){
@@ -254,7 +255,7 @@ export default class ResponsiveNav extends React.Component{
                     {store.indicator? semanticTitles[store.indicator].shorthand : init? 'Indicator' : 'Pick an indicator'}
                 </IndicatorSelect>
                 <CountySelect 
-                    disabled = {!indicator}
+                    // disabled = {!indicator}
                     onClick = {()=>openNav('county')}
                     offset = {open}
                 >
@@ -275,8 +276,8 @@ export default class ResponsiveNav extends React.Component{
 
                 
                     <NormalDropdown
-                        disabled = {!indicator} 
-                        onClick = {!open? this.openRaceDropdown : ()=>{}} 
+                        // disabled = {!indicator} 
+                        onClick = {!open? this.openRaceDropdown : ()=>{console.log('notopen')}} 
                         offset = { open? 2 : 0 }
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
@@ -417,8 +418,8 @@ const YearToggle = (props) =>{
 }
 const YrToggle = styled.div`
     margin-left: 15px;
-    transition: transform .5s;
-    transform: translateX(${props=>props.offset? 335 : 0}px);
+    transition: transform .6s;
+    transform: translateX(${props=>props.offset? 415 : 0}px);
 `
 
 const LargeWorkflow = styled.div`

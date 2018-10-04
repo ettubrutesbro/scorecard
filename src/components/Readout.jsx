@@ -80,7 +80,7 @@ export default class Readout extends React.Component{
         const readout = `of ${descriptor||''} ${race!=='other'? raceString : ''} ${who} ${race==='other'?raceString:''} ${what} in ${countyString} in ${actualYear}.`
 
         const screen = getMedia()
-        const firstLineBreakPoint = screen==='optimal'? 95  : screen==='compact'? 60 : 40
+        const firstLineBreakPoint = screen==='optimal'? 85  : screen==='compact'? 60 : 40
         const minCharsInSubsequent = 15
 
         if(readout.length > firstLineBreakPoint){

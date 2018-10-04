@@ -139,6 +139,7 @@ class CountyList extends React.Component{
                     <GridItem 
                         className = 'allctys'
                         selected = {!county}
+                        onClick = {()=>{this.handleSelection()}}
                     >
                         All counties
                     </GridItem>
@@ -161,7 +162,7 @@ class CountyList extends React.Component{
                             disabled = {disabled}
                             key = {"countylist"+cty.id}
                             onClick = {()=>{this.handleSelection(cty.id)}}
-                            data-tip = {disabled? `${indicator} data is not available for ${cty.label}.` : null}
+                            data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
                         > 
                             {cty.label}
                         </GridItem>
