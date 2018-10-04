@@ -48,7 +48,7 @@ export default class HorizontalBarGraph extends React.Component{
         // console.log(selectBar)
         return (
             <GraphTable
-                innerRef = {this.graph}
+                ref = {this.graph}
                 onMouseEnter = {()=>this.handleHoverGraph(true)}
                 onMouseLeave = {()=>this.handleHoverGraph(false)}
                 hovered = {this.hoveredGraph&&!this.expanded}
@@ -238,7 +238,13 @@ const Rank = styled.span`
     margin-right: 5px;
     color: var(--fainttext);
 `
-const Row = styled.div`
+class Row extends React.Component{
+    render(){
+        const {children, ...restOfProps} = this.props
+        return( <RowComponent {...restOfProps}> {children} </RowComponent>)
+    }
+}
+const RowComponent = styled.div`
     cursor: pointer;
     position: relative;
     width: calc(100% - 20px);

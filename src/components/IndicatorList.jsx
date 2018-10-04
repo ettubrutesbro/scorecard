@@ -15,12 +15,18 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import semanticTitles from '../assets/semanticTitles'
 
-import {getMedia} from '../utilities/media'
+import media, {getMedia} from '../utilities/media'
 
 const IndRows = styled.ul`
     padding: 0; 
+    @media ${media.optimal}{
+        margin-top: 15px;
+    }
+    @media ${media.compact}{
+        margin-top: 10px;
+    }
 `
-const Row = styled.li`
+const RowItem = styled.li`
 
     // width: 50%;
     margin: 0;
@@ -43,7 +49,14 @@ const Row = styled.li`
     // box-shadow: var(--shadow);
 
 ` 
-
+class Row extends React.Component{
+    render(){
+        const {children, ...restOfProps} = this.props
+        return(
+            <RowItem className = "listitem" {...restOfProps}> {children} </RowItem>
+        )
+    }
+}
 
 
 
@@ -58,7 +71,7 @@ const HeaderRight = styled.div`
     
 `
 const IndLeft = styled.div`
-    font-size: 16px;
+    // font-size: 16px;
     line-height: 150%;
 `
 const Categories = styled.div`  
@@ -87,10 +100,17 @@ const Where = styled.div`
 `
 const Percentage = styled.div`
     /*margin-top: -2px;*/
-    font-size: 24px;
+    @media ${media.optimal}{
+        font-size: 24px;
+    }
+    @media ${media.compact}{
+        font-size: 16px;
+    }
     font-weight: normal;
     letter-spacing: .0rem;
     min-width: 45px;
+    display: flex;
+    justify-content: flex-end;
     min-height: 35px;
     display: flex;
     align-items: center;
@@ -120,9 +140,15 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
-    font-size: 24px;
     font-weight: normal;
     margin: 0 20px 0 0;
+    @media ${media.optimal}{
+        font-size: 24px;
+    }
+    @media ${media.compact}{
+        display: none;
+        font-size: 16px;
+    }
 `
 const Label = styled.div`
     font-size: 16px;
@@ -196,9 +222,8 @@ export default class IndicatorList extends React.Component{
 
     render(){
         const {county, race} = this.props.store
-        console.log('attempting to render indicator page', this.props.page, 'of', this.pages.length)
-        const page = this.pages[this.props.page]
-        console.log(page)
+        const page = this.pages[this.currentPage]
+
         this.props.setNumPages(this.pages.length)
 
         const numInds = Object.keys(indicators).filter((ind)=>{
@@ -207,7 +232,7 @@ export default class IndicatorList extends React.Component{
         }).length
 
         return(
-            <IndList>
+            <Workflow>
 
             <IndicatorListHeader>
 
@@ -227,7 +252,7 @@ export default class IndicatorList extends React.Component{
 
             <ListStatus className = "caption">
                  <Readout>
-                   Viewing indicators {(this.props.page * this.pageSize) + 1} - {this.props.page !== this.pages.length-1? (this.props.page+1) * this.pageSize : numInds} of {numInds}
+                   Viewing indicators {(this.currentPage * this.pageSize) + 1} - {this.currentPage !== this.pages.length-1? (this.currentPage+1) * this.pageSize : numInds} of {numInds}
                 </Readout>
             </ListStatus>
             <IndRows>
@@ -282,13 +307,13 @@ export default class IndicatorList extends React.Component{
                                     <Years className = "caption">
                                         {indicator.years.map((yr)=>{
                                             return yr
-                                        }).join('\xa0,\xa0')}
+                                        }).join(',\xa0')}
                                     </Years>
                             </IndLeft>
                             <IndRight>
                                 <Percentage>
                                     {!disabled && val+'%'}
-                                    <Dashes>{disabled && '\u2014\u2014'}</Dashes>
+                                    {disabled && <Dashes>{'\u2014\u2014'}</Dashes>}
                                 </Percentage>
                             </IndRight>
                         </Row>) : <div />
@@ -298,7 +323,7 @@ export default class IndicatorList extends React.Component{
              
                 
             
-            </IndList>
+            </Workflow>
         )
     }
 }
@@ -311,13 +336,18 @@ const Dashes = styled.div`
     align-items: center;
 `
 
-const IndList = styled.div`
+const Workflow = styled.div`
 
 `
 
 const ListStatus = styled.div`
     font-size: 13px;
-    margin-top: 10px;
+    @media ${media.optimal}{
+        margin-top: 10px;
+    }
+    @media ${media.compact}{
+        margin-top: 15px;
+    }
 `
 
 

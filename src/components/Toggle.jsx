@@ -25,6 +25,7 @@ const Option = styled.div`
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};
     // background: ${props => props.disabled? '#f3f3f5' : 'white'};
+    white-space: nowrap;
     &:hover{
         // background: white;
         color: ${props => props.selected?'var(--strokepeach)':'var(--strokepeach)'};

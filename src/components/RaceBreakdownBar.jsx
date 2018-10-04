@@ -148,7 +148,7 @@ export default class RaceBreakdownBar extends React.Component{
 
     componentDidMount(){
         // this.setHeight(this.container)
-        console.log(findDOMNode(this.labelcolumn).offsetHeight)
+        // console.log(findDOMNode(this.labelcolumn).offsetHeight)
     }
 
     setHeight = (node) => {
@@ -176,7 +176,7 @@ export default class RaceBreakdownBar extends React.Component{
             >
             <Content>
             <LabelColumn
-                innerRef = {(column) => this.labelcolumn = column}
+                ref = {(column) => this.labelcolumn = column}
                 centerText = {this.props.centerText}
             >
                 {racePercentages.map((race,i,arr)=>{

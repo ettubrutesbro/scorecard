@@ -230,7 +230,7 @@ class SubsequentLines extends React.Component{
     }
     render(){
         return(
-            <Sublines innerRef = {this.wrapper}>
+            <Sublines ref = {this.wrapper}>
                 {this.props.children}
             </Sublines>
         )

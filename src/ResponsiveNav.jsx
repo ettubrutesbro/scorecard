@@ -226,6 +226,8 @@ export default class ResponsiveNav extends React.Component{
     }
 
     handleClickOutside = (e) => {
+        console.log(this.nav)
+        console.log(this.nav.current)
         if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
             this.props.openNav()
         }
@@ -246,7 +248,7 @@ export default class ResponsiveNav extends React.Component{
 
 
         return(
-            <Nav innerRef = {this.nav}>
+            <Nav ref = {this.nav}>
                 <Logo />
                 <IndicatorSelect 
                     onClick = {()=>openNav('indicator')} 
@@ -489,10 +491,7 @@ export class PickingWorkflow extends React.Component{
                     }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
                 </FlipMove>
-                <FlipMove
-                    typeName = {null}
 
-                >
                     {which === 'indicator' && this.page < this.numPages - 1 &&  
                         <PageNext 
                             onClick = {
@@ -507,7 +506,6 @@ export class PickingWorkflow extends React.Component{
                         />
                     }
 
-                </FlipMove>
             </LargeWorkflow>
         )
     }

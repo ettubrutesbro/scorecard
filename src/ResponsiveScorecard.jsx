@@ -5,7 +5,10 @@ import styled from 'styled-components'
 
 import {mapValues, find} from 'lodash'
 
+
 import ScorecardStore from './ScorecardStore'
+import Styles from './components/Styles'
+
 import NavComponent, {PickingWorkflow} from './ResponsiveNav'
 import ReadoutComponent from './components/Readout'
 import BreakdownComponent from './components/Breakdown'
@@ -236,6 +239,7 @@ export default class ResponsiveScorecard extends React.Component{
         }): ''
         return(
             <React.Fragment>
+            <Styles />
             <App>
                 <Nav> 
                     <NavComponent 
