@@ -18,7 +18,7 @@ import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
 import {Tooltip} from './components/generic'
 
-import media from './utilities/media'
+import media, {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
 
 import caret from './assets/caret.svg'
@@ -200,6 +200,7 @@ const countyIds = Object.keys(countyLabels)
 
 @observer
 export default class ResponsiveNav extends React.Component{
+    @observable workflowPage = 0
     @observable raceDropdown = false
     @action openRaceDropdown = () => {
         if(this.props.init) return
@@ -393,6 +394,7 @@ const X = styled.div`
     &:hover{
         opacity: 0.5;
     }
+    z-index: 2;
 
 `
 const YearToggle = (props) =>{
@@ -421,7 +423,6 @@ const YrToggle = styled.div`
 
 const LargeWorkflow = styled.div`
     position: absolute;
-    overflow: hidden;
     top: 65px;
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
@@ -430,14 +431,29 @@ const LargeWorkflow = styled.div`
     @media ${media.optimal}{
         width: 1000px;
         height: 720px;
+        padding: 30px 45px;
     }
     @media ${media.compact}{
         width: 780px;
         height: 575px;
+        padding: 20px 35px;
     }
 `
 
+const screen = getMedia()
+
+@observer
 export class PickingWorkflow extends React.Component{
+
+    @observable page = 0
+    @observable numPages = 0
+    @action setNumPages = (num) => this.numPages = num
+    @action setPage = (pg) => {
+        console.log(this.page, this.numPages)
+        this.page = pg
+
+    }
+
     render(){
         const {store, close} = this.props
         const which = this.props.open
@@ -445,7 +461,14 @@ export class PickingWorkflow extends React.Component{
             <LargeWorkflow>
                 <X onClick = {this.props.x} /> 
                 <FlipMove
-                    typeName = {null}
+                    // typeName = {null}
+                    style = {{
+                        position: 'absolute',
+                        top: 0, left: 0,
+                        padding: screen === 'optimal'? '30px 45px' : screen==='compact'? '20px 35px' : '',
+                        overflow: 'hidden',
+                        width: '100%', height: '100%'    
+                    }}
                     enterAnimation = {{
                         from: {opacity: 0, transform: `translateX(${which==='indicator'?-150:150}px)`},
                         to: {opacity: 1, transform: `translateX(0px)`},
@@ -455,10 +478,52 @@ export class PickingWorkflow extends React.Component{
                         to: {opacity: -1, transform: `translateX(${which==='indicator'?150:-150}px)`},
                     }}
                 >
-                    {which === 'indicator' && <IndicatorList store = {store} closeNav = {this.props.close}/>}
+                    {which === 'indicator' && 
+                        <IndicatorList 
+                            store = {store} 
+                            closeNav = {this.props.close}
+                            setNumPages = {this.setNumPages}
+                            page = {this.page}
+                        />
+                    }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
+                </FlipMove>
+                <FlipMove
+                    typeName = {null}
+
+                >
+                    {which === 'indicator' && this.page < this.numPages - 1 &&  
+                        <PageNext 
+                            onClick = {
+                                this.page < this.numPages -1? ()=>{this.setPage(this.page+1)} 
+                                : ()=>{console.log('huh')}
+                            } 
+                        />
+                    }
+                    {which === 'indicator' && this.page > 0 &&
+                        <PagePrev 
+                            onClick = {this.page > 0? ()=>{this.setPage(this.page-1)} : ()=>{} } 
+                        />
+                    }
+
                 </FlipMove>
             </LargeWorkflow>
         )
     }
 }
+
+const PageBtn = styled.div`
+    position: absolute;
+    width: 65px; height: 65px; 
+    border-radius: 50%;
+    border: 1px solid var(--bordergrey);
+    background: white;
+    top: 0; bottom: 0; margin: auto;
+
+`
+const PagePrev = styled(PageBtn)`
+    left: -33px;
+`
+const PageNext = styled(PageBtn)`
+    right: -33px;
+`

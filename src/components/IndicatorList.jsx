@@ -21,9 +21,7 @@ const IndRows = styled.ul`
     padding: 0; 
 `
 const Row = styled.li`
-    &:not(:first-of-type){
-        border-top-color: transparent;
-    }
+
     // width: 50%;
     margin: 0;
     display: flex;
@@ -32,10 +30,11 @@ const Row = styled.li`
     padding: 15px 30px;
     // margin: 10px;
     list-style-type: none;
-    border: 1px solid ${props=>props.noRaceNeedRace? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
-    color: ${props=> props.selected? 'var(--strokepeach)' : props.noRaceNeedRace? 'var(--fainttext)' : 'black'};
-    background: ${props => props.selected? 'var(--faintpeach)' : props.noRaceNeedRace? 'var(--offwhitebg)' : 'white'};
-
+    border: 1px solid ${props=> props.disabled? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
+    color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
+    background: ${props => props.disabled? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
+    transform: translateY(-${props => props.index * 1}px);
+    z-index: ${props=>props.zIndex};
     // box-shadow: var(--shadow);
 
 ` 
@@ -44,17 +43,13 @@ const IndicatorListHeader = styled.div`
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    h1{
-        font-size: 24px;
-        font-weight: 400;
-        margin: 0;
-    }
+
 `
 const HeaderRight = styled.div`
     
 `
 const IndLeft = styled.div`
-    font-size: 13px;
+    font-size: 16px;
     line-height: 150%;
 `
 const Categories = styled.div`  
@@ -82,10 +77,14 @@ const Where = styled.div`
     margin-right: 2px;
 `
 const Percentage = styled.div`
-    margin-top: -2px;
+    /*margin-top: -2px;*/
     font-size: 24px;
     font-weight: normal;
     letter-spacing: .0rem;
+    min-width: 45px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
 `
 const indicatorFilterOptions = [
     {label: 'All topics', value: 'all'},
@@ -114,22 +113,13 @@ const Caption = styled.div`
 const Title = styled.h1`
     font-size: 24px;
     font-weight: normal;
+    margin: 0 20px 0 0;
 `
 const Label = styled.div`
     font-size: 16px;
 
 `
 
-const Metadata = styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: 4px;
-
-`
-const Missing = styled.div`
-    
-
-`
 
 @observer
 export default class IndicatorList extends React.Component{
@@ -177,7 +167,7 @@ export default class IndicatorList extends React.Component{
         const screen = getMedia()
         let pages = []
         if(screen==='optimal'){
-            this.pageSize = 6
+            this.pageSize = 8
         }
         else if(screen==='compact'){
             this.pageSize = 5
@@ -192,14 +182,14 @@ export default class IndicatorList extends React.Component{
         }
 
         this.pages = pages
-        console.log(this.pages)
     }
 
     render(){
         const {county, race} = this.props.store
 
-        const page = this.pages[this.currentPage]
+        const page = this.pages[this.props.page]
         console.log(page)
+        this.props.setNumPages(this.pages.length)
 
         const numInds = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
@@ -212,9 +202,11 @@ export default class IndicatorList extends React.Component{
             <IndicatorListHeader>
 
                 <Title> Choose an indicator. </Title>
+                {/* 
                 <Search 
                     placeholder = "Search indicators..."
                 />
+                */}
                 <Toggle
                     options = {indicatorFilterOptions}
                     onClick = {this.setFilter}
@@ -222,21 +214,36 @@ export default class IndicatorList extends React.Component{
                 />
 
             </IndicatorListHeader>
+
+            <ListStatus>
+                 <Readout>
+                   Viewing indicators {(this.props.page * this.pageSize) + 1} - {this.props.page !== this.pages.length-1? (this.props.page+1) * this.pageSize : numInds} of {numInds}
+                </Readout>
+            </ListStatus>
             <IndRows>
-                    {page.map((ind)=>{
+                    {page.map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
                         const noRace = !cats.includes('hasRace')
 
+                        const noRaceNeedRace = noRace && race
+
+                        let val = indicator.counties[county||'california'][race||'totals']
+                        val = val && val!=='*'? val[val.length-1] : ''
+
+                        const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
+
                         const missingCounties = true
                         const isolated = ind === this.singledOut
 
 
-
                         return <Row
+                            zIndex = {this.pageSize-i}
+                            index = {i}
                             selected = {selected}
-                            noRaceNeedRace = {noRace && race}
+                            // noRaceNeedRace = {noRace && race}
+                            disabled = {disabled}
                             onClick = {()=>{
                                 // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
                                 this.props.store.completeWorkflow('indicator',ind)
@@ -245,75 +252,63 @@ export default class IndicatorList extends React.Component{
                             }}
                         > 
                             <IndLeft>
-                                <Label>
+                                {noRace &&
+                                    <NoRaceBadge>
+                                        NR
+                                    </NoRaceBadge>
+                                }
                                     {semanticTitles[ind].label}
                                     <Years>
                                         {indicator.years.map((yr)=>{
                                             return yr
-                                        }).join(', ')}
+                                        }).join('\xa0,\xa0')}
                                     </Years>
-                                </Label>
-                                <Metadata>
-                                {noRace &&
-                                    <NoRaceBadge>
-                                        No Race Data
-                                    </NoRaceBadge>
-                                }
-
-                                {missingCounties &&
-                                    <Missing> X counties are missing data </Missing>
-                                }
-                                </Metadata>
                             </IndLeft>
                             <IndRight>
                                 <Percentage>
-                                    {!county && indicator.counties.california.totals[indicator.counties.california.totals.length-1] + '%'}
-                                    {county && indicator.counties[county].totals[indicator.counties[county].totals.length-1] + '%'}
+                                    {!disabled && val+'%'}
+                                    <Dashes>{disabled && '\u2014\u2014'}</Dashes>
                                 </Percentage>
-                                <Where>
-                                    {county && find(counties, (o)=>{return o.id===county}).label }
-                                    {!county && 'CA avg'}
-                                    
-                                </Where>
                             </IndRight>
                         </Row>
                     })}
 
             </IndRows>
+             
+                
             
-                <PageControls>
-                <Prev disabled = {this.currentPage===0} onClick = {this.currentPage === 0? () => {} : ()=>this.goToPage(this.currentPage-1)}>
-                    back 
-                </Prev>
-                <Readout>
-                   Viewing indicators {(this.currentPage * this.pageSize) + 1} - {this.currentPage !== this.pages.length-1? (this.currentPage+1) * this.pageSize : numInds} of {numInds}
-                </Readout>
-                <Next disabled = {this.currentPage===this.pages.length-1} onClick = {this.currentPage === this.pages.length-1? ()=>{} : ()=>this.goToPage(this.currentPage+1)}>
-                    next page
-                </Next>
-                </PageControls>
             </IndList>
         )
     }
 }
 
-const IndList = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-`
-
-const PageControls = styled.div`
+const Dashes = styled.div`
     width: 100%;
     display: flex;
+    justify-content: center;
+    font-size: 16px;
     align-items: center;
-    justify-content: space-between;
 `
+
+const IndList = styled.div`
+
+`
+
+const ListStatus = styled.div`
+    font-size: 13px;
+`
+
+
 const Readout = styled.div `
     color: var(--fainttext);
 `
 const PageBtn = styled.div`
+    position: absolute;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    top: 0; bottom: 0; margin: auto;
+
     padding: 10px 25px;
     border: 1px solid ${props => props.disabled?'var(--bordergrey)':'black'};
     display: flex;
@@ -322,18 +317,21 @@ const PageBtn = styled.div`
 
 `
 const Prev = styled(PageBtn)`
-
+    left: -25px;
 `
 
 const Next = styled(PageBtn)`
-
+    right: -25px;
 `
 
 const NoRaceBadge = styled.div`
     color: white;
-    background: var(--fainttext);
-    padding: 3px 6px;
+    background: var(--bordergrey);
+    padding: 0px 6px;
     display: inline-flex;
     align-items: center;
     margin-right: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.75px;
 `

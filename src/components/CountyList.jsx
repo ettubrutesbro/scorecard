@@ -47,6 +47,9 @@ const GridItem = styled.li`
     &:hover{
         background: #f3f3f5;
     }
+    &.allctys{
+        color: var(--strokepeach);
+    }
 `
 
 const Titleblock = styled.div`
@@ -105,10 +108,10 @@ class CountyList extends React.Component{
                 <Titleblock>
                     <TitleSide>
                     <h1>Pick a county.</h1>
-                    {!county && <Faint> Viewing all counties </Faint>}
+                   
                     </TitleSide>
                     <TitleSide>
-                        {county && 
+                        {/*county && 
                         <AllCountiesBtn
                             onClick= {()=>this.handleSelection(null)}
                             btnMode = {county}
@@ -118,12 +121,14 @@ class CountyList extends React.Component{
                                 (Deselect {ctyLabel} county)
                             </Faint>
                         </AllCountiesBtn>
-                        }
+                        */}
+                        {/*
                         <Search 
                             placeholder = "Search counties..." 
                             value = {this.searchString}
                             onChange = {this.search} 
                         /> 
+                        */}
                     </TitleSide>
                 </Titleblock>
 
@@ -131,6 +136,12 @@ class CountyList extends React.Component{
                     <ReactTooltip effect = "solid" 
                         className = 'reactTooltipOverride'
                     />
+                    <GridItem 
+                        className = 'allctys'
+                        selected = {!county}
+                    >
+                        All counties
+                    </GridItem>
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1
                         else if (a.id > b.id) return 1
