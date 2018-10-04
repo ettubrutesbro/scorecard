@@ -37,8 +37,8 @@ const semanticTitles = {
     },
     'upToDateImmunizations': {
         who: 'Kindergarteners',
-        what: 'were up-to-date on their vaccines',
-        label: 'Kindergarteners with up-to-date vaccines',
+        what: 'had up-to-date immunizations',
+        label: 'Kindergarteners with up-to-date immunizations',
         shorthand: 'Kindergartener vaccination'
     },
     'allegations': {
