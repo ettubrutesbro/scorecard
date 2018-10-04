@@ -226,9 +226,9 @@ export default class ResponsiveNav extends React.Component{
     }
 
     handleClickOutside = (e) => {
-        // if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
-        //     this.props.openNav()
-        // }
+        if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+            this.props.openNav()
+        }
     }
 
     render(){
