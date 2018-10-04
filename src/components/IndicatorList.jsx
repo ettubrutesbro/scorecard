@@ -229,7 +229,17 @@ export default class IndicatorList extends React.Component{
                 </Readout>
             </ListStatus>
             <IndRows>
-                <FlipMove>
+                <FlipMove
+                    staggerDelayBy = {10}
+                    leaveAnimation = {{
+                        from: {opacity: 1, transform: 'translateX(0)'},
+                        to: {opacity: 0, transform: 'translateX(-100px)'}
+                    }}
+                    enterAnimation = {{
+                        from: {opacity: 0, transform: 'translateX(100px)'},
+                        to: {opacity: 1, transform: 'translateX(0px)'}
+                    }}
+                >
                     {page.map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
@@ -250,7 +260,7 @@ export default class IndicatorList extends React.Component{
                         return this.singledOut && isolated || !this.singledOut? (<Row
                             index = {i}
                             selected = {selected}
-                            key = {i}
+                            key = {ind}
                             // noRaceNeedRace = {noRace && race}
                             disabled = {disabled}
                             onClick = {()=>{

@@ -1,1 +1,0 @@
-export edumacation from './edumacation.json'

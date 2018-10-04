@@ -1,12 +1,13 @@
 {
-  "indicator": "dentalVisit",
+  "indicator": "lowIncomeDental",
   "years": [
     "2015",
     "2016"
   ],
   "categories": [
     "hasRace",
-    "health"
+    "health",
+    "earlyChildhood"
   ],
   "counties": {
     "california": {

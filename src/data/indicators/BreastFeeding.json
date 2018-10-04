@@ -7,7 +7,7 @@
   "categories": [
     "hasRace",
     "health",
-    "earlyChildhood"
+    "education"
   ],
   "counties": {
     "california": {
@@ -1778,6 +1778,36 @@
       "totals": [
         "",
         60
+      ]
+    },
+    "": {
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [
+        "",
+        ""
+      ],
+      "white": [
+        "",
+        ""
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "",
+        ""
+      ],
+      "other": [
+        "",
+        ""
+      ],
+      "totals": [
+        "",
+        ""
       ]
     }
   }

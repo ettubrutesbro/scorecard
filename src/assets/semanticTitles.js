@@ -35,7 +35,7 @@ const semanticTitles = {
         label: 'Low-income children, age 0-5, who saw a dentist in the last year',
         shorthand: 'Dental visits for low-income children'
     },
-    'upToDateVaccinations': {
+    'upToDateImmunizations': {
         who: 'Kindergarteners',
         what: 'were up-to-date on their vaccines',
         label: 'Kindergarteners with up-to-date vaccines',

@@ -1,48 +1,48 @@
 // import * as welfare from './welfare/index.js'
 // import * as education from './education/'
 
-import notFoodInsecure from './indicators/NotFoodInsecure.json'
-import earlyPrenatalCare from './indicators/EarlyPrenatalCare.json'
-import registeredToVote from './indicators/RegisteredToVote.json'
-import upToDateVaccinations from './indicators/UpToDateVaccinations.json'
-import lowIncomeDental from './indicators/LowIncomeDental.json'
-import collegeCareerReady from './indicators/CollegeCareerReady.json'
-import allegations from './indicators/Allegations.json'
+import notFoodInsecure from './indicators/notFoodInsecure.json'
+import earlyPrenatalCare from './indicators/earlyPrenatalCare.json'
+import registeredToVote from './indicators/registeredToVote.json'
+import upToDateImmunizations from './indicators/upToDateImmunizations.json'
+import lowIncomeDental from './indicators/lowIncomeDental.json'
+import collegeCareerReady from './indicators/collegeCareerReady.json'
+import allegations from './indicators/allegations.json'
 
 
 //formatting issues
-import breastFeeding from './indicators/BreastFeeding.json'
-import MathStandards8 from './indicators/MathStandards8.json'
+import breastFeeding from './indicators/breastFeeding.json'
+import MathStandards8 from './indicators/mathStandards8.json'
 
 //year rank discrepancy
-import collegeLevelMath from './indicators/CollegeLevelMath.json'
+import collegeLevelMath from './indicators/collegeLevelMath.json'
 
 // black/AA issue
-import FamilyLike from './indicators/FamilyLike.json'
+import FamilyLike from './indicators/familyLike.json'
 
 //asterisked numbers and no ranks
-import ReadToEveryday from './indicators/ReadToEveryday.json'
+import ReadToEveryday from './indicators/readToEveryday.json'
 
 
 //provisionally working:
-import childCareSlots from './indicators/ChildCareSlots.json'
-import englishLearners from './indicators/EnglishLearners.json'
-import enrolled34 from './indicators/Enrolled34.json'
-import FosterYouthGraduation from './indicators/FosterYouthGraduation.json'
-import FRPMSchoolYear from './indicators/FRPMSchoolYear.json'
-import FRPMSummer from './indicators/FRPMSummer.json'
-import FYTimelyDental from './indicators/FYTimelyDental.json'
-import FYTimelyMedical from './indicators/FYTimelyMedical.json'
+import childCareSlots from './indicators/childCareSlots.json'
+import englishLearners from './indicators/englishLearners.json'
+import enrolled34 from './indicators/enrolled34.json'
+import FosterYouthGraduation from './indicators/fosterYouthGraduation.json'
+import FRPMSchoolYear from './indicators/fRPMSchoolYear.json'
+import FRPMSummer from './indicators/fRPMSummer.json'
+import FYTimelyDental from './indicators/fYTimelyDental.json'
+import FYTimelyMedical from './indicators/fYTimelyMedical.json'
 
-import Graduation from './indicators/Graduation.json'
-import HealthInsurance from './indicators/HealthInsurance.json'
-import NotAbsent from './indicators/NotAbsent.json'
-import NotLowBirthWeight from './indicators/NotLowBirthWeight.json'
-import NotObese from './indicators/NotObese.json'
-import Permanency from './indicators/Permanency.json'
-import PlacementStability from './indicators/PlacementStability.json'
-import ReadingStandards from './indicators/ReadingStandards.json'
-import Suspension from './indicators/Suspension.json'
+import Graduation from './indicators/graduation.json'
+import HealthInsurance from './indicators/healthInsurance.json'
+import NotAbsent from './indicators/notAbsent.json'
+import NotLowBirthWeight from './indicators/notLowBirthWeight.json'
+import NotObese from './indicators/notObese.json'
+import Permanency from './indicators/permanency.json'
+import PlacementStability from './indicators/placementStability.json'
+import ReadingStandards from './indicators/readingStandards.json'
+import Suspension from './indicators/suspension.json'
 
 const indicators = {
     allegations: allegations,
@@ -73,7 +73,7 @@ const indicators = {
     readToEveryday: ReadToEveryday,
     registeredToVote: registeredToVote,
     suspension: Suspension,
-    upToDateVaccinations: upToDateVaccinations,
+    upToDateImmunizations: upToDateImmunizations,
 
 
 }
