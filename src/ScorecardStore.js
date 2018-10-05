@@ -52,7 +52,11 @@ export default class AppStore{
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
     @action completeWorkflow = (which, value) => {
 
-        if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')) this.race = null
+        if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')){
+            //picked no-race indicator with a race already selected: unset
+            //TODO: sanity check here
+            this.race = null
+        }
         else if(which==='indicator' && this.county){
             const val = indicators[value].counties[this.county][this.race||'totals'][this.year]
 
@@ -79,7 +83,14 @@ export default class AppStore{
                 return
             }
         }
-        if(!this.checkInvalid()){ 
+        else if(which==='race'){
+            if(!this.checkInvalid(which,value)){
+                console.log('tried to pick race but it woludve resulted in invalid value: canceling')
+                return
+            }
+        }
+
+        if(!this.checkInvalid(which,value)){ 
             console.log('something invalid, stopping selection')
             alert('oops! something bad happened.')
             return
