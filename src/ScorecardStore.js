@@ -152,7 +152,7 @@ export default class AppStore{
         const val = indicator? indicators[which==='indicator'?value:indicator].counties[which==='county'?value:county||'california'][which==='race'?value:race||'totals'][year]
             : demopop[county||'california'][race||'population']
         console.log(val)
-        return val==='*' || !val? false : true
+        return val!==0 && (val==='*' || !val)? false : true
     }
     
     @observable notifications = {

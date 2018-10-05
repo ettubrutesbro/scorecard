@@ -227,6 +227,8 @@ export default class ResponsiveNav extends React.Component{
     handleClickOutside = (e) => {
 
         if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+            console.log('clicked outside: ', e.target)
+            console.log(this.nav.current.contains(e.target))
             this.props.openNav()
         }
     }
@@ -445,6 +447,15 @@ const screen = getMedia()
 
 @observer
 export class PickingWorkflow extends React.Component{
+
+    handlePageChange =(evt, goTo)=>{
+        const store = this.props.store
+        if(goTo === -1 || goTo > store.indicatorPages.length-1) return
+        else store.setIndicatorListPage(goTo)
+        evt.preventDefault()
+        evt.stopPropagation()   
+    }
+
     render(){
         const {store, close} = this.props
         const which = this.props.open
@@ -481,20 +492,21 @@ export class PickingWorkflow extends React.Component{
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
                 </FlipMove>
 
-                    {which === 'indicator' && indicatorListPage < indicatorPages.length - 1 &&  
                         <PageNext 
+                            show = {indicatorListPage < indicatorPages.length-1}
                             onClick = {
-                                ()=>setIndicatorListPage(indicatorListPage+1)
-                            } 
+                                (e)=>this.handlePageChange(e,indicatorListPage+1)
+                            }   
                         />
-                    }
-                    {which === 'indicator' && indicatorListPage > 0 &&
+                    
                         <PagePrev 
+                            show = {indicatorListPage > 0}
                             onClick = {
-                                ()=>setIndicatorListPage(indicatorListPage-1)
+                                (e)=>this.handlePageChange(e,indicatorListPage-1)
+
                             } 
                         />
-                    }
+                    
 
             </LargeWorkflow>
         )
@@ -508,11 +520,15 @@ const PageBtn = styled.div`
     border: 1px solid var(--bordergrey);
     background: white;
     top: 0; bottom: 0; margin: auto;
-
+    // display: ${props => props.show? 'block' : 'none'};
+    opacity: ${props => props.show? 1 : 0};
+    transition: transform .25s, opacity .25s;
 `
 const PagePrev = styled(PageBtn)`
     left: -25px;
+    transform: translateX(${props=>props.show?0:'15px'});
 `
 const PageNext = styled(PageBtn)`
     right: -25px;
+    transform: translateX(${props=>props.show?0:'-15px'});
 `
