@@ -206,11 +206,18 @@ export default class ResponsiveNav extends React.Component{
         if(this.props.init) return
         // this.props.closeSplash()
         this.raceDropdown = !this.raceDropdown
+        if(this.raceDropdown){
+            document.addEventListener('click',this.dropdownHandleClickOutside)
+        }
+        else{
+            document.removeEventListener('click',this.dropdownHandleClickOutside)
+        }
         // this.props.closeSplash()
     }
     constructor(){
         super()
         this.nav = React.createRef()
+        this.dropdown = React.createRef()
     }
     componentDidMount(){
     }
@@ -230,6 +237,13 @@ export default class ResponsiveNav extends React.Component{
             console.log('clicked outside: ', e.target)
             console.log(this.nav.current.contains(e.target))
             this.props.openNav()
+        }
+    }
+
+    dropdownHandleClickOutside = (e) => {
+        if(!this.dropdown.current.contains(e.target)){
+            console.log('clicked outside open race dropdown, closing')
+            this.openRaceDropdown()
         }
     }
 
@@ -278,6 +292,7 @@ export default class ResponsiveNav extends React.Component{
 
                 
                     <NormalDropdown
+                        ref = {this.dropdown}
                         // disabled = {!indicator} 
                         onClick = {!open? this.openRaceDropdown : ()=>{console.log('notopen')}} 
                         offset = { open? 2 : 0 }
