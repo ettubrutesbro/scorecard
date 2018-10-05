@@ -201,7 +201,6 @@ const countyIds = Object.keys(countyLabels)
 
 @observer
 export default class ResponsiveNav extends React.Component{
-    @observable workflowPage = 0
     @observable raceDropdown = false
     @action openRaceDropdown = () => {
         if(this.props.init) return
@@ -226,8 +225,7 @@ export default class ResponsiveNav extends React.Component{
     }
 
     handleClickOutside = (e) => {
-        console.log(this.nav)
-        console.log(this.nav.current)
+
         if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
             this.props.openNav()
         }
@@ -447,28 +445,19 @@ const screen = getMedia()
 
 @observer
 export class PickingWorkflow extends React.Component{
-
-    @observable page = 0
-    @observable numPages = 0
-    @action setNumPages = (num) => this.numPages = num
-    @action setPage = (pg) => {
-        console.log(this.page, this.numPages)
-        this.page = pg
-
-    }
-
     render(){
         const {store, close} = this.props
         const which = this.props.open
+        const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
         return(
             <LargeWorkflow>
-                <X onClick = {this.props.x} /> 
+                <X onClick = {this.props.x} />  
                 <FlipMove
                     // typeName = {null}
                     style = {{
                         position: 'absolute',
                         top: 0, left: 0,
-                        padding: screen === 'optimal'? '30px 45px' : screen==='compact'? '20px 35px' : '',
+                        padding: '30px 40px',
                         overflow: 'hidden',
                         width: '100%', height: '100%'    
                     }}
@@ -492,17 +481,18 @@ export class PickingWorkflow extends React.Component{
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
                 </FlipMove>
 
-                    {which === 'indicator' && this.page < this.numPages - 1 &&  
+                    {which === 'indicator' && indicatorListPage < indicatorPages.length - 1 &&  
                         <PageNext 
                             onClick = {
-                                this.page < this.numPages -1? ()=>{this.setPage(this.page+1)} 
-                                : ()=>{console.log('huh')}
+                                ()=>setIndicatorListPage(indicatorListPage+1)
                             } 
                         />
                     }
-                    {which === 'indicator' && this.page > 0 &&
+                    {which === 'indicator' && indicatorListPage > 0 &&
                         <PagePrev 
-                            onClick = {this.page > 0? ()=>{this.setPage(this.page-1)} : ()=>{} } 
+                            onClick = {
+                                ()=>setIndicatorListPage(indicatorListPage-1)
+                            } 
                         />
                     }
 
@@ -513,16 +503,16 @@ export class PickingWorkflow extends React.Component{
 
 const PageBtn = styled.div`
     position: absolute;
-    width: 65px; height: 65px; 
-    border-radius: 50%;
+    width: 50px; height: 95px; 
+    // border-radius: 50%;
     border: 1px solid var(--bordergrey);
     background: white;
     top: 0; bottom: 0; margin: auto;
 
 `
 const PagePrev = styled(PageBtn)`
-    left: -33px;
+    left: -25px;
 `
 const PageNext = styled(PageBtn)`
-    right: -33px;
+    right: -25px;
 `

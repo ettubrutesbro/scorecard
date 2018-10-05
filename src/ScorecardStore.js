@@ -5,6 +5,7 @@ import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import countyLabels from './assets/countyLabels'
 import demopop from './data/demographicsAndPopulation'
+import {getMedia} from './utilities/media'
 
 export default class AppStore{
     @observable indicator = null
@@ -162,6 +163,44 @@ export default class AppStore{
         if(time){
             setTimeout(()=>{this.notifications[which] = null}, time)
         }
+    }
+
+    @observable indicatorPageSize = 1
+    @action setIndicatorPages = () => {
+        console.log('hello')
+        const screen = getMedia()
+        let pages = []
+        if(screen==='optimal'){
+            this.indicatorPageSize = 8
+        }
+        else if(screen==='compact'){
+            this.indicatorPageSize = 7
+        }
+        const indKeys = Object.keys(indicators).filter((ind)=>{
+            const cats = indicators[ind].categories
+            return this.indicatorFilter === 'all'? true : cats.includes(this.indicatorFilter)
+        })
+        console.log('total inds:', indKeys.length)
+        for(var i = 0; i<indKeys.length/this.indicatorPageSize; i++){
+            pages.push(indKeys.slice(i*this.indicatorPageSize, (i+1)*this.indicatorPageSize))
+        }
+
+        this.indicatorPages = pages
+        console.log(this.indicatorPages.toJS())
+    }
+
+    @observable indicatorPages = null
+    @observable indicatorListPage = 0
+    @observable indicatorFilter = 'all'
+    @action setIndicatorFilter = (val) =>{
+        console.log('setting indicator filter to ', val)
+        this.indicatorListPage = 0
+        this.indicatorFilter = val
+        this.setIndicatorPages()
+     }
+    @action setIndicatorListPage = (val) => {
+        console.log('setting indicator page to ',val)
+        this.indicatorListPage = val
     }
 
 }

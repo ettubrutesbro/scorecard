@@ -97,7 +97,7 @@ const Where = styled.div`
     font-size: 13px;
 
     margin-right: 2px;
-`
+    `
 const Percentage = styled.div`
     /*margin-top: -2px;*/
     @media ${media.optimal}{
@@ -158,79 +158,29 @@ const Label = styled.div`
 
 @observer
 export default class IndicatorList extends React.Component{
-    @observable filter = 'all'
-    @observable currentPage = 0
-    @observable pages = []
-    @observable pageSize = 24
 
-    @observable singledOut = null
-    @action isolateIndicator = (ind) => {
-        //for singling out indicators that've been selected
-        //despite some sort of disabled status:
-        this.singledOut = ind
-    }
-
-    @action goToPage = (pg) => {
-        console.log('going to page', pg)
-        console.log(this.pages[pg])
-        this.currentPage = pg
-
-    }
-    @action setFilter = (value) =>{ 
-        this.goToPage(0)
-
-        this.paginate()
-        this.filter = value
-    }
-
-    handleSelection = (ind) =>{
-        this.props.store.completeWorkflow('indicator' , ind)
-        this.props.closeNav() 
-    }
-
-    constructor(){
-        super()
-        this.paginate()
-        //resize?
-    }
-
-    // componentDidUpdate(){
-    //     this.paginate()
-    // }
-
-    @action
-    paginate = () => {
-        const screen = getMedia()
-        let pages = []
-        if(screen==='optimal'){
-            this.pageSize = 8
-        }
-        else if(screen==='compact'){
-            this.pageSize = 5
-        }
-        const indKeys = Object.keys(indicators).filter((ind)=>{
-            const cats = indicators[ind].categories
-            return this.filter === 'all'? true : cats.includes(this.filter)
-        })
-        console.log('total inds:', indKeys.length)
-        for(var i = 0; i<indKeys.length/this.pageSize; i++){
-            pages.push(indKeys.slice(i*this.pageSize, (i+1)*this.pageSize))
-        }
-
-        this.pages = pages
+    handleSelection = (ind) => {
+        this.props.store.completeWorkflow('indicator',ind)
+        this.props.closeNav()
     }
 
     render(){
-        const {county, race} = this.props.store
-        const page = this.pages[this.currentPage]
+        const {store} = this.props
+        const {county, race, indicatorFilter} = store
+        // const page = this.pages[this.currentPage]
+        console.log(store.indicatorPages.toJS())
+        console.log(store.indicatorListPage)
+        const page = store.indicatorPages[store.indicatorListPage]
+        console.log(page)
 
-        this.props.setNumPages(this.pages.length)
+        // this.props.setNumPages(this.pages.length)
 
         const numInds = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
-            return this.filter === 'all'? true : cats.includes(this.filter)
+            return indicatorFilter === 'all'? true : cats.includes(indicatorFilter)
         }).length
 
+        console.log(store.indicatorFilter)
         return(
             <Workflow>
 
@@ -244,15 +194,15 @@ export default class IndicatorList extends React.Component{
                 */}
                 <Toggle
                     options = {indicatorFilterOptions}
-                    onClick = {this.setFilter}
-                    selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===this.filter})}
+                    onClick = {store.setIndicatorFilter}
+                    selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===store.indicatorFilter})}
                 />
 
             </IndicatorListHeader>
 
             <ListStatus className = "caption">
                  <Readout>
-                   Viewing indicators {(this.currentPage * this.pageSize) + 1} - {this.currentPage !== this.pages.length-1? (this.currentPage+1) * this.pageSize : numInds} of {numInds}
+                   Viewing inds X of Y
                 </Readout>
             </ListStatus>
             <IndRows>

@@ -231,6 +231,9 @@ export default class ResponsiveScorecard extends React.Component{
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
 
+    componentDidMount(){
+        store.setIndicatorPages()
+    }
 
     render(){
         const {indicator, year, race} = store
