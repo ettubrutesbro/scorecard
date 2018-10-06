@@ -55,7 +55,6 @@ const GridItem = styled.li`
 const Titleblock = styled.div`
     h1{
         margin: 0;
-        margin-left: 12px;
         font-weight: 400;
         font-size: 24px;
         margin-right: 10px;

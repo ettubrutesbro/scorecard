@@ -104,7 +104,7 @@ const CountyPath = styled.path`${CountyStyle}`
              }
         }
         e.preventDefault()
-             e.stopPropagation()
+         e.stopPropagation()
     }
 
     render(){
@@ -117,7 +117,7 @@ const CountyPath = styled.path`${CountyStyle}`
         let noData = false
 
         const cty = countyLabels[hoveredCounty]
-        if(!tipData){
+        if(!tipData && tipData!==0){
             if(race){
                 tipData = `There's no data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} for this indicator.`
             }

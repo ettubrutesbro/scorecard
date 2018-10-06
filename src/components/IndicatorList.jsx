@@ -13,38 +13,50 @@ import {Search} from './generic'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
+import countyLabels from '../assets/countyLabels'
+import {capitalize} from '../utilities/toLowerCase'
 import semanticTitles from '../assets/semanticTitles'
 
 import media, {getMedia} from '../utilities/media'
 
 const IndRows = styled.ul`
     padding: 0; 
-    @media ${media.optimal}{
-        margin-top: 15px;
-    }
-    @media ${media.compact}{
-        margin-top: 10px;
-    }
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    margin: 0;
+
 `
 const RowItem = styled.li`
-
+    flex-grow: ${props => props.lastPage? 0 : 1};
+    position: relative;
     // width: 50%;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 15px 30px;
+    @media ${media.optimal}{
+        padding: 15px 30px;
+    }
+    @media ${media.compact}{
+        padding: 10px 25px;
+    }
     // margin: 10px;
     list-style-type: none;
     border: 1px solid ${props=> props.disabled? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     background: ${props => props.disabled? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
     /*transform: translateY(-${props => props.index * 1}px);*/
-    
+    margin-top: -1px;
     z-index: ${props=>props.selected? 2: 1};
-    cursor: ${props => props.disabled? 'auto' : 'pointer'};
+    cursor: ${props => props.disabled? 'not-allowed' : 'pointer'};
     &:hover{
         color: ${props => props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
+        h4{
+            color: ${props => props.disabled? 'var(--fainttext)' : 'var(--peach)'};
+        }
     }
     // box-shadow: var(--shadow);
 
@@ -59,64 +71,42 @@ class Row extends React.Component{
 }
 
 
-
-const IndicatorListHeader = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-
-`
-const HeaderRight = styled.div`
-    
-`
 const IndLeft = styled.div`
     // font-size: 16px;
     line-height: 150%;
 `
-const Categories = styled.div`  
-    margin-top: 4px;
-    display: flex;
-    align-items: center;
-`
-const Years = styled.span`
-    margin-left: 8px;
-    font-size: 13px;
-    color: var(--fainttext);
-`
-const IndRight = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    white-space: nowrap;
-    margin-left: 20px;
-`
-const Where = styled.div`
-    color: var(--fainttext);
-    margin-top: 0px;
-    font-size: 13px;
 
-    margin-right: 2px;
-    `
+const Years = styled.h4`
+    display: inline;
+    font-weight: normal;
+    margin: 0;
+    margin-left: 8px;
+    margin-right: 7px;
+    font-size: 13px;
+    // color: var(--fainttext);
+`
+
 const Percentage = styled.div`
     /*margin-top: -2px;*/
+    margin-left: 20px;
     @media ${media.optimal}{
         font-size: 24px;
+        font-weight: normal;
+        min-height: 35px;
     }
     @media ${media.compact}{
+        font-weight: 500;
         font-size: 16px;
     }
-    font-weight: normal;
     letter-spacing: .0rem;
     min-width: 45px;
     display: flex;
     justify-content: flex-end;
-    min-height: 35px;
     display: flex;
     align-items: center;
 `
 const indicatorFilterOptions = [
-    {label: 'All topics', value: 'all'},
+    {label: getMedia()==='optimal'?'All topics':'All', value: 'all'},
     {label: 'Health', value: 'health'},
     {label: 'Education', value: 'education'},
     {label: 'Welfare', value: 'welfare'},
@@ -140,14 +130,14 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
-    font-weight: normal;
     margin: 0 20px 0 0;
+
+    font-weight: 400;
     @media ${media.optimal}{
         font-size: 24px;
     }
     @media ${media.compact}{
-        display: none;
-        font-size: 16px;
+        font-size: 24px;
     }
 `
 const Label = styled.div`
@@ -158,6 +148,11 @@ const Label = styled.div`
 
 @observer
 export default class IndicatorList extends React.Component{
+
+    @observable stillAnimating = false
+    @action animationStarted = () => this.stillAnimating = true
+    @action doneAnimating = () => this.stillAnimating = false
+
 
     handleSelection = (ind) => {
         this.props.store.completeWorkflow('indicator',ind)
@@ -175,16 +170,17 @@ export default class IndicatorList extends React.Component{
 
         // this.props.setNumPages(this.pages.length)
 
+        const indRangeEnd = (store.indicatorListPage+1)*store.indicatorPageSize
         const numInds = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
             return indicatorFilter === 'all'? true : cats.includes(indicatorFilter)
         }).length
 
         console.log(store.indicatorFilter)
+
         return(
             <Workflow>
 
-            <IndicatorListHeader>
 
                 <Title> Choose an indicator. </Title>
                 {/* 
@@ -192,30 +188,48 @@ export default class IndicatorList extends React.Component{
                     placeholder = "Search indicators..."
                 />
                 */}
+
+            <ListStatus className = "caption">
                 <Toggle
                     options = {indicatorFilterOptions}
                     onClick = {store.setIndicatorFilter}
                     selected = {findIndex(indicatorFilterOptions,(o)=>{return o.value===store.indicatorFilter})}
                 />
-
-            </IndicatorListHeader>
-
-            <ListStatus className = "caption">
                  <Readout>
-                   Viewing inds X of Y
+                   <AboutPcts>
+                       {`${county?countyLabels[county]:'Statewide'} %s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
+                    </AboutPcts> 
+                   Viewing {(store.indicatorPageSize * store.indicatorListPage)+1} 
+                   &#8212; 
+                   {indRangeEnd > numInds? numInds : indRangeEnd}
+                    &nbsp;of {numInds}
+                    
+
                 </Readout>
             </ListStatus>
             <IndRows>
                 <FlipMove
                     staggerDelayBy = {10}
+                    style = {{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                    }}
+                    maintainContainerHeight = {true}
+                    duration = {250}
                     leaveAnimation = {{
                         from: {opacity: 1, transform: 'translateX(0)'},
-                        to: {opacity: 0, transform: 'translateX(-100px)'}
+                        to: {opacity: 0, transform: 'translateX(-150px)'}
                     }}
                     enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateX(100px)'},
+                        from: {opacity: 0, transform: 'translateX(150px)'},
                         to: {opacity: 1, transform: 'translateX(0px)'}
                     }}
+                    onStartAll = {()=>this.props.setReady(false)}
+                    onFinishAll = {()=>this.props.setReady(true)}
+                    // onStartAll = {this.animationStarted}
+                    // disableAllAnimations = {this.stillAnimating}
+                    // onFinishAll = {this.doneAnimating}
                 >
                     {page.map((ind, i)=>{
                         const indicator = indicators[ind]
@@ -234,39 +248,38 @@ export default class IndicatorList extends React.Component{
                         const isolated = ind === this.singledOut
 
 
-                        return this.singledOut && isolated || !this.singledOut? (<Row
-                            index = {i}
-                            selected = {selected}
-                            key = {ind}
-                            // noRaceNeedRace = {noRace && race}
-                            disabled = {disabled}
-                            onClick = {()=>{
-                                // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
-                                // this.props.store.completeWorkflow('indicator',ind)
-                                this.handleSelection(ind)
-                                // this.isolateIndicator(ind)
-                            }}
-                        > 
-                            <IndLeft>
-                                {noRace &&
-                                    <NoRaceBadge>
-                                        NR
-                                    </NoRaceBadge>
-                                }
-                                    {semanticTitles[ind].label}
-                                    <Years className = "caption">
-                                        {indicator.years.map((yr)=>{
-                                            return yr
-                                        }).join(',\xa0')}
-                                    </Years>
-                            </IndLeft>
-                            <IndRight>
+                        return this.singledOut && isolated || !this.singledOut? (
+                            <Row
+                                index = {i}
+                                selected = {selected}
+                                key = {ind}
+                                // noRaceNeedRace = {noRace && race}
+                                disabled = {disabled}
+                                lastPage = {store.indicatorListPage === store.indicatorPages.length-1}
+                                onClick = {()=>{
+                                    // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
+                                    // this.props.store.completeWorkflow('indicator',ind)
+                                    this.handleSelection(ind)
+                                    // this.isolateIndicator(ind)
+                                }}
+                            > 
+                                <IndLeft>
+                                        {semanticTitles[ind].label}
+                                        <Years className = "caption">
+                                            {indicator.years.map((yr)=>{
+                                                return yr
+                                            }).join(',\xa0')}
+                                        </Years>
+                                        {noRace &&
+                                            <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
+                                        }
+                                </IndLeft>
                                 <Percentage>
                                     {!disabled && val+'%'}
                                     {disabled && <Dashes>{'\u2014\u2014'}</Dashes>}
                                 </Percentage>
-                            </IndRight>
-                        </Row>) : <div />
+                            </Row>
+                        ) : null
                     })}
                     </FlipMove>
             </IndRows>
@@ -287,53 +300,46 @@ const Dashes = styled.div`
 `
 
 const Workflow = styled.div`
-
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 const ListStatus = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 13px;
     @media ${media.optimal}{
         margin-top: 10px;
+        margin-bottom: 15px;
     }
     @media ${media.compact}{
-        margin-top: 15px;
+        margin-top: 12px;
+        margin-bottom: 15px;
     }
 `
 
 
 const Readout = styled.div `
+    text-align: right;
     color: var(--fainttext);
 `
-const PageBtn = styled.div`
-    position: absolute;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    top: 0; bottom: 0; margin: auto;
-
-    padding: 10px 25px;
-    border: 1px solid ${props => props.disabled?'var(--bordergrey)':'black'};
-    display: flex;
-    align-items: center;
-
-
+const Strong = styled.span`
+    color: var(--normtext);
+    font-weight: 500;
 `
-const Prev = styled(PageBtn)`
-    left: -25px;
+const AboutPcts = styled.div`
+    
+    color: var(--normtext);
+    margin-bottom: 2px;
 `
-
-const Next = styled(PageBtn)`
-    right: -25px;
-`
-
 const NoRaceBadge = styled.div`
-    color: white;
-    background: var(--bordergrey);
-    padding: 0px 6px;
+    color: ${props => props.needRace? 'var(--normtext)' : 'var(--fainttext)'};
+    border: 1px solid var(--bordergrey);
+    padding: 1.5px 7px;
     display: inline-flex;
     align-items: center;
-    margin-right: 8px;
-    font-weight: 500;
     font-size: 13px;
     letter-spacing: 0.75px;
 `

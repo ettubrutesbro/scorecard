@@ -42,11 +42,11 @@ export default class AppStore{
 
     @action setColorOption = (which,what) => this.colorOptions[which] = what
     @action setYearIndex = () => {
-        const newYears = indicators[this.indicator].years
-        if(!this.year && newYears.length>1) this.year = newYears.length-1
+        const yrs = indicators[this.indicator].years
+        if(!this.year && yrs.length>1) this.year = yrs.length-1
         else if(!this.year) this.year = 0
-        else if(this.year === 1 && newYears.length===1) this.year = 0
-        console.log(`year ${this.year} (${newYears[this.year]})`)
+        else if(this.year === 1 && yrs.length===1) this.year = 0
+        console.log(`year ${this.year} (${yrs[this.year]})`)
     }
 
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
@@ -55,6 +55,7 @@ export default class AppStore{
         if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')){
             //picked no-race indicator with a race already selected: unset
             //TODO: sanity check here
+            alert('sanity check for race unselect')
             this.race = null
         }
         else if(which==='indicator' && this.county){
@@ -62,6 +63,7 @@ export default class AppStore{
 
             if(!val || val==='*'){
                 // alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
+                alert('sanity check for county unselect')
                 this.notify('unselectCounty', countyLabels[this.county], 8000)
                 this.county = null
             }
@@ -73,25 +75,30 @@ export default class AppStore{
                 const holdOnToRace = this.race
                 this.race = null
                 console.log('unset race so the selection could go on')
-                if(!this.checkInvalid('county',value)){
+                if(!this.checkValidity('county',value)){
                     this.race = holdOnToRace
                     return
                 }
             }
-            else if(!this.race && (!val || val==='*')){
+            else if(!this.race && val!==0 && (!val || val==='*')){
                 console.log('this county has no data, stopping selection')
                 return
             }
         }
         else if(which==='race'){
-            if(!this.checkInvalid(which,value)){
+            if(!this.checkValidity(which,value)){
                 console.log('tried to pick race but it woludve resulted in invalid value: canceling')
                 return
             }
         }
-
-        if(!this.checkInvalid(which,value)){ 
-            console.log('something invalid, stopping selection')
+        if(which==='indicator'){
+            if(indicators[value].years.length <= this.year){
+                this.year = 0
+            }
+        }
+        if(!this.checkValidity(which,value)){ 
+            console.log('something invalid, stopping selection -- which and value were')
+            console.log(which, value)
             alert('oops! something bad happened.')
             return
         }
@@ -158,9 +165,12 @@ export default class AppStore{
         
     }
 
-    checkInvalid = (which, value) => {
+    checkValidity = (which, value) => {
         const {indicator, county, race, year} = this
-        const val = indicator? indicators[which==='indicator'?value:indicator].counties[which==='county'?value:county||'california'][which==='race'?value:race||'totals'][year]
+        console.log(which,value)
+        console.log(indicator,county,race,year)
+        const nullVal = !value
+        const val = indicator? indicators[which==='indicator'?value:indicator].counties[which==='county'&&!nullVal?value:county||'california'][which==='race'&&!nullVal?value:race||'totals'][year]
             : demopop[county||'california'][race||'population']
         console.log(val)
         return val!==0 && (val==='*' || !val)? false : true
@@ -178,14 +188,13 @@ export default class AppStore{
 
     @observable indicatorPageSize = 1
     @action setIndicatorPages = () => {
-        console.log('hello')
         const screen = getMedia()
         let pages = []
         if(screen==='optimal'){
             this.indicatorPageSize = 8
         }
         else if(screen==='compact'){
-            this.indicatorPageSize = 7
+            this.indicatorPageSize = 9
         }
         const indKeys = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories

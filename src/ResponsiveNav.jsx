@@ -358,7 +358,7 @@ const ForcedUnselectTip = styled.div`
     font-size: 13px;
     width: 325px;
     line-height: 21px;
-    letter-spacing: 
+    white-space: normal;
 `
 const Share = styled.div`
     position: absolute;
@@ -453,7 +453,7 @@ const LargeWorkflow = styled.div`
     }
     @media ${media.compact}{
         width: 780px;
-        height: 575px;
+        height: 585px;
         padding: 20px 35px;
     }
 `
@@ -463,7 +463,11 @@ const screen = getMedia()
 @observer
 export class PickingWorkflow extends React.Component{
 
+    @observable workflowReadyToAnimate = true
+    @action setAnimationReadyStatus = (tf) => {this.workflowReadyToAnimate = tf}
+
     handlePageChange =(evt, goTo)=>{
+        if(!this.workflowReadyToAnimate) return
         const store = this.props.store
         if(goTo === -1 || goTo > store.indicatorPages.length-1) return
         else store.setIndicatorListPage(goTo)
@@ -483,7 +487,7 @@ export class PickingWorkflow extends React.Component{
                     style = {{
                         position: 'absolute',
                         top: 0, left: 0,
-                        padding: '30px 40px',
+                        padding: '25px 35px',
                         overflow: 'hidden',
                         width: '100%', height: '100%'    
                     }}
@@ -502,6 +506,7 @@ export class PickingWorkflow extends React.Component{
                             closeNav = {this.props.close}
                             setNumPages = {this.setNumPages}
                             page = {this.page}
+                            setReady = {this.setAnimationReadyStatus}
                         />
                     }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
