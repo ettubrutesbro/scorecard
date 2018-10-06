@@ -416,9 +416,11 @@ const X = styled.div`
 
 `
 const YearToggle = (props) =>{
-    const {indicator} = props.store
+    const {indicator,county,race} = props.store
     const years = indicator? indicators[indicator].years.map((yr,i)=>{
-        return {label:yr, value: i}
+        const val = indicators[indicator].counties[county||'california'][race||'totals'][i]
+        const disabled = val!==0 && (!val || val==='*')
+        return {label:yr, value: i, disabled: disabled}
     }): false
 
     return <YrToggle offset = {props.offset} hide = {!years}> 

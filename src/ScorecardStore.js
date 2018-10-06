@@ -7,6 +7,8 @@ import countyLabels from './assets/countyLabels'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 
+import {findIndex} from 'lodash'
+
 export default class AppStore{
     @observable indicator = null
     @observable county = null
@@ -50,12 +52,61 @@ export default class AppStore{
     }
 
     @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
+    
+
     @action completeWorkflow = (which, value) => {
+        if(which==='indicator'){
+            const {county, race, year} = this
+            const ind = indicators[value]
+            if(race && !ind.categories.includes('hasRace')){
+                if(county){//even without race, will this work with user's selected county?
+                    const arr = ind.counties[county||'california'].totals
+                    if(arr.filter((v)=>{return v>=0}).length>0){
+                        //this county does have valid values
+                        if(year && arr[year]!==0 && (!arr[year] || arr[year]==='*')){
+                            //but not for the currently selected yearindex
+                            //go to the last year that has a valid value
+                            const goToYear = (arr.length-1) - arr.reverse().findIndex((x)=>{return x>=0})
+                            this.year = goToYear
+                        }
+                        //now we can sanity check race
+                        alert('sanity check: race')
+                    }
+                    else alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
+                }
+                else alert('sanity check: race')
+
+                return
+            }
+            else{
+                const arr = ind.counties[county||'california'][race||'totals']
+                //go to most recent non * / non '' year 
+                const validYears = arr.filter((val)=>{
+                    return val>=0
+                })
+                if(validYears.length===0){
+                    if(county && race) alert('sanity check: both race and county')
+                    else if(county) alert('sanity check: this county has no valid values for this ind')
+                    else if(race) alert('sanity check: this race has no valid values in CA')
+
+                    return
+                }
+                else{
+                    const goToYear = (arr.length-1) - arr.reverse().findIndex((x)=>{return x>=0})
+                    this.year = goToYear
+                }    
+            }
+            
+
+        }
+
+
+
 
         if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')){
             //picked no-race indicator with a race already selected: unset
             //TODO: sanity check here
-            alert('sanity check for race unselect')
+            // alert('sanity check for race unselect')
             this.race = null
         }
         else if(which==='indicator' && this.county){
@@ -63,7 +114,7 @@ export default class AppStore{
 
             if(!val || val==='*'){
                 // alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
-                alert('sanity check for county unselect')
+                // alert('sanity check for county unselect')
                 this.notify('unselectCounty', countyLabels[this.county], 8000)
                 this.county = null
             }
@@ -164,6 +215,8 @@ export default class AppStore{
         }
         
     }
+
+
 
     checkValidity = (which, value) => {
         const {indicator, county, race, year} = this

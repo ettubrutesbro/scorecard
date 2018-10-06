@@ -51,7 +51,7 @@ const RowItem = styled.li`
     /*transform: translateY(-${props => props.index * 1}px);*/
     margin-top: -1px;
     z-index: ${props=>props.selected? 2: 1};
-    cursor: ${props => props.disabled? 'not-allowed' : 'pointer'};
+    cursor: pointer;
     &:hover{
         color: ${props => props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
         h4{
@@ -155,6 +155,7 @@ export default class IndicatorList extends React.Component{
 
 
     handleSelection = (ind) => {
+        console.log('attempting to select', ind)
         this.props.store.completeWorkflow('indicator',ind)
         this.props.closeNav()
     }
@@ -276,7 +277,7 @@ export default class IndicatorList extends React.Component{
                                 </IndLeft>
                                 <Percentage>
                                     {!disabled && val+'%'}
-                                    {disabled && <Dashes>{'\u2014\u2014'}</Dashes>}
+                                    {disabled && '\u2014\u2014'}
                                 </Percentage>
                             </Row>
                         ) : null
@@ -296,7 +297,7 @@ const Dashes = styled.div`
     display: flex;
     justify-content: center;
     font-size: 16px;
-    align-items: center;
+    align-items: flex-end;
 `
 
 const Workflow = styled.div`
