@@ -60,21 +60,40 @@ export default class AppStore{
             const ind = indicators[value]
             if(race && !ind.categories.includes('hasRace')){
                 if(county){//even without race, will this work with user's selected county?
-                    const arr = ind.counties[county||'california'].totals
+                    const arr = ind.counties[county].totals
+
+                    // const validYears = arr.filter((val)=>{return val >= 0})
+                    // console.log(arr)
                     if(arr.filter((v)=>{return v>=0}).length>0){
                         //this county does have valid values
-                        if(year && arr[year]!==0 && (!arr[year] || arr[year]==='*')){
+                        //check if current yearindex is ok
+                        let validYear 
+                        if(year && arr[year]>=0){
+                            validYear = year
+                            //no need to change year
+                        }
+                        else if(year && arr[year]!==0 && (!arr[year] || arr[year]==='*')){
                             //but not for the currently selected yearindex
                             //go to the last year that has a valid value
-                            const goToYear = (arr.length-1) - arr.reverse().findIndex((x)=>{return x>=0})
-                            this.year = goToYear
+                            console.log('!hasRace, gonna unset race but need to switch the year, here are the values for totals for the picked ind in', county)
+                            const revLastInd = arr.reverse().findIndex((v)=>{return v>=0}) //get last number
+                            validYear = (arr.length-1)-revLastInd
+                            // console.log(arr, revLastInd, latestValidYear)
+                            // this.year = latestValidYear
                         }
                         //now we can sanity check race
-                        alert('sanity check: race')
+                        // alert('sanity check: race (countys fine)')
+                        this.setSanityCheck(value)
                     }
-                    else alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
+                    else {
+                        // alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
+                        this.setSanityCheck(value)
+                    }
                 }
-                else alert('sanity check: race')
+                else{
+                    this.setSanityCheck(value)
+                     // alert('sanity check: race (no county)')
+                 }
 
                 return
             }
@@ -84,6 +103,8 @@ export default class AppStore{
                 const validYears = arr.filter((val)=>{
                     return val>=0
                 })
+                console.log('selected ind\'s value array:')
+                console.log(arr)
                 if(validYears.length===0){
                     if(county && race) alert('sanity check: both race and county')
                     else if(county) alert('sanity check: this county has no valid values for this ind')
@@ -92,8 +113,8 @@ export default class AppStore{
                     return
                 }
                 else{
-                    const goToYear = (arr.length-1) - arr.reverse().findIndex((x)=>{return x>=0})
-                    this.year = goToYear
+                    // const goToYear = findIndex((x)=>{return x>=0})
+                    // this.year = goToYear
                 }    
             }
             
@@ -276,4 +297,9 @@ export default class AppStore{
         this.indicatorListPage = val
     }
 
+    @observable sanityCheckIndicator = null
+    @action setSanityCheck = (targetInd, message, action) => {
+        console.log('setting sanity check ind on', targetInd)
+        this.sanityCheckIndicator = targetInd
+    }
 }

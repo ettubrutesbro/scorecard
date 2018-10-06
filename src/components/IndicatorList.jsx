@@ -29,7 +29,7 @@ const IndRows = styled.ul`
 
 `
 const RowItem = styled.li`
-    flex-grow: ${props => props.lastPage? 0 : 1};
+    flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};
     position: relative;
     // width: 50%;
     margin: 0;
@@ -45,11 +45,11 @@ const RowItem = styled.li`
     }
     // margin: 10px;
     list-style-type: none;
-    border: 1px solid ${props=> props.disabled? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
-    color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
-    background: ${props => props.disabled? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
+    border: 1px solid ${props=> props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
+    color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
+    background: ${props => props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
     /*transform: translateY(-${props => props.index * 1}px);*/
-    margin-top: -1px;
+    margin-top: ${props=>props.isolated?25:-1}px;
     z-index: ${props=>props.selected? 2: 1};
     cursor: pointer;
     &:hover{
@@ -149,15 +149,14 @@ const Label = styled.div`
 @observer
 export default class IndicatorList extends React.Component{
 
-    @observable stillAnimating = false
-    @action animationStarted = () => this.stillAnimating = true
-    @action doneAnimating = () => this.stillAnimating = false
-
+    @observable isolated = null
+    @action isolate = (val) => {this.isolated = val}
 
     handleSelection = (ind) => {
-        console.log('attempting to select', ind)
+        // console.log('attempting to select', ind)
+        // this.isolate(ind)
         this.props.store.completeWorkflow('indicator',ind)
-        this.props.closeNav()
+        // this.props.closeNav()
     }
 
     render(){
@@ -246,13 +245,14 @@ export default class IndicatorList extends React.Component{
                         const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
 
                         const missingCounties = true
-                        const isolated = ind === this.singledOut
+                        const isolated = ind === store.sanityCheckIndicator
 
 
-                        return this.singledOut && isolated || !this.singledOut? (
+                        return store.sanityCheckIndicator && isolated || !store.sanityCheckIndicator? (
                             <Row
                                 index = {i}
                                 selected = {selected}
+                                isolated = {isolated}
                                 key = {ind}
                                 // noRaceNeedRace = {noRace && race}
                                 disabled = {disabled}
@@ -282,6 +282,12 @@ export default class IndicatorList extends React.Component{
                             </Row>
                         ) : null
                     })}
+                    {store.sanityCheckIndicator &&
+                        <SanityCheck>
+                            
+
+                        </SanityCheck>
+                    }
                     </FlipMove>
             </IndRows>
              
@@ -291,6 +297,10 @@ export default class IndicatorList extends React.Component{
         )
     }
 }
+
+const SanityCheck = styled.div`
+    
+`
 
 const Dashes = styled.div`
     width: 100%;
