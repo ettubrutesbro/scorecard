@@ -243,3 +243,18 @@ export const Search = (props) => {
         )
     
 }
+
+const Btn = styled.div`
+    // padding: 
+`
+
+export const Button = (props) => {
+    return(
+        <Btn
+            className = {props.className || 'default'}
+            onClick = {props.onClick}
+        >
+            {props.label}
+        </Btn>
+    )
+}
