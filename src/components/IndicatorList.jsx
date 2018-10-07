@@ -161,6 +161,7 @@ export default class IndicatorList extends React.Component{
 
     @action handleSelection = (e,ind,i) => {
         const {store} = this.props
+        const screen = getMedia()
         // console.log('attempting to select', ind)
         // this.isolate(ind)
         const select = this.props.store.completeWorkflow('indicator',ind)
@@ -171,14 +172,14 @@ export default class IndicatorList extends React.Component{
 
                 //container height minus top/y of selected item = differencte on bottom side
                 const containerHeight = this.list.current.getBoundingClientRect().height
-
-
+                console.log('set pos', containerHeight - e.target.getBoundingClientRect().y)
                 this.sanityCheckSide = 'above'
-                this.sanityCheckPosition = containerHeight - e.target.getBoundingClientRect().y + 50
+                this.sanityCheckPosition = containerHeight - e.target.getBoundingClientRect().y + screen==='optimal'?50:20
             } 
             else{ //top half of page, appear below
+                console.log('set pos', e.target.getBoundingClientRect().y)
                 this.sanityCheckSide = 'below'
-                this.sanityCheckPosition = e.target.getBoundingClientRect().y - 100
+                this.sanityCheckPosition = e.target.getBoundingClientRect().y - (screen==='optimal'?100:130)
             }
 
         }
@@ -339,14 +340,16 @@ export default class IndicatorList extends React.Component{
     }
 }
 
+@observer
 class SanityCheck extends React.Component{
     render(){
         const {yPos, store, side} = this.props
         const data = store.sanityCheck
-        const xPos = getMedia()==='optimal'? 464 : 300
+        const screen = getMedia()
+        const xPos = screen==='optimal'? 464 : 300
         return(
             <Tooltip 
-                pos = {{x: 0, y: this.props.yPos}}
+                pos = {{x: screen==='optimal'? -20 : -10, y: this.props.yPos}}
                 direction = {side}
                 verticalAnchor = {side==='above'?'bottom':'top'}
                 horizontalAnchor = 'right'
@@ -358,13 +361,14 @@ class SanityCheck extends React.Component{
                 {data.message}
                 <SanityControls>
                     <Button 
+                        className = 'compact'
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
                         onClick = {()=>{console.log('close sanity check')}}
                     />
                     <Button 
                         label = 'Yes, continue' 
-                        className = 'dark' 
+                        className = 'dark compact' 
                         onClick = {data.action}
                     />
                 </SanityControls>
@@ -408,6 +412,14 @@ const Check = styled.div`
     line-height: 180%;
     /*padding: 30px;*/
     /*border: 1px solid var(--bordergrey);*/
+    @media ${media.optimal}{
+        font-size: 16px;
+        padding: 30px;
+    }
+    @media ${media.compact}{
+        font-size: 13px;
+        padding: 20px;
+    }
 `
 
 const Dashes = styled.div`

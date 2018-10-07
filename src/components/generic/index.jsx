@@ -163,7 +163,7 @@ const Tip = styled.div`
     opacity: 0;
     animation-fill-mode: forwards;
     &.above{
-        &::before{ bottom: -21px;}
+        &::before{ bottom: -21.5px;}
         &::after{ bottom: -19px;}
         //transform: translate(-50%, calc(-50% - 35px));
         transform-origin: 50% 100%;
@@ -171,7 +171,7 @@ const Tip = styled.div`
 
     }
     &.below{
-        &::before{ top: -21px; }
+        &::before{ top: -21.5px; }
         &::after{ top: -19px; }
         //transform: translate(-50%, calc(50% + 20px));   
         
@@ -188,7 +188,7 @@ const Tip = styled.div`
         border: 9.5px solid transparent;
     }
     &::before{
-        left: calc(50% - 11px);
+        left: calc(50% - 10.5px);
         transform: translateX(${props => props.caretOffset || 0}px);
         position: absolute;
         content: '';
@@ -207,11 +207,11 @@ const Tip = styled.div`
     }
     &.actionable{
         background: var(--offwhitefg);
-        padding: 30px;
         border: 1px solid var(--bordergrey);
-
+        padding: 0;
         &.above{
-            &::after{ border-top: 9.5px var(--normtext) solid;  }
+            &::before { border-top: 10.5px var(--bordergrey) solid; }
+            &::after{ border-top: 9.5px var(--offwhitefg) solid;  }
         }
         &.below{
             &::before { border-bottom: 10.5px var(--bordergrey) solid; }
@@ -276,9 +276,17 @@ const Btn = styled.div`
         color: var(--normtext);
         border: 1px solid var(--fainttext);
     }
+
+    &.compact{
+        font-size: 13px;
+        background: white;
+        border: 1px solid var(--fainttext);
+        padding: 10px 17px;
+    }
     &.dark{
         background: var(--normtext);
         color: white;
+        border: none;
     }
 `
 
