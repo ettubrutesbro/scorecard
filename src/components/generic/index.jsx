@@ -158,22 +158,24 @@ const fadeInAbove = keyframes`
 const Tip = styled.div`
     //display: ${props => props.show? 'block' : 'none'};
     position: absolute;
-    top: ${props => props.pos.y}px;
-    left: ${props => props.pos.x}px;
+    ${props=>props.verticalAnchor || 'top'}: ${props => props.pos.y}px;
+    ${props=>props.horizontalAnchor || 'left'}: ${props => props.pos.x}px;
     opacity: 0;
     animation-fill-mode: forwards;
     &.above{
+        &::before{ bottom: -21px;}
         &::after{ bottom: -19px;}
         //transform: translate(-50%, calc(-50% - 35px));
         transform-origin: 50% 100%;
-        animation: ${fadeInAbove} .35s forwards;
+        animation: ${p => p.customAnimation || fadeInAbove} ${p=>p.duration || '.35s'} forwards;
 
     }
     &.below{
+        &::before{ top: -21px; }
         &::after{ top: -19px; }
         //transform: translate(-50%, calc(50% + 20px));   
         
-        animation: ${fadeInBelow} .75s forwards;
+        animation: ${p => p.customAnimation || fadeInBelow} ${p=>p.duration||'.75s'} forwards;
     }
     z-index: 99;
     padding: 15px 25px;
@@ -183,17 +185,37 @@ const Tip = styled.div`
         position: absolute;
         content: '';
         width: 0; height: 0;
-        bottom: -19px;
         border: 9.5px solid transparent;
     }
+    &::before{
+        left: calc(50% - 11px);
+        transform: translateX(${props => props.caretOffset || 0}px);
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+        border: 10.5px solid transparent;
+    }
     &.default{
-        background: var(--black);
+        background: var(--normtext);
         color: white;
         &.above{
-            &::after{ border-top: 9.5px black solid;  }
+            &::after{ border-top: 9.5px var(--normtext) solid;  }
         }
         &.below{
-            &::after{ border-bottom: 9.5px black solid;  }
+            &::after{ border-bottom: 9.5px var(--normtext) solid;  }
+        }
+    }
+    &.actionable{
+        background: var(--offwhitefg);
+        padding: 30px;
+        border: 1px solid var(--bordergrey);
+
+        &.above{
+            &::after{ border-top: 9.5px var(--normtext) solid;  }
+        }
+        &.below{
+            &::before { border-bottom: 10.5px var(--bordergrey) solid; }
+            &::after{ border-bottom: 9.5px var(--offwhitefg) solid;  }
         }
     }
     h1{ margin: 0; font-size: 24px;  font-weight: normal;}
@@ -250,6 +272,7 @@ const Btn = styled.div`
     justify-content: center;
     padding: 15px 20px;
     &.default{
+        background: white;
         color: var(--normtext);
         border: 1px solid var(--fainttext);
     }
@@ -262,6 +285,7 @@ const Btn = styled.div`
 export const Button = (props) => {
     return(
         <Btn
+            style = {props.style}
             className = {props.disabled? 'disabled' : props.className || 'default'}
             onClick = {!props.disabled? props.onClick : ()=>{}}
         >

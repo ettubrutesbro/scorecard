@@ -47,7 +47,8 @@ const RowItem = styled.li`
     border: 1px solid ${props=> props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
     background: ${props => props.muted||(props.disabled&&!props.isolated)? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
-    opacity: ${props=>props.muted?0.3:1};
+    opacity: ${props=>props.muted?0.2:1};
+    transition: opacity .5s;
     /*transform: translateY(-${props => props.index * 1}px);*/
     /*margin-top: ${props=>props.isolated?10:-1}px;*/
     margin-top: -1px;
@@ -133,7 +134,8 @@ const Caption = styled.div`
 `
 const Title = styled.h1`
     margin: 0 20px 0 0;
-
+        opacity: ${props=>props.muted?0.2:1};
+    transition: opacity .5s;
     font-weight: 400;
     @media ${media.optimal}{
         font-size: 24px;
@@ -152,13 +154,40 @@ const Label = styled.div`
 export default class IndicatorList extends React.Component{
 
     @observable isolated = null
+    @observable sanityCheckPosition = 0
+    @observable sanityCheckSide = 'below'
     @action isolate = (val) => {this.isolated = val}
 
-    handleSelection = (ind) => {
+
+    @action handleSelection = (e,ind,i) => {
+        const {store} = this.props
         // console.log('attempting to select', ind)
         // this.isolate(ind)
-        this.props.store.completeWorkflow('indicator',ind)
+        const select = this.props.store.completeWorkflow('indicator',ind)
+        if(select) this.props.closeNav() //went through
+        else{
+            console.log(e.target.getBoundingClientRect())
+            if(i+1 >= store.indicatorPageSize/2){ //bottom half of page, appear above
+
+                //container height minus top/y of selected item = differencte on bottom side
+                const containerHeight = this.list.current.getBoundingClientRect().height
+
+
+                this.sanityCheckSide = 'above'
+                this.sanityCheckPosition = containerHeight - e.target.getBoundingClientRect().y + 50
+            } 
+            else{ //top half of page, appear below
+                this.sanityCheckSide = 'below'
+                this.sanityCheckPosition = e.target.getBoundingClientRect().y - 100
+            }
+
+        }
         // this.props.closeNav()
+    }
+
+    constructor(){
+        super()
+        this.list = React.createRef()
     }
 
     render(){
@@ -184,14 +213,20 @@ export default class IndicatorList extends React.Component{
             <Workflow>
 
 
-                <Title> Choose an indicator. </Title>
+            <Title
+                muted = {store.sanityCheck.indicator}
+            > Choose an indicator. </Title>
                 {/* 
                 <Search 
                     placeholder = "Search indicators..."
                 />
                 */}
 
-            <ListStatus className = "caption">
+            <ListStatus 
+                muted = {store.sanityCheck.indicator}
+                className = "caption"
+
+            >
                 <Toggle
                     options = {indicatorFilterOptions}
                     onClick = {store.setIndicatorFilter}
@@ -209,7 +244,7 @@ export default class IndicatorList extends React.Component{
 
                 </Readout>
             </ListStatus>
-            <IndRows>
+            <IndRows ref = {this.list}>
                 <FlipMove
                     typeName = {null}
                     staggerDelayBy = {10}
@@ -234,18 +269,7 @@ export default class IndicatorList extends React.Component{
                     // disableAllAnimations = {this.stillAnimating}
                     // onFinishAll = {this.doneAnimating}
                 >
-                    {page.filter((ind)=>{
-                        // return store.sanityCheck.indicator? ind === store.sanityCheck.indicator : true
-                        return true
-                    }).sort((a,b)=>{
-                        const sanity = store.sanityCheck.indicator
-                        if(sanity){
-                            if(a===sanity) return -1
-                            else if(b===sanity) return 1
-                            else return 0
-                        }
-                        else return 0
-                    }).map((ind, i)=>{
+                    {page.map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
@@ -272,10 +296,10 @@ export default class IndicatorList extends React.Component{
                                 muted = {store.sanityCheck.indicator && !isolated}
                                 disabled = {disabled}
                                 lastPage = {store.indicatorListPage === store.indicatorPages.length-1}
-                                onClick = {()=>{
+                                onClick = {(e)=>{
                                     // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
                                     // this.props.store.completeWorkflow('indicator',ind)
-                                    this.handleSelection(ind)
+                                    this.handleSelection(e,ind, i)
                                     // this.isolateIndicator(ind)
                                 }}
                             > 
@@ -298,7 +322,12 @@ export default class IndicatorList extends React.Component{
                         ) 
                     })}
                     {store.sanityCheck.indicator &&
-                        <SanityCheck data = {store.sanityCheck}/>
+                        <SanityCheck 
+                            store = {store} 
+                            yPos = {this.sanityCheckPosition}
+                            side = {this.sanityCheckSide} 
+
+                        />
                     }
                     </FlipMove>
             </IndRows>
@@ -312,25 +341,59 @@ export default class IndicatorList extends React.Component{
 
 class SanityCheck extends React.Component{
     render(){
-        const data = this.props.data
+        const {yPos, store, side} = this.props
+        const data = store.sanityCheck
         const xPos = getMedia()==='optimal'? 464 : 300
         return(
             <Tooltip 
-                pos = {{x: xPos, y: -50}}
-                direction = 'below'
+                pos = {{x: 0, y: this.props.yPos}}
+                direction = {side}
+                verticalAnchor = {side==='above'?'bottom':'top'}
+                horizontalAnchor = 'right'
+                customAnimation = {side === 'below'? tooltipanim : tooltipabove}
+                duration = {'.35s'}
                 theme = 'actionable'
             >
             <Check>
                 {data.message}
                 <SanityControls>
-                    <Button label = 'Nevermind, back to list' style = {{marginRight: '15px'}}/>
-                    <Button label = 'Yes, continue' className = 'dark' action = {data.action}/>
+                    <Button 
+                        label = 'Nevermind, back to list' 
+                        style = {{marginRight: '15px'}}
+                        onClick = {()=>{console.log('close sanity check')}}
+                    />
+                    <Button 
+                        label = 'Yes, continue' 
+                        className = 'dark' 
+                        onClick = {data.action}
+                    />
                 </SanityControls>
             </Check>
             </Tooltip>
         )
     }
 }
+
+const tooltipanim = keyframes`
+    from {
+        opacity: 0; 
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`
+const tooltipabove = keyframes`
+    from {
+        opacity: 0; 
+        transform: translateY(-100%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-100%) translateY(0);
+    }
+`
 
 const SanityControls = styled.div`
     display: flex;
@@ -340,10 +403,11 @@ const SanityControls = styled.div`
 
 const Check = styled.div`
     /*margin-top: 25px;*/
-    background: var(--offwhitefg);
+    /*background: var(--offwhitefg);*/
     width: 480px;
-    padding: 30px;
-    border: 1px solid var(--bordergrey);
+    line-height: 180%;
+    /*padding: 30px;*/
+    /*border: 1px solid var(--bordergrey);*/
 `
 
 const Dashes = styled.div`
@@ -364,6 +428,8 @@ const ListStatus = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    opacity: ${props=>props.muted?0.2:1};
+    transition: opacity .5s;
     font-size: 13px;
     @media ${media.optimal}{
         margin-top: 10px;

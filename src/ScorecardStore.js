@@ -95,7 +95,7 @@ export default class AppStore{
                      // alert('sanity check: race (no county)')
                  }
 
-                return
+                return false
             }
             else{
                 const arr = ind.counties[county||'california'][race||'totals']
@@ -110,7 +110,7 @@ export default class AppStore{
                     else if(county) alert('sanity check: this county has no valid values for this ind')
                     else if(race) alert('sanity check: this race has no valid values in CA')
 
-                    return
+                    return false
                 }
                 else{
                     // const goToYear = findIndex((x)=>{return x>=0})
@@ -234,6 +234,7 @@ export default class AppStore{
 
             //the result of this code is that it just looks unresponsive - lets grey the options in UniversalPicker
         }
+        return true
         
     }
 
