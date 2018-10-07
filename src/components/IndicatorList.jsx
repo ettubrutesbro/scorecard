@@ -231,7 +231,9 @@ export default class IndicatorList extends React.Component{
                     // disableAllAnimations = {this.stillAnimating}
                     // onFinishAll = {this.doneAnimating}
                 >
-                    {page.map((ind, i)=>{
+                    {page.filter((ind)=>{
+                        return store.sanityCheck.indicator? ind === store.sanityCheck.indicator : true
+                    }).map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
@@ -245,10 +247,10 @@ export default class IndicatorList extends React.Component{
                         const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
 
                         const missingCounties = true
-                        const isolated = ind === store.sanityCheckIndicator
+                        const isolated = ind === store.sanityCheck.indicator
 
 
-                        return store.sanityCheckIndicator && isolated || !store.sanityCheckIndicator? (
+                        return (
                             <Row
                                 index = {i}
                                 selected = {selected}
@@ -280,13 +282,10 @@ export default class IndicatorList extends React.Component{
                                     {disabled && '\u2014\u2014'}
                                 </Percentage>
                             </Row>
-                        ) : null
+                        ) 
                     })}
-                    {store.sanityCheckIndicator &&
-                        <SanityCheck>
-                            
-
-                        </SanityCheck>
+                    {store.sanityCheck.indicator &&
+                        <SanityCheck />
                     }
                     </FlipMove>
             </IndRows>
@@ -298,8 +297,18 @@ export default class IndicatorList extends React.Component{
     }
 }
 
-const SanityCheck = styled.div`
-    
+class SanityCheck extends React.Component{
+    render(){
+        return(
+            <Check>
+                {}
+            </Check>
+        )
+    }
+}
+
+const Check = styled.div`
+
 `
 
 const Dashes = styled.div`

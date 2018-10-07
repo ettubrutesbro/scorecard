@@ -298,8 +298,17 @@ export default class AppStore{
     }
 
     @observable sanityCheckIndicator = null
+    @observable sanityCheckMessage = ''
+    @observable sanityCheck = {
+        indicator: null,
+        message: '',
+        action: ()=>{}
+    }
     @action setSanityCheck = (targetInd, message, action) => {
         console.log('setting sanity check ind on', targetInd)
-        this.sanityCheckIndicator = targetInd
+        // this.sanityCheckIndicator = targetInd
+        this.sanityCheck.indicator = targetInd
+        this.sanityCheck.message = message
+        this.sanityCheck.action = action
     }
 }
