@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
-import {Toggle, Tooltip} from '../src/components/generic/index'
+import {Toggle, Tooltip, Button} from '../src/components/generic/index'
 
 
 storiesOf('Generic components', module)
@@ -48,6 +48,16 @@ storiesOf('Generic components', module)
         </Void>    
     )
 })
+.add('Button', ()=>{
+    return(
+        <Void>
+            <Button label = 'View Sources & Notes'/>
+            <Button label = 'Previous page'/>
+            <Button label = 'View Sources & Notes'/>
+            <Button className = 'dark' label = 'Export PDF'/>
+        </Void>
+    )
+})
 
 const Note = styled.h3`
     display: inline-flex;
@@ -60,6 +70,6 @@ const Void = styled.div`
     position: relative;
     width: 100vw;
     height: 100vh;
-    background: var(--offwhitebg);
+    background: var(--offwhitefg);
     padding: 50px;
 `

@@ -245,14 +245,25 @@ export const Search = (props) => {
 }
 
 const Btn = styled.div`
-    // padding: 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    &.default{
+        color: var(--normtext);
+        border: 1px solid var(--fainttext);
+    }
+    &.dark{
+        background: var(--normtext);
+        color: white;
+    }
 `
 
 export const Button = (props) => {
     return(
         <Btn
-            className = {props.className || 'default'}
-            onClick = {props.onClick}
+            className = {props.disabled? 'disabled' : props.className || 'default'}
+            onClick = {!props.disabled? props.onClick : ()=>{}}
         >
             {props.label}
         </Btn>

@@ -7,9 +7,8 @@ import {observer} from 'mobx-react'
 import {find, findIndex} from 'lodash'
 
 import FlipMove from 'react-flip-move'
-import Toggle from './Toggle'
 
-import {Search} from './generic'
+import {Search, Toggle, Button, Tooltip} from './generic'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
@@ -47,9 +46,11 @@ const RowItem = styled.li`
     list-style-type: none;
     border: 1px solid ${props=> props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
-    background: ${props => props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
+    background: ${props => props.muted||(props.disabled&&!props.isolated)? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
+    opacity: ${props=>props.muted?0.3:1};
     /*transform: translateY(-${props => props.index * 1}px);*/
-    margin-top: ${props=>props.isolated?25:-1}px;
+    /*margin-top: ${props=>props.isolated?10:-1}px;*/
+    margin-top: -1px;
     z-index: ${props=>props.selected? 2: 1};
     cursor: pointer;
     &:hover{
@@ -58,6 +59,7 @@ const RowItem = styled.li`
             color: ${props => props.disabled? 'var(--fainttext)' : 'var(--peach)'};
         }
     }
+
     // box-shadow: var(--shadow);
 
 ` 
@@ -209,6 +211,7 @@ export default class IndicatorList extends React.Component{
             </ListStatus>
             <IndRows>
                 <FlipMove
+                    typeName = {null}
                     staggerDelayBy = {10}
                     style = {{
                         display: 'flex',
@@ -232,7 +235,16 @@ export default class IndicatorList extends React.Component{
                     // onFinishAll = {this.doneAnimating}
                 >
                     {page.filter((ind)=>{
-                        return store.sanityCheck.indicator? ind === store.sanityCheck.indicator : true
+                        // return store.sanityCheck.indicator? ind === store.sanityCheck.indicator : true
+                        return true
+                    }).sort((a,b)=>{
+                        const sanity = store.sanityCheck.indicator
+                        if(sanity){
+                            if(a===sanity) return -1
+                            else if(b===sanity) return 1
+                            else return 0
+                        }
+                        else return 0
                     }).map((ind, i)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
@@ -257,6 +269,7 @@ export default class IndicatorList extends React.Component{
                                 isolated = {isolated}
                                 key = {ind}
                                 // noRaceNeedRace = {noRace && race}
+                                muted = {store.sanityCheck.indicator && !isolated}
                                 disabled = {disabled}
                                 lastPage = {store.indicatorListPage === store.indicatorPages.length-1}
                                 onClick = {()=>{
@@ -285,7 +298,7 @@ export default class IndicatorList extends React.Component{
                         ) 
                     })}
                     {store.sanityCheck.indicator &&
-                        <SanityCheck />
+                        <SanityCheck data = {store.sanityCheck}/>
                     }
                     </FlipMove>
             </IndRows>
@@ -299,16 +312,38 @@ export default class IndicatorList extends React.Component{
 
 class SanityCheck extends React.Component{
     render(){
+        const data = this.props.data
+        const xPos = getMedia()==='optimal'? 464 : 300
         return(
+            <Tooltip 
+                pos = {{x: xPos, y: -50}}
+                direction = 'below'
+                theme = 'actionable'
+            >
             <Check>
-                {}
+                {data.message}
+                <SanityControls>
+                    <Button label = 'Nevermind, back to list' style = {{marginRight: '15px'}}/>
+                    <Button label = 'Yes, continue' className = 'dark' action = {data.action}/>
+                </SanityControls>
             </Check>
+            </Tooltip>
         )
     }
 }
 
-const Check = styled.div`
+const SanityControls = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+`
 
+const Check = styled.div`
+    /*margin-top: 25px;*/
+    background: var(--offwhitefg);
+    width: 480px;
+    padding: 30px;
+    border: 1px solid var(--bordergrey);
 `
 
 const Dashes = styled.div`

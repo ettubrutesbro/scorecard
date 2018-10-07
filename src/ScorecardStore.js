@@ -83,15 +83,15 @@ export default class AppStore{
                         }
                         //now we can sanity check race
                         // alert('sanity check: race (countys fine)')
-                        this.setSanityCheck(value)
+                        this.setSanityCheck(value, 'This indicator doesn\'t have race data -- you can only view its data for all races, so continuing will deselect your currently selected race.')
                     }
                     else {
                         // alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
-                        this.setSanityCheck(value)
+                        this.setSanityCheck(value, 'This indicator doesn\'t have data for your selected race or county, so picking it will deselect both.')
                     }
                 }
                 else{
-                    this.setSanityCheck(value)
+                    this.setSanityCheck(value, 'This indicator doesn\'t have race data, so selecting it will unselect the race for which you\'re currently viewing data.')
                      // alert('sanity check: race (no county)')
                  }
 
