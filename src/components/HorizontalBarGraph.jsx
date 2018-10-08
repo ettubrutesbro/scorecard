@@ -137,7 +137,10 @@ export default class HorizontalBarGraph extends React.Component{
                             muted = {this.hoveredRow}
                             offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
                         >
-                            <AverageLabel side = {this.props.average>65?'left':'right'}> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
+                            <AverageLabel side = {this.props.average>65?'left':'right'}>
+                             CA Avg 
+                             {/*<AverageValue>{this.props.average}%</AverageValue>*/}
+                             </AverageLabel>
                         </AverageLine>
                     }
                 </Content>
@@ -230,11 +233,11 @@ const RowComponent = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -12px;
-    left: ${props => props.labelWidth + 19}px;
+    bottom: -9px;
+    left: ${props => props.labelWidth + 18}px;
     width: 1px;
     background-color: var(--fainttext);
-    height: calc(100% + 24px);
+    height: calc(100% + 20px);
     box-shadow: -1px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
