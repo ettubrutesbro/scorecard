@@ -129,16 +129,17 @@ export default class HorizontalBarGraph extends React.Component{
                         )
                     })}
                 </FlipMove>
-                                {this.props.average &&
-                    <AverageLine 
-                        labelWidth = {this.props.labelWidth}
-                        // offset = {0}
-                        muted = {this.hoveredRow}
-                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
-                    >
-                        <AverageLabel> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
-                    </AverageLine>
-                }
+                    {this.props.average &&
+                        <AverageLine 
+                            labelWidth = {this.props.labelWidth}
+                            // offset = {0}
+                            side = {this.props.average>65?'left':'right'}
+                            muted = {this.hoveredRow}
+                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
+                        >
+                            <AverageLabel side = {this.props.average>65?'left':'right'}> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
+                        </AverageLine>
+                    }
                 </Content>
 
             </GraphTable>
@@ -250,6 +251,9 @@ const AverageLine = styled.div`
         height: 1px;
         border-bottom: 1px var(--fainttext) solid;
         top: -1px;
+        transform-origin: 0%;
+        transform: scaleX(${props=>props.side==='left'?-1:1});
+        /*transition: transform .5s;*/
         /*left: -10px;*/
     }
     &::after{
@@ -266,14 +270,14 @@ const AverageLine = styled.div`
     }
 `
 const AverageLabel = styled.div`
-    width: 100%;
     white-space: nowrap;
     position: absolute;
-    // border: 1px solid black;
     display: inline-flex;
-    justify-content: center;
-    top: -20px;
-    // color: var(--normtext);
+    justify-content: ${props=>props.side==='left'? 'flex-end' : 'flex-start'};
+    top: -10px;
+    transform: translateX(${props=>props.side==='left'?-100:0}%);
+    /*transition: transform .5s;*/
+    padding: 0 23px;
     color: var(--fainttext);
 
 `
