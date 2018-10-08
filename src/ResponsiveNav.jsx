@@ -445,7 +445,6 @@ const LargeWorkflow = styled.div`
     top: 65px;
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
-    padding: 30px;
     z-index: 3;
     @media ${media.optimal}{
         width: 1000px;
@@ -459,27 +458,32 @@ const LargeWorkflow = styled.div`
     }
 `
 
-const screen = getMedia()
-
 @observer
 export class PickingWorkflow extends React.Component{
 
-    @observable workflowReadyToAnimate = true
-    @action setAnimationReadyStatus = (tf) => {this.workflowReadyToAnimate = tf}
+    @observable pageAnimDirection = 'left'
+    @observable hoveredPageBtn = false
 
+    @action
     handlePageChange =(evt, goTo)=>{
-        if(!this.workflowReadyToAnimate) return
+
         const store = this.props.store
+        
+        if(goTo > store.indicatorListPage) this.pageAnimDirection = 'left'
+        else if(goTo < store.indicatorListPage) this.pageAnimDirection = 'right'
+
         if(goTo === -1 || goTo > store.indicatorPages.length-1) return
         else store.setIndicatorListPage(goTo)
-        evt.preventDefault()
-        evt.stopPropagation()   
+        // evt.preventDefault()
+        // evt.stopPropagation()   
     }
+    @action onHoverPageBtn = (val) => this.hoveredPageBtn = val
 
     render(){
         const {store, close} = this.props
         const which = this.props.open
         const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
+        const screen = getMedia()
         return(
             <LargeWorkflow>
                 <X onClick = {this.props.x} />  
@@ -488,7 +492,7 @@ export class PickingWorkflow extends React.Component{
                     style = {{
                         position: 'absolute',
                         top: 0, left: 0,
-                        padding: '25px 35px',
+                        padding: screen==='optimal'? '35px 50px' : '25px 35px',
                         overflow: 'hidden',
                         width: '100%', height: '100%'    
                     }}
@@ -507,7 +511,8 @@ export class PickingWorkflow extends React.Component{
                             closeNav = {this.props.close}
                             setNumPages = {this.setNumPages}
                             page = {this.page}
-                            setReady = {this.setAnimationReadyStatus}
+                            animDir = {this.pageAnimDirection}
+                            prevOffset = {this.hoveredPageBtn}
                         />
                     }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
@@ -517,7 +522,9 @@ export class PickingWorkflow extends React.Component{
                             show = {indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
                             onClick = {
                                 (e)=>this.handlePageChange(e,indicatorListPage+1)
-                            }   
+                            }
+                            onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
+                            onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
                         />
                     
                         <PagePrev 
@@ -525,7 +532,9 @@ export class PickingWorkflow extends React.Component{
                             onClick = {
                                 (e)=>this.handlePageChange(e,indicatorListPage-1)
 
-                            } 
+                            }
+                            onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
+                            onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
                         />
                     
 
@@ -533,21 +542,62 @@ export class PickingWorkflow extends React.Component{
         )
     }
 }
+const arrow = require('./assets/arrow.svg')
 
 const PageBtn = styled.div`
     position: absolute;
     width: 50px; height: 95px; 
     // border-radius: 50%;
-    border: 1px solid var(--bordergrey);
+    border: 1px solid var(--fainttext);
     background: white;
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*background-image: url(${arrow});*/
     top: 0; bottom: 0; margin: auto;
     // display: ${props => props.show? 'block' : 'none'};
     opacity: ${props => props.show? 1 : 0};
     transition: transform .25s, opacity .25s;
+    cursor: pointer;
+    z-index: 4;
+    &::before, &::after{
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        mask-image: url(${arrow});
+        mask-position: center;
+        mask-repeat: no-repeat;
+        transform-origin: 50% 50%;
+    }
+    &::before{
+        background: var(--normtext);
+        transition: opacity .25s;
+    }
+    &::after{
+        background: var(--strokepeach);
+        opacity: 0;
+        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+        transition: opacity .1s, clip-path .25s;
+    }
+    &:hover{
+        &::before{
+            opacity: 0.25;
+        }
+         &::after{
+            opacity: 1;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+    }
 `
 const PagePrev = styled(PageBtn)`
     left: -25px;
     transform: translateX(${props=>props.show?0:'15px'});
+    &::before, &::after{
+        transform: rotate(180deg);
+    }
+    &::after{
+        /*clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);*/
+    }
 `
 const PageNext = styled(PageBtn)`
     right: -25px;

@@ -63,8 +63,6 @@ const RowItem = styled.li`
         h4{
             color: ${props => props.disabled? 'var(--fainttext)' : 'var(--peach)'};
         }
-
-
     }
 
     // box-shadow: var(--shadow);
@@ -202,7 +200,7 @@ export default class IndicatorList extends React.Component{
     }
 
     render(){
-        const {store} = this.props
+        const {store, animDir, prevOffset} = this.props
         const {county, race, indicatorFilter} = store
         // const page = this.pages[this.currentPage]
         console.log(store.indicatorPages.toJS())
@@ -264,24 +262,22 @@ export default class IndicatorList extends React.Component{
                         display: 'flex',
                         flexDirection: 'column',
                         height: '100%',
+                        opacity: prevOffset? 0.75 : 1,
+                        transition: 'opacity .25s, transform .25s',
+                        transform: `translateX(${prevOffset==='next'? -10 : prevOffset==='prev'?10:0}px)`
                     }}
                     maintainContainerHeight = {true}
                     duration = {250}
                     leaveAnimation = {{
                         from: {opacity: 1, transform: 'translateX(0)'},
-                        to: {opacity: 0, transform: 'translateX(-150px)'}
+                        to: {opacity: 0, transform: `translateX(${animDir==='left'?-150:150}px)`}
                     }}
                     enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateX(150px)'},
+                        from: {opacity: 0, transform: `translateX(${animDir==='left'?150:-150}px)`},
                         to: {opacity: 1, transform: 'translateX(0px)'}
                     }}
-                    onStartAll = {()=>this.props.setReady(false)}
-                    onFinishAll = {()=>this.props.setReady(true)}
-                    // onStartAll = {this.animationStarted}
-                    // disableAllAnimations = {this.stillAnimating}
-                    // onFinishAll = {this.doneAnimating}
                 >
-                    {page.map((ind, i)=>{
+                    {page.map((ind, i, arr)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
