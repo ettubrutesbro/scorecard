@@ -336,13 +336,14 @@ export default class ResponsiveNav extends React.Component{
 
                 <FlipMove 
                     typeName = {null}
+                    duration = {200}
                     enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateY(-50px)'},
+                        from: {opacity: 0, transform: 'translateY(0px)'},
                         to: {opacity: 1, transform: 'translateY(0px)'}
                     }}
                     leaveAnimation = {{
                         from: {opacity: 1, transform: 'translateY(0px)'},
-                        to: {opacity: 0, transform: 'translateY(-50px)'}
+                        to: {opacity: 0, transform: 'translateY(0px)'}
                     }}
                 >
                 {open && <PickingWorkflow x = {()=>openNav(false)} store = {store} open = {open} close = {()=>openNav(false)} />}
@@ -446,6 +447,7 @@ const LargeWorkflow = styled.div`
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
     z-index: 3;
+    transform-origin: 0% 0%;
     @media ${media.optimal}{
         width: 1000px;
         height: 720px;
@@ -463,12 +465,6 @@ export class PickingWorkflow extends React.Component{
 
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
-    @observable animating = false
-
-    @action setAnimStatus = (status) => {
-        console.log('setting animating to', status)
-        this.animating = status
-    }
 
     @action
     handlePageChange =(evt, goTo)=>{
@@ -519,9 +515,9 @@ export class PickingWorkflow extends React.Component{
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
-                            animating = {this.animating}
-                            onStartAnim = {()=>{this.setAnimStatus(true)}}
-                            onFinishAnim = {()=>{this.setAnimStatus(false)}}
+                            // animating = {this.animating}
+                            // onStartAnim = {()=>{this.setAnimStatus(true)}}
+                            // onFinishAnim = {()=>{this.setAnimStatus(false)}}
                         />
                     }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}

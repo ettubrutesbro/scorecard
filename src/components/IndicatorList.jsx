@@ -263,24 +263,22 @@ export default class IndicatorList extends React.Component{
             </ListStatus>
             <IndRows ref = {this.list}>
                 <FlipMove
-                    // typeName = {null}
+                    typeName = {null}
                     duration = {250}
                     staggerDelayBy = {8}
                     style = {{
                         display: 'flex',
                         flexDirection: 'column',
-                        height: '100%',
-                        opacity: prevOffset? 0.75 : 1,
-                        transition: 'opacity .25s, transform .25s',
-                        transform: `translateX(${prevOffset==='next'? -10 : prevOffset==='prev'?10:0}px)`
+                        height: '100%'
                     }}
                     maintainContainerHeight = {true}
                     duration = {250}
-                    leaveAnimation = {!this.interrupt?{
-                        from: {opacity: 1, transform: 'translateX(0)'},
-                        to: {opacity: 0, transform: `translateX(${animDir==='left'?-150:150}px)`}
-                    }: null}
-                    // leaveAnimation = {null}
+                    // leaveAnimation = {{
+                    //     from: {opacity: 1, transform: 'translateX(0)'},
+                    //     to: animDir==='left'?{opacity: 0, transform: `translateX(-150px)`}
+                    //         : {opacity: 0, transform: 'translateX(150px)'}
+                    // }}
+                    leaveAnimation = {null}
                     enterAnimation = {{
                         from: {opacity: 0, transform: `translateX(${animDir==='left'?150:-150}px)`},
                         to: {opacity: 1, transform: 'translateX(0px)'}

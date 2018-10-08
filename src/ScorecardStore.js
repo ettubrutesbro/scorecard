@@ -139,7 +139,7 @@ export default class AppStore{
                     else if(county){
                         this.setSanityCheck(
                             value, 
-                            `This indicator has no data for your ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
                             ()=>{
                                 this.completeWorkflow('county',null)
                                 this.completeWorkflow('indicator',value)
