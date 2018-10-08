@@ -120,20 +120,22 @@ Toggle.defaultProps = {
 
 
 
-export const Tooltip = (props) => {
-    const {theme, direction, children, ...restOfProps} = props
-    return(
-            <Tip 
-                {...restOfProps}
-                className = {[
-                    theme || 'default',
-                    direction || 'above'
-                ].join(' ')}
-            >
-                {children}
-            </Tip>  
-            
-    )
+export class Tooltip extends React.Component {
+    render(){
+        const {theme, direction, children, ...restOfProps} = this.props
+        return(
+                <Tip 
+                    {...restOfProps}
+                    className = {[
+                        theme || 'default',
+                        direction || 'above'
+                    ].join(' ')}
+                >
+                    {children}
+                </Tip>  
+                
+        )
+    }
 }
 const fadeInBelow = keyframes`
     from {
@@ -155,7 +157,7 @@ const fadeInAbove = keyframes`
         transform: translate(-50%, calc(-50% - 35px));
     }
 `
-const Tip = styled.div`
+export const Tip = styled.div`
     //display: ${props => props.show? 'block' : 'none'};
     position: absolute;
     ${props=>props.verticalAnchor || 'top'}: ${props => props.pos.y}px;

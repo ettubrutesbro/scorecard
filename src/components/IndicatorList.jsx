@@ -2,13 +2,14 @@
 import React from 'react'
 import styled, {keyframes} from 'styled-components'
 
+import {findDOMNode} from 'react-dom'
 import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 import {find, findIndex} from 'lodash'
 
 import FlipMove from 'react-flip-move'
 
-import {Search, Toggle, Button, Tooltip} from './generic'
+import {Search, Toggle, Button, Tooltip, Tip} from './generic'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
@@ -19,6 +20,7 @@ import semanticTitles from '../assets/semanticTitles'
 import media, {getMedia} from '../utilities/media'
 
 const IndRows = styled.ul`
+    position: relative;
     padding: 0; 
     display: flex;
     flex-direction: column;
@@ -53,12 +55,16 @@ const RowItem = styled.li`
     /*margin-top: ${props=>props.isolated?10:-1}px;*/
     margin-top: -1px;
     z-index: ${props=>props.selected? 2: 1};
+    pointer-events: ${props => props.muted? 'none' : 'auto'};
     cursor: pointer;
+
     &:hover{
-        color: ${props => props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
+        color: ${props => props.isolated? 'var(--normtext)' : props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
         h4{
             color: ${props => props.disabled? 'var(--fainttext)' : 'var(--peach)'};
         }
+
+
     }
 
     // box-shadow: var(--shadow);
@@ -161,6 +167,7 @@ export default class IndicatorList extends React.Component{
 
     @action handleSelection = (e,ind,i) => {
         const {store} = this.props
+        if(store.sanityCheck.indicator) return
         const screen = getMedia()
         // console.log('attempting to select', ind)
         // this.isolate(ind)
@@ -208,14 +215,15 @@ export default class IndicatorList extends React.Component{
             return indicatorFilter === 'all'? true : cats.includes(indicatorFilter)
         }).length
 
-        console.log(store.indicatorFilter)
+        const showSanityCheck = store.sanityCheck.indicator
+        console.log('sanity', showSanityCheck)
 
         return(
             <Workflow>
 
 
             <Title
-                muted = {store.sanityCheck.indicator}
+                muted = {showSanityCheck}
             > Choose an indicator. </Title>
                 {/* 
                 <Search 
@@ -224,7 +232,7 @@ export default class IndicatorList extends React.Component{
                 */}
 
             <ListStatus 
-                muted = {store.sanityCheck.indicator}
+                muted = {showSanityCheck}
                 className = "caption"
 
             >
@@ -247,7 +255,7 @@ export default class IndicatorList extends React.Component{
             </ListStatus>
             <IndRows ref = {this.list}>
                 <FlipMove
-                    typeName = {null}
+                    // typeName = {null}
                     staggerDelayBy = {10}
                     style = {{
                         display: 'flex',
@@ -284,7 +292,7 @@ export default class IndicatorList extends React.Component{
                         const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
 
                         const missingCounties = true
-                        const isolated = ind === store.sanityCheck.indicator
+                        const isolated = ind === showSanityCheck
 
 
                         return (
@@ -292,9 +300,9 @@ export default class IndicatorList extends React.Component{
                                 index = {i}
                                 selected = {selected}
                                 isolated = {isolated}
-                                key = {ind}
+                                key = {ind+'row'}
                                 // noRaceNeedRace = {noRace && race}
-                                muted = {store.sanityCheck.indicator && !isolated}
+                                muted = {showSanityCheck && !isolated}
                                 disabled = {disabled}
                                 lastPage = {store.indicatorListPage === store.indicatorPages.length-1}
                                 onClick = {(e)=>{
@@ -322,15 +330,18 @@ export default class IndicatorList extends React.Component{
                             </Row>
                         ) 
                     })}
-                    {store.sanityCheck.indicator &&
+
+
+                    </FlipMove>
+                    {showSanityCheck &&
                         <SanityCheck 
+                            key = {showSanityCheck+'sanitycheck'}
                             store = {store} 
                             yPos = {this.sanityCheckPosition}
                             side = {this.sanityCheckSide} 
 
                         />
                     }
-                    </FlipMove>
             </IndRows>
              
                 
@@ -342,20 +353,38 @@ export default class IndicatorList extends React.Component{
 
 @observer
 class SanityCheck extends React.Component{
+    // constructor(){
+    //     super()
+    //     this.sanityCheck = React.createRef()
+    // }
+    // handleClick = (e) => {
+    //     console.log(this.sanityCheck)
+    //     if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+    //         this.props.store.clearSanityCheck()
+    //     }
+    // }
+    // componentDidMount(){
+    //     document.addEventListener('click', this.handleClick)
+    // }
+    // componentWillUnmount(){
+    //     console.log('unmounting sanitycheck')
+    //     document.removeEventListener('click', this.handleClick)
+    // }
+
     render(){
         const {yPos, store, side} = this.props
         const data = store.sanityCheck
         const screen = getMedia()
         const xPos = screen==='optimal'? 464 : 300
         return(
-            <Tooltip 
+            <ModTip
+                // ref = {this.sanityCheck} 
                 pos = {{x: screen==='optimal'? -20 : -10, y: this.props.yPos}}
                 direction = {side}
                 verticalAnchor = {side==='above'?'bottom':'top'}
                 horizontalAnchor = 'right'
-                customAnimation = {side === 'below'? tooltipanim : tooltipabove}
                 duration = {'.35s'}
-                theme = 'actionable'
+                className = 'actionable'
             >
             <Check>
                 {data.message}
@@ -364,19 +393,47 @@ class SanityCheck extends React.Component{
                         className = 'compact'
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
-                        onClick = {()=>{console.log('close sanity check')}}
+                        onClick = {(e)=>{
+                            store.clearSanityCheck()
+                            e.nativeEvent.stopImmediatePropagation()
+                            // e.preventDefault()
+                        }}
                     />
                     <Button 
                         label = 'Yes, continue' 
                         className = 'dark compact' 
-                        onClick = {data.action}
+                        // onClick = {data.action}
+
                     />
                 </SanityControls>
             </Check>
-            </Tooltip>
+            </ModTip>
         )
     }
 }
+
+const ModTip = styled(Tip)`
+    &::after{
+        left: calc(50% - 9.5px);
+        ${p=>p.direction==='above'? 'bottom' : 'top'}: -19px;
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+        border: 9.5px solid transparent;
+    }
+    &::before{
+        left: calc(50% - 10.5px);
+        ${p=>p.direction==='above'? 'bottom' : 'top'}: -21.5px;
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+        border: 10.5px solid transparent;
+    }
+        &::before { border-${p => p.direction === 'above'? 'top' : 'bottom'}: 10.5px var(--bordergrey) solid; }
+        &::after{ border-${p => p.direction === 'above'? 'top' : 'bottom'}: 9.5px var(--offwhitefg) solid;  }
+        animation: ${p=>p.direction==='above'? tooltipabove : tooltipanim} .35s forwards;
+`       
+
 
 const tooltipanim = keyframes`
     from {

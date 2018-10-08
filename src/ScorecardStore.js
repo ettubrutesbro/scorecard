@@ -1,4 +1,5 @@
 import {observable, action, computed} from 'mobx'
+
 import chroma from 'chroma-js'
 
 import indicators from './data/indicators'
@@ -312,4 +313,5 @@ export default class AppStore{
         this.sanityCheck.message = message
         this.sanityCheck.action = action
     }
+    @action clearSanityCheck = () => { this.sanityCheck.indicator = null}
 }
