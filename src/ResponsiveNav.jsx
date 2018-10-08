@@ -463,6 +463,12 @@ export class PickingWorkflow extends React.Component{
 
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
+    @observable animating = false
+
+    @action setAnimStatus = (status) => {
+        console.log('setting animating to', status)
+        this.animating = status
+    }
 
     @action
     handlePageChange =(evt, goTo)=>{
@@ -513,6 +519,9 @@ export class PickingWorkflow extends React.Component{
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
+
+                            onStartAnim = {()=>{this.setAnimStatus(true)}}
+                            onFinishAnim = {()=>{this.setAnimStatus(false)}}
                         />
                     }
                     {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
@@ -521,7 +530,8 @@ export class PickingWorkflow extends React.Component{
                         <PageNext 
                             show = {indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage+1)
+                                !this.animating? (e)=>this.handlePageChange(e,indicatorListPage+1)
+                                : ()=>{console.log('animating stop it')}
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
@@ -530,8 +540,8 @@ export class PickingWorkflow extends React.Component{
                         <PagePrev 
                             show = {indicatorListPage > 0 && !store.sanityCheck.indicator}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage-1)
-
+                                !this.animating? (e)=>this.handlePageChange(e,indicatorListPage-1)
+                                : ()=>{console.log('animating stop it')}
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 

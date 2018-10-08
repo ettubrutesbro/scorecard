@@ -164,8 +164,9 @@ export default class IndicatorList extends React.Component{
     @observable isolated = null
     @observable sanityCheckPosition = 0
     @observable sanityCheckSide = 'below'
-    @action isolate = (val) => {this.isolated = val}
+    @observable disableAnim = false
 
+    @action isolate = (val) => {this.isolated = val}
 
     @action handleSelection = (e,ind,i) => {
         const {store} = this.props
@@ -276,6 +277,15 @@ export default class IndicatorList extends React.Component{
                         from: {opacity: 0, transform: `translateX(${animDir==='left'?150:-150}px)`},
                         to: {opacity: 1, transform: 'translateX(0px)'}
                     }}
+                    onStartAll = {()=>{
+                        if(this.props.animating)this.disableAnim = true
+                        this.props.onStartAnim()
+                    }}
+                    onFinishAll = {()=>{
+                        this.props.onFinishAnim()
+                        this.disableAnim = false
+                    }}
+                    disableAllAnimations = {this.disableAnim}
                 >
                     {page.map((ind, i, arr)=>{
                         const indicator = indicators[ind]
