@@ -524,7 +524,7 @@ export class PickingWorkflow extends React.Component{
                 </FlipMove>
 
                         <PageNext 
-                            show = {indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
+                            show = {which==='indicator' && indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
                             onClick = {
                                 (e)=>this.handlePageChange(e,indicatorListPage+1)
                                 
@@ -534,7 +534,7 @@ export class PickingWorkflow extends React.Component{
                         />
                     
                         <PagePrev 
-                            show = {indicatorListPage > 0 && !store.sanityCheck.indicator}
+                            show = {which==='indicator' && indicatorListPage > 0 && !store.sanityCheck.indicator}
                             onClick = {
                                 (e)=>this.handlePageChange(e,indicatorListPage-1)
                             

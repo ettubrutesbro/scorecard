@@ -116,7 +116,7 @@ export default class HorizontalBarGraph extends React.Component{
                                         >
                                             {item.trueValue && item.trueValue}
                                             {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
-                                            {i===0 && <Pct>%</Pct>}
+                                            {i===0 && !item.trueValue && <Pct>%</Pct>}
                                             
                                         </Value>
                                         }
@@ -308,7 +308,7 @@ const Value = styled.div`
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
     transition: transform .25s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
-    margin-left: ${props => props.percentage===0? 0 : 8}px;
+    margin-left: ${props => props.percentage===0? 0 : 5}px;
 `
 const Prompt = styled.div`
     position: absolute;
