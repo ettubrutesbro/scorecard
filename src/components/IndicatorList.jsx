@@ -164,8 +164,14 @@ export default class IndicatorList extends React.Component{
     @observable isolated = null
     @observable sanityCheckPosition = 0
     @observable sanityCheckSide = 'below'
-    @observable disableAnim = false
+    @observable animating = false
+    @observable interrupt = false
 
+    @action setAnimating = (tf) => {
+        console.log('animating: ', tf)
+        this.animating = tf
+    }
+    @action setInterrupt = (tf) => {this.interrupt = tf}
     @action isolate = (val) => {this.isolated = val}
 
     @action handleSelection = (e,ind,i) => {
@@ -258,7 +264,8 @@ export default class IndicatorList extends React.Component{
             <IndRows ref = {this.list}>
                 <FlipMove
                     // typeName = {null}
-                    staggerDelayBy = {10}
+                    duration = {250}
+                    staggerDelayBy = {8}
                     style = {{
                         display: 'flex',
                         flexDirection: 'column',
@@ -269,23 +276,23 @@ export default class IndicatorList extends React.Component{
                     }}
                     maintainContainerHeight = {true}
                     duration = {250}
-                    leaveAnimation = {{
+                    leaveAnimation = {!this.interrupt?{
                         from: {opacity: 1, transform: 'translateX(0)'},
                         to: {opacity: 0, transform: `translateX(${animDir==='left'?-150:150}px)`}
-                    }}
+                    }: null}
+                    // leaveAnimation = {null}
                     enterAnimation = {{
                         from: {opacity: 0, transform: `translateX(${animDir==='left'?150:-150}px)`},
                         to: {opacity: 1, transform: 'translateX(0px)'}
                     }}
                     onStartAll = {()=>{
-                        if(this.props.animating)this.disableAnim = true
-                        this.props.onStartAnim()
+                        if(this.animating) this.setInterrupt(true)
+                        this.setAnimating(true)
                     }}
                     onFinishAll = {()=>{
-                        this.props.onFinishAnim()
-                        this.disableAnim = false
+                        this.setAnimating(false)
+                        if(this.interrupt) this.setInterrupt(false)
                     }}
-                    disableAllAnimations = {this.disableAnim}
                 >
                     {page.map((ind, i, arr)=>{
                         const indicator = indicators[ind]

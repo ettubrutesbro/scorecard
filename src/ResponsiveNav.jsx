@@ -519,7 +519,7 @@ export class PickingWorkflow extends React.Component{
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
-
+                            animating = {this.animating}
                             onStartAnim = {()=>{this.setAnimStatus(true)}}
                             onFinishAnim = {()=>{this.setAnimStatus(false)}}
                         />
@@ -530,8 +530,8 @@ export class PickingWorkflow extends React.Component{
                         <PageNext 
                             show = {indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
                             onClick = {
-                                !this.animating? (e)=>this.handlePageChange(e,indicatorListPage+1)
-                                : ()=>{console.log('animating stop it')}
+                                (e)=>this.handlePageChange(e,indicatorListPage+1)
+                                
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
@@ -540,8 +540,8 @@ export class PickingWorkflow extends React.Component{
                         <PagePrev 
                             show = {indicatorListPage > 0 && !store.sanityCheck.indicator}
                             onClick = {
-                                !this.animating? (e)=>this.handlePageChange(e,indicatorListPage-1)
-                                : ()=>{console.log('animating stop it')}
+                                (e)=>this.handlePageChange(e,indicatorListPage-1)
+                            
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
