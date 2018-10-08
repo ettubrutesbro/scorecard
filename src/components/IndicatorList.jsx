@@ -50,7 +50,7 @@ const RowItem = styled.li`
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
     background: ${props => props.muted||(props.disabled&&!props.isolated)? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
     // opacity: ${props=>props.muted?0.2:1};
-    transition: border-color .35s, background .35s, color .35s;
+    transition: border-color .2s, background .2s, color .2s;
     /*transform: translateY(-${props => props.index * 1}px);*/
     /*margin-top: ${props=>props.isolated?10:-1}px;*/
     margin-top: -1px;
@@ -179,7 +179,7 @@ export default class IndicatorList extends React.Component{
         if(select) this.props.closeNav() //went through
         else{
             const target = document.getElementById(ind+'row') //e.target
-            if(i+1 >= store.indicatorPageSize/2){ //bottom half of page, appear above
+            if(i+1 > store.indicatorPageSize/2){ //bottom half of page, appear above
 
                 //container height minus top/y of selected item = differencte on bottom side
                 const containerHeight = this.list.current.getBoundingClientRect().height
@@ -355,23 +355,23 @@ export default class IndicatorList extends React.Component{
 
 @observer
 class SanityCheck extends React.Component{
-    // constructor(){
-    //     super()
-    //     this.sanityCheck = React.createRef()
-    // }
-    // handleClick = (e) => {
-    //     console.log(this.sanityCheck)
-    //     if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-    //         this.props.store.clearSanityCheck()
-    //     }
-    // }
-    // componentDidMount(){
-    //     document.addEventListener('click', this.handleClick)
-    // }
-    // componentWillUnmount(){
-    //     console.log('unmounting sanitycheck')
-    //     document.removeEventListener('click', this.handleClick)
-    // }
+    constructor(){
+        super()
+        this.sanityCheck = React.createRef()
+    }
+    handleClick = (e) => {
+        console.log(this.sanityCheck)
+        if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+            this.props.store.clearSanityCheck()
+        }
+    }
+    componentDidMount(){
+        document.addEventListener('click', this.handleClick)
+    }
+    componentWillUnmount(){
+        console.log('unmounting sanitycheck')
+        document.removeEventListener('click', this.handleClick)
+    }
 
     render(){
         const {yPos, store, side} = this.props
@@ -380,8 +380,8 @@ class SanityCheck extends React.Component{
         const xPos = screen==='optimal'? 464 : 300
         return(
             <ModTip
-                // ref = {this.sanityCheck} 
-                pos = {{x: screen==='optimal'? -20 : -10, y: this.props.yPos}}
+                ref = {this.sanityCheck} 
+                pos = {{x: screen==='optimal'? -15 : -10, y: this.props.yPos}}
                 direction = {side}
                 // verticalAnchor = {side==='above'?'bottom':'top'}
                 horizontalAnchor = 'right'
@@ -416,6 +416,7 @@ class SanityCheck extends React.Component{
 const ModTip = styled(Tip)`
     cursor: auto;
     margin-top: ${p=>p.direction==='above'?-20:20}px;
+    transform-origin: ${p=>p.direction==='above'?'50% 100%':'50% 0%'}; 
     &::after{
         left: calc(50% - 9.5px);
         ${p=>p.direction==='above'? 'bottom' : 'top'}: -19px;
@@ -440,26 +441,26 @@ const ModTip = styled(Tip)`
 
 const tooltipanim = keyframes`
     from {
-        opacity: 0.5; 
-        transform: translateY(-40px);
-        clip-path: polygon(0% -10%, 100% -10%, 100% 0%, 0% 0%);
+        opacity: 0; 
+        transform: scale(0.8) translateY(-60px);
+        /*clip-path: polygon(0% -10%, 100% -10%, 100% 0%, 0% 0%);*/
     }
     to {
         opacity: 1;
         transform: translateY(0);
-        clip-path: polygon(0% -10%, 100% -10%, 100% 100%, 0% 100%);
+        /*clip-path: polygon(0% -10%, 100% -10%, 100% 100%, 0% 100%);*/
     }
 `
 const tooltipabove = keyframes`
     from {
-        opacity: 0.5; 
-        transform: translateY(-100%) translateY(40px);
-        clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+        opacity: 0; 
+        transform: scale(0.8) translateY(-100%) translateY(60px);
+        /*clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);*/
     }
     to {
         opacity: 1;
         transform: translateY(-100%) translateY(0);
-        clip-path: polygon(0% 0%, 100% 0%, 100% 110%, 0% 110%);
+        /*clip-path: polygon(0% 0%, 100% 0%, 100% 110%, 0% 110%);*/
     }
 `
 
