@@ -7,7 +7,7 @@ import {counties} from './assets/counties'
 import countyLabels from './assets/countyLabels'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
-
+import {capitalize} from './utilities/toLowerCase'
 import {findIndex} from 'lodash'
 
 export default class AppStore{
@@ -84,38 +84,83 @@ export default class AppStore{
                         }
                         //now we can sanity check race
                         // alert('sanity check: race (countys fine)')
-                        this.setSanityCheck(value, 'This indicator doesn\'t have race data -- you can only view its data for all races, so continuing will deselect your currently selected race.')
+                        this.setSanityCheck(
+                            value, 
+                            `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                            ()=>{
+                                this.completeWorkflow('race',null)
+                                this.completeWorkflow('indicator',value)
+                                // this.completeWorkflow('year',validYear)
+                            }
+                        )
                     }
                     else {
                         // alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
-                        this.setSanityCheck(value, 'This indicator doesn\'t have data for your selected race or county, so picking it will deselect both.')
+                        this.setSanityCheck(
+                            value, 
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            ()=>{
+                                this.completeWorkflow('race',null)
+                                this.completeWorkflow('county',null)
+                                this.completeWorkflow('indicator',value)
+                            }
+                        )
                     }
                 }
                 else{
-                    this.setSanityCheck(value, 'This indicator doesn\'t have race data, so selecting it will unselect the race for which you\'re currently viewing data.')
-                     // alert('sanity check: race (no county)')
+                    this.setSanityCheck(
+                        value, 
+                        `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                        ()=>{
+                            this.completeWorkflow('race',null)
+                            this.completeWorkflow('indicator',value)
+                        }
+                    )
                  }
-
                 return false
             }
             else{
+                //indicator hasRace, but it might not have data for user's race/county/ind combo.
                 const arr = ind.counties[county||'california'][race||'totals']
-                //go to most recent non * / non '' year 
-                const validYears = arr.filter((val)=>{
-                    return val>=0
-                })
-                console.log('selected ind\'s value array:')
-                console.log(arr)
-                if(validYears.length===0){
-                    if(county && race) alert('sanity check: both race and county')
-                    else if(county) alert('sanity check: this county has no valid values for this ind')
-                    else if(race) alert('sanity check: this race has no valid values in CA')
+                if(arr.filter((val)=>{ return val>=0}).length===0){
+                    //there are no valid years for the user's selection combo
+                    if(county && race){
+                         // alert('sanity check: both race and county')
+                         this.setSanityCheck(
+                            value, 
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            ()=>{
+                                this.completeWorkflow('race',null)
+                                this.completeWorkflow('county',null)
+                                this.completeWorkflow('indicator',value)
+                            }
+                        )
+                     }
+                    else if(county){
+                        this.setSanityCheck(
+                            value, 
+                            `This indicator has no data for your ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            ()=>{
+                                this.completeWorkflow('county',null)
+                                this.completeWorkflow('indicator',value)
+                            }
+                        )
+                    }
+                    else if(race){
+                        this.setSanityCheck(
+                            value, 
+                            `This indicator has no data for your selected race (${capitalize(race)}), so picking it will revert your selection to all races.`,
+                            ()=>{
+                                this.completeWorkflow('race',null)
+                                this.completeWorkflow('indicator',value)
+                            }
+                        )
+                    }
 
                     return false
                 }
                 else{
-                    // const goToYear = findIndex((x)=>{return x>=0})
-                    // this.year = goToYear
+
                 }    
             }
             
@@ -142,12 +187,10 @@ export default class AppStore{
             }
         }
         else if(which==='county' && this.indicator){
-            console.log(this.indicator, value, this.race, this.year)
             const val = indicators[this.indicator].counties[value||'california'][this.race||'totals'][this.year]
             if(this.race && (!val || val==='*')){ 
                 const holdOnToRace = this.race
                 this.race = null
-                console.log('unset race so the selection could go on')
                 if(!this.checkValidity('county',value)){
                     this.race = holdOnToRace
                     return
@@ -208,7 +251,6 @@ export default class AppStore{
                     //small range low end (too light)
                     adjustLo = ((100-hi) / 2)/100
                     adjustHi = -(((100-hi) / 2)/100)
-                    console.log('adjusting light', adjustLo, 'dark: ', adjustHi)
                 }else{
                     adjustLo = -(lo/2)/100
                     // adjustHi = 0.1
@@ -221,19 +263,11 @@ export default class AppStore{
                     adjustHi = -(((100-hi)/3)/100) 
                 }
             }
-            console.log(range)
             this.setColorOption('padLo',(lo/100) + adjustLo)
             this.setColorOption('padHi',(1 - hi/100) + adjustHi)
             
-
-            console.log('set padding: ', this.padLo, this.padHi)
         }
         if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
-            //if race/indicator/county selected -> no race data, unset race
-            // console.log('race not supported after selection, unsetting')
-            // this.race = null
-
-            //the result of this code is that it just looks unresponsive - lets grey the options in UniversalPicker
         }
         return true
         

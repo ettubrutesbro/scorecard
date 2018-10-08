@@ -403,7 +403,10 @@ class SanityCheck extends React.Component{
                     <Button 
                         label = 'Yes, continue' 
                         className = {`dark ${screen}`} 
-                        // onClick = {data.action}
+                        onClick = {()=>{
+                            data.action()
+                            store.clearSanityCheck()
+                        }}
 
                     />
                 </SanityControls>

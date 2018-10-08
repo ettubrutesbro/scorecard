@@ -273,6 +273,7 @@ const Btn = styled.div`
     align-items: center;
     justify-content: center;
     padding: 15px 20px;
+    cursor: pointer;
     &.default{
         background: white;
         color: var(--normtext);
