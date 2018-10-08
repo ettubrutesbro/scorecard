@@ -88,10 +88,10 @@ export default class Legend extends React.Component{
                                     <LabelRange hide = {this.hovered}
                                         last = {i===arr.length-2}
                                     >
-                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}
+                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}%
                                     </LabelRange>
                                     <LabelNum show = {this.hovered}>
-                                        {nums[i]}
+                                        {nums[i]!==0 && nums[i]}
                                     </LabelNum>
                                 </Label>
                             </Section>

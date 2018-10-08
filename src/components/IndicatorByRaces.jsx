@@ -12,11 +12,15 @@ const races = [
     'asian', 'black', 'latinx', 'white', 'other'
 ]
 
-const FaintLabel = styled.span`
-    color: var(--fainttext);
+
+const Label = styled.span`
+    color: ${props => props.invalid? 'var(--fainttext)' : props.selected?  'var(--strokepeach)' : 'var(--normtext)'};
+    span{
+        color: ${props => props.selected? 'var(--peach)' : 'var(--fainttext)'};
+    }
 `
-const SelectLabel = styled.span`
-    color: var(--strokepeach);
+const Wrapper = styled.div`
+    margin-top: 20px;
 
 `
 
@@ -25,6 +29,8 @@ export default class IndicatorByRaces extends React.Component{
         const {indicator, year, county, colorScale} = this.props.store
         const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
+
+
         const indicatorPerformanceByRace = races.map((race)=>{
             let isSomeBullshit = false
             let val
@@ -36,12 +42,13 @@ export default class IndicatorByRaces extends React.Component{
                 //trueValue is N/A
                 val = 0
                 isSomeBullshit = ind[race][year]==='*'? 'Data set too small or unstable' : 'No data'
-                isSomeBullshit = (<FaintLabel>{isSomeBullshit}</FaintLabel>)
+                isSomeBullshit = (<Label invalid>{isSomeBullshit}</Label>)
             }
-
+            const who = semanticTitles[indicator].shortWho || semanticTitles[indicator].who
+            const selected = race===selectedRace
             return {
                 id: race,
-                label: race===selectedRace? <SelectLabel>{capitalize(race)}</SelectLabel> : capitalize(race),
+                label: <Label selected = {selected}>{capitalize(race)}<span> {who}</span></Label>,
                 value: val,
                 trueValue: isSomeBullshit || false,
                 // value: ind[race][year],
@@ -50,15 +57,16 @@ export default class IndicatorByRaces extends React.Component{
         })
         // console.log(indicatorPerformanceByRace)
         return(
-            <div>
+            <Wrapper>
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
-                    header = "By Race"
+                    selectable
+                    header = {<Label><span>Indicator breakdown</span> by race</Label>}
                     bars = {indicatorPerformanceByRace}
-                    labelWidth = {100}
+                    labelWidth = {140}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
-            </div>
+            </Wrapper>
         )
     }
 } 

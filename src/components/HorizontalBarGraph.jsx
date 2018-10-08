@@ -14,12 +14,9 @@ import {floatingCorner, flushHard} from './BoxStyling'
 export default class HorizontalBarGraph extends React.Component{
 
     @observable width = 400
-    @observable hoveredGraph = false
     @observable hoveredRow = null
     @observable expanded = false
 
-    @action handleHoverGraph = (v) => {if(this.props.expandable) this.hoveredGraph = v}
-    @action handleHoverContents = (tf) => {if(this.props.expandable) this.hoveredGraph = tf? false : true }
     @action handleHoverRow = (row) => {if(this.props.selectable) this.hoveredRow = row}
 
     @action expandGraph = () => {
@@ -49,9 +46,6 @@ export default class HorizontalBarGraph extends React.Component{
         return (
             <GraphTable
                 ref = {this.graph}
-                onMouseEnter = {()=>this.handleHoverGraph(true)}
-                onMouseLeave = {()=>this.handleHoverGraph(false)}
-                hovered = {this.hoveredGraph&&!this.expanded}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
             >
@@ -62,11 +56,7 @@ export default class HorizontalBarGraph extends React.Component{
                         <Subheader>{this.props.expandedSubHeader}</Subheader>
                     }
                 </Header>
-                <Content
-                    offset = {this.hoveredGraph&&!this.expanded}
-                    onMouseEnter = {()=>this.handleHoverContents(true)}
-                    onMouseLeave = {()=>this.handleHoverContents(false)}
-                >
+                <Content>
                 <FlipMove
                     duration = {250}
                     typeName = {null}
@@ -82,8 +72,8 @@ export default class HorizontalBarGraph extends React.Component{
                                 key = {i}
                                 condensed = {condensed}
                                 onClick = {selectBar?()=>{selectBar(item.id)}: ()=>{} }
-                                // onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
-                                // onMouseLeave = {()=>{this.handleHoverRow(null)}}
+                                onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
+                                onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                 hovered = {item.id === this.hoveredRow}
                             >
                                 
@@ -109,31 +99,24 @@ export default class HorizontalBarGraph extends React.Component{
                                         <Bar
                                             condensed = {condensed}
                                             selected = {item.id === this.props.selected}
-                                            hovered = {item.id === this.hoveredRow}
                                             percentage = {item.value}
                                             height = {100/bars.length} 
                                             fill = {item.fill || ''}
                                             onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                             onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                         >
-
-                                        <EndHatch
-                                            scaleX = {100 / item.value}
-                                            selected = {item.id === this.props.selected}
-                                            // offset = {this.props.labelWidth}
-                                            // offset = {this.props.labelWidth + (((this.width-60) - this.props.labelWidth) * (item.value/100)) }
-                                        />
                                         </Bar>
                                         {!condensed && 
                                         <Value
                                             percentage = {item.value}
+                                            muted = {i!==0}
                                             hovered = {item.id === this.hoveredRow}
                                             alignValue = {this.props.alignValue}
-                                            offset = {this.props.alignValue === 'outside'? this.props.labelWidth + (((this.width-60) - this.props.labelWidth) * (item.value/100) ) 
-                                                : ((100-item.value)/100) * (this.width-this.props.labelWidth)}
+                                            offset = {this.props.labelWidth + (((this.width-75) - this.props.labelWidth) * (item.value/100) ) }
                                         >
                                             {item.trueValue && item.trueValue}
-                                            {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")+'%'}
+                                            {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
+                                            {i===0 && <Pct>%</Pct>}
                                             
                                         </Value>
                                         }
@@ -151,39 +134,31 @@ export default class HorizontalBarGraph extends React.Component{
                         labelWidth = {this.props.labelWidth}
                         // offset = {0}
                         muted = {this.hoveredRow}
-                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-60)}
+                        offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
                     >
                         <AverageLabel> CA Avg: <AverageValue>{this.props.average}%</AverageValue></AverageLabel>
                     </AverageLine>
                 }
                 </Content>
 
-                {this.props.graphHoverPrompt &&
-                    <Prompt visible = {this.hoveredGraph&&!this.expanded}>
-                        {this.props.graphHoverPrompt}
-                    </Prompt>
-                }
             </GraphTable>
         )
     }
 }
 
+const Pct = styled.span`
+    margin-left: 1px;
+`
+
 const GraphTable = styled.div`
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    /*width: 100%;*/
-    /*max-width: 480px;*/
     ${flushHard}
-    /*border-radius: 12px;*/
-    /*box-shadow: ${props => props.hovered || props.expanded? 'var(--highlightshadow)' : 'var(--shadow)'};*/
     letter-spacing: 0.5px;
     font-size: 13px;
-    /*border: 1px solid;*/
     transition: border-color .25s, background-color .25s, box-shadow .25s;
-    // border-color: ${props => props.hovered? 'var(--peach)' : 'transparent'};
-    // background-color: ${props => props.hovered? 'white' : 'var(--offwhitefg)'};
-    cursor: pointer;
+   
     overflow: hidden;
 `
 const Header = styled.div`
@@ -206,7 +181,7 @@ const Subheader = styled.div`
 const Content = styled.div`
     width: 100%;
     height: 100%;
-    padding: 0 20px 0px 20px;
+    padding: 0 36px 0px 20px;
     margin-bottom: 20px;
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
@@ -251,18 +226,17 @@ const RowComponent = styled.div`
     display: flex;
     align-items: center;
     margin-top: 5px;
-    /*height: 100%;*/
-    // padding: 0px 20px;
-    background: ${props=>props.hovered? 'var(--faintpeach)': ''};
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -5px;
+    bottom: -12px;
     left: ${props => props.labelWidth + 19}px;
-    width: 0px;
-    height: calc(100% + 5px);
-    border-left: 1px dashed ${props=>props.muted?'transparent':'var(--offwhitefg)'};
-    border-right: 1px dashed ${props=>props.muted?'rgba(0,0,0,0.25)':'var(--normtext)'};
+    width: 1px;
+    background-color: var(--fainttext);
+    height: calc(100% + 24px);
+    box-shadow: -1px 0 0 0 var(--offwhitefg);
+    /*border-left: 1.5px solid var(--offwhitefg);*/
+    /*border-right: 1px solid var(--normtext);*/
     z-index: 2;
     // margin-left: calc(${props=>props.percentage}% - 200px);
     transition: transform .5s, border-color .15s;
@@ -272,11 +246,11 @@ const AverageLine = styled.div`
     &::before{  
         content: '';
         position: absolute;
-        width: 20px;
+        width: 15px;
         height: 1px;
         border-bottom: 1px var(--fainttext) solid;
         top: -1px;
-        left: -10px;
+        /*left: -10px;*/
     }
     &::after{
         content: '';
@@ -284,7 +258,7 @@ const AverageLine = styled.div`
         white-space: nowrap;
         /*width: 0;*/
         border-top: 1px var(--fainttext) solid;
-        width: 20px;
+        width: 25px;
         height: 1px;
         transform: translateX(-50%);
         bottom: -1px;
@@ -312,9 +286,9 @@ const Bar = styled.div`
     width: 100%;
     height: ${props => props.condensed? '6px' : '15.5px'};
     transform-origin: 0% 0%;
-    transition: transform .25s;
+    transition: transform .25s, background-color .25s;
     transform: scaleX(${props=> props.percentage/100});
-    //TODO: selection handling
+
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
     // border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
     border-right-color: transparent;
@@ -327,7 +301,7 @@ const EndHatch = styled.div`
     height: 100%;
 `
 const Value = styled.div`
-    color: ${props => props.hovered?'var(--strokepeach)':'var(--normtext)'};
+    color: ${props => props.hovered?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
     letter-spacing: 0.5px;
     position: absolute;
     // right: 0;

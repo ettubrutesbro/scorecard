@@ -49,14 +49,13 @@ const RowItem = styled.li`
     border: 1px solid ${props=> props.muted && !props.disabled? '#DFDFDF' : props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
     background: ${props => props.muted||(props.disabled&&!props.isolated)? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
-    // opacity: ${props=>props.muted?0.2:1};
-    transition: border-color .2s, background .2s, color .2s;
+    transition: border-color .2s, background-color .2s ${props=>props.muted||props.disabled?', color .2s':''};
     /*transform: translateY(-${props => props.index * 1}px);*/
     /*margin-top: ${props=>props.isolated?10:-1}px;*/
     margin-top: -1px;
     z-index: ${props=>props.isolated?10:props.selected? 2: 1};
     pointer-events: ${props => props.muted? 'none' : 'auto'};
-    cursor: pointer;
+    cursor: ${props=>props.disabled? 'auto' : 'pointer'};
 
     &:hover{
         color: ${props => props.isolated? 'var(--normtext)' : props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
@@ -264,8 +263,8 @@ export default class IndicatorList extends React.Component{
             <IndRows ref = {this.list}>
                 <FlipMove
                     typeName = {null}
-                    duration = {250}
-                    staggerDelayBy = {8}
+                    duration = {300}
+                    staggerDelayBy = {12}
                     style = {{
                         display: 'flex',
                         flexDirection: 'column',

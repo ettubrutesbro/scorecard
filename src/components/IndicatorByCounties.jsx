@@ -233,7 +233,7 @@ export default class IndicatorByCounties extends React.Component{
             .sort((a,b)=>{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
-            .slice(0,5) //TODO: use entries instead of 5 (but needs to be responsive)
+            .slice(0,this.props.entries) //TODO: use entries instead of 5 (but needs to be responsive)
             .map((cty)=>{
                 //if indicator active, value is indicator perf.
 
@@ -267,13 +267,16 @@ export default class IndicatorByCounties extends React.Component{
         }
 
         return (
-            <div>
             <HorizontalBarGraph
                 selected = {county}
-                header = {race==='other'? 'In counties with the most children of other races' : race? `In counties with the most ${capitalize(race)} children:` : 'By Counties'}
+                selectable
+                header = {
+                    race==='other'? 'In counties with the most children of other races' 
+                    : race? `In counties with the most ${capitalize(race)} children:` 
+                    : 'County overview'}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
-                labelWidth = {120}
+                labelWidth = {140}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
@@ -286,7 +289,6 @@ export default class IndicatorByCounties extends React.Component{
 
                 // entries = {this.props.entries}
             />
-            </div>
         )
     }
 }

@@ -79,22 +79,17 @@ export default class Breakdown extends React.Component{
 
         return(
             <Wrapper offset = {this.props.offset}>
-                {!this.props.sources && indicator &&  
+                {indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
                     />  
                 }
-                {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
-                    <BottomTable>
+                {indicator && indicators[indicator].categories.includes('hasRace') &&
+
                     <IndicatorByRaces
                         store = {store}
                     />
-                    </BottomTable>
-                }
-
-                {indicator && this.props.sources &&
-                    <FullSourcesView indicator = {indicator} />
                 }
             </Wrapper>
         )
@@ -102,36 +97,3 @@ export default class Breakdown extends React.Component{
 
 }
 
-const RaceRow = styled.div`
-    display: flex;
-    // justify-content: space-between;
-`   
-const RaceLabel = styled.div`
-`
-const RacePct = styled.div`
-    width: 5rem;
-    margin-left: 15px;
-    text-align: right;
-`
-const races = ['asian','black','latinx','white','other']
-const RaceRowTable = (props) => {
-    return(
-        <RowTable className = 'race'>
-            {races.map((race)=>{
-                return (
-                    <RaceRow
-                        onClick = {()=>props.clickRace('race',race)}
-                    >
-                        <RaceLabel>{race}</RaceLabel>
-                        <RacePct>{props.demo[race]}%</RacePct>
-                    </RaceRow>
-                ) 
-            })}
-        </RowTable>
-    )
-}
-const RowTable = styled.div`
-    &.race{
-        margin-left: 30px;
-    }   
-`

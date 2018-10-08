@@ -17,10 +17,11 @@ const semanticTitles = {
         shorthand: 'Food insecurity'
     },
     'registeredToVote': {
-        who: 'youths, ages 18-25,',
+        who: '18-25 year olds',
+        shortWho: '18-25 y/o\'s',
         what: 'were registered to vote',
-        label: 'People who\'re registered to vote',
-        shorthand: 'Voter registration'
+        label: '18-25 year olds registered to vote',
+        shorthand: 'Youth voter registration'
     },
     'collegeCareerReady': {
         who: 'students',
@@ -31,6 +32,7 @@ const semanticTitles = {
     'lowIncomeDental': {
         descriptor: 'Low-income',
         who: 'children, ages 0-5,',
+        shortWho: 'children',
         what: 'had visited a dentist within the last year',
         label: 'Low-income children, age 0-5, who saw a dentist in the last year',
         shorthand: 'Dental visits for low-income children'
@@ -42,8 +44,8 @@ const semanticTitles = {
         shorthand: 'Kindergartener vaccination'
     },
     'allegations': {
-        who: 'children, ages birth-18,',
-        what: 'had not reportedly suffered abuse/neglect within 12 months',
+        who: 'children',
+        what: ', ages birth-18, had not reportedly suffered abuse/neglect within 12 months',
         label: 'Children, ages birth-18, with no report of abuse or neglect in a 12 month time period',
         shorthand: 'Abuse and neglect'
     },
@@ -66,8 +68,8 @@ const semanticTitles = {
         shorthand: 'Breastfeeding in-hospital'
     },
     'childCareSlots': {
-        who: 'children with parents in the labor force',
-        what: 'had a licensed child care slot available',
+        who: 'children',
+        what: 'with parents in the labor force had a licensed child care slot available',
         label: 'Children with parents in the labor force for whom a licensed child care slot is available',
         shorthand: 'Child care availability'
     },
@@ -85,12 +87,14 @@ const semanticTitles = {
     },
     'enrolled34': {
         who: '3- and 4-year-olds',
+        shortWho: '3-4 y/o\'s',
         what: 'enrolled in preschool or transitional kindergarten',
         label: '3- and 4-year-olds enrolled in preschool or transitional kindergarten',
         shorthand: 'Preschool and kindergarten enrollment'
     },
     'familyLike': {
         who: 'adolescents in the child welfare system',
+        shortWho: 'adolescents',
         what: 'were placed in family-like settings',
         label: 'Adolescents in the child welfare system who are placed in family-like settings',
         shorthand: 'Family-like settings for adolescents'
@@ -117,12 +121,14 @@ const semanticTitles = {
     },
     'FYTimelyDental': {
         who: 'children in the child welfare system',
+        shortWho: 'children',
         what: 'had a timely dental exam',
         label: 'Timely dental exams for children in the child welfare system',
         shorthand: 'Dental exams in child welfare'
     },
     'FYTimelyMedical': {
         who: 'children in the child welfare system',
+        shortWho: 'children',
         what: 'had a timely medical exam',
         label: 'Timely medical exams for children in the child welfare system',
         shorthand: 'Medical exams in child welfare'
@@ -165,12 +171,14 @@ const semanticTitles = {
     },
     'permanency': {
         who: 'children in the child welfare system',
+        shortWho: 'children',
         what: 'exited to permanency within one year',
         label: 'Children in the child welfare system who exit to permanency within one year',
         shorthand: 'Permanency in child welfare'
     },
     'placementStability': {
         who: 'children in the child welfare system',
+        shortWho: 'children',
         what: 'had been in one placement after 24 months in care',
         label: 'Children in the child welfare system who have been in one placement after 24 months in care',
         shorthand: 'Placement stability in child welfare'
@@ -183,12 +191,14 @@ const semanticTitles = {
     },
     'readToEveryday': {
         who: 'children, ages birth-5',
+        shortWho: 'children',
         what: 'were read to everyday by an adult',
         label: 'Children, ages birth-5, who are read to everyday by an adult',
         shorthand: 'Daily reading to children'
     },
     'suspension': {
         who: 'student suspensions',
+        shortWho: 'students',
         what: 'were not due to "defiance or disruption"',
         label: 'Student suspensions not due to "defiance/disruption"',
         shorthand: 'Suspensions for defiance/disruption'
