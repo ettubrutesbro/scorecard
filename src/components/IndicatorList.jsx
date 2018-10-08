@@ -30,7 +30,7 @@ const IndRows = styled.ul`
 
 `
 const RowItem = styled.li`
-    flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};
+    /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
     margin: 0;
@@ -46,15 +46,15 @@ const RowItem = styled.li`
     }
     // margin: 10px;
     list-style-type: none;
-    border: 1px solid ${props=> props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
+    border: 1px solid ${props=> props.muted && !props.disabled? '#DFDFDF' : props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
     color: ${props=> props.selected? 'var(--strokepeach)' : props.disabled&&!props.isolated? 'var(--fainttext)' : 'black'};
     background: ${props => props.muted||(props.disabled&&!props.isolated)? 'transparent' : props.selected? 'var(--faintpeach)' : 'white'};
-    opacity: ${props=>props.muted?0.2:1};
-    transition: opacity .5s;
+    // opacity: ${props=>props.muted?0.2:1};
+    transition: border-color .35s, background .35s, color .35s;
     /*transform: translateY(-${props => props.index * 1}px);*/
     /*margin-top: ${props=>props.isolated?10:-1}px;*/
     margin-top: -1px;
-    z-index: ${props=>props.selected? 2: 1};
+    z-index: ${props=>props.isolated?10:props.selected? 2: 1};
     pointer-events: ${props => props.muted? 'none' : 'auto'};
     cursor: pointer;
 
@@ -83,6 +83,8 @@ class Row extends React.Component{
 const IndLeft = styled.div`
     // font-size: 16px;
     line-height: 150%;
+    transition: opacity .25s;
+    opacity: ${p => p.muted? 0.2 : 1};
 `
 
 const Years = styled.h4`
@@ -97,6 +99,8 @@ const Years = styled.h4`
 
 const Percentage = styled.div`
     /*margin-top: -2px;*/
+    transition: opacity .25s;
+    opacity: ${p => p.muted? 0.2 : 1};
     margin-left: 20px;
     @media ${media.optimal}{
         font-size: 24px;
@@ -174,19 +178,18 @@ export default class IndicatorList extends React.Component{
         const select = this.props.store.completeWorkflow('indicator',ind)
         if(select) this.props.closeNav() //went through
         else{
-            console.log(e.target.getBoundingClientRect())
+            const target = document.getElementById(ind+'row') //e.target
             if(i+1 >= store.indicatorPageSize/2){ //bottom half of page, appear above
 
                 //container height minus top/y of selected item = differencte on bottom side
                 const containerHeight = this.list.current.getBoundingClientRect().height
-                console.log('set pos', containerHeight - e.target.getBoundingClientRect().y)
                 this.sanityCheckSide = 'above'
-                this.sanityCheckPosition = containerHeight - e.target.getBoundingClientRect().y + screen==='optimal'?50:20
+                this.sanityCheckPosition = 0
             } 
             else{ //top half of page, appear below
-                console.log('set pos', e.target.getBoundingClientRect().y)
+                // console.log('set pos', e.target.getBoundingClientRect().y)
                 this.sanityCheckSide = 'below'
-                this.sanityCheckPosition = e.target.getBoundingClientRect().y - (screen==='optimal'?100:130)
+                this.sanityCheckPosition = target.offsetHeight
             }
 
         }
@@ -300,19 +303,17 @@ export default class IndicatorList extends React.Component{
                                 index = {i}
                                 selected = {selected}
                                 isolated = {isolated}
+                                id = {ind+'row'}
                                 key = {ind+'row'}
                                 // noRaceNeedRace = {noRace && race}
                                 muted = {showSanityCheck && !isolated}
                                 disabled = {disabled}
                                 lastPage = {store.indicatorListPage === store.indicatorPages.length-1}
                                 onClick = {(e)=>{
-                                    // if(!cats.includes('hasRace')&&race) this.props.store.completeWorkflow('race',null)
-                                    // this.props.store.completeWorkflow('indicator',ind)
-                                    this.handleSelection(e,ind, i)
-                                    // this.isolateIndicator(ind)
+                                    if(!isolated) this.handleSelection(e,ind, i)
                                 }}
                             > 
-                                <IndLeft>
+                                <IndLeft muted = {showSanityCheck && !isolated}>
                                         {semanticTitles[ind].label}
                                         <Years className = "caption">
                                             {indicator.years.map((yr)=>{
@@ -323,25 +324,26 @@ export default class IndicatorList extends React.Component{
                                             <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
                                         }
                                 </IndLeft>
-                                <Percentage>
+                                <Percentage muted = {showSanityCheck && !isolated}>
                                     {!disabled && val+'%'}
                                     {disabled && '\u2014\u2014'}
                                 </Percentage>
+                                    {isolated &&
+                                        <SanityCheck 
+                                            key = {showSanityCheck+'sanitycheck'}
+                                            store = {store} 
+                                            yPos = {this.sanityCheckPosition}
+                                            side = {this.sanityCheckSide} 
+
+                                        />
+                                    }
                             </Row>
                         ) 
                     })}
 
 
                     </FlipMove>
-                    {showSanityCheck &&
-                        <SanityCheck 
-                            key = {showSanityCheck+'sanitycheck'}
-                            store = {store} 
-                            yPos = {this.sanityCheckPosition}
-                            side = {this.sanityCheckSide} 
 
-                        />
-                    }
             </IndRows>
              
                 
@@ -381,7 +383,7 @@ class SanityCheck extends React.Component{
                 // ref = {this.sanityCheck} 
                 pos = {{x: screen==='optimal'? -20 : -10, y: this.props.yPos}}
                 direction = {side}
-                verticalAnchor = {side==='above'?'bottom':'top'}
+                // verticalAnchor = {side==='above'?'bottom':'top'}
                 horizontalAnchor = 'right'
                 duration = {'.35s'}
                 className = 'actionable'
@@ -390,18 +392,17 @@ class SanityCheck extends React.Component{
                 {data.message}
                 <SanityControls>
                     <Button 
-                        className = 'compact'
+                        className = {screen==='compact'?'compact':''}
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
                         onClick = {(e)=>{
                             store.clearSanityCheck()
                             e.nativeEvent.stopImmediatePropagation()
-                            // e.preventDefault()
                         }}
                     />
                     <Button 
                         label = 'Yes, continue' 
-                        className = 'dark compact' 
+                        className = {`dark ${screen}`} 
                         // onClick = {data.action}
 
                     />
@@ -413,6 +414,8 @@ class SanityCheck extends React.Component{
 }
 
 const ModTip = styled(Tip)`
+    cursor: auto;
+    margin-top: ${p=>p.direction==='above'?-20:20}px;
     &::after{
         left: calc(50% - 9.5px);
         ${p=>p.direction==='above'? 'bottom' : 'top'}: -19px;
@@ -431,28 +434,32 @@ const ModTip = styled(Tip)`
     }
         &::before { border-${p => p.direction === 'above'? 'top' : 'bottom'}: 10.5px var(--bordergrey) solid; }
         &::after{ border-${p => p.direction === 'above'? 'top' : 'bottom'}: 9.5px var(--offwhitefg) solid;  }
-        animation: ${p=>p.direction==='above'? tooltipabove : tooltipanim} .35s forwards;
+        animation: ${p=>p.direction==='above'? tooltipabove : tooltipanim} .3s forwards;
 `       
 
 
 const tooltipanim = keyframes`
     from {
-        opacity: 0; 
-        transform: translateY(-50px);
+        opacity: 0.5; 
+        transform: translateY(-40px);
+        clip-path: polygon(0% -10%, 100% -10%, 100% 0%, 0% 0%);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+        clip-path: polygon(0% -10%, 100% -10%, 100% 100%, 0% 100%);
     }
 `
 const tooltipabove = keyframes`
     from {
-        opacity: 0; 
-        transform: translateY(-100%) translateY(20px);
+        opacity: 0.5; 
+        transform: translateY(-100%) translateY(40px);
+        clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
     }
     to {
         opacity: 1;
         transform: translateY(-100%) translateY(0);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 110%, 0% 110%);
     }
 `
 
