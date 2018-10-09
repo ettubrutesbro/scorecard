@@ -17,7 +17,7 @@ import {capitalize} from '../utilities/toLowerCase'
 import ordinal from 'ordinal'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
-import Button from './Button'
+import {Button,Toggle} from './generic'
 
 // const defaultEntries = 8
 // const moreEntries = 12
@@ -41,6 +41,7 @@ function indexOfClosest(nums, target) {
 export default class IndicatorByCounties extends React.Component{
 
     @observable distribute = true
+    @observable fullHeight = false
 
     @observable performance = []
     @observable distribution = []
@@ -90,7 +91,10 @@ export default class IndicatorByCounties extends React.Component{
         // console.log(this.performance.toJS())
     } 
 
-    @action toggleDistribute = () => {this.distribute = !this.distribute}
+    @action toggleDistribute = () => {
+        this.distribute = !this.distribute
+        this.fullHeight = !this.distribute
+    }
 
     @action generateDistribution = () => {
         // console.log('generating distribution')
@@ -217,6 +221,9 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
+        const footerComponent = this.distribute?(
+            <Button onClick = {this.toggleDistribute} label = "See all counties" className = 'compact' />) 
+            : <Button onClick = {this.toggleDistribute} label = "Back to overview" className = 'compact' />
 
         let highestValue = 0
         let withRace = !race? '' : Object.keys(demopop)
@@ -273,7 +280,9 @@ export default class IndicatorByCounties extends React.Component{
                 header = {
                     race==='other'? 'In counties with the most children of other races' 
                     : race? `In counties with the most ${capitalize(race)} children:` 
-                    : 'County overview'}
+                    : this.distribute?  'County overview'
+                    : 'All counties'
+                }
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
                 labelWidth = {140}
@@ -281,13 +290,8 @@ export default class IndicatorByCounties extends React.Component{
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
-                // onHover = {()=>console.log('hovering graph')}
-                // onClickGraph = {this.toggleDistribute}
-                // graphHoverPrompt = 'Click to see full list (47 counties)'
-                // expandable
-                // selectable
-
-                // entries = {this.props.entries}
+                footer = {footerComponent}
+                fullHeight = {this.fullHeight}
             />
         )
     }

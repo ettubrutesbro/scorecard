@@ -20,7 +20,7 @@ const Label = styled.span`
     }
 `
 const Wrapper = styled.div`
-    margin-top: 20px;
+    margin-top: 45px;
 
 `
 

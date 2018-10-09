@@ -5,10 +5,22 @@ import {observer} from 'mobx-react'
 import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
+import PerfectScrollBar from 'react-perfect-scrollbar'
+import 'react-perfect-scrollbar/dist/css/styles.css';
+
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
 
 import {floatingCorner, flushHard} from './BoxStyling'
+
+const Wrapper = styled.div`
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    max-height: 100%;
+    ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
+    border: 2px solid var(--bordergrey);
+`
 
 @observer
 export default class HorizontalBarGraph extends React.Component{
@@ -44,11 +56,18 @@ export default class HorizontalBarGraph extends React.Component{
         const {selectBar} = this.props
         // console.log(selectBar)
         return (
+            <Wrapper fullHeight = {this.props.fullHeight}>
+            <Header>
+                {this.props.header}
+            </Header>
+            <FadeCropper />
+            <PerfectScrollBar>
             <GraphTable
                 ref = {this.graph}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
             >
+                {/* 
                 <Header expanded = {this.expanded}>
                     {!this.expanded && this.props.header}
                     {this.expanded && this.props.expandedHeader}
@@ -56,6 +75,7 @@ export default class HorizontalBarGraph extends React.Component{
                         <Subheader>{this.props.expandedSubHeader}</Subheader>
                     }
                 </Header>
+                */}
                 <Content>
                 <FlipMove
                     duration = {250}
@@ -146,6 +166,15 @@ export default class HorizontalBarGraph extends React.Component{
                 </Content>
 
             </GraphTable>
+            </PerfectScrollBar>
+
+            <FadeCropperBottom />
+            {this.props.footer && 
+            <Footer>
+                {this.props.footer}
+            </Footer>
+            }
+            </Wrapper>
         )
     }
 }
@@ -158,24 +187,58 @@ const GraphTable = styled.div`
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    ${flushHard}
     letter-spacing: 0.5px;
     font-size: 13px;
     transition: border-color .25s, background-color .25s, box-shadow .25s;
    
     overflow: hidden;
 `
-const Header = styled.div`
-    width: 100%;
-    // color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
-    // margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
-    // 
-    // font-size: ${props=>props.expanded? '16px' : '13px'};
-    color: var(--normtext);
-    margin: 20px 0 10px 20px;
-    font-size: 16px;
-    transition: transform .25s, opacity .25s;
+// const Header = styled.div`
+//     width: 100%;
+//     // color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
+//     // margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
+//     // 
+//     // font-size: ${props=>props.expanded? '16px' : '13px'};
+//     color: var(--normtext);
+//     margin: 20px 0 10px 20px;
+//     font-size: 16px;
+//     transition: transform .25s, opacity .25s;
+// `
+
+const CropBox = styled.div`
+    position: absolute;
+    margin: 0 20px;
+    display: inline-flex;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+    z-index: 3;
 `
+
+const Header = styled(CropBox)`
+    transform: translateY(-50%);
+`
+const FadeCropper = styled.div`
+    /*border: 1px solid red;*/
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    /*border: 1px solid green;*/
+
+`
+const FadeCropperBottom = styled(FadeCropper)`
+    top: auto;
+    bottom: 0px;
+    height: 30px;
+    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+`
+const Footer = styled(CropBox)`
+    bottom: 0; right: 0;
+    transform: translateY(50%);
+    height: 4px; display: flex; align-items: center;
+`
+
 const Subheader = styled.div`
     font-size: 13px;
     color: var(--fainttext);
@@ -186,7 +249,7 @@ const Content = styled.div`
     width: 100%;
     height: 100%;
     padding: 0 36px 0px 20px;
-    margin-bottom: 20px;
+    margin: 35px 0 28px 0;
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
@@ -233,11 +296,11 @@ const RowComponent = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -9px;
+    bottom: -12px;
     left: ${props => props.labelWidth + 18}px;
     width: 1px;
     background-color: var(--fainttext);
-    height: calc(100% + 20px);
+    height: calc(100% + 21px);
     box-shadow: -1px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/

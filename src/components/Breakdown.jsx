@@ -20,6 +20,8 @@ import demopop from '../data/demographicsAndPopulation'
 import {getMedia} from '../utilities/media'
 
 const Wrapper = styled.div`
+    height: calc(100% - ${props=>props.offset}px);
+    overflow: hidden;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -63,8 +65,8 @@ export default class Breakdown extends React.Component{
                 }
             }if(screen==='compact'){
                if(hasRace){ //halfish of breakdown is used up by race comparison
-                    if(offset >= 80) entryCount = 3
-                    else if(offset >= 40) entryCount = 5
+                    if(offset >= 80) entryCount = 5
+                    else if(offset >= 40) entryCount = 7
                     else entryCount = 10
                 }
                 else{

@@ -22,8 +22,9 @@ import demopop from '../src/data/demographicsAndPopulation'
 
 const Void = styled.div`
     width: 100vw;
+    max-width: 640px;
     height: 100vh;
-    background: var(--offwhitebg);
+    background: var(--offwhitefg);
     padding: 50px;
 
 `
@@ -63,6 +64,7 @@ storiesOf('Breakdowns', module)
     return(
         <Void>
         <IndicatorByCounties
+            entries = {10}
             store = {{
 
                 year: year,

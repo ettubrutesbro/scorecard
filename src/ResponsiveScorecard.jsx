@@ -42,7 +42,7 @@ const App = styled.div`
     height: 100%;
     @media ${media.optimal}{
         width: 1600px;
-        height: 800px;
+        height: 740px;
         margin-top: 110px;
     }
     @media ${media.compact}{
@@ -105,6 +105,7 @@ const Readout = styled(Quadrant)`
 `
 const Breakdown = styled(Quadrant)`
     top: 0; left: 0;
+    height: 100%;
     @media ${media.optimal}{
         width: 38%;
 
