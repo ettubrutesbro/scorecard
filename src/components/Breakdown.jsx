@@ -21,7 +21,7 @@ import {getMedia} from '../utilities/media'
 
 const Wrapper = styled.div`
     height: calc(100% - ${props=>props.offset}px);
-    overflow: hidden;
+    overflow: ${props=>props.tempNotesOverride? 'visible' : 'hidden'};
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -80,7 +80,11 @@ export default class Breakdown extends React.Component{
 
 
         return(
-            <Wrapper offset = {this.props.offset}>
+            <Wrapper 
+                offset = {this.props.offset}
+                tempNotesOverride = {this.props.sources}
+
+            >
                 {!this.props.sources && indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
