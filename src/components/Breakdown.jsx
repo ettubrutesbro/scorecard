@@ -79,17 +79,20 @@ export default class Breakdown extends React.Component{
 
         return(
             <Wrapper offset = {this.props.offset}>
-                {indicator &&  
+                {!this.props.sources && indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
                     />  
                 }
-                {indicator && indicators[indicator].categories.includes('hasRace') &&
+                {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
 
                     <IndicatorByRaces
                         store = {store}
                     />
+                }
+                {indicator && this.props.sources &&
+                    <FullSourcesView indicator = {indicator} />
                 }
             </Wrapper>
         )

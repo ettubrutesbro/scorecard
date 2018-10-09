@@ -335,10 +335,10 @@ const PDFButton = styled.div`
     right: 0;
     z-index: 21;
     @media ${media.optimal}{
-        bottom: 90px;
+        bottom: 165px;
     }
     @media ${media.compact}{
-        bottom: 65px;
+        bottom: 165px;
     }}
     padding: 10px 25px;
     border: 2px solid var(--bordergrey);
