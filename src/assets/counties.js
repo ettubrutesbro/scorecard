@@ -55,7 +55,8 @@ const counties = [
 {label: 'Humboldt', id: 'humboldt'},
 {label: 'Modoc', id: 'modoc'},
 {label: 'Del Norte', id: 'delNorte'},
-{label: 'Siskiyou', id: 'siskiyou'} 
+{label: 'Siskiyou', id: 'siskiyou'},
+{label: 'San Francisco', id: 'sanFrancisco'},
 ]
 
 let randomValuesForCountiesToTestHeatMap = {}

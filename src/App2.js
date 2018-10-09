@@ -11,8 +11,8 @@ import {counties} from './assets/counties'
 import indicators from './data/indicators'
 
 
-import CaliforniaCountyMap from './components/InteractiveMap'
-import Readout from './Readout'
+import CaliforniaCountyMap from './components/core/InteractiveMap'
+import Readout from './components/core/Readout'
 
 class Store{
 	@observable location = null

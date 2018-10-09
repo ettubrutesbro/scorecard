@@ -1,114 +1,199 @@
+
 import React from 'react'
-import {observable, action} from 'mobx'
-import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-import Picker from './components/Picker'
-import Readout from './Readout'
-import CAMap from './components/InteractiveMap'
+import {observable, action, computed} from 'mobx'
+import {observer} from 'mobx-react'
+
+import ScorecardStore from './ScorecardStore'
+
+import Nav from './Nav'
+
+import {find, mapValues} from 'lodash'
+
+
+import Readout from './components/Readout'
+import Breakdowns from './components/Breakdown'
+import California from './components/core/InteractiveMap'
+import RaceBreakdownBar from './components/RaceBreakdownBar'
+import DemoDataTable from './components/DemoDataTable'
+
+import indicators from './data/indicators'
+import {counties} from './assets/counties'
+import demopop from './data/demographicsAndPopulation'
+
 
 import {camelLower} from './utilities/toLowerCase'
 
-class Store{
-	@observable location = null
-	@observable indicator = null
-	@observable race = null
-	@observable year = null //important: when indicator changes this needs to be set automatically
+const Body = styled.div`
+	width: 100%;
+	max-width: 1600px;
+	// position: relative;
+`
 
-	@observable mapmode = '' // '', 'heat', 'county', 'countyheat'
-	// @observable userPicking = 'start'
+const Info = styled.div`
+	margin-top: 0;
+	padding-top: 90px;
+	position: relative;
+	background: white;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+`
+const Row = styled.div`
+	display: flex;
+	// justify-content: space-between;
+	// justify-content: center;
+	// border: 1px solid red;
+`
+const TopRow = styled(Row)`` 
+const BottomRow = styled(Row)`
+	flex-grow: 1;
+` 
+const GenericDebug = styled.div`
+	padding: 30px;
+`
+const Legend = styled(GenericDebug)`
+	// width: 30%;
+	border: 1px solid black;
+	position: absolute;
+	left: ${props => props.left}px;
+	width: ${props => props.width}px;
+`
+const Breakdown = styled(GenericDebug)`
+	width: 50%;
+	max-width: 560px;
+`
+const CAMap = styled(GenericDebug)`
+	flex-basis: 50%;
+	position: relative;
+	padding: 0px;
+	display: flex;
+	align-items: center;
+`
 
-	@action change = (target, value) => {
-		console.log('changing', target, 'to', value)
-		this[target] = value	
-		console.log(this[target])
-		if(target === 'indicator'){
-			if(!value) this.year = null
-			else{
-				const years = indicators[this.indicator].years
-				if(years.length===1) this.year = years[0]
-				else if(years.length===2) this.year = years[1]
-				console.log('automatically set year to', this.year)
-			}
-		}
-	}
+const GreyMask = styled.div`
+	position: absolute;
+	z-index: 6;
+	background: var(--offwhitebg);
+	height: 100%;
+	transform: ${props => props.open?' scaleY(1)' : 'scaleY(0)'};
+	transform-origin: 50% 0%;
+	transition: transform .5s;
+	width: 100%;
+	top: 0; left: 0;
+`
 
-	@action changedPickerMode = (newPickerMode) => {
+const MapOverlapBox = styled.div`
+	position: absolute;
+	// border: 1px solid red;
+	display: flex;
+	padding: 20px;
+	z-index: 10;
+`
 
-	}
-
-}
-
-const store = new Store()
+const store = new ScorecardStore()
 window.store = store
 
-//function for computing heatmap data?
-
-const App = styled.div`
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-
-`
-const Leftside = styled.div`
-	border: 1px solid red;
-	width: 50%;
-`
-const Rightside = styled.div`
-	border: 1px solid green;
-	width: 50%;
-`
 @observer
 export default class Scorecard extends React.Component{
-
-	@observable hoveredCounty = null
-		@action onHoverCounty = (id) => {
-			if(id) this.hoveredCounty = camelLower(id)
-			else this.hoveredCounty = null
-		}
+	@observable navOpen = false
+    @observable hoveredCounty = null
+    @observable overlapBoxDims = {
+    	left: 0,
+    	top:0,
+    	width: 0,
+    	height: 0,
+    }
+    @action openNav = (status) => {
+    	this.navOpen = status
+    }
+    @action onHoverCounty = (id) => {
+        if(id) this.hoveredCounty = camelLower(id)
+        else this.hoveredCounty = null
+    }
+	@action drawBox = (coords) => {
+		this.overlapBoxDims = {...coords}
+		console.log(...coords)
+	}
+	@action getSVGDims = (dims) => {
+		this.svgDims = {...dims}
+		this.svgReady = true
+	}
+	@observable svgDims = {width: 0, height: 0}
+	@observable svgReady = false
 
 	render(){
-
+        const {indicator, year, race} = store
+        const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
+            return county[race||'totals'][year]
+        }): ''
 		return(
-			<App>
-				<DebugStore />
-				<Leftside>
-				<Picker 
-					store = {store}
-					onHoverCounty = {this.onHoverCounty}
-					hoveredCounty = {this.hoveredCounty} 
+			<Body>
+				<Nav store = {store} open = {this.openNav}/>
+				<Info>
+					<Row
+					>
+						<Readout store = {{...store, year: 0, indicator: 'earlyPrenatalCare'}} />
+						<Legend
+							left = {this.overlapBoxDims.left}
+							width = {this.overlapBoxDims.width}
+						> Legend </Legend>
+					</Row>
+					<BottomRow
+					>
+						<GreyMask 
+							open = {this.navOpen}
+						/>
+						<Breakdown> 
+							<Breakdowns 
+								store = {{
+									...store,
+									year: 0, indicator: 'earlyPrenatalCare'
+								}}
+							/>
+						 </Breakdown>
+ 							<MapOverlapBox
+								style = {{
+									left: this.overlapBoxDims.left,
+									top: this.overlapBoxDims.top,
+									width: this.overlapBoxDims.width,
+									height: this.overlapBoxDims.height,
+								}}
+							>
+								<DemoDataTable
+									store = {store}
+								/>
 
-				/>
-				<Readout store = {store} />
-				</Leftside>
-				<Rightside>
-				<CAMap 
-					store = {store}
-					onHoverCounty = {this.onHoverCounty}
-					hoveredCounty = {this.hoveredCounty}
-				/>
-				</Rightside>
-			</App>
+								<RaceBreakdownBar 
+									height = {this.overlapBoxDims.height}
+									store = {store}
+
+								/>
+
+							</MapOverlapBox>
+						<CAMap> 
+							<California 
+								store = {store}
+								returnBoxCoords = {this.drawBox}
+		                        onHoverCounty = {this.onHoverCounty}
+		                        hoveredCounty = {this.hoveredCounty}
+		                        onSelect = {store.completeWorkflow}
+		                        selected = {store.county}
+		                        data = {dataForMap}
+		                        mode = {dataForMap?'heat':''}
+		                        reportSVGDims = {this.getSVGDims}
+
+
+								// selected = {'sierra'}
+							/>
+
+							
+						</CAMap>
+					</BottomRow>
+
+				</Info>
+			</Body>
 		)
 	}
-}
-const Debug = styled.div`
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	color: white;
-	background: black;
-	padding: 10px;
-	border: 1px solid red;
-`
-const DebugStore = () => {
-	return(
-		<Debug>
-			L: {store.location}
-			I: {store.indicator}
-			R: {store.race}
-			Y: {store.year}
-			mapmode: {store.mapmode}
-		</Debug>
-	)
 }

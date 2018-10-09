@@ -1,3 +1,79 @@
 *{
-	font-family: 'Heebo', sans-serif;
+    font-family: 'Heebo', sans-serif;
+    box-sizing: border-box;
+}
+
+html{
+    --fainttext: #919191;
+    --normtext: #1e1e1e;
+    --faintpeach: #FFF6F2;
+    --peach: #FCBBA1;
+    --strokepeach: #ef6732;
+
+    /*NEEDS MODIFICATION*/
+    --offwhitebg: #E7E6EB;
+    --offwhitefg: #FCFDFF;
+    --bordergrey: #c2c2c2;
+
+    /*TO DEPRECATE: */
+    --strokepurple: #6E016B;
+    --inactivegrey: #EFEFEF;
+    --shadow: 0 3px 5px rgba(0,0,0,0.25);
+    --highlightshadow: 0 5px 8px rgba(0,0,0,0.375);
+
+
+    --black: #1e1e1e;
+
+    overflow: hidden;
+
+    background: var(--offwhitefg);
+}
+
+body{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    font-size: 16px;
+    letter-spacing: 0.7px;
+    user-select: none;
+}
+
+.text{
+    font-size: 16px;
+    letter-spacing: .7px;
+    font-weight: 400;
+}
+
+.caption{
+    font-size: 13px;
+    letter-spacing: .5px;
+    font-weight: 400;
+    color: var(--fainttext);
+}
+
+.title{
+    font-size: 24px;
+    letter-spacing: .92px;
+    font-weight: 400;
+}
+
+.tinytext{
+    font-size: 10px;
+    letter-spacing: .62px;
+    font-weight: 500;
+}
+
+
+#full{
+    border: 1px solid black;
+}
+
+.reactTooltipOverride{
+    background: var(--black) !important;
+    padding: 15px 25px !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
 }
