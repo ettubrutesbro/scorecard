@@ -167,7 +167,7 @@ export default class IndicatorList extends React.Component{
     @observable interrupt = false
 
     @action setAnimating = (tf) => {
-        console.log('animating: ', tf)
+        // console.log('animating: ', tf)
         this.animating = tf
     }
     @action setInterrupt = (tf) => {this.interrupt = tf}
@@ -209,10 +209,10 @@ export default class IndicatorList extends React.Component{
         const {store, animDir, prevOffset} = this.props
         const {county, race, indicatorFilter} = store
         // const page = this.pages[this.currentPage]
-        console.log(store.indicatorPages.toJS())
-        console.log(store.indicatorListPage)
+        // console.log(store.indicatorPages.toJS())
+        // console.log(store.indicatorListPage)
         const page = store.indicatorPages[store.indicatorListPage]
-        console.log(page)
+        // console.log(page)
 
         // this.props.setNumPages(this.pages.length)
 
@@ -223,7 +223,7 @@ export default class IndicatorList extends React.Component{
         }).length
 
         const showSanityCheck = store.sanityCheck.indicator
-        console.log('sanity', showSanityCheck)
+        // console.log('sanity', showSanityCheck)
 
         return(
             <Workflow>
@@ -370,7 +370,7 @@ class SanityCheck extends React.Component{
         this.sanityCheck = React.createRef()
     }
     handleClick = (e) => {
-        console.log(this.sanityCheck)
+        // console.log(this.sanityCheck)
         if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
             this.props.store.clearSanityCheck()
         }
@@ -379,7 +379,7 @@ class SanityCheck extends React.Component{
         document.addEventListener('click', this.handleClick)
     }
     componentWillUnmount(){
-        console.log('unmounting sanitycheck')
+        // console.log('unmounting sanitycheck')
         document.removeEventListener('click', this.handleClick)
     }
 
