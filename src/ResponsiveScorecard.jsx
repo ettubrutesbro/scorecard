@@ -32,6 +32,7 @@ window.store = store
 const Quadrant = styled.div`
     position: absolute;
     display: flex;
+    border: 1px solid grey;
 `
 
 const App = styled.div`
@@ -40,14 +41,15 @@ const App = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
+    outline: 3px solid blue;
     @media ${media.optimal}{
-        width: 1600px;
-        height: 740px;
-        margin-top: 110px;
+        width: 1500px;
+        height: 820px;
+        margin-top: 85px;
     }
     @media ${media.compact}{
 
-    margin-top: 80px;
+        margin-top: 80px;
         width: 1280px;
         height: 640px;
     }
@@ -63,13 +65,18 @@ const Row = styled.div`
 const TopRow = styled(Row)`
     position: relative;
     height: 80px;
+    @media ${media.optimal}{
+        height: 150px;
+    }
     // flex-grow: 1;
     flex-shrink: 0;
+    border: 3px solid red;
 `
 const BottomRow = styled(Row)`
     height: 100%;
     flex-grow: 1;
     // flex-shrink: 0;
+    border: 2px solid green;
 `
 const Nav = styled(Row)`
     position: fixed;
@@ -78,10 +85,12 @@ const Nav = styled(Row)`
     top: 0;
     background: var(--offwhitebg);
     @media ${media.optimal}{
-        height: 95px;
+        height: 85px;
+        padding: 0 calc(50% - 750px);
     }
     @media ${media.compact}{
         height: 75px;
+        padding: 0 calc(50% - 750px);
     }
     flex-grow: 0;
     display: flex;
@@ -91,9 +100,9 @@ const Nav = styled(Row)`
 `
 
 const Readout = styled(Quadrant)`
+    height: 100%;
     @media ${media.optimal}{
-                width: calc(100% - 460px);
-        height: 120px;
+        width: 950px;
         padding-right: 30px;
     }
     @media ${media.compact}{
@@ -107,8 +116,7 @@ const Breakdown = styled(Quadrant)`
     top: 0; left: 0;
     height: 100%;
     @media ${media.optimal}{
-        width: 38%;
-
+        width: 610px;
     }
     @media ${media.compact}{
         width: 480px;
@@ -122,11 +130,12 @@ const Legend = styled(Quadrant)`
     top: 0;
     flex-shrink: 0;
     @media ${media.optimal}{
-        width: 500px;
-        height: 80px;
+        width: 550px;
+        padding-left: 50px;
+        height: 100%;
     }
     @media ${media.compact}{
-        width: 500px;
+        width: 550px;
         height: 80px;
 
     }
@@ -139,8 +148,8 @@ const MapContainer = styled(Quadrant)`
     transform-origin: 0% 100%;
     transition: transform .5s;
     @media ${media.optimal}{
-        width: 60%;
-        height: 97%;
+        width: 520px;
+        height: 100%;
         transform: translateX(${props => props.offset? '40%' : 0});
     }
     @media ${media.compact}{
@@ -332,6 +341,7 @@ export default class ResponsiveScorecard extends React.Component{
 }
 
 const PDFButton = styled.div`
+    display: none;
     position: absolute;
     right: 0;
     z-index: 21;

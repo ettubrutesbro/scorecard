@@ -30,7 +30,7 @@ const Nav = styled.div`
     align-items: center;
     position: relative;
     @media ${media.optimal}{
-        width: 1600px;
+        width: 100%;
     }
     @media ${media.compact}{
         width: 1280px;

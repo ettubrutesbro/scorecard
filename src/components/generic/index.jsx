@@ -272,7 +272,7 @@ const Btn = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px;
+    padding: 12px 25px;
     cursor: pointer;
     &.default{
         background: white;
