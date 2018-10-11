@@ -246,20 +246,7 @@ export default class AppStore{
                 } //end indicator check
             }
         }
-        if(which==='county' && this.indicator){
-            if(this.race && (!val || val==='*')){ 
-                const holdOnToRace = this.race
-                this.race = null
-                if(!this.checkValidity('county',value)){
-                    this.race = holdOnToRace
-                    return
-                }
-            }
-            else if(!this.race && val!==0 && (!val || val==='*')){
-                console.log('this county has no data, stopping selection')
-                return
-            }
-        }
+
 
         else if(which==='race'){
             if(!this.checkValidity(which,value)){
