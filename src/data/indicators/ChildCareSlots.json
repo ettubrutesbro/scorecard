@@ -5,6 +5,7 @@
     "2017"
   ],
   "categories": [
+    "hasRace",
     "earlyChildhood"
   ],
   "counties": {
@@ -13,6 +14,11 @@
         "",
         ""
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         23
@@ -23,6 +29,11 @@
         13,
         8
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         31,
         34
@@ -33,6 +44,11 @@
         57,
         3
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         13,
         41
@@ -43,6 +59,11 @@
         38,
         14
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         24,
         28
@@ -53,6 +74,11 @@
         25,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         26,
         24
@@ -63,6 +89,11 @@
         17,
         21
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         30,
         26
@@ -73,6 +104,11 @@
         8,
         5
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         34,
         35
@@ -83,6 +119,11 @@
         17,
         14
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         30,
         28
@@ -93,6 +134,11 @@
         5,
         23
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         36,
         25
@@ -103,6 +149,11 @@
         30,
         34
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         23
@@ -113,6 +164,11 @@
         48,
         51
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         18,
         18
@@ -123,6 +179,11 @@
         25,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         26,
         24
@@ -133,6 +194,11 @@
         38,
         40
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         24,
         21
@@ -143,6 +209,11 @@
         21,
         44
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         28,
         20
@@ -153,6 +224,11 @@
         30,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         24
@@ -163,6 +239,11 @@
         48,
         53
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         18,
         17
@@ -173,6 +254,11 @@
         56,
         58
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         15,
         11
@@ -183,6 +269,11 @@
         48,
         34
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         18,
         23
@@ -193,6 +284,11 @@
         25,
         14
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         26,
         28
@@ -203,6 +299,11 @@
         30,
         38
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         22
@@ -213,6 +314,11 @@
         30,
         44
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         20
@@ -223,6 +329,11 @@
         2,
         4
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         45,
         40
@@ -233,6 +344,11 @@
         44,
         48
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         20,
         19
@@ -243,6 +359,11 @@
         43,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         22,
         24
@@ -253,6 +374,11 @@
         48,
         48
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         18,
         19
@@ -263,6 +389,11 @@
         1,
         1
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         84,
         62
@@ -273,6 +404,11 @@
         53,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         17,
         24
@@ -283,6 +419,11 @@
         41,
         48
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         23,
         19
@@ -293,6 +434,11 @@
         30,
         40
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         21
@@ -303,6 +449,11 @@
         4,
         23
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         38,
         25
@@ -313,6 +464,11 @@
         25,
         23
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         26,
         25
@@ -323,6 +479,11 @@
         9,
         5
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         32,
         35
@@ -333,6 +494,11 @@
         5,
         9
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         36,
         33
@@ -343,6 +509,11 @@
         57,
         51
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         13,
         18
@@ -353,6 +524,11 @@
         21,
         18
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         28,
         27
@@ -363,6 +539,11 @@
         21,
         34
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         28,
         23
@@ -373,6 +554,11 @@
         47,
         56
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         19,
         15
@@ -383,6 +569,11 @@
         13,
         18
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         31,
         27
@@ -393,6 +584,11 @@
         3,
         2
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         40,
         42
@@ -403,6 +599,11 @@
         48,
         38
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         18,
         22
@@ -413,6 +614,11 @@
         9,
         10
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         32,
         30
@@ -423,6 +629,11 @@
         21,
         21
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         28,
         26
@@ -433,6 +644,11 @@
         19,
         34
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         29,
         23
@@ -443,6 +659,11 @@
         13,
         11
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         31,
         29
@@ -453,6 +674,11 @@
         9,
         11
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         32,
         29
@@ -463,6 +689,11 @@
         25,
         5
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         26,
         35
@@ -473,6 +704,11 @@
         9,
         11
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         32,
         29
@@ -483,6 +719,11 @@
         30,
         23
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         25
@@ -493,6 +734,11 @@
         53,
         40
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         17,
         21
@@ -503,6 +749,11 @@
         38,
         23
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         24,
         25
@@ -513,6 +764,11 @@
         53,
         55
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         17,
         16
@@ -523,6 +779,11 @@
         30,
         44
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         20
@@ -533,6 +794,11 @@
         44,
         40
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         20,
         21
@@ -543,6 +809,11 @@
         13,
         44
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         31,
         20
@@ -553,6 +824,11 @@
         44,
         53
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         20,
         17
@@ -563,6 +839,11 @@
         19,
         18
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         29,
         27
@@ -573,6 +854,11 @@
         30,
         28
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         25,
         24
@@ -583,6 +869,11 @@
         7,
         14
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         35,
         28
@@ -593,6 +884,11 @@
         41,
         56
       ],
+      "black": [],
+      "white": [],
+      "asian": [],
+      "latinx": [],
+      "other": [],
       "totals": [
         23,
         15
