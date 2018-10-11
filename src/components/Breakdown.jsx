@@ -20,13 +20,11 @@ import demopop from '../data/demographicsAndPopulation'
 import {getMedia} from '../utilities/media'
 
 const Wrapper = styled.div`
-    height: calc(100% - ${props=>props.offset}px);
+    height: 100%;
     overflow: ${props=>props.tempNotesOverride? 'visible' : 'hidden'};
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    transition: transform .25s;
-    transform: translateY(${props=>props.offset}px);
     margin-top: -5px;
 `
 
@@ -43,7 +41,7 @@ export default class Breakdown extends React.Component{
 
     render(){
 
-        const {store, offset} = this.props
+        const {store} = this.props
         const {indicator, county, race, year} = store
         const screen = getMedia()
         //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
@@ -51,37 +49,18 @@ export default class Breakdown extends React.Component{
         let entryCount = 0
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
-            console.log(hasRace?'has race chart':'no race graph', 'offset:',offset)
             if(screen==='optimal'){
-               if(hasRace){ //halfish of breakdown is used up by race comparison
-                    if(offset >= 80) entryCount = 8
-                    else if(offset >= 40) entryCount = 11
-                    else entryCount = 11
-                }
-                else{
-                    if(offset >= 80) entryCount = 15
-                    else if(offset >= 40) entryCount = 20
-                    else entryCount = 20
-                }
+                if(hasRace) entryCount = 12
+                else entryCount = 20
             }if(screen==='compact'){
-               if(hasRace){ //halfish of breakdown is used up by race comparison
-                    if(offset >= 80) entryCount = 5
-                    else if(offset >= 40) entryCount = 7
-                    else entryCount = 10
-                }
-                else{
-                    if(offset >= 80) entryCount = 10
-                    else if(offset >= 40) entryCount = 12
-                    else entryCount = 18
-                }
+                if(hasRace) entryCount = 12
+                else entryCount = 18
             }
-         
         }
 
 
         return(
             <Wrapper 
-                offset = {this.props.offset}
                 tempNotesOverride = {this.props.sources}
 
             >

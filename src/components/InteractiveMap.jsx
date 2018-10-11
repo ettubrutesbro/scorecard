@@ -18,8 +18,6 @@ import semanticTitles from '../assets/semanticTitles'
 import {capitalize} from '../utilities/toLowerCase'
 
 const Wrapper = styled.div`
-    // position: absolute;
-    border: 1px solid black;
     position: relative;
     width: 100%;
     height: 100%;
@@ -167,7 +165,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 
                 <TheMap 
                     id = "svg"
-                    viewBox = '0 0 520 615'
+                    viewBox = '5 8 510 615'
                     {...domProps}
                     version="1.1"
                 >

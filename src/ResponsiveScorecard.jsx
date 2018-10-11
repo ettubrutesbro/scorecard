@@ -32,7 +32,6 @@ window.store = store
 const Quadrant = styled.div`
     position: absolute;
     display: flex;
-    border: 1px solid grey;
 `
 
 const App = styled.div`
@@ -41,7 +40,6 @@ const App = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     height: 100%;
-    outline: 3px solid blue;
     @media ${media.optimal}{
         width: 1500px;
         height: 820px;
@@ -64,19 +62,13 @@ const Row = styled.div`
 `
 const TopRow = styled(Row)`
     position: relative;
-    height: 80px;
     @media ${media.optimal}{
         height: 150px;
     }
-    // flex-grow: 1;
-    flex-shrink: 0;
-    border: 3px solid red;
+    height: 150px;
 `
 const BottomRow = styled(Row)`
     height: 100%;
-    flex-grow: 1;
-    // flex-shrink: 0;
-    border: 2px solid green;
 `
 const Nav = styled(Row)`
     position: fixed;
@@ -148,7 +140,9 @@ const MapContainer = styled(Quadrant)`
     transform-origin: 0% 100%;
     transition: transform .5s;
     @media ${media.optimal}{
-        width: 520px;
+        position: absolute;
+        left: 650px;
+        width: 575px;
         height: 100%;
         transform: translateX(${props => props.offset? '40%' : 0});
     }
@@ -174,10 +168,11 @@ const DemoBox = styled.div`
     position: absolute;
     opacity: ${props => props.show? 1 : 0};
     @media ${media.optimal}{
-        width: 650px;
-        height: 400px;
+        width: 515px;
+        height: 433px;
         padding: 35px;
-        top: 35px;
+        top: 0px;
+        right: 0;
     }
     @media ${media.compact}{
         top: 0;
