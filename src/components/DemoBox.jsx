@@ -40,6 +40,8 @@ const DemoBox = (props) => {
 	const store = props.store
 	const {county} = store
 	let pop = county? demopop[county].population : demopop.california.population
+	let countyLabel = county? countyLabels[county] : 'California'
+	if(countyLabel.length < 9) countyLabel+= ' county'
 	if(pop >= 1000000){
 		pop = Math.round(pop / 1000000) + ' million'
 	}
@@ -51,7 +53,7 @@ const DemoBox = (props) => {
 		>
 
 			<Title>Current {county? 'county' : 'state'} demographics</Title>
-			<Population className = 'title'> <b>{pop}</b> children live in {county? countyLabels[county] : 'California'}. </Population>
+			<Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
 			<Content>
 				<DataTable store = {store} />
 				<RaceBreakdownBar store = {store} />
