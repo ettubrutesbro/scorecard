@@ -50,7 +50,7 @@ const App = styled.div`
 
         margin-top: 80px;
         width: 1280px;
-        height: 640px;
+        height: 600px;
     }
     @media ${media.mobile}{
         width: 100vw;

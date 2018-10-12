@@ -9,7 +9,7 @@ import CountingNumber from './CountingNumber'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
-import media from '../utilities/media'
+import media, {getMedia} from '../utilities/media'
 
 
 const Box = styled.div`
@@ -41,6 +41,7 @@ const DemoBox = (props) => {
 	const {county} = store
 	let pop = county? demopop[county].population : demopop.california.population
 	let countyLabel = county? countyLabels[county] : 'California'
+	const screen = getMedia()
 	if(countyLabel.length < 9) countyLabel+= ' county'
 	if(pop >= 1000000){
 		pop = Math.round(pop / 1000000) + ' million'
@@ -58,8 +59,16 @@ const DemoBox = (props) => {
 				<DataTable store = {store} />
 				<RaceBreakdownBar store = {store} />
 			</Content>
-			<StrokeShape viewBox = "0 0 100 100" preserveAspectRatio = "none">
-				<polyline points = "0,45 0,0 100,0 100,100 45,100" />
+			<StrokeShape 
+				viewBox = {screen==='optimal'? "0 0 515 433" : screen === 'compact'? "0 0 515 375": "0 0 100 100"}
+				preserveAspectRatio = "none"
+			>
+				<polyline 
+					points = {screen==='optimal'? "0,194.85 0,0 515,0 515,433 231.75,433" 
+						: screen === 'compact'? "0,168.75 0,0 515,0 515,375 231.75,375" 
+						: "0,45 0,0 100,0 100,100 45,100"
+					}
+				/>
 			</StrokeShape>
 		</Box>	
 	)
@@ -72,8 +81,9 @@ const StrokeShape = styled.svg`
 	top: 0; left: 0;
 	width: 100%; height: 100%;
 	fill: none;
-	stroke-width: 1;
+	stroke-width: 4;
 	stroke: var(--bordergrey);
+	pointer-events: none;
 `
 
 const Population = styled.h1`

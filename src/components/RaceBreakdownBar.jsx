@@ -14,8 +14,6 @@ import media from '../utilities/media'
 
 const Container = styled.div`
     display: flex;
-    // border: 1px solid black;
-    // padding: 30px;
     box-sizing: border-box;
     flex-direction: column;
     @media ${media.optimal}{
@@ -45,11 +43,12 @@ const LabelPct = styled.div`
     width: 100%;
 `
 const Label = styled.div`
-    
+    ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
 const Percentage = styled.div`
     margin-left: 7px;
     font-weight: bold;
+     ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
 const VertBar = styled.div`
     position: relative;
@@ -222,22 +221,23 @@ export default class RaceBreakdownBar extends React.Component{
                 })}
 
             </VertBar>
-                        <LabelColumn
+            <LabelColumn
                 ref = {(column) => this.labelcolumn = column}
                 centerText = {this.props.centerText}
             >
-                {racePercentages.map((race,i,arr)=>{
-                    const previousSegs = arr.slice(0,i)
+                {racePercentages.map((o,i,arr)=>{
+                    const selected = o.label === race
                     return(
                         <LabelSection 
                             key = {'rbblabelsection'+i}
-                            hide = {race.percentage === 0}
-                            pct = {race.percentage}
-                            lastAndSmall = {i===arr.length-1 && race.percentage < 10}
-                            small = {i<arr.length-1 && race.percentage < 10}
+                            hide = {o.percentage === 0}
+                            pct = {o.percentage}
+                            lastAndSmall = {i===arr.length-1 && o.percentage < 10}
+                            small = {i<arr.length-1 && o.percentage < 10}
+                            selected = {selected}
                         >
-                            <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
-                            <Percentage> {race.percentage}% </Percentage>
+                            <Label selected = {selected}> {o.label[0].toUpperCase()+o.label.substr(1)} </Label>
+                            <Percentage selected = {selected}> {o.percentage}% </Percentage>
                         </LabelSection>
                     )
                 })}
@@ -281,8 +281,8 @@ const LabelSection = styled.div`
         position: absolute;
         height: 0; 
         width: 15px;
-        ${props => !props.small? 
-            `border-top: 2px solid var(--bordergrey);`
+        ${props => !props.small && props.selected? 'border-top: 2px solid var(--peach);'
+            : !props.small? `border-top: 2px solid var(--bordergrey);`
         : ''}
         ${props => props.lastAndSmall? 'bottom: 0;' : ''}
         left: -25px;
