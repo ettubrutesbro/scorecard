@@ -18,6 +18,7 @@ import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
 import SourcesButton, {DemoSources} from './components/Sources'
+import DemoBox from './components/DemoBox'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
@@ -100,8 +101,8 @@ const Readout = styled(Quadrant)`
         padding-right: 30px;
     }
     @media ${media.compact}{
-        width: calc(100% - 460px);
-        padding-right: 30px;
+        width: 800px;
+        padding-right: 50px;
     }
     @media ${media.mobile}{}
 `
@@ -127,7 +128,7 @@ const Legend = styled(Quadrant)`
         height: 100%;
     }
     @media ${media.compact}{
-        width: 515px;
+        width: 450px;
         height: 80px;
 
     }
@@ -163,33 +164,6 @@ const GreyMask = styled.div`
     transform: scaleY(${props=>props.show?1 : 0});
     background: var(--offwhitebg);
     z-index: 2;
-`
-const DemoBox = styled.div`
-    position: absolute;
-    opacity: ${props => props.show? 1 : 0};
-    top: 0;
-    right: 0;
-    @media ${media.optimal}{
-        width: 515px;
-        height: 433px;
-        padding: 35px;
-    }
-    @media ${media.compact}{
-        padding: 35px;
-        width: 515px;
-        height: 433px;   
-
-    }
-    right: 0;
-    border: 2px solid var(--bordergrey);
-    display: flex;
-    z-index: 1;
-    transition: transform .4s, opacity .4s;
-    @media ${media.compact}{
-        // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
-        // opacity: ${props => props.hide? 0 : 1};
-        // transform-origin: 100% 0%;
-    }
 `
 
 @observer
@@ -271,19 +245,9 @@ export default class ResponsiveScorecard extends React.Component{
                     <DemoBox
                         id = "demobox"
                         show = {!this.sourcesMode && !this.init}
-                    >
-                        <DemoDataTable
-                            store = {store}
-                        />
+                        store = {store}
+                    />
 
-                        <RaceBreakdownBar 
-                            // height = {this.demoBoxDims.height}
-                            store = {store}
-
-                        />
-                        
-
-                    </DemoBox>
                     {this.init &&
                        <InitBox closeSplash = {this.closeSplash}/>
                     }

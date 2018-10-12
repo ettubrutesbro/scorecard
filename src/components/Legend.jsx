@@ -54,6 +54,9 @@ export default class Legend extends React.Component{
                 <NumCountiesLabel show = {this.hovered}> 
                     Number of counties in each range 
                 </NumCountiesLabel>
+                <ColorGuideLabel>
+                    Color guide
+                </ColorGuideLabel>
                 {
                     breaks.map((ele,i,arr)=>{
                     
@@ -88,7 +91,8 @@ export default class Legend extends React.Component{
                                     <LabelRange hide = {this.hovered}
                                         last = {i===arr.length-2}
                                     >
-                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}%
+                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}
+                                        <Pct>%</Pct>
                                     </LabelRange>
                                     <LabelNum show = {this.hovered}>
                                         {nums[i]!==0 && nums[i]}
@@ -120,8 +124,11 @@ const Lgd = styled.div`
 const Dash = styled.div`
     height: 0;
     border-top: 1px solid var(--bordergrey);
-    width: 8px;
-    margin: 0 5px;
+    width: 6px;
+    margin: 0 4px;
+`
+const Pct = styled.span`
+    margin-left: 3px;
 `
 
 
@@ -137,10 +144,15 @@ const Section = styled.div`
 `
 
 const Swatch = styled.div`
-    height: 15px;
+    @media ${media.optimal}{
+        height: 15px;
+    }
+    @media ${media.compact}{
+        height: 12px;
+    }
     background: ${props => props.fill};
     position: absolute;
-    top: 30px;
+    top: 32px;
     left: -100%;
     width: 100%;
     z-index: ${props => props.classes - props.index};
@@ -195,17 +207,23 @@ const Label = styled.div`
         // transform: translateY(${props=>props.show?0:10}px);
     `
 
-const NumCountiesLabel = styled.div`
+const Titles = styled.div`
     position: absolute;
-    top: 5px; font-size: 13px;
-    left: 0;
+    top: 0px; font-size: 16px;
+    right: 0;
     color: var(--fainttext);
+`
+const ColorGuideLabel = styled(Titles)`
+    opacity: ${props => props.hide?
+        0: 1
+    };
+    transition: opacity .35s;
+`
+const NumCountiesLabel = styled(Titles)`
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity .25s, transform .25s;
+    transition: opacity .25s;
     ${props => props.show? `
         opacity: 1;
-        transform: translateY(0);
     `: ''}
 
 `

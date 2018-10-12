@@ -248,8 +248,8 @@ const Subheader = styled.div`
 const Content = styled.div`
     width: 100%;
     height: 100%;
-    padding: 0 36px 0px 20px;
-    margin: 35px 0 28px 0;
+    padding: 0 36px 0px 25px;
+    margin: 36px 0 32px 0;
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `

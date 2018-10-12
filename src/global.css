@@ -54,12 +54,12 @@ body{
     color: var(--fainttext);
 }
 
-.title{
+/*.title{
     font-size: 24px;
     letter-spacing: .92px;
     font-weight: 400;
 }
-
+*/
 .tinytext{
     font-size: 10px;
     letter-spacing: .62px;

@@ -20,7 +20,6 @@ const ReadoutBlock = styled.div`
     left: 0;
     top: 0;
     transform-origin: 50% 0%;
-    font-size: 24px;
     position: absolute;
     padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
@@ -29,7 +28,7 @@ const ReadoutBlock = styled.div`
     }
     h1{
         position: absolute;
-        top: 0;
+        top: -6px;
         left: 0;
         margin: 0;
         font-size: 48px;
@@ -161,6 +160,7 @@ export default class Readout extends React.Component{
 
         return(
             <ReadoutBlock
+                className = 'title'
                 compact = {this.props.store.activeWorkflow}
             >
                 {/*!indicator && (county || race) && 

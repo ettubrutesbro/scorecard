@@ -12,6 +12,19 @@ const GlobalStyle = createGlobalStyle`
 			letter-spacing: .5px;
 		}
 	}
+
+	.title{
+	    font-size: 24px;
+	    letter-spacing: .92px;
+	    font-weight: 400;
+	    @media ${media.optimal}{
+			font-size: 24px;
+		}
+	    @media ${media.compact}{
+	    	font-size: 22px;
+	    }
+	}
+
 `
 
 export default GlobalStyle

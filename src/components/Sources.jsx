@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import {find} from 'lodash'
 
-import Button from './Button'
+import {Button} from './generic/'
 
 import sources from '../data/sources'
 import media from '../utilities/media'
@@ -131,7 +131,7 @@ const SourcesButton = styled.div`
         bottom: 105px;
     }
     @media ${media.compact}{
-        bottom: 105px;
+        bottom: 0;
     }
 
 `

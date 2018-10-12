@@ -26,6 +26,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: -5px;
+    justify-content: space-between;
 `
 
 const BreakdownBox = styled.div`
@@ -53,7 +54,7 @@ export default class Breakdown extends React.Component{
                 if(hasRace) entryCount = 12
                 else entryCount = 20
             }if(screen==='compact'){
-                if(hasRace) entryCount = 7
+                if(hasRace) entryCount = 9
                 else entryCount = 17
             }
         }
