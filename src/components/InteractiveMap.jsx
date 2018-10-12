@@ -180,7 +180,7 @@ const CountyPath = styled.path`${CountyStyle}`
                             const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
                                 style: {
                                     fill: selected===id? 'var(--peach)' : fill,
-                                    transition: data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
+                                    transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
                                 },
                                 // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
                                 selected: selected===id,
