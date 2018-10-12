@@ -10,6 +10,7 @@ import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
 import media, {getMedia} from '../utilities/media'
+import sigFig, {rawSigFig} from '../utilities/sigFig'
 
 
 const Box = styled.div`
@@ -43,10 +44,7 @@ const DemoBox = (props) => {
 	let countyLabel = county? countyLabels[county] : 'California'
 	const screen = getMedia()
 	if(countyLabel.length < 9) countyLabel+= ' county'
-	if(pop >= 1000000){
-		pop = Math.round(pop / 1000000) + ' million'
-	}
-	else pop = commaNumber(pop)
+	pop = sigFig(pop)
 	return(
 		<Box
 			id = "demobox"
@@ -110,15 +108,15 @@ const DataTable = (props) => {
                 </DemoRow>
                 */}
                 <DemoRow> 
-                    <DemoValue> <CountingNumber number = {demo.immigrantFamilies} /> </DemoValue>
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.immigrantFamilies)} /> </DemoValue>
                     live with one or more immigrant parent.
                 </DemoRow>
                 <DemoRow> 
-                    <DemoValue> {demo['poverty']}% </DemoValue>
+                    <DemoValue> {demo.poverty}% </DemoValue>
                     are living 2X below the Federal Poverty&nbsp;Level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
-                    <DemoValue> <CountingNumber number = {demo['homeless']} /> </DemoValue>
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.homeless)} /> </DemoValue>
                     students are experiencing homelessness.
                 </DemoRow>
             </RowTable>

@@ -94,6 +94,7 @@ export default class IndicatorByCounties extends React.Component{
     @action toggleDistribute = () => {
         this.distribute = !this.distribute
         this.fullHeight = !this.distribute
+        if(this.props.onExpand) this.props.onExpand(!this.distribute)
     }
 
     @action generateDistribution = () => {

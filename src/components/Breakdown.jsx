@@ -40,6 +40,9 @@ const BottomTable = styled.div`
 @observer
 export default class Breakdown extends React.Component{
 
+    @observable allCounties = false
+    @action expandCountyList = (tf) => this.allCounties = tf 
+
     render(){
 
         const {store} = this.props
@@ -55,7 +58,7 @@ export default class Breakdown extends React.Component{
                 else entryCount = 20
             }if(screen==='compact'){
                 if(hasRace) entryCount = 7
-                else entryCount = 17
+                else entryCount = 16    
             }
         }
 
@@ -69,9 +72,10 @@ export default class Breakdown extends React.Component{
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
+                        onExpand = {this.expandCountyList}
                     />  
                 }
-                {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
+                {!this.allCounties && !this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
 
                     <IndicatorByRaces
                         store = {store}

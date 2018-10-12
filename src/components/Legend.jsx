@@ -54,7 +54,7 @@ export default class Legend extends React.Component{
                 <NumCountiesLabel show = {this.hovered}> 
                     Number of counties in each range 
                 </NumCountiesLabel>
-                <ColorGuideLabel>
+                <ColorGuideLabel hide = {this.hovered}>
                     Color guide
                 </ColorGuideLabel>
                 {
@@ -209,7 +209,7 @@ const Label = styled.div`
 
 const Titles = styled.div`
     position: absolute;
-    top: 0px; font-size: 16px;
+    top: 5px; font-size: 13px;
     right: 0;
     color: var(--fainttext);
 `
