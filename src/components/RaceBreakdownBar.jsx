@@ -36,36 +36,16 @@ const centerText = css`
 const LabelColumn = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     width: 100px;
     // outline: 1px solid green;
-    margin-right: 30px;
+    margin-left: 15px;
 `
 const RaceLabel = styled.div`
-
-    // text-align: right;
     position: absolute;
-    // height: 0;
     display: flex;
-    // align-items: center;
     ${props => props.centerText? centerText: ''};
     transform: translateY(${props=>props.offset}px);
-    &.compressed1{
-        /*border: 1px solid pink;*/
-        margin-top: -.5rem;
-    }
-    &.compressed2{
-        height: 1rem;
-        /*margin-bottom: 1rem;*/
-        border: 1px solid red;
-        margin-top: -1rem;
-    }
-    &.compressed2 ~ .compressed2{
-        border: 1px solid green;
-        /*margin-bottom: 2rem;*/
-        margin-top: -2rem;
-    }
-
 `
 const LabelPct = styled.div`
     display: flex;
@@ -84,7 +64,7 @@ const VertBar = styled.div`
     // height: 500px; //arbitrary
     height: ${props => props.height}%;
     // outline: 1px solid #999999;
-    border-top: 2px solid var(--bordergrey);
+    outline: 2px solid var(--bordergrey);
     // padding: 30px;
     box-sizing: border-box;
     width: 40px;
@@ -93,27 +73,37 @@ const VertBar = styled.div`
     overflow: hidden;
     background: var(--offwhitebg);
 `
+const hatch1 = require('../assets/hatch1.svg')
+const hatch2 = require('../assets/hatch2.svg')
+const hatch3 = require('../assets/hatch3.svg')
+
+
 const Segment = styled.div`
     position: absolute;
-    top: -100%;
+    top: ${props=>props.offset}%;
+    height: ${props=>props.pct}%;
     width: 100%;
-    background-color: ${props=>props.selected?'rgba(239,103,50,0.25)':'white'};
-    height: 100%;
-    transition: transform .5s, background-color .25s;
-    transform: translateY(${props=>props.offset}%);
-    transform-origin: 50% 0%;
-    // background-color: ${props=>props.fill};
-     // outline: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
-     border: 2px solid var(--bordergrey);
-    /*&.asian{
-        background-color: red;
+    outline: 1px solid var(--bordergrey);
+    background-repeat: repeat;
+    background-color: var(--offwhitefg);
+    background-position: 0% 0%;
+    background-size: 40px 215px;
+
+    &.asian{
+        background-image: url(${hatch3});
     }
     &.black{
         background-color: blue;
     }
-    &.latinx{ background-color: green;}
-    &.white{background-color: orange;}
-    &.other{background-color: grey;}*/
+    &.latinx{ 
+        background-image: url(${hatch1});
+
+    }
+    &.white{
+        background-image: url(${hatch2});
+
+    }
+    &.other{background-color: grey;}
 `
 const Hatch = styled.div`
     position: absolute;
@@ -175,36 +165,32 @@ export default class RaceBreakdownBar extends React.Component{
                 // innerRef = {(container)=>{this.container = container}}
             >
             <Content>
-            <LabelColumn
+
+            <VertBar
+                // height = {this.props.height}
+            >
+
+                {racePercentages.map((o,i,arr)=>{
+                    const previousSegs = arr.slice(0,i)
+                    const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
+                    console.log(o.percentage)
+                    return <Segment
+                        key = {i}
+                        style = {{zIndex: arr.length-i}}
+                        className = {o.label}
+                        pct = {o.percentage}
+                        offset = {i===0? 0 : offset}
+              
+                    />
+                })}
+            </VertBar>
+                        <LabelColumn
                 ref = {(column) => this.labelcolumn = column}
                 centerText = {this.props.centerText}
             >
                 {racePercentages.map((race,i,arr)=>{
                     const previousSegs = arr.slice(0,i)
-
-                    //let offsets = []
-                    // if(numOfCompressedLabels===4){
-                    //     offsets = ['-250%', '-150%','-75%','25%']
-                    // }
-                    // else if(numOfCompressedLabels===3){
-                    //     offsets = ['-60%', '-20%', '20%']
-                    // }
-                    // else if(numOfCompressedLabels===2){
-                    //     offsets = ['-25%','25%']
-
-                    // }
-                    // else if(numOfCompressedLabels===1){
-                    //     // offsets = [-250, -150,-50]
-                    //     offsets = [-50]
-                    // }
-                    // const firstCompressed = findIndex(arr,(r)=>{return r.percentage < clt})
-
-                    // const afterCompressed = i>0 && race.percentage > 10 && arr[i-1].percentage < clt
-                    // console.log(i, race.percentage, i>0?arr[i-1].percentage:'')
-                    // console.log(afterCompressed)
-
                     return(
-
                         <LabelSection 
                             key = {'rbblabelsection'+i}
                             hide = {race.percentage === 0}
@@ -217,22 +203,6 @@ export default class RaceBreakdownBar extends React.Component{
                 })}
 
             </LabelColumn>
-            <VertBar
-                // height = {this.props.height}
-            >
-
-                {racePercentages.map((o,i,arr)=>{
-                    const previousSegs = arr.slice(0,i)
-                    const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
-                    return <Segment
-                        key = {i}
-                        style = {{zIndex: arr.length-i}}
-                        className = {o.label}
-                        offset = {((o.percentage+offset))}
-              
-                    />
-                })}
-            </VertBar>
             </Content>
             </Container>
         )
