@@ -30,9 +30,10 @@ const Box = styled.div`
 
 	    }
 	    right: 0;
-	    border: 2px solid var(--bordergrey);
+	    // border: 2px solid var(--bordergrey);
 	    z-index: 1;
 	    transition: transform .4s, opacity .4s;
+
 `
 
 const DemoBox = (props) => {
@@ -48,18 +49,30 @@ const DemoBox = (props) => {
 			id = "demobox"
 			{...props}
 		>
+
 			<Title>Current {county? 'county' : 'state'} demographics</Title>
 			<Population className = 'title'> <b>{pop}</b> children live in {county? countyLabels[county] : 'California'}. </Population>
 			<Content>
 				<DataTable store = {store} />
 				<RaceBreakdownBar store = {store} />
 			</Content>
-
+			<StrokeShape viewBox = "0 0 100 100" preserveAspectRatio = "none">
+				<polyline points = "0,45 0,0 100,0 100,100 45,100" />
+			</StrokeShape>
 		</Box>	
 	)
 }
 
 export default DemoBox
+
+const StrokeShape = styled.svg`
+	position: absolute;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	fill: none;
+	stroke-width: 1;
+	stroke: var(--bordergrey);
+`
 
 const Population = styled.h1`
 	margin: 0;
@@ -157,10 +170,12 @@ const Title = styled.div`
     margin-right: 20px;
     padding: 0 15px;
     background: var(--offwhitefg);
+    z-index: 2;
 `
 
 const Content = styled.div`
 	margin-top: 20px;
 	display: flex;
 	justify-content: center;
+	z-index: 3;
 `
