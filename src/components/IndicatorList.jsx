@@ -372,7 +372,7 @@ class SanityCheck extends React.Component{
     handleClick = (e) => {
         // console.log(this.sanityCheck)
         if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-            this.props.store.clearSanityCheck()
+            this.props.store.clearSanityCheck('indicator')
         }
     }
     componentDidMount(){
@@ -406,7 +406,7 @@ class SanityCheck extends React.Component{
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
                         onClick = {(e)=>{
-                            store.clearSanityCheck()
+                            store.clearSanityCheck('indicator')
                             e.nativeEvent.stopImmediatePropagation()
                         }}
                     />
@@ -415,7 +415,7 @@ class SanityCheck extends React.Component{
                         className = {`dark ${screen}`} 
                         onClick = {()=>{
                             data.action()
-                            store.clearSanityCheck()
+                            store.clearSanityCheck('indicator')
                         }}
 
                     />
