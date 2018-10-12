@@ -260,11 +260,11 @@ export default class AppStore{
                 this.year = 0
             }
         }
-        if(!this.checkValidity(which,value)){ 
-            console.log('something invalid, stopping selection -- which and value were')
-            alert('oops! something bad happened.')
-            return
-        }
+        // if(!this.checkValidity(which,value)){ 
+        //     console.log('something invalid, stopping selection -- which and value were')
+        //     alert('oops! something bad happened.')
+        //     return
+        // }
 
         this.activeWorkflow = null
         this[which] = value

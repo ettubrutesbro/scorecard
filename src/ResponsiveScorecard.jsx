@@ -64,8 +64,10 @@ const TopRow = styled(Row)`
     position: relative;
     @media ${media.optimal}{
         height: 150px;
+    } 
+    @media ${media.compact}{
+        height: 130px;
     }
-    height: 150px;
 `
 const BottomRow = styled(Row)`
     height: 100%;
@@ -99,7 +101,6 @@ const Readout = styled(Quadrant)`
     }
     @media ${media.compact}{
         width: calc(100% - 460px);
-        height: 80px;
         padding-right: 30px;
     }
     @media ${media.mobile}{}
@@ -122,32 +123,31 @@ const Legend = styled(Quadrant)`
     top: 0;
     flex-shrink: 0;
     @media ${media.optimal}{
-        width: 550px;
-        padding-left: 50px;
+        width: 500px;
         height: 100%;
     }
     @media ${media.compact}{
-        width: 550px;
+        width: 515px;
         height: 80px;
 
     }
     @media ${media.mobile}{}
 `
 const MapContainer = styled(Quadrant)`
-    right: 0;
-    bottom: 0;
     z-index: 2;
     transform-origin: 0% 100%;
     transition: transform .5s;
+    position: absolute;
+
     @media ${media.optimal}{
-        position: absolute;
         left: 650px;
         width: 575px;
         height: 100%;
         transform: translateX(${props => props.offset? '40%' : 0});
     }
     @media ${media.compact}{
-        width: 768px; height: 560px;
+        left: 510px;
+        width: 450px; height: 500px;
         transform: translateX(${props => props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
@@ -167,18 +167,17 @@ const GreyMask = styled.div`
 const DemoBox = styled.div`
     position: absolute;
     opacity: ${props => props.show? 1 : 0};
+    top: 0;
+    right: 0;
     @media ${media.optimal}{
         width: 515px;
         height: 433px;
         padding: 35px;
-        top: 0px;
-        right: 0;
     }
     @media ${media.compact}{
-        top: 0;
-        padding: 20px;
-        width: 500px;
-        height: 300px;   
+        padding: 35px;
+        width: 515px;
+        height: 433px;   
 
     }
     right: 0;
