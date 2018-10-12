@@ -63,6 +63,7 @@ const VertBar = styled.div`
     position: relative;
     // height: 500px; //arbitrary
     height: ${props => props.height}%;
+    background-color: white;
     // outline: 1px solid #999999;
     outline: 2px solid var(--bordergrey);
     // padding: 30px;
@@ -71,11 +72,12 @@ const VertBar = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--offwhitebg);
 `
-const hatch1 = require('../assets/hatch1.svg')
-const hatch2 = require('../assets/hatch2.svg')
-const hatch3 = require('../assets/hatch3.svg')
+const hatch1 = require('../assets/hatch1-2.svg')
+const hatch2 = require('../assets/hatch2-4.svg')
+const hatch3 = require('../assets/hatch3-2.svg')
+const hatch4 = require('../assets/hatch4-2.svg')
+const hatch5 = require('../assets/hatch5-2.svg')
 
 
 const Segment = styled.div`
@@ -83,27 +85,32 @@ const Segment = styled.div`
     top: ${props=>props.offset}%;
     height: ${props=>props.pct}%;
     width: 100%;
-    outline: 1px solid var(--bordergrey);
-    background-repeat: repeat;
-    background-color: var(--offwhitefg);
-    background-position: 0% 0%;
-    background-size: 40px 215px;
+    outline: 2px solid var(--bordergrey);
+    mask-repeat: repeat;
+    background-color: var(--bordergrey);
+    background-position: 0% -10px;
+    /*background-size: 40px 215px;*/
+    mask-size: 30px;
 
     &.asian{
-        background-image: url(${hatch3});
+        mask-image: url(${hatch3});
     }
     &.black{
-        background-color: blue;
+        mask-image: url(${hatch4});
+
     }
     &.latinx{ 
-        background-image: url(${hatch1});
+        mask-image: url(${hatch1});
+        mask-size: 30px;
 
     }
     &.white{
-        background-image: url(${hatch2});
+        mask-image: url(${hatch2});
 
     }
-    &.other{background-color: grey;}
+    &.other{
+        mask-image: url(${hatch5});
+    }
 `
 const Hatch = styled.div`
     position: absolute;
