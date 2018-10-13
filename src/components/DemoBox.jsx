@@ -79,7 +79,7 @@ const StrokeShape = styled.svg`
     top: 0; left: 0;
     width: 100%; height: 100%;
     fill: none;
-    stroke-width: 4;
+    stroke-width: 2;
     stroke: var(--bordergrey);
     pointer-events: none;
 `

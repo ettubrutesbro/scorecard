@@ -165,7 +165,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 
                 <TheMap 
                     id = "svg"
-                    viewBox = '5 8 510 615'
+                    viewBox = '5 14 510 615'
                     {...domProps}
                     version="1.1"
                 >

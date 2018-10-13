@@ -51,12 +51,15 @@ export default class Legend extends React.Component{
                 onMouseEnter = {()=>this.handleHover(true)}
                 onMouseLeave = {()=>this.handleHover(false)}
             >
+                <Labels>
                 <NumCountiesLabel show = {this.hovered}> 
                     Number of counties in each range 
                 </NumCountiesLabel>
                 <ColorGuideLabel hide = {this.hovered}>
                     Color guide
                 </ColorGuideLabel>
+                </Labels>
+                <Swatches>
                 {
                     breaks.map((ele,i,arr)=>{
                     
@@ -102,6 +105,7 @@ export default class Legend extends React.Component{
                         ): ''
                     })
                 }
+                </Swatches>
             </Lgd>
         )
         }
@@ -115,10 +119,12 @@ export default class Legend extends React.Component{
 
 const Lgd = styled.div`
     display: flex;
+    flex-direction: column;
     position: relative;
     width: 100%;
     overflow: hidden;
     cursor: pointer;
+    width: 450px;
 `
 
 const Dash = styled.div`
@@ -133,26 +139,13 @@ const Pct = styled.span`
 
 
 const Section = styled.div`
-    @media ${media.optimal}{
-        padding-top: 35px;
-    }
-    @media ${media.compact}{
-
-        padding-top: 30px;   
-    }
     width: ${props=>100/props.classes}%;
 `
 
 const Swatch = styled.div`
-    @media ${media.optimal}{
-        height: 15px;
-    }
-    @media ${media.compact}{
-        height: 12px;
-    }
+    height: 13px;
     background: ${props => props.fill};
     position: absolute;
-    top: 32px;
     left: -100%;
     width: 100%;
     z-index: ${props => props.classes - props.index};
@@ -206,6 +199,16 @@ const Label = styled.div`
         opacity: ${props=>props.show?1:0};
         // transform: translateY(${props=>props.show?0:10}px);
     `
+
+const Labels = styled.div`
+    width: 100%;
+    height: 35px;
+`
+const Swatches = styled.div`
+    width: 100%;
+    // border: 1px solid blue;
+    height: 40px;
+`
 
 const Titles = styled.div`
     position: absolute;

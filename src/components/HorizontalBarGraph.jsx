@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     width: 100%;
     max-height: 100%;
     ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
-    border: 2px solid var(--bordergrey);
+    border: 1px solid var(--bordergrey);
 `
 
 @observer
@@ -291,7 +291,7 @@ const RowComponent = styled.div`
     width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    margin-top: 2px;
+    margin-top: 3px;
 `
 const AverageLine = styled.div`
     position: absolute;
@@ -353,7 +353,7 @@ const AverageValue = styled.span`
 const Bar = styled.div`
     position: relative;
     width: 100%;
-    height: ${props => props.condensed? '6px' : '10px'};
+    height: ${props => props.condensed? '6px' : '13px'};
     transform-origin: 0% 0%;
     transition: transform .25s, background-color .25s;
     transform: scaleX(${props=> props.percentage/100});

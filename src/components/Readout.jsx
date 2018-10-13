@@ -17,10 +17,18 @@ import demopop from '../data/demographicsAndPopulation.json'
 import media, {getMedia} from '../utilities/media'
 
 const ReadoutBlock = styled.div`
+    display: flex;
+    align-items: center;
+    @media ${media.optimal}{
+        width: 950px;   
+    }
+    @media ${media.compact}{
+        width: 720px;   
+    }
     left: 0;
     top: 0;
     transform-origin: 50% 0%;
-    position: absolute;
+    /*position: absolute;*/
     padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
     b{
@@ -36,7 +44,7 @@ const ReadoutBlock = styled.div`
     }
 `
 const IndentedTitle = styled.div`
-    line-height: 38px;
+    line-height: 40px;
     padding-top: 18px;
 `
 const Crumb = styled.span`

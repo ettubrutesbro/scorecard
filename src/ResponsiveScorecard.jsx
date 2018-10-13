@@ -43,8 +43,8 @@ const App = styled.div`
     height: 100%;
     @media ${media.optimal}{
         width: 1500px;
-        height: 740px;
-        margin-top: 100px;
+        height: 735px;
+        margin-top: 80px;
     }
     @media ${media.compact}{
         margin-top: 80px;
@@ -59,18 +59,22 @@ const Row = styled.div`
     width: 100%;
     display: flex;
     position: relative;
+    align-items: center;
 `
 const TopRow = styled(Row)`
     position: relative;
+    justify-content: space-between;
     @media ${media.optimal}{
-        height: 165px;
+        height: 185px;
+        margin-top: 10px;
     } 
     @media ${media.compact}{
-        height: 130px;
+        height: 150px;
     }
 `
 const BottomRow = styled(Row)`
     height: 100%;
+    margin-top: 15px;
 `
 const Nav = styled(Row)`
     position: fixed;
@@ -93,18 +97,6 @@ const Nav = styled(Row)`
     z-index: 3;
 `
 
-const Readout = styled(Quadrant)`
-    height: 100%;
-    @media ${media.optimal}{
-        width: 950px;
-        padding-right: 30px;
-    }
-    @media ${media.compact}{
-        width: 800px;
-        padding-right: 50px;
-    }
-    @media ${media.mobile}{}
-`
 const Breakdown = styled(Quadrant)`
     top: 0; left: 0;
     height: 100%;
@@ -117,22 +109,7 @@ const Breakdown = styled(Quadrant)`
     @media ${media.mobile}{}
     z-index: ${props=>props.sources? 20 : 1}; 
 `
-const Legend = styled(Quadrant)`
-    z-index: 0;
-    right: 0;
-    top: 0;
-    flex-shrink: 0;
-    @media ${media.optimal}{
-        width: 500px;
-        height: 100%;
-    }
-    @media ${media.compact}{
-        width: 450px;
-        height: 80px;
 
-    }
-    @media ${media.mobile}{}
-`
 const MapContainer = styled(Quadrant)`
     z-index: 2;
     transform-origin: 0% 100%;
@@ -236,8 +213,8 @@ export default class ResponsiveScorecard extends React.Component{
 
                 />
                 <TopRow>
-                    <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
-                    <Legend> <LegendComponent store = {store} /> </Legend>
+                    <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> 
+                    <LegendComponent store = {store} /> 
                 </TopRow>
 
                 <BottomRow>

@@ -44,8 +44,9 @@ const semanticTitles = {
         shorthand: 'Kindergartener vaccination'
     },
     'allegations': {
-        who: 'children',
-        what: ', ages birth-18, had not reportedly suffered abuse/neglect within 12 months',
+        who: 'children, ages birth-18,',
+        shortWho: 'children',
+        what: 'had not reportedly suffered abuse/neglect within 12 months',
         label: 'Children, ages birth-18, with no report of abuse or neglect in a 12 month time period',
         shorthand: 'Abuse and neglect'
     },
