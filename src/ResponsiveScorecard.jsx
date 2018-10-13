@@ -43,11 +43,10 @@ const App = styled.div`
     height: 100%;
     @media ${media.optimal}{
         width: 1500px;
-        height: 820px;
-        margin-top: 85px;
+        height: 740px;
+        margin-top: 100px;
     }
     @media ${media.compact}{
-
         margin-top: 80px;
         width: 1280px;
         height: 600px;
@@ -64,7 +63,7 @@ const Row = styled.div`
 const TopRow = styled(Row)`
     position: relative;
     @media ${media.optimal}{
-        height: 150px;
+        height: 165px;
     } 
     @media ${media.compact}{
         height: 130px;
@@ -141,8 +140,8 @@ const MapContainer = styled(Quadrant)`
     position: absolute;
 
     @media ${media.optimal}{
-        left: 650px;
-        width: 575px;
+        left: 675px;
+        width: 550px;
         height: 100%;
         transform: translateX(${props => props.offset? '40%' : 0});
     }

@@ -21,11 +21,9 @@ import {getMedia} from '../utilities/media'
 
 const Wrapper = styled.div`
     height: 100%;
-    overflow: ${props=>props.tempNotesOverride? 'visible' : 'hidden'};
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    margin-top: -5px;
     justify-content: space-between;
 `
 
@@ -54,7 +52,7 @@ export default class Breakdown extends React.Component{
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
             if(screen==='optimal'){
-                if(hasRace) entryCount = 12
+                if(hasRace) entryCount = 14
                 else entryCount = 20
             }if(screen==='compact'){
                 if(hasRace) entryCount = 7
@@ -65,7 +63,6 @@ export default class Breakdown extends React.Component{
 
         return(
             <Wrapper 
-                tempNotesOverride = {this.props.sources}
 
             >
                 {!this.props.sources && indicator &&  

@@ -124,11 +124,11 @@ const Lgd = styled.div`
 const Dash = styled.div`
     height: 0;
     border-top: 1px solid var(--bordergrey);
-    width: 6px;
-    margin: 0 4px;
+    width: 5px;
+    margin: 0 3px;
 `
 const Pct = styled.span`
-    margin-left: 3px;
+    margin-left: 2px;
 `
 
 

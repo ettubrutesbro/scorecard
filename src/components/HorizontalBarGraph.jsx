@@ -15,7 +15,6 @@ import {floatingCorner, flushHard} from './BoxStyling'
 
 const Wrapper = styled.div`
     position: relative;
-    margin-top: 10px;
     width: 100%;
     max-height: 100%;
     ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
@@ -261,7 +260,7 @@ const Label = styled.div`
     flex-shrink: 0;
     justify-content: flex-end;
     // justify-content: space-between;
-    padding-right: 10px;
+    padding-right: 20px;
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
     white-space: nowrap;
@@ -292,12 +291,12 @@ const RowComponent = styled.div`
     width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 2px;
 `
 const AverageLine = styled.div`
     position: absolute;
     bottom: -12px;
-    left: ${props => props.labelWidth + 18}px;
+    left: ${props => props.labelWidth + 20}px;
     width: 1px;
     background-color: var(--fainttext);
     height: calc(100% + 21px);
@@ -354,7 +353,7 @@ const AverageValue = styled.span`
 const Bar = styled.div`
     position: relative;
     width: 100%;
-    height: ${props => props.condensed? '6px' : '15.5px'};
+    height: ${props => props.condensed? '6px' : '10px'};
     transform-origin: 0% 0%;
     transition: transform .25s, background-color .25s;
     transform: scaleX(${props=> props.percentage/100});

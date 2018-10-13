@@ -36,7 +36,7 @@ const ReadoutBlock = styled.div`
     }
 `
 const IndentedTitle = styled.div`
-    line-height: 36px;
+    line-height: 38px;
     padding-top: 18px;
 `
 const Crumb = styled.span`
