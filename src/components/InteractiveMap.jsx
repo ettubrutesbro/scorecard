@@ -8,7 +8,6 @@ import styled, {css} from 'styled-components'
 import {isEqual, map, debounce} from 'lodash'
 import chroma from 'chroma-js'
 import FlipMove from 'react-flip-move'
-// import ReactTooltip from 'react-tooltip'
 
 import {Tooltip} from './generic/'
 
@@ -43,20 +42,6 @@ const FullState = styled.polygon`
 
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
-
-// const Tooltip = styled.div`
-//     position: absolute;
-//     top: 0; left: 0;
-//     top: ${props => props.pos.y}px;
-//     left: ${props => props.pos.x}px;
-//     z-index: 10;
-//     width: 175px;
-//     height: 40px;
-//     transform: translate(-50%, calc(-50% - 45px));
-//     background: white;
-//     border: 1px solid var(--bordergrey);
-//     pointer-events: none;
-// `
 
 @observer class InteractiveMap extends React.Component{
 
@@ -223,9 +208,12 @@ const Tip = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    white-space: nowrap;
 `
 const NoDataTip = styled.div`
     width: 200px;
+    white-space: wrap;
+    font-size: 13px;
     display: flex;
     justify-content: center;
 `

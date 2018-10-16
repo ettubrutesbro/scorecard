@@ -298,6 +298,17 @@ export default class IndicatorByCounties extends React.Component{
     }
 }
 
+const HeaderComponent = (props) => {
+    return(
+        <Toggle
+            options = {[
+                {label: 'Ranked by %', value: 'byPct'},
+                {label: 'by Child Population', value: 'byPop'}
+            ]}
+        />
+    )
+}
+
 const Prompt = styled.div`
     position: absolute;
     width: 100%;

@@ -304,3 +304,118 @@ export const Button = (props) => {
         </Btn>
     )
 }
+
+@observer
+export class DropdownToggle extends React.Component {
+
+
+    render(){
+        return(
+
+            <TeleTog
+                defaultWidth = {this.props.defaultWidth}
+            >
+                <FirstOptBorder 
+                    defaultWidth = {this.props.defaultWidth}
+                    toggleMode = {this.props.toggleMode}
+                />
+                {this.props.options.slice(0,1).map((o)=>{
+                    return(
+                        <TogOption 
+                            defaultWidth = {this.props.defaultWidth } 
+                            className = 'first'
+
+                        >
+                            {o.label}
+                        </TogOption>
+                    )
+                })}
+                <FMCont
+                    typeName = {null}
+                    duration = {115}
+                    delay = {this.props.toggleMode? 0 : (this.props.options.length-1)*115}
+                    staggerDelayBy = {this.props.toggleMode? 115 : -115 }
+                    // staggerDuration = {-15}
+                    appearAnimation = {{
+                        from: {opacity: 0, transform: 'translateX(-35%)'},
+                        to: {opacity: 1, transform: 'translateX(0)'}
+                    }}
+                    enterAnimation = {{
+                        from: {opacity: 0, transform: 'translateX(-35%)'},
+                        to: {opacity: 1, transform: 'translateX(0)'}
+                    }}
+                    leaveAnimation = {{
+                        from: {opacity: 1, transform: 'translateX(0%)'},
+                        to: {opacity: 0, transform: 'translateX(-35%)'}  
+                    }}
+                    onStart = {(r,domnode)=>{
+                        domnode.style.zIndex = 1
+                    }}
+                >
+
+                    {this.props.toggleMode && this.props.options.slice(1).map((o)=>{
+                        return(
+                            <TogOption>
+                                {o.label}
+                            </TogOption>
+                        )
+                    })}
+                </FMCont>
+            </TeleTog>
+        )
+    }
+}   
+
+const TeleTog = styled.div`
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 100%;
+`
+const FMCont = styled(FlipMove)`
+    position: absolute;
+    display: flex;
+    align-items: center;
+`
+
+class TogOption extends React.Component{
+    render(){
+        return(
+            <Opt defaultWidth = {this.props.defaultWidth} className = {this.props.className}>
+                {this.props.children}
+            </Opt>
+        )
+    }
+}
+
+const Opt = styled.div`
+    padding: 5px 10px;
+    border: 1px solid var(--bordergrey);
+    white-space: nowrap;
+    &:not(:first-of-type){
+        margin-left: -1px;
+    }
+    &.first{
+        border-color: red;
+        width: ${props => props.defaultWidth}px;
+        margin-right: -25px;
+    }
+    z-index: 2;
+    background: white;
+`
+const FirstOptBorder = styled.div`
+    position: absolute;
+    border: 1px solid blue;
+    width: ${props => props.defaultWidth}px;
+    height: 100%;
+    z-index: 3;
+    left: -1px;
+    transform-origin: 0% 50%;
+    transition: transform .35s;
+    transform: ${p => !p.toggleMode? 'scaleX(1)' : `scaleX(${(p.defaultWidth-25)/p.defaultWidth})`};
+`
+
+
+DropdownToggle.defaultProps = {
+    selected: 0,
+}
