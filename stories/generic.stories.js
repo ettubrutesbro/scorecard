@@ -63,15 +63,15 @@ storiesOf('Generic components', module)
     return(
         <Cont>
         <DropdownToggle 
-            defaultWidth = {300}
+            defaultWidth = {140}
             toggleMode = {toggleMode}
             options = {[
-                {label: 'all races', value: 'foo'},
-                {label: 'asian', value: 'bar'},
-                {label: 'black', value: 'bar2'},
-                {label: 'latinx', value: 'bar3'},
-                {label: 'white', value: 'bar4'},
-                {label: 'other', value: 'bar5'},
+                {label: 'All races', value: ''},
+                {label: 'Asian', value: 'asian'},
+                {label: 'Black', value: 'black'},
+                {label: 'Latinx', value: 'latinx'},
+                {label: 'White', value: 'white'},
+                {label: 'Other', value: 'other'},
             ]}
         />
         </Cont>
