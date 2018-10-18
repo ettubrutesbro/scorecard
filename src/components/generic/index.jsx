@@ -338,6 +338,7 @@ export class DropdownToggle extends React.Component {
     @observable dropdownOpen = false
     @action setDropdown = (tf) => this.dropdownOpen = tf
     render(){
+        const {race} = this.props.store
         return(
             <DropdownToggleWrapper
                 width = {this.props.defaultWidth}
@@ -360,6 +361,7 @@ export class DropdownToggle extends React.Component {
                             }:()=>{
                                 this.setDropdown(!this.dropdownOpen)
                             }}
+                            selected = {!race}
                         >
                             {o.label}
                         </TogOption>
