@@ -19,6 +19,7 @@ import IndicatorList from './components/IndicatorList'
 import {Tooltip} from './components/generic'
 
 import media, {getMedia} from './utilities/media'
+import {isValid} from './utilities/isValid'
 import {capitalize} from './utilities/toLowerCase'
 
 import caret from './assets/caret.svg'
@@ -114,7 +115,7 @@ const NormalDropdown = styled(Dropdown)`
 `
 const DropdownReading = styled.span`
     z-index: 11;
-
+    color: ${props => props.greyed? 'var(--inactivegrey)' : 'var(--normtext)'};
 `
 
 const RaceList = styled.ul`
@@ -142,7 +143,7 @@ const Race = styled.li`
     `: ''}
     outline: 1px solid ${props=>props.selected?'var(--strokepeach)': 'transparent'};
     color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
-    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
+    background: ${props=> props.disabled? 'var(--offwhitefg)'  : props.selected? 'var(--faintpeach)' : 'white'};
     pointer-events: ${props=>props.disabled? 'none' : 'auto'};
 
 `
@@ -253,6 +254,7 @@ export default class ResponsiveNav extends React.Component{
 
         const noRace = indicator && !ind.categories.includes('hasRace')
 
+        const noall = indicator && county && !isValid(ind.counties[county].totals[year]) //rare case [i.e. glenn health insurance]
         const noazn = !noRace && indicator && county && (ind.counties[county].asian[year] === '' || ind.counties[county].asian[year]==='*')
         const noblk = !noRace && indicator && county && (ind.counties[county].black[year] === '' || ind.counties[county].black[year]==='*')
         const noltx = !noRace && indicator && county && (ind.counties[county].latinx[year] === '' || ind.counties[county].latinx[year]==='*')
@@ -292,17 +294,20 @@ export default class ResponsiveNav extends React.Component{
                 
                     <NormalDropdown
                         ref = {this.dropdown}
-                        // disabled = {!indicator} 
+                         // disabled = {noall} 
                         onClick = {!open? this.openRaceDropdown : ()=>{console.log('notopen')}} 
                         offset = { open? 2 : 0 }
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
-                    >   <DropdownReading onClick = {open || this.raceDropdown? ()=>store.completeWorkflow('race',null) : ()=>{}}>
+                    >   <DropdownReading 
+                            greyed = {open && noall}
+                            onClick = {!noall && (open || this.raceDropdown)? ()=>store.completeWorkflow('race',null) : ()=>{}}
+                        >
                             {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : init? 'Race' : this.raceDropdown? 'Pick race' : 'All races'}
                         </DropdownReading>
                         
                             <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
-                                <Race selected = {!race}  onClick = {()=>store.completeWorkflow('race',null)}> All Races </Race>
+                                <Race selected = {!race} disabled = {noall} onClick = {()=>store.completeWorkflow('race',null)}> All Races </Race>
                                 <Race selected = {race==='asian'} disabled = {noRace || noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
                                 <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
                                 <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 

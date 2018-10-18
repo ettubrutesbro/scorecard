@@ -9,10 +9,7 @@ import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
 import {findIndex} from 'lodash'
-
-function isValid(val){
-    return val === 0 || (val && val!=='*')
-}
+import {isValid} from './utilities/isValid'
 
 export default class AppStore{
     @observable indicator = null
