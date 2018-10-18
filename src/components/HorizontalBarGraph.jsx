@@ -19,6 +19,7 @@ const Wrapper = styled.div`
     max-height: 100%;
     ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
     border: 1px solid var(--bordergrey);
+    border-radius: 4px;
 `
 
 @observer
@@ -217,6 +218,7 @@ const Header = styled(CropBox)`
     transform: translateY(-50%);
 `
 const FadeCropper = styled.div`
+    display: none;
     /*border: 1px solid red;*/
     z-index: 2;
     position: absolute;

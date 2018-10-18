@@ -34,6 +34,12 @@ const Option = styled.div`
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);
     }
+    &:first-of-type{
+        border-radius: 4px 0 0 4px;
+    }
+    &:last-of-type{
+        border-radius: 0 4px 4px 0;
+    }
 ` 
 
 const Accent = styled.div`
@@ -287,6 +293,7 @@ const Btn = styled.div`
         color: white;
         border: none;
     }
+    border-radius: 4px;
 `
 
 export const Button = (props) => {
@@ -377,7 +384,7 @@ export class DropdownToggle extends React.Component {
                         to: {opacity: 1, transform: 'translateX(0)'}
                     }}
                     leaveAnimation = {{
-                        from: {opacity: 1, transform: 'translateX(0%)'},
+                        from: {opacity: 1, transform: 'trantwilateX(0%)'},
                         to: {opacity: 0, transform: 'translateX(-35%)'}  
                     }}
                     onStart = {(r,domnode)=>{

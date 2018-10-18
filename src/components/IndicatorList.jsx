@@ -31,6 +31,12 @@ const IndRows = styled.ul`
 
 `
 const RowItem = styled.li`
+    &:first-of-type{
+        border-radius: 4px 4px 0 0;
+    }
+    &:last-of-type{
+        border-radius: 0 0 4px 4px;
+    }
     /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
