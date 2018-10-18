@@ -7,7 +7,7 @@ import { findIndex, find } from 'lodash'
 import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
-import Toggle from './components/Toggle'
+import {Toggle} from './components/generic'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'

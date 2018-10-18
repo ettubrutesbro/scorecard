@@ -19,19 +19,15 @@ const Option = styled.div`
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
-    // margin: 0 -1px;
     border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
     padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};
-    // border-radius: ${props => props.firstLast==='first'? '4px 0 0 4px' : props.firstLast === 'last'? '0 4px 4px 0' : ''};
-    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
-    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};
-    // background: ${props => props.disabled? '#f3f3f5' : 'white'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--fainttext)'};
+    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'transparent' : 'white'};
     &:hover{
-        // background: white;
-        color: ${props => props.selected?'var(--strokepeach)':'var(--strokepeach)'};
+        color: ${props => props.disabled? 'var(--fainttext)' : props.selected?'var(--strokepeach)':'var(--strokepeach)'};
         outline-color: var(--strokepeach);
         z-index: 1;
     }
@@ -394,6 +390,7 @@ export class DropdownToggle extends React.Component {
                             <TogOption
                                 offset = {i===0? true : false}
                                 onClick = {()=>{this.props.select(o.value)}}
+                                selected = {!o.value? !race : o.value===race}
                             >
                                 {o.label}
                             </TogOption>

@@ -49,9 +49,28 @@ export default class AppStore{
     @action setColorOption = (which,what) => this.colorOptions[which] = what
     @action setYearIndex = () => {
         const yrs = indicators[this.indicator].years
-        if(!this.year && yrs.length>1) this.year = yrs.length-1
-        else if(!this.year) this.year = 0
-        else if(this.year === 1 && yrs.length===1) this.year = 0
+        //these facile checks work for setting yearIndex presuming there's data, but break on
+        //complex selections wherein county/race may not have a value for this year, even if the ind
+        // has data for this year generally
+        let targetYear = 0
+        if(!this.year && yrs.length>1) targetYear = yrs.length-1
+        else if(!this.year) targetYear = 0
+        else if(this.year === 1 && yrs.length===1) targetYear = 0
+
+        //next, test targetYr's validity datawise
+
+        if(isValid(indicators[this.indicator].counties[this.county||'california'][this.race||'totals'][targetYear])){
+            console.log('final gauntlet: indicator selection passed year validity test')
+            this.year = targetYear
+        }
+        else{
+            console.log('year correction at setYearIndex')
+            if(targetYear === 0) targetYear = 1
+            else targetYear = 0
+            this.year = targetYear
+        }
+
+
         console.log(`year ${this.year} (${yrs[this.year]})`)
     }
 
@@ -109,13 +128,20 @@ export default class AppStore{
                     )
                  }
                 return false
-            }
+            } //end facile race w. !hasRace condition
             else{
                 // the more complicated case: indicator has race, but does it for selected?
                 const arr = ind.counties[county||'california'][race||'totals']
                 if(arr.filter((val)=>{ return isValid(val)}).length>0){
                     //YES: indicator selection is valid, proceed
                     console.log('user\'s indicator selection is valid, proceed') 
+                    //TODO: no year correction leads to potential breaking bugs: plumas/sierra > feelingsofschooldiff,
+                    // if(!isValid(arr[this.year])){
+                    //     console.log('attempting year correction')
+                    //     console.log(`year ${this.year} (${ind.years[this.year]}) is invalid`)
+                    //     if(this.year === 0) this.year = 1
+                    //     else this.year = 0
+                    // }
                 }
                 else{
                     //no valid years for the user's selection combo
