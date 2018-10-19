@@ -34,12 +34,7 @@ const Option = styled.div`
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);
     }
-    &:first-of-type{
-        border-radius: 4px 0 0 4px;
-    }
-    &:last-of-type{
-        border-radius: 0 4px 4px 0;
-    }
+
 ` 
 
 const Accent = styled.div`
@@ -293,7 +288,6 @@ const Btn = styled.div`
         color: white;
         border: none;
     }
-    border-radius: 2px;
 `
 
 export const Button = (props) => {

@@ -57,7 +57,6 @@ const Dropdown = styled.div`
     }
     transition: transform .25s;
     white-space: nowrap;
-    border-radius: 4px;
 
 `  
 
@@ -437,7 +436,6 @@ const LargeWorkflow = styled.div`
     border: 1px solid var(--bordergrey);
     z-index: 3;
     transform-origin: 0% 0%;
-    border-radius: 8px;
     @media ${media.optimal}{
         width: 1000px;
         height: 720px;
@@ -543,7 +541,6 @@ const arrow = require('./assets/arrow.svg')
 const PageBtn = styled.div`
     position: absolute;
     width: 50px; height: 95px; 
-    // border-radius: 50%;
     border: 1px solid var(--fainttext);
     background: white;
     /*background-position: center;*/
