@@ -103,7 +103,8 @@ const CountyPath = styled.path`${CountyStyle}`
         const cty = countyLabels[hoveredCounty]
         if(!tipData && tipData!==0){
             if(race){
-                tipData = `There's no data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} for this indicator.`
+                if(race==='other') `There's no data on ${semanticTitles[indicator].who} of other races in ${cty} for this indicator.`
+                else tipData = `There's no data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} for this indicator.`
             }
             else tipData = `There's no data on ${cty} county for this indicator.`
             noData = true
@@ -111,7 +112,8 @@ const CountyPath = styled.path`${CountyStyle}`
         else if(tipData === '*'){
             noData = true
             if(race){
-                tipData = `Indicator data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} is too small or unstable to display.`
+                if(race==='other') `Indicator data on ${semanticTitles[indicator].who} of other races in ${cty} is too small or unstable to display.`
+                else tipData = `Indicator data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} is too small or unstable to display.`
             }
             else tipData = `Indicator data on ${cty} is too small or unstable to display.`
         }
