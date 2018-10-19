@@ -178,25 +178,10 @@ const HorzRace = styled.div`
 
 `
 
-const Logo = (props) => {
-    return(
-        <LogoContainer />
-    )
-}
-const logoSVG = require('./assets/cnlogo.svg')
+
 const twIcon = require('./assets/twitter.svg')
 const fbIcon = require('./assets/fb.svg')
-const LogoContainer = styled.div`
-    width: 65px;
-    height: 50px;
-    margin-right: 30px;
-    background-image: url(${logoSVG});
-    background-repeat: no-repeat;
-    background-size: contain;
 
-    background-position: center;
-    cursor: pointer;
-`
 
 const countyIds = Object.keys(countyLabels)
 
@@ -264,7 +249,6 @@ export default class ResponsiveNav extends React.Component{
 
         return(
             <Nav ref = {this.nav}>
-                <Logo />
                 <IndicatorSelect 
                     onClick = {()=>openNav('indicator')} 
                     // offset = {open==='county'}

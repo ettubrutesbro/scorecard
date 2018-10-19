@@ -19,7 +19,7 @@ const Option = styled.div`
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
-    border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
+    border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--bordergrey)'};
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;

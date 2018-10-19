@@ -104,13 +104,16 @@ export default class HorizontalBarGraph extends React.Component{
                                         hovered = {item.id === this.hoveredRow}
                                         onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                         onMouseLeave = {()=>{this.handleHoverRow(null)}}
+                                        hasLeftLabel = {item.leftLabel}
                                     >
-                                        <LeftLabel
-                                            hovered = {item.id === this.hoveredRow}
-                                        >
-                                            {!condensed && item.leftLabel}
+                                        {item.leftLabel && 
+                                            <LeftLabel
+                                                hovered = {item.id === this.hoveredRow}
+                                            >
+                                                {!condensed && item.leftLabel}
 
-                                        </LeftLabel>
+                                            </LeftLabel>
+                                        }
                                         {!condensed && item.label}
                                     </Label>
                                 
@@ -136,7 +139,7 @@ export default class HorizontalBarGraph extends React.Component{
                                         >
                                             {item.trueValue && item.trueValue}
                                             {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
-                                            {i===0 && !item.trueValue && <Pct>%</Pct>}
+                                            {!item.trueValue && <Pct>%</Pct>}
                                             
                                         </Value>
                                         }
@@ -260,15 +263,16 @@ const Label = styled.div`
     width: ${props => props.labelWidth}px;
     align-items: center;
     flex-shrink: 0;
-    justify-content: flex-end;
-    // justify-content: space-between;
+    justify-content: ${props => props.hasLeftLabel? 'space-between' : 'flex-end'};
     padding-right: 20px;
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
     white-space: nowrap;
+
+
 `
 const LeftLabel = styled.div`
-    font-weight: bold;
+    // font-weight: bold;
     // font-weight: 500;
     // border: 1px solid red;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" : "var(--fainttext)"};

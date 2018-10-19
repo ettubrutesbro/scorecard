@@ -47,6 +47,11 @@ export default class IndicatorByCounties extends React.Component{
     @observable distribution = []
     @observable condensed = []
 
+    @observable sortOverviewBy = 'pct'
+    @action setOverviewSort = (v) => {
+        console.log('setting sort for overview')
+        this.sortOverviewBy = v
+    }
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
@@ -74,7 +79,8 @@ export default class IndicatorByCounties extends React.Component{
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
-                fill: colorScale? colorScale(value): ''
+                fill: colorScale? colorScale(value): '',
+                population: demopop[cty].population
             }
         }).sort((a,b)=>{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
@@ -199,7 +205,9 @@ export default class IndicatorByCounties extends React.Component{
 
         performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-            if(!this.distribute) return e
+            if(!this.distribute){
+                return {...e, leftLabel: e.rank+'.'}
+            }
             else if(distrib.includes(i)){ 
                 return {
                     ...e,
@@ -211,6 +219,12 @@ export default class IndicatorByCounties extends React.Component{
 
             }
             else return null
+        })
+        .sort((a,b)=>{
+            if(this.sortOverviewBy === 'pop'){
+            return a.population > b.population? -1 : a.population < b.population? 1 : 0
+            } else return 0
+
         })
         .filter((e,i)=>{
             if(!this.distribute) return true
@@ -279,8 +293,12 @@ export default class IndicatorByCounties extends React.Component{
                 selected = {county}
                 selectable
                 beefyPadding
-                header = {(<HeaderComponent race = {race} distribute = {this.distribute}/>)
-                }
+                header = {(<HeaderComponent 
+                    race = {race} 
+                    distribute = {this.distribute}
+                    setOverviewSort = {this.setOverviewSort}
+                    sortOverviewBy = {this.sortOverviewBy}
+                />)}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
                 labelWidth = {140}
@@ -306,10 +324,12 @@ const HeaderComponent = (props) => {
         <Toggle
             style = {{marginLeft: '15px'}}
             options = {[
-                {label: 'Ranked by %', value: 'byPct'},
-                {label: 'by Child Population', value: 'byPop'}
+                {label: 'Ranked by %', value: 'pct'},
+                {label: 'by Child Population', value: 'pop'}
             ]}
             theme = "bw"
+            onClick = {props.setOverviewSort}
+            selected = {props.sortOverviewBy === 'pct'? 0 : 1}
         />
         }
         </Header>
@@ -333,7 +353,7 @@ const Prompt = styled.div`
 
 const Faint = styled.span`
     color: var(--fainttext);
-    margin-right: 4px;
+    margin-right: 5px;
 `
 
 const SelectedNum = styled.span`
