@@ -257,7 +257,7 @@ export default class IndicatorList extends React.Component{
                 />
                  <Readout>
                    <AboutPcts>
-                       {`${county?countyLabels[county]:'Statewide'} %s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
+                       {`${county?countyLabels[county]:'Statewide'} %'s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
                     </AboutPcts> 
                    Viewing {(store.indicatorPageSize * store.indicatorListPage)+1} 
                    &#8212; 
