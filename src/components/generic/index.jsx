@@ -65,25 +65,25 @@ export class Toggle extends React.Component {
     @observable accentPosition = 0
     @observable lastSelected = 0
     @action setLastSelected = () => this.lastSelected = this.props.selected
-    @action updateAccent = () => {
-        const node = findDOMNode(this['option'+this.props.selected])
-        this.accentPosition =  node.offsetLeft
-        this.accentWidth = node.offsetWidth
-    }
-    componentWillUpdate(){
-        this.setLastSelected()
-    }
-    componentDidMount(){
-        this.updateAccent()
-    }
-    componentDidUpdate(){
-        this.updateAccent()
-    }
+    // @action updateAccent = () => {
+    //     const node = findDOMNode(this['option'+this.props.selected])
+    //     this.accentPosition =  node.offsetLeft
+    //     this.accentWidth = node.offsetWidth
+    // }
+    // componentWillUpdate(){
+    //     this.setLastSelected()
+    // }
+    // componentDidMount(){
+    //     this.updateAccent()
+    // }
+    // componentDidUpdate(){
+    //     this.updateAccent()
+    // }
 
 
-    render(){
+     render(){
     return(
-        <ToggleBody {...this.props}>
+        <ToggleBody style = {this.props.style} size = {this.props.size}>
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
@@ -102,12 +102,13 @@ export class Toggle extends React.Component {
             <Accent 
                 style = {{
                     transform: `translateX(${this.accentPosition}px) scaleX(${this.accentWidth/100})`,
-                    transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
+                    // transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
                 }}
             />
         </ToggleBody>
     )
     }
+
 
 }
 
