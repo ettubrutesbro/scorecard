@@ -86,7 +86,7 @@ export class Toggle extends React.Component {
 
     render(){
     return(
-        <ToggleBody size = {this.props.size}>
+        <ToggleBody {...this.props}>
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
@@ -419,3 +419,4 @@ const FirstOptBorder = styled.div`
 DropdownToggle.defaultProps = {
     selected: 0,
 }
+

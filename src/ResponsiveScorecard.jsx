@@ -74,7 +74,7 @@ const TopRow = styled(Row)`
 `
 const BottomRow = styled(Row)`
     height: 100%;
-    margin-top: 15px;
+    margin-top: 25px;
 `
 const Nav = styled(Row)`
     position: fixed;

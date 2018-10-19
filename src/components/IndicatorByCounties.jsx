@@ -278,11 +278,8 @@ export default class IndicatorByCounties extends React.Component{
             <HorizontalBarGraph
                 selected = {county}
                 selectable
-                header = {
-                    race==='other'? 'In counties with the most children of other races' 
-                    : race? `In counties with the most ${capitalize(race)} children:` 
-                    : this.distribute?  'County overview'
-                    : 'All counties'
+                beefyPadding
+                header = {(<HeaderComponent race = {race} distribute = {this.distribute}/>)
                 }
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
@@ -300,15 +297,25 @@ export default class IndicatorByCounties extends React.Component{
 
 const HeaderComponent = (props) => {
     return(
+        <Header>
+            {props.race && props.race === 'other' && 'In counties with the most children of other races'}
+            {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+            {!props.race && props.distribute && 'County overview'}
+            {!props.race && !props.distribute && 'All counties'}
         <Toggle
+            style = {{marginLeft: '15px'}}
             options = {[
                 {label: 'Ranked by %', value: 'byPct'},
                 {label: 'by Child Population', value: 'byPop'}
             ]}
+            theme = "bw"
         />
+        </Header>
     )
 }
-
+const Header = styled.div`
+    display: flex; align-items: center; 
+`
 const Prompt = styled.div`
     position: absolute;
     width: 100%;

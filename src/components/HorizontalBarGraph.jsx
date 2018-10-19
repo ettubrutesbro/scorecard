@@ -75,7 +75,7 @@ export default class HorizontalBarGraph extends React.Component{
                     }
                 </Header>
                 */}
-                <Content>
+                <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
                     duration = {250}
                     typeName = {null}
@@ -248,7 +248,7 @@ const Content = styled.div`
     width: 100%;
     height: 100%;
     padding: 0 36px 0px 25px;
-    margin: 36px 0 32px 0;
+    margin: ${props => props.beefyPadding?'42px 0 32px 0' : '25px 0 18px 0'};
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
