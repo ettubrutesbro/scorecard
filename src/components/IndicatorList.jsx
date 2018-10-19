@@ -15,6 +15,7 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
 import {capitalize} from '../utilities/toLowerCase'
+import {isValid} from '../utilities/isValid'
 import semanticTitles from '../assets/semanticTitles'
 
 import media, {getMedia} from '../utilities/media'
@@ -30,6 +31,12 @@ const IndRows = styled.ul`
 
 `
 const RowItem = styled.li`
+    &:first-of-type{
+        border-radius: 4px 4px 0 0;
+    }
+    &:last-of-type{
+        border-radius: 0 0 4px 4px;
+    }
     /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
@@ -298,9 +305,19 @@ export default class IndicatorList extends React.Component{
                         const noRace = !cats.includes('hasRace')
 
                         const noRaceNeedRace = noRace && race
-
-                        let val = indicator.counties[county||'california'][race||'totals']
-                        val = val && val!=='*'? val[val.length-1] : ''
+                        let valArr
+                        let val
+                        if(!noRaceNeedRace && indicator.counties[county||'california'][race||'totals']){
+                            valArr = indicator.counties[county||'california'][race||'totals'].filter((v)=>{return isValid(v)})
+                        }
+                        else{
+                            valArr = indicator.counties[county||'california'].totals.filter((v)=>{return isValid(v)})
+                        }
+                        if(valArr.length > 0 ){
+                            val = valArr[valArr.length-1]
+                        }
+                        else val = ''
+                        // val = val && val!=='*'? val[val.length-1] : ''
 
                         const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
 

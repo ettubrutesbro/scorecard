@@ -48,7 +48,7 @@ import connected from './indicators/connected'
 import difference from './indicators/difference'
 
 const indicators = {
-    allegations: allegations,
+    // allegations: allegations,
     breastFeeding: breastFeeding,
     childCareSlots: childCareSlots,
     collegeCareerReady: collegeCareerReady,

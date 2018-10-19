@@ -154,7 +154,7 @@ class CountyList extends React.Component{
                         if(indicator){
                             const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
                             
-                            if(!value || value === '*') disabled = true
+                            if((value!==0) && (!value || value === '*')) disabled = true
                         }
                         return <GridItem
                             selected = {selected}
