@@ -61,12 +61,22 @@ const DemoBox = (props) => {
                 viewBox = {screen==='optimal'? "0 0 515 433" : screen === 'compact'? "0 0 515 375": "0 0 100 100"}
                 preserveAspectRatio = "none"
             >
+            	{/*
                 <polyline 
                     points = {screen==='optimal'? "0,194.85 0,0 515,0 515,433 231.75,433" 
                         : screen === 'compact'? "0,168.75 0,0 515,0 515,375 231.75,375" 
                         : "0,45 0,0 100,0 100,100 45,100"
                     }
                 />
+	            */}
+
+               <path 
+               		d={screen==='optimal'? "M0,223.4V6c0-3.3,2.7-6,6-6h502.3c3.7,0,6.7,3,6.7,6.7V427c0,3.3-2.7,6-6,6H71.7" 
+               			: screen === 'compact'? "M0.5,223.3V6.4c0-3.3,2.7-6,6-6h501.4c3.7,0,6.7,3,6.7,6.7v361.6c0,3.3-2.7,6-6,6H72" 
+               			: ''
+
+		         }/>
+
             </StrokeShape>
         </Box>  
     )
@@ -79,7 +89,7 @@ const StrokeShape = styled.svg`
     top: 0; left: 0;
     width: 100%; height: 100%;
     fill: none;
-    stroke-width: 2;
+    stroke-width: 1;
     stroke: var(--bordergrey);
     pointer-events: none;
 `

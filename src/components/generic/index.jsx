@@ -293,7 +293,7 @@ const Btn = styled.div`
         color: white;
         border: none;
     }
-    border-radius: 4px;
+    border-radius: 2px;
 `
 
 export const Button = (props) => {

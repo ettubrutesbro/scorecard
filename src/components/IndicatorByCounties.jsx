@@ -302,6 +302,7 @@ const HeaderComponent = (props) => {
             {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
             {!props.race && props.distribute && 'County overview'}
             {!props.race && !props.distribute && 'All counties'}
+            {!props.race &&
         <Toggle
             style = {{marginLeft: '15px'}}
             options = {[
@@ -310,6 +311,7 @@ const HeaderComponent = (props) => {
             ]}
             theme = "bw"
         />
+        }
         </Header>
     )
 }
