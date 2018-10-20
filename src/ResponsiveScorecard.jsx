@@ -284,6 +284,7 @@ const Breakdown = styled(Quadrant)`
 `
 const LegendContainer = styled.div`
     position: absolute;
+    z-index: 1;
     bottom: 0;
     right: 0;
     width: 300px; 
