@@ -44,14 +44,14 @@ const App = styled.div`
     justify-content: flex-start;
     height: 100%;
     @media ${media.optimal}{
-        width: 1500px;
-        height: 770px;
+        width: 1550px;
+        height: 740px;
         margin-top: 80px;
     }
     @media ${media.compact}{
         margin-top: 80px;
-        width: 1280px;
-        height: 600px;
+        width: 1295px;
+        height: 630px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -81,10 +81,6 @@ const ShareSources = styled.div`
 
 `
 
-const BottomRow = styled(Row)`
-    height: 100%;
-    margin-top: 25px;
-`
 const Nav = styled(Row)`
     position: fixed;
     width: 100%;
@@ -106,38 +102,6 @@ const Nav = styled(Row)`
     z-index: 3;
 `
 
-const Breakdown = styled(Quadrant)`
-    top: 0; left: 0;
-    height: 100%;
-    @media ${media.optimal}{
-        width: 610px;
-    }
-    @media ${media.compact}{
-        width: 480px;
-    }
-    @media ${media.mobile}{}
-    z-index: ${props=>props.sources? 20 : 1}; 
-`
-
-const MapContainer = styled(Quadrant)`
-    z-index: 2;
-    transform-origin: 0% 100%;
-    transition: transform .5s;
-    position: absolute;
-
-    @media ${media.optimal}{
-        left: 675px;
-        width: 550px;
-        height: 100%;
-        transform: translateX(${props => props.offset? '40%' : 0});
-    }
-    @media ${media.compact}{
-        left: 510px;
-        width: 450px; height: 500px;
-        transform: translateX(${props => props.offset? '280px' : 0});
-    }
-    @media ${media.mobile}{}
-`
 const GreyMask = styled.div`
     position: fixed;
     left: 0;
@@ -266,6 +230,12 @@ export default class ResponsiveScorecard extends React.Component{
                             // mode = 'wire'
                         />
                     </MapContainer>
+
+                    <LegendContainer>
+                        <LegendComponent 
+                            store = {store}
+                        />
+                    </LegendContainer>
                 </BottomRow>
 
             </App>
@@ -274,3 +244,49 @@ export default class ResponsiveScorecard extends React.Component{
         )
     }
 }
+
+const BottomRow = styled(Row)`
+    height: 100%;
+    margin-top: 25px;
+`
+
+const MapContainer = styled(Quadrant)`
+    z-index: 2;
+    transform-origin: 0% 100%;
+    transition: transform .5s;
+    position: absolute;
+
+    @media ${media.optimal}{
+        left: 675px;
+        width: 525px;
+        height: 100%;
+        transform: translateX(${props => props.offset? '40%' : 0});
+    }
+    @media ${media.compact}{
+        left: 510px;
+        width: 450px; 
+        height: 100%;
+        transform: translateX(${props => props.offset? '280px' : 0});
+    }
+    @media ${media.mobile}{}
+`
+const Breakdown = styled(Quadrant)`
+    top: 0; left: 0;
+    height: 100%;
+    @media ${media.optimal}{
+        width: 610px;
+    }
+    @media ${media.compact}{
+        width: 480px;
+    }
+    @media ${media.mobile}{}
+    z-index: ${props=>props.sources? 20 : 1}; 
+`
+const LegendContainer = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px; 
+    height: 80px;
+
+`

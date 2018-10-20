@@ -17,7 +17,7 @@ const Container = styled.div`
     box-sizing: border-box;
     flex-direction: column;
     @media ${media.optimal}{
-        height: 256px;
+        height: 305px;
     }
     @media ${media.compact}{
         height: 256px;   

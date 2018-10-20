@@ -48,8 +48,8 @@ export default class Legend extends React.Component{
 
         return(
             <Lgd
-                onMouseEnter = {()=>this.handleHover(true)}
-                onMouseLeave = {()=>this.handleHover(false)}
+                // onMouseEnter = {()=>this.handleHover(true)}
+                // onMouseLeave = {()=>this.handleHover(false)}
             >
                 <Labels>
                 <NumCountiesLabel show = {this.hovered}> 
@@ -62,11 +62,6 @@ export default class Legend extends React.Component{
                 <Swatches>
                 {
                     breaks.map((ele,i,arr)=>{
-                    
-                        // let lo = los[i].toFixed(1)
-                        // let hi = his[i].toFixed(1)
-                        // if(lo[lo.length-1]==='0') lo = Number(lo).toFixed(0)
-                        // if(hi[hi.length-1]==='0') hi = Number(hi).toFixed(0)
 
                         const numCountiesInClass = nums[i]
                         const pctCountiesInClass = pcts[i]
@@ -94,7 +89,7 @@ export default class Legend extends React.Component{
                                     <LabelRange hide = {this.hovered}
                                         last = {i===arr.length-2}
                                     >
-                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}
+                                        {Math.ceil(breaks[i])}-{Math.floor(breaks[i+1])}
                                         <Pct>%</Pct>
                                     </LabelRange>
                                     <LabelNum show = {this.hovered}>
@@ -123,8 +118,9 @@ const Lgd = styled.div`
     position: relative;
     width: 100%;
     overflow: hidden;
-    cursor: pointer;
-    width: 450px;
+    /*cursor: pointer;*/
+    /*width: 450px;*/
+    width: 100%;
 `
 
 const Dash = styled.div`
@@ -165,8 +161,8 @@ const Label = styled.div`
     justify-content: center;
 
         transform: translateX(${p=> p.mode==='truescale'&&p.firstLast==='first'?0
-            :p.mode==='truescale'?  481*((p.offset+(p.scale/2)))+'px' 
-            : (481/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' 
+            :p.mode==='truescale'?  320*((p.offset+(p.scale/2)))+'px' 
+            : (320/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(10%)' 
             : 'translateX(0)'
         };        
     
@@ -202,7 +198,7 @@ const Label = styled.div`
 
 const Labels = styled.div`
     width: 100%;
-    height: 35px;
+    height: 40px;
 `
 const Swatches = styled.div`
     width: 100%;
@@ -212,7 +208,7 @@ const Swatches = styled.div`
 
 const Titles = styled.div`
     position: absolute;
-    top: 5px; font-size: 13px;
+    top: 0; font-size: 16px;
     right: 0;
     color: var(--fainttext);
 `

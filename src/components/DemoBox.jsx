@@ -19,8 +19,8 @@ const Box = styled.div`
         top: 0;
         right: 0;
         @media ${media.optimal}{
-            width: 515px;
-            height: 405px;
+            width: 550px;
+            height: 450px;
             padding: 35px;
         }
         @media ${media.compact}{
@@ -133,7 +133,7 @@ const RowTable = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin-top: 15px;
+    margin-top: 25px;
     margin-right: 15px;
     @media ${media.optimal}{
         // padding-right: 20px;
@@ -147,14 +147,14 @@ const DemoRow = styled.div`
 
     @media ${media.optimal}{
         &:not(:first-of-type){
-            margin-top: 30px;   
+            margin-top: 37px;   
             
         }
         padding: 0 20px;
         /*padding-left: 15px;*/
         line-height: 160%;
         &.last{
-            margin-left: 70px;
+            margin-left: 80px;
             text-indent: -35px;
         }
     }

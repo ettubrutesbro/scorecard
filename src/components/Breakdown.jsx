@@ -52,7 +52,7 @@ export default class Breakdown extends React.Component{
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
             if(screen==='optimal'){
-                if(hasRace) entryCount = 14
+                if(hasRace) entryCount = 13
                 else entryCount = 20
             }if(screen==='compact'){
                 if(hasRace) entryCount = 7
