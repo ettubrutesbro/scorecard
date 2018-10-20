@@ -50,7 +50,7 @@ const App = styled.div`
     }
     @media ${media.compact}{
         margin-top: 80px;
-        width: 1295px;
+        width: 1300px;
         height: 630px;
     }
     @media ${media.mobile}{
@@ -80,21 +80,22 @@ const ShareSources = styled.div`
     
 
 `
-
-const Nav = styled(Row)`
+const DarkBar = styled.div`
     position: fixed;
     width: 100%;
     left: 0;
-    top: 0;
     background: var(--offwhitebg);
     @media ${media.optimal}{
-        height: 85px;
-        padding: 0 calc(50% - 750px);
+        padding: 0 calc(50% - 775px);
     }
     @media ${media.compact}{
-        height: 75px;
-        padding: 0 calc(50% - 750px);
+        padding: 0 calc(50% - 650px);
     }
+`
+
+const Nav = styled(DarkBar)`
+    top: 0;
+    height: 80px;
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -171,6 +172,8 @@ export default class ResponsiveScorecard extends React.Component{
             <React.Fragment>
             <Styles />
             <App>
+
+                
                 <Nav> 
                     <NavComponent 
                         init = {this.init}
@@ -187,11 +190,13 @@ export default class ResponsiveScorecard extends React.Component{
                 />
                 <TopRow>
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> 
+                    {store.indicator &&
                     <ShareSources>
                         <Button label = "View sources and notes" />
                         <Button label = "Share / download" style = {{marginLeft: '15px'}}/>
 
                     </ShareSources>
+                    }
                 </TopRow>
 
                 <BottomRow>
@@ -238,12 +243,21 @@ export default class ResponsiveScorecard extends React.Component{
                     </LegendContainer>
                 </BottomRow>
 
+                <Footer>
+                    <FooterContent>
+                        <FooterLink>About us</FooterLink>
+                        <FooterLink>Contact</FooterLink>
+                        <FooterLink>Credits & Acknowledgments</FooterLink>
+                        <CNLogo />
+                    </FooterContent>
+                </Footer>
             </App>
-
             </React.Fragment>
         )
     }
 }
+
+
 
 const BottomRow = styled(Row)`
     height: 100%;
@@ -290,4 +304,35 @@ const LegendContainer = styled.div`
     width: 300px; 
     height: 80px;
 
+`
+
+const Footer = styled(DarkBar)`
+    height: 100%;
+    @media ${media.optimal}{
+        top: 1025px;
+    }
+    @media ${media.compact}{
+        top: 825px;
+    }
+    z-index: 3;
+`
+const CNLogo = styled.div`
+    width: 175px; height: 15px;
+    border: 1px solid white;
+`
+const FooterContent = styled.div`
+    @media ${media.optimal}{
+        width: 1550px;
+    }
+    @media ${media.compact}{
+        width: 1295px;
+    }
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+`
+const FooterLink = styled.a`
+    color: white;
+    margin-right: 70px;
 `

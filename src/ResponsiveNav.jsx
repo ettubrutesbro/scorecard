@@ -34,7 +34,7 @@ const Nav = styled.div`
         width: 100%;
     }
     @media ${media.compact}{
-        width: 1280px;
+        width: 100%;
     }
 `
 const Dropdown = styled.div`

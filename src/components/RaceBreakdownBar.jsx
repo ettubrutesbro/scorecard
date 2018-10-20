@@ -59,7 +59,7 @@ const VertBar = styled.div`
     border: 2px solid var(--bordergrey);
     // padding: 30px;
     box-sizing: border-box;
-    width: 40px;
+    width: 50px;
     display: flex;
     flex-direction: column;
     // overflow: hidden;
