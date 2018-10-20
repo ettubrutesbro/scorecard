@@ -315,13 +315,6 @@ export default class ResponsiveNav extends React.Component{
                         selected = {store.year}
                     />
 
-                    <Share nav = {open}>
-                        <Fb />
-                        <Twitter />
-                    </Share>
-                    
-                        
-
                 <FlipMove 
                     typeName = {null}
                     duration = {200}
@@ -348,17 +341,7 @@ const ForcedUnselectTip = styled.div`
     line-height: 21px;
     white-space: normal;
 `
-const Share = styled.div`
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    transition: opacity .25s, transform .25s;
-    transform: ${props => props.nav? 'translateX(100%)' : 'translateX(0)'};
-    opacity: ${props => props.nav? 0 : 1};
 
-    /*width: 320px;*/
-`
 const ShareIco = styled.div`
     cursor: pointer;
     width: 20px;

@@ -20,6 +20,8 @@ import InitBox from './components/InitBox'
 import SourcesButton, {DemoSources} from './components/Sources'
 import DemoBox from './components/DemoBox'
 
+import {Button} from './components/generic'
+
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
@@ -43,7 +45,7 @@ const App = styled.div`
     height: 100%;
     @media ${media.optimal}{
         width: 1500px;
-        height: 735px;
+        height: 770px;
         margin-top: 80px;
     }
     @media ${media.compact}{
@@ -63,6 +65,7 @@ const Row = styled.div`
 `
 const TopRow = styled(Row)`
     position: relative;
+    align-items: center;
     justify-content: space-between;
     @media ${media.optimal}{
         height: 185px;
@@ -72,6 +75,12 @@ const TopRow = styled(Row)`
         height: 150px;
     }
 `
+
+const ShareSources = styled.div`
+    
+
+`
+
 const BottomRow = styled(Row)`
     height: 100%;
     margin-top: 25px;
@@ -214,7 +223,11 @@ export default class ResponsiveScorecard extends React.Component{
                 />
                 <TopRow>
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> 
-                    <LegendComponent store = {store} /> 
+                    <ShareSources>
+                        <Button label = "View sources and notes" />
+                        <Button label = "Share / download" style = {{marginLeft: '15px'}}/>
+
+                    </ShareSources>
                 </TopRow>
 
                 <BottomRow>
@@ -255,37 +268,9 @@ export default class ResponsiveScorecard extends React.Component{
                     </MapContainer>
                 </BottomRow>
 
-
-                {indicator && !this.navOpen &&
-                    <React.Fragment>
-                    <SourcesButton
-                        sources = {this.sourcesMode}
-                        store = {store}
-                        onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
-                        fullView = {this.sourcesMode}
-                    />
-                    <PDFButton> Export PDF </PDFButton>
-                    </React.Fragment>
-                }
             </App>
 
             </React.Fragment>
         )
     }
 }
-
-const PDFButton = styled.div`
-    display: none;
-    position: absolute;
-    right: 0;
-    z-index: 21;
-    @media ${media.optimal}{
-        bottom: 165px;
-    }
-    @media ${media.compact}{
-        bottom: 165px;
-    }}
-    padding: 10px 25px;
-    border: 2px solid var(--bordergrey);
-
-`

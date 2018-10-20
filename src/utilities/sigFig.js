@@ -25,8 +25,14 @@ export function truncateNum(number){
         if(number>=1000000){
             return (number / 1000000).toPrecision(2) + 'm'
         }
-        else if(number>=1000){
+        else if(number>=100000){
             return (number / 1000).toPrecision(3) + 'k'
+        }
+        else if(number>=10000){
+            return (number / 1000).toPrecision(2) + 'k'
+        }
+        else if(number>=1000){
+            return (number/1000).toPrecision(1) + 'k'
         }
         else return number
 }
