@@ -63,7 +63,7 @@ export default class IndicatorByRaces extends React.Component{
                     selectable
                     header = {<Label><span>Indicator breakdown</span> by race</Label>}
                     bars = {indicatorPerformanceByRace}
-                    labelWidth = {140}
+                    labelWidth = {150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
             </Wrapper>

@@ -19,7 +19,6 @@ const Wrapper = styled.div`
     max-height: 100%;
     ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
     border: 1px solid var(--bordergrey);
-    border-radius: 4px;
 `
 
 @observer
@@ -60,7 +59,7 @@ export default class HorizontalBarGraph extends React.Component{
             <Header>
                 {this.props.header}
             </Header>
-            <FadeCropper />
+            {this.props.beefyPadding && <FadeCropper />}
             <PerfectScrollBar>
             <GraphTable
                 ref = {this.graph}
@@ -145,8 +144,11 @@ export default class HorizontalBarGraph extends React.Component{
                                         }
                                     </React.Fragment>
                                 }
-                                {invalidValue && 
-                                    <Invalid> N/A </Invalid>
+                                {invalidValue && !item.value && 
+                                    <Invalid> No data </Invalid>
+                                }
+                                {invalidValue && item.value==='*' &&
+                                    <Invalid> Data set too small or unstable </Invalid>
                                 }
                             </Row>
                         )
@@ -158,7 +160,7 @@ export default class HorizontalBarGraph extends React.Component{
                             // offset = {0}
                             side = {this.props.average>65?'left':'right'}
                             muted = {this.hoveredRow}
-                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
+                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-75)}
                         >
                             <AverageLabel side = {this.props.average>65?'left':'right'}>
                              CA Avg 
@@ -171,7 +173,7 @@ export default class HorizontalBarGraph extends React.Component{
             </GraphTable>
             </PerfectScrollBar>
 
-            <FadeCropperBottom />
+           {this.props.beefyPadding && <FadeCropperBottom />}
             {this.props.footer && 
             <Footer>
                 {this.props.footer}
@@ -221,7 +223,6 @@ const Header = styled(CropBox)`
     transform: translateY(-50%);
 `
 const FadeCropper = styled.div`
-    display: none;
     /*border: 1px solid red;*/
     z-index: 2;
     position: absolute;
