@@ -103,6 +103,7 @@ class CountyList extends React.Component{
     
 
     @action handleSelection = (cty, column, row) => {
+        if(this.props.store.sanityCheck.county) return
         const sel = this.props.store.completeWorkflow('county', cty)
         if(sel) this.props.closeNav()
         else{
@@ -190,25 +191,26 @@ class CountyList extends React.Component{
                                 disabled = {disabled}
                                 muted = {sanityCheck.county && sanityCheck.county!==cty.id}
                                 key = {"countylist"+cty.id}
-                                onClick = {!sanityChecking?()=>{this.handleSelection(cty.id, colNum, rowNum)}: ()=>{}}
+                                onClick = {!sanityChecking?()=>{this.handleSelection(cty.id, colNum, rowNum)}
+                                : ()=>{}}
                                 // data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
                             > 
                                 {sanityChecking && 
                                     <SanityCheckTooltip 
                                         checkType = 'county'
-                                        direction = {i > sideChangeThreshold? 'above' : 'below'}
-                                        pos = {{x: colNum === 3? 50 : 0, y: 40}}
+                                        direction = {rowNum < 7? 'below' : 'above'}
+                                        pos = {{x: colNum === 3? 50 : 0, y: rowNum < 7? 40 : 0}}
                                         data = {sanityCheck}
                                         index = {i}
                                         store = {this.props.store}
                                         needsCentering = {colNum===3}
                                         horizontalAnchor = {colNum < 4? 'left' : 'right'}
-                                        caretOffset = {colNum === 1? -100 : colNum === 2? -150 : colNum === 4? 100: colNum === 5? 150 : 0}
+                                        caretOffset = {colNum < 3? -180 : colNum > 3? 125:  0}
 
                                     />
                                 }
-                                {cty.label}
 
+                                {cty.label}
                             </GridItem>
 
                     })

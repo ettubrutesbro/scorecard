@@ -20,20 +20,24 @@ export default class SanityCheckTip extends React.Component{
     }
     handleClick = (e) => {
         // console.log(this.sanityCheck)
+        console.log(e)
+        console.log(e.nativeEvent)
         if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+            // e.nativeEvent.stopImmediatePropagation()
             this.props.store.clearSanityCheck(this.props.checkType)
+
         }
     }
 
     render(){
-        const {pos, store, side, needsCentering, checkType, caretOffset, horizontalAnchor} = this.props
+        const {pos, store, direction, needsCentering, checkType, caretOffset, horizontalAnchor} = this.props
         const data = store.sanityCheck
         const screen = getMedia()
         return(
             <ModTip
                 ref = {this.sanityCheck}
                 pos = {{x: pos.x, y: pos.y}}
-                direction = {side}
+                direction = {direction}
                 horizontalAnchor = {horizontalAnchor}
                 duration = {'.35s'}
                 className = 'actionable'
@@ -48,8 +52,9 @@ export default class SanityCheckTip extends React.Component{
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
                         onClick = {(e)=>{
-                            store.clearSanityCheck(checkType)
+
                             e.nativeEvent.stopImmediatePropagation()
+                            store.clearSanityCheck(checkType)
                         }}
                     />
                     <Button 
@@ -71,7 +76,9 @@ export default class SanityCheckTip extends React.Component{
 const ModTip = styled(Tip)`
     cursor: auto;
     margin-top: ${p=>p.direction==='above'?-20:20}px;
-    transform-origin: ${p=>p.direction==='above'?'50% 100%':'50% 0%'}; 
+    // transform-origin: ${p=>p.direction==='above'?'50% 100%':'50% 0%'}; 
+
+    transform-origin: ${p=>p.needsCentering? 50 : p.horizontalAnchor==='left'? 0 : 100}% ${p=>p.direction==='above'? 100: 0}%;
     &::after{
         left: calc(50% - 9.5px);
         ${p=>p.direction==='above'? 'bottom' : 'top'}: -19px;
@@ -91,7 +98,8 @@ const ModTip = styled(Tip)`
         &::before { border-${p => p.direction === 'above'? 'top' : 'bottom'}: 10.5px var(--bordergrey) solid; }
         &::after{ border-${p => p.direction === 'above'? 'top' : 'bottom'}: 9.5px var(--offwhitefg) solid;  }
         animation: ${
-            p=> p.needsCentering ? tooltipanimCenter 
+            p=> p.needsCentering && p.direction==='above'? tooltipaboveCenter
+            : p.needsCentering ? tooltipanimCenter 
             : p.direction==='above'? tooltipabove 
             : tooltipanim
 
@@ -133,11 +141,11 @@ const tooltipanimCenter = keyframes`
 const tooltipaboveCenter = keyframes`
     from {
         opacity: 0; 
-        transform: scale(0.8) translate(-50%,-100%) translateY(60px);
+        transform: translate(-50%,-100%) translateY(60px) scale(0.8) ;
     }
     to {
         opacity: 1;
-        transform: translate(-50%,-100%) translateY(0);
+        transform: translate(-50%,-100%) translateY(0) scale(1);
     }
 `
 
