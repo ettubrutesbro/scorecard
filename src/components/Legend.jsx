@@ -210,7 +210,7 @@ const Titles = styled.div`
     position: absolute;
     top: 0; font-size: 16px;
     right: 0;
-    color: var(--fainttext);
+    color: var(--normtext);
 `
 const ColorGuideLabel = styled(Titles)`
     opacity: ${props => props.hide?
