@@ -34,5 +34,8 @@ export function truncateNum(number){
         else if(number>=1000){
             return (number/1000).toPrecision(1) + 'k'
         }
+        else if(number>=100){
+            return (number / 100).toPrecision(2) * 100
+        }
         else return number
 }

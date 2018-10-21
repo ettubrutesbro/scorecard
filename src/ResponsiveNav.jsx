@@ -76,7 +76,7 @@ const DropdownWorkflow = styled(Dropdown)`
     }
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
-    width: 360px;
+    width: 410px;
 
     transform: ${props=>props.offset?'translateX(-15px)':''};
 

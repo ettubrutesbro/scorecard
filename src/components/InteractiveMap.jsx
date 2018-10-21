@@ -112,7 +112,7 @@ const CountyPath = styled.path`${CountyStyle}`
         else if(tipData === '*'){
             noData = true
             if(race){
-                if(race==='other') `Indicator data on ${semanticTitles[indicator].who} of other races in ${cty} is too small or unstable to display.`
+                if(race==='other') tipData = `Indicator data on ${semanticTitles[indicator].who} of other races in ${cty} is too small or unstable to display.`
                 else tipData = `Indicator data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} is too small or unstable to display.`
             }
             else tipData = `Indicator data on ${cty} is too small or unstable to display.`

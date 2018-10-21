@@ -5,6 +5,7 @@ import chroma from 'chroma-js'
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import countyLabels from './assets/countyLabels'
+import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
@@ -283,10 +284,46 @@ export default class AppStore{
         }// END COUNTY CHECK
 
 
-        else if(which==='race'){
-            if(!this.checkValidity(which,value)){
-                console.log('tried to pick race but it woludve resulted in invalid value: canceling')
-                return
+        else if(which==='race' && this.indicator){
+            // if(!this.checkValidity(which,value)){
+            //     console.log('tried to pick race but it woludve resulted in invalid value: canceling')
+            //     return
+            // }
+            const arr = indicators[this.indicator].counties[this.county||'california'][value||'totals']
+            if(isValid(arr[this.year])) console.log('race selection valid')
+            else{
+                //invalid
+                console.log('race selection invalid, determining....')
+                if(arr.filter((v)=>{return isValid(v)}).length > 0){
+                    const otherYear = this.year===0? 1 : 0
+                    console.log('race selection can be sanity checked: year')
+                    this.setSanityCheck('race',value,
+                        `This indicator has no data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county? countyLabels[this.county] : 'California'} for the year ${indicators[this.indicator].years[this.year]}, but you can view ${indicators[this.indicator].years[otherYear]}.`,
+                        ()=>{
+                            this.completeWorkflow('year',otherYear)
+                            this.completeWorkflow('race', value)
+                        }
+                    )
+                        
+                    return false
+                }
+                    
+                
+                if(this.county && indicators[this.indicator].counties.california[value||'totals'].filter((v)=>{return isValid(v)}).length > 0){
+                    console.log('race selection can be sanity checked: county')
+                    this.setSanityCheck('race',value,
+                        `This indicator doesn't have value for this race for the county you have selected, but you can continue without the county selection...`, 
+                        ()=>{
+                            this.completeWorkflow('county',null)
+                            this.completeWorkflow('race',value)
+                        }    
+                    )
+                    return false
+                }
+
+                console.log('got to the end of the invalid race selection check without another solution...uh oh')
+
+                
             }
         }
 
