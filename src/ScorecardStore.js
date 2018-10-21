@@ -49,7 +49,7 @@ export default class AppStore{
         //these facile checks work for setting yearIndex presuming there's data, but break on
         //complex selections wherein county/race may not have a value for this year, even if the ind
         // has data for this year generally
-        let targetYear = 0
+        let targetYear = this.year || 0
         if(!this.year && yrs.length>1) targetYear = yrs.length-1
         else if(!this.year) targetYear = 0
         else if(this.year === 1 && yrs.length===1) targetYear = 0
@@ -207,14 +207,14 @@ export default class AppStore{
                             if(this.race){
                                 //no need to check for hasRace: should have never gotten to this point...
                                 //if user has race, does county have values for that?
-                                if(indCty[this.race].filter((v)=>{return isValid(v)})){
+                                if(indCty[this.race].filter((v)=>{return isValid(v)}).length > 0){
                                     //race does have values, just not your year
                                     const yrs = indicators[this.indicator].years
                                     const validYear = year ===0? 1 : 0
                                     this.setSanityCheck(
                                         'county',
                                         value,
-                                        `This county doesn\'t have indicator data for your selected race in ${yrs[year]}, but you can view data from ${yrs[validYear]}.`,
+                                        `This county doesn\'t have indicator data for your selected race in ${yrs[year]}, but you can view ${yrs[validYear]}.`,
                                         ()=>{
                                             this.completeWorkflow('year', validYear)
                                             this.completeWorkflow('county',value)
@@ -439,5 +439,8 @@ export default class AppStore{
         this.sanityCheck.message = message
         this.sanityCheck.action = action
     }
-    @action clearSanityCheck = (which) => { this.sanityCheck[which] = null}
+    @action clearSanityCheck = (which) => { 
+        console.log('clearing sanity check for', which)
+        this.sanityCheck[which] = null
+    }
 }

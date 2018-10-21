@@ -95,7 +95,7 @@ const DarkBar = styled.div`
 
 const Nav = styled(DarkBar)`
     top: 0;
-    height: 80px;
+    height: 85px;
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -112,7 +112,7 @@ const GreyMask = styled.div`
     transform-origin: 50% 0%;
     transition: transform ${props=>props.show? .5 :0.5}s;
     transform: scaleY(${props=>props.show?1 : 0});
-    background: var(--offwhitebg);
+    background: var(--offwhitefg);
     z-index: 2;
 `
 
@@ -307,12 +307,12 @@ const LegendContainer = styled.div`
 `
 
 const Footer = styled(DarkBar)`
-    height: 100%;
+    
     @media ${media.optimal}{
-        top: 1025px;
+        bottom: 0;
     }
     @media ${media.compact}{
-        top: 825px;
+        bottom: 0;
     }
     z-index: 3;
 `
@@ -327,8 +327,8 @@ const FooterContent = styled.div`
     @media ${media.compact}{
         width: 1295px;
     }
-    height: 75px;
     display: flex;
+    height: 75px;
     align-items: center;
     justify-content: flex-end;
 `

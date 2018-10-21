@@ -3,17 +3,21 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled, {keyframes} from 'styled-components'
 
+import {findDOMNode} from 'react-dom'
 import {find} from 'lodash'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import ReactTooltip from 'react-tooltip'
 
-import {Search} from './generic'
+import {Search, Tooltip, Button} from './generic'
+import SanityCheckTooltip from './generic/SanityCheckTip'
 
-import media from '../utilities/media'
+
+import media, {getMedia} from '../utilities/media'
 
 const GridList = styled.ul`
+
     display: grid;
     @media ${media.optimal}{
         grid-template-columns: repeat(5, 1fr);
@@ -31,19 +35,22 @@ const GridList = styled.ul`
 
 `
 const GridItem = styled.li`
-    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? '#d7d7d7' : 'black'};
+    position: relative;
+    color: ${props => props.sanityHighlight? 'var(--normtext)' : props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     @media ${media.optimal}{
         padding: 8px 13px;
     }
     @media ${media.compact}{
         padding: 6px 13px;    
     }
+
     cursor: pointer;
     display: flex;
     align-items: center;
     white-space: nowrap;
+    opacity: ${props => props.muted? 0.2 : 1};
     background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
-    border: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'transparent'};
+    border: 1px solid ${props => props.sanityHighlight? 'var(--bordergrey)' : props.selected? 'var(--strokepeach)' : 'transparent'};
     &:hover{
         background: #f3f3f5;
     }
@@ -94,13 +101,21 @@ class CountyList extends React.Component{
     @observable searchString = ''
     @action search = (e) => this.searchString = e.target.value
     
-    handleSelection = (cty) => {
-        this.props.store.completeWorkflow('county', cty)
-        this.props.closeNav()
+
+    @action handleSelection = (cty, column, row) => {
+        const sel = this.props.store.completeWorkflow('county', cty)
+        if(sel) this.props.closeNav()
+        else{
+            // console.log('sanity check on county!')
+            // console.log(this.props.store.sanityCheck)
+
+        }
     }
     render(){
-        const {indicator, county, race, year} = this.props.store
+        const {indicator, county, race, year, sanityCheck} = this.props.store
         const ctyLabel = county? find(counties, (c)=>{return c.id === county}).label : ''
+        const screen = getMedia()
+        const sideChangeThreshold = screen === 'optimal'? 20 : 10
 
         return(
             <div>
@@ -110,17 +125,6 @@ class CountyList extends React.Component{
                    
                     </TitleSide>
                     <TitleSide>
-                        {/*county && 
-                        <AllCountiesBtn
-                            onClick= {()=>this.handleSelection(null)}
-                            btnMode = {county}
-                        >
-                        All counties
-                            <Faint>
-                                (Deselect {ctyLabel} county)
-                            </Faint>
-                        </AllCountiesBtn>
-                        */}
                         {/*
                         <Search 
                             placeholder = "Search counties..." 
@@ -132,15 +136,18 @@ class CountyList extends React.Component{
                 </Titleblock>
 
                 <GridList>
+                    {/*
                     <ReactTooltip effect = "solid" 
                         className = 'reactTooltipOverride'
                     />
+                    */}
                     <GridItem 
                         className = 'allctys'
                         selected = {!county}
                         onClick = {()=>{this.handleSelection()}}
+                        muted = {sanityCheck.county}
                     >
-                        All counties
+                        California
                     </GridItem>
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1
@@ -148,7 +155,7 @@ class CountyList extends React.Component{
                         else return 0
                     }).filter((cty)=>{
                         return !this.searchString? true : cty.id.includes(this.searchString.toLowerCase())
-                    }).map((cty)=>{
+                    }).map((cty, i)=>{
                         let disabled = false 
                         const selected = cty.id === county
                         if(indicator){
@@ -156,15 +163,54 @@ class CountyList extends React.Component{
                             
                             if((value!==0) && (!value || value === '*')) disabled = true
                         }
+
+                    //finding column and row numbers in order to position sanity check
+                    let colNum, rowNum
+                    if(i+2 < 6){ //row 0
+                        colNum = i+2
+                        rowNum = 0
+                    }
+                    else if((i+2)-5 <= 5){ //row 1
+                        colNum = (i+2) -5
+                        rowNum = 1
+                    }
+                    else{ //row 2+
+                        for(let it = 0; it*5 < (i+2); it++){
+                            rowNum = it
+                        }
+                        colNum = (i+2) - (5*rowNum)
+
+                    }
+
+                    const sanityChecking = sanityCheck.county && sanityCheck.county===cty.id
+
                         return <GridItem
-                            selected = {selected}
-                            disabled = {disabled}
-                            key = {"countylist"+cty.id}
-                            onClick = {()=>{this.handleSelection(cty.id)}}
-                            data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
-                        > 
-                            {cty.label}
-                        </GridItem>
+                                selected = {selected}
+                                sanityHighlight = {sanityChecking}
+                                disabled = {disabled}
+                                muted = {sanityCheck.county && sanityCheck.county!==cty.id}
+                                key = {"countylist"+cty.id}
+                                onClick = {!sanityChecking?()=>{this.handleSelection(cty.id, colNum, rowNum)}: ()=>{}}
+                                // data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
+                            > 
+                                {sanityChecking && 
+                                    <SanityCheckTooltip 
+                                        checkType = 'county'
+                                        direction = {i > sideChangeThreshold? 'above' : 'below'}
+                                        pos = {{x: colNum === 3? 50 : 0, y: 40}}
+                                        data = {sanityCheck}
+                                        index = {i}
+                                        store = {this.props.store}
+                                        needsCentering = {colNum===3}
+                                        horizontalAnchor = {colNum < 4? 'left' : 'right'}
+                                        caretOffset = {colNum === 1? -100 : colNum === 2? -150 : colNum === 4? 100: colNum === 5? 150 : 0}
+
+                                    />
+                                }
+                                {cty.label}
+
+                            </GridItem>
+
                     })
                     }
                 </GridList>
@@ -173,4 +219,66 @@ class CountyList extends React.Component{
     }
 }
 
+
+// class SanityCheckTooltip extends React.Component{
+//     render(){
+//         const {index, data, store} = this.props
+//         const screen = getMedia()
+//         const sideChangeThreshold = screen === 'optimal'? 20 : 10
+//         return(
+//             <Tooltip
+//                 direction = {index > sideChangeThreshold? 'above' : 'below'}
+//                 theme = 'actionable'
+//                 pos = {{x: screen==='optimal'?87:50, y: 0}}
+//             >
+//                 <Check>
+//                 {data.message}
+//                 <SanityControls>
+//                     <Button 
+//                         className = {screen==='compact'?'compact':''}
+//                         label = 'Nevermind, back to list' 
+//                         style = {{marginRight: '15px'}}
+//                         onClick = {(e)=>{
+//                             store.clearSanityCheck('indicator')
+//                             e.nativeEvent.stopImmediatePropagation()
+//                         }}
+//                     />
+//                     <Button 
+//                         label = 'Yes, continue' 
+//                         className = {`dark ${screen}`} 
+//                         onClick = {()=>{
+//                             data.action()
+//                             store.clearSanityCheck('indicator')
+//                         }}
+// 
+//                     />
+// 
+//                 </SanityControls>
+//                 </Check>
+//             </Tooltip>    
+//         )
+//     }
+// }
+// const Check = styled.div`
+//     width: 400px;
+//     line-height: 180%;
+//     white-space: normal;
+//     @media ${media.optimal}{
+//         font-size: 16px;
+//         padding: 30px;
+//     }
+//     @media ${media.compact}{
+//         font-size: 13px;
+//         padding: 20px;
+//     }
+// 
+// `
+// const SanityControls = styled.div`
+//     margin-top: 20px;
+//     display: flex;
+//     justify-content: flex-end;
+// 
+// `
+
 export default CountyList
+
