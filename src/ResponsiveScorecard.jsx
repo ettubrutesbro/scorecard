@@ -95,7 +95,7 @@ const DarkBar = styled.div`
 
 const Nav = styled(DarkBar)`
     top: 0;
-    height: 85px;
+    height: 90px;
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -130,6 +130,13 @@ export default class ResponsiveScorecard extends React.Component{
         @action setBreakdownOffset = (val) => this.breakdownOffset = val
 
     @observable extraReadoutLines = ''
+
+    @action reset = () => {
+       store.completeWorkflow('race',null)
+       store.completeWorkflow('county',null)
+       store.completeWorkflow('indicator',null)
+       this.openNav('indicator')
+    }
 
     @action openNav = (status) => {
         console.log('nav', status)
@@ -181,6 +188,7 @@ export default class ResponsiveScorecard extends React.Component{
                         open = {this.navOpen}
                         openNav = {this.openNav}
                         closeSplash = {this.closeSplash}
+                        reset = {this.reset}
                     /> 
                 </Nav>
                 <GreyMask 

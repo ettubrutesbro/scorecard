@@ -79,6 +79,10 @@ export default class AppStore{
 
         //INDICATOR SELECTION CHECKS
         if(which==='indicator'){
+            if(!value){ //clearing value for reset
+                this[which] = value
+                return
+            }
             const ind = indicators[value]
             console.log('attempting to select indicator')
             if(race && !ind.categories.includes('hasRace')){
@@ -132,13 +136,6 @@ export default class AppStore{
                 if(arr.filter((val)=>{ return isValid(val)}).length>0){
                     //YES: indicator selection is valid, proceed
                     console.log('user\'s indicator selection is valid, proceed') 
-                    //TODO: no year correction leads to potential breaking bugs: plumas/sierra > feelingsofschooldiff,
-                    // if(!isValid(arr[this.year])){
-                    //     console.log('attempting year correction')
-                    //     console.log(`year ${this.year} (${ind.years[this.year]}) is invalid`)
-                    //     if(this.year === 0) this.year = 1
-                    //     else this.year = 0
-                    // }
                 }
                 else{
                     //no valid years for the user's selection combo

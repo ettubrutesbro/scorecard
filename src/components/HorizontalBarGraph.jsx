@@ -293,7 +293,7 @@ const AverageLine = styled.div`
     width: 1px;
     background-color: var(--fainttext);
     height: calc(100% + 21px);
-    box-shadow: -1px 0 0 0 var(--offwhitefg);
+    box-shadow: -1.5px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
     z-index: 2;

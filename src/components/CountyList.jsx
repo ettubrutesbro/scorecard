@@ -116,7 +116,6 @@ class CountyList extends React.Component{
 
     @observable searchString = ''
     @action search = (e) => this.searchString = e.target.value
-    
 
     @action handleSelection = (cty, column, row) => {
         if(this.props.store.sanityCheck.county) return
@@ -126,6 +125,12 @@ class CountyList extends React.Component{
             // console.log('sanity check on county!')
             // console.log(this.props.store.sanityCheck)
 
+        }
+    }
+
+    componentDidMount(){
+        if(this.props.store.sanityCheck.county){
+            this.props.store.clearSanityCheck('county')
         }
     }
     render(){

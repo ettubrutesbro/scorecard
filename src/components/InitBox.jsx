@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import {Button} from './generic'
 import media from '../utilities/media'
 
 const Box = styled.div`
@@ -29,24 +29,24 @@ const Box = styled.div`
         padding: 0 50px;
     }
 `
-const Button = styled.div`
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    margin-top: 25px;
-    /*border: 1px solid var(--strokepeach);*/
-    background: black;
-    color: white;
-    @media ${media.optimal}{
-        font-size: 24px;
-        letter-spacing: .6px;
-        padding: 15px 35px;
-    }
-    @media ${media.compact}{
-        letter-spacing: .4px;
-        padding: 10px 25px;     
-    }
-`
+// const Button = styled.div`
+//     cursor: pointer;
+//     display: inline-flex;
+//     align-items: center;
+//     margin-top: 25px;
+//     /*border: 1px solid var(--strokepeach);*/
+//     background: black;
+//     color: white;
+//     @media ${media.optimal}{
+//         font-size: 24px;
+//         letter-spacing: .6px;
+//         padding: 15px 35px;
+//     }
+//     @media ${media.compact}{
+//         letter-spacing: .4px;
+//         padding: 10px 25px;     
+//     }
+// `
 
 export default class InitBox extends React.Component{
     render(){
@@ -61,10 +61,11 @@ export default class InitBox extends React.Component{
                 Numbers and percentages are rounded to the nearest whole number. Some data has been suppressed due to small sample size or large margin of error. Some data is unavailable.
                 </p>
                 <Button
+                    className = 'negative'
+                    label = 'Get Started >'
                     onClick = {this.props.closeSplash}
-                >
-                    Get Started > 
-                </Button>
+                />
+                
             </Box>
         )
     }

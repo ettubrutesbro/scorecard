@@ -7,7 +7,7 @@ import { findIndex, find } from 'lodash'
 import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
-import {Toggle} from './components/generic'
+import {Toggle, Button} from './components/generic'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
@@ -39,29 +39,41 @@ const Nav = styled.div`
 `
 const Dropdown = styled.div`
     position: relative;
-    padding: 10px 45px 10px 20px;
-    background: ${props => props.disabled? 'var(--offwhitebg)' : 'white'};
+    padding: 12px 45px 12px 20px;
+    background: ${props => props.disabled? 'var(--offwhitefg)' : 'white'};
     color: ${props => props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
     align-items: center;
-    outline: 1px solid var(--bordergrey);
-    &::after{
-        content: '';
-        right: 15px;
-        width: 13px;
-        height: 6px;
-        background-image: url(${caret});
-        background-size: contain;
-        background-repeat: no-repeat;   
-        position: absolute;
-    }
+    outline: 1px solid var(--offwhitebg);
+
     transition: transform .25s;
     white-space: nowrap;
 
 `  
 
 const DropdownWorkflow = styled(Dropdown)`
-
+        &::before{
+        content: '';
+        right: 18px;
+        margin-top: 3px;
+        width: 0px;
+        border: 7px solid transparent;
+        border-top-color: black;
+        height: 0px;
+        position: absolute;
+    }
+    &::after{
+        content: '';
+        right: 18px;
+        margin-top: 3px;
+        width: 0px;
+        border: 7px solid transparent;
+        transform: scale(0.75);
+        transform-origin: 50% 20%;
+        border-top-color: white;
+        height: 0px;
+        position: absolute;
+    }
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
     width: 360px;
@@ -73,6 +85,33 @@ const CountySelect = styled(DropdownWorkflow)`
     width: 200px;
     position: relative;
     transform: ${props=>props.offset?'translateX(15px)':'translateX(-1px)'};
+`
+const CaretForRace = styled.div`
+    height: 13px;
+    &::before{
+        content: '';
+        right: 18px;
+        margin-top: 3px;
+        width: 0px;
+        border: 7px solid transparent;
+        border-top-color: ${props => props.disabled? 'var(--disabledtext)' : 'var(--normtext)'};
+        height: 0px;
+        position: absolute;
+    }
+    &::after{
+        content: '';
+        right: 18px;
+        margin-top: 3px;
+        width: 0px;
+        border: 7px solid transparent;
+        transform: scale(0.75);
+        transform-origin: 50% 20%;
+        border-top-color: white;
+        opacity: ${props => props.disabled? 0 : 1};
+        height: 0px;
+        position: absolute;
+        transition: opacity .25s;
+    }
 `
 const NormalDropdown = styled(Dropdown)`
     width: 145px;
@@ -114,7 +153,7 @@ const NormalDropdown = styled(Dropdown)`
 `
 const DropdownReading = styled.span`
     z-index: 11;
-    color: ${props => props.greyed? 'var(--inactivegrey)' : 'var(--normtext)'};
+    color: ${props => props.greyed? 'var(--fainttext)' : 'var(--normtext)'};
 `
 
 const RaceList = styled.ul`
@@ -166,7 +205,7 @@ const HorzRace = styled.div`
     height: 100%;
     display: flex;
     align-items: center; justify-content: center;
-    border: 1px solid ${props=> props.selected?'var(--strokepeach)':'var(--bordergrey)'};
+    border: 1px solid ${props=> props.selected?'var(--strokepeach)':'var(--offwhitebg)'};
     left: 0;
     transform: translateX(${props=>props.open?( props.index*85) - (props.index) : 0}px);
     transition: transform ${props=> .2 + (props.index*.1)}s;
@@ -184,6 +223,10 @@ const fbIcon = require('./assets/fb.svg')
 
 const countyIds = Object.keys(countyLabels)
 
+const NoRaceTip = styled.div`
+    font-size: 13px;
+`
+
 @observer
 export default class ResponsiveNav extends React.Component{
     @observable raceDropdown = false
@@ -199,6 +242,9 @@ export default class ResponsiveNav extends React.Component{
         }
         // this.props.closeSplash()
     }
+    @observable raceSelectIsHovered = false
+    @action hoveredRaceSelect = (tf) => {this.raceSelectIsHovered = tf}
+
     constructor(){
         super()
         this.nav = React.createRef()
@@ -278,12 +324,17 @@ export default class ResponsiveNav extends React.Component{
                     <NormalDropdown
                         ref = {this.dropdown}
                          // disabled = {noall} 
-                        onClick = {!open? this.openRaceDropdown : ()=>{console.log('notopen')}} 
+                        onClick = {!open && !noRace? this.openRaceDropdown : ()=>{console.log('notopen')}} 
                         offset = { open? 2 : 0 }
                         allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
                         mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
-                    >   <DropdownReading 
-                            greyed = {open && noall}
+                        disabled = {noRace}
+                        onMouseEnter = {()=>{this.hoveredRaceSelect(true)}}
+                        onMouseLeave = {()=>{this.hoveredRaceSelect(false)}}
+                    >   
+                        <CaretForRace disabled = {noRace}/>
+                        <DropdownReading 
+                            greyed = {(open && noall) || (!open && noRace)}
                             onClick = {!noall && (open || this.raceDropdown)? ()=>store.completeWorkflow('race',null) : ()=>{}}
                         >
                             {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : init? 'Race' : this.raceDropdown? 'Pick race' : 'All races'}
@@ -305,7 +356,19 @@ export default class ResponsiveNav extends React.Component{
                                 <HorzRace selected = {race==='white'} disabled = {noRace || nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
                                 <HorzRace selected = {race==='other'} disabled = {noRace || nooth} index = {4} open = {open} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </HorzRace>
                             </RaceToggle>
+                            
+                            {this.raceSelectIsHovered && noRace && !open && 
+                                <Tooltip
+                                    direction = 'below'
+                                    pos = {{x: 75, y: 28}}
 
+                                    duration = '.25s'
+                                >
+                                    <NoRaceTip>
+                                        This indicator doesn't have any race data. 
+                                    </NoRaceTip>
+                                </Tooltip>
+                            }
                         
                     </NormalDropdown>
                     <YearToggle 
@@ -330,11 +393,29 @@ export default class ResponsiveNav extends React.Component{
                 {open && <PickingWorkflow x = {()=>openNav(false)} store = {store} open = {open} close = {()=>openNav(false)} />}
                 </FlipMove>
                 {/*open && <X onClick = {()=>openNav(false)}/>*/}
+                
+                <Reset 
+                    className = 'negative' 
+                    label = 'Reset search'
+                    visible = {indicator}
+                    onClick = {this.props.reset}
+                />
+
             </Nav>
 
         )
     }
 }
+
+const Reset = styled(Button)`
+    position: absolute;
+    right: 0;
+    transition: opacity .4s, transform .4s;
+    pointer-events: ${props=>props.visible?'auto':'none'};
+    opacity: ${props=>props.visible?1:0};
+    transform: translateX(${props => props.visible? 0 : 50}px);
+`
+
 const ForcedUnselectTip = styled.div`
     font-size: 13px;
     width: 325px;

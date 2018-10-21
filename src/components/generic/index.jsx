@@ -23,7 +23,7 @@ const Option = styled.div`
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
-    padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};
+    padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--fainttext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'transparent' : 'white'};
     &:hover{
@@ -198,11 +198,14 @@ export const Tip = styled.div`
     &.default{
         background: var(--normtext);
         color: white;
+        outline: 1px solid var(--offwhitefg);
         &.above{
             &::after{ border-top: 9.5px var(--normtext) solid;  }
+            &::before{ border-top: 10.5px var(--offwhitefg) solid; margin-top: 1px;}
         }
         &.below{
             &::after{ border-bottom: 9.5px var(--normtext) solid;  }
+            &::before{ border-bottom: 10.5px var(--offwhitefg) solid;  margin-top: -1px;}
         }
     }
     &.actionable{
@@ -211,7 +214,7 @@ export const Tip = styled.div`
         padding: 0;
         &.above{
             &::before { border-top: 10.5px var(--bordergrey) solid; }
-            &::after{ border-top: 9.5px var(--offwhitefg) solid;  }
+            &::after{ border-top: 9.5px var(--offwhitefg) solid; }
         }
         &.below{
             &::before { border-bottom: 10.5px var(--bordergrey) solid; }
@@ -288,6 +291,11 @@ const Btn = styled.div`
         background: var(--normtext);
         color: white;
         border: none;
+    }
+    &.negative{
+        background: var(--offwhitebg);
+        color: white;
+        border: 1px solid white;
     }
 `
 
