@@ -161,7 +161,7 @@ const CountyPath = styled.path`${CountyStyle}`
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
                         const wire = !data && this.props.mode === 'offset'
-                        const fill = wire? 'var(--offwhitebg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
+                        const fill = wire? 'var(--offwhitefg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
                         
                             const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox

@@ -13,8 +13,8 @@ import ReactTooltip from 'react-tooltip'
 import {Search, Tooltip, Button} from './generic'
 import SanityCheckTooltip from './generic/SanityCheckTip'
 
-
 import media, {getMedia} from '../utilities/media'
+import {isValid} from '../utilities/isValid'
 
 const GridList = styled.ul`
 
@@ -36,23 +36,37 @@ const GridList = styled.ul`
 `
 const GridItem = styled.li`
     position: relative;
-    color: ${props => props.sanityHighlight? 'var(--normtext)' : props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
+    color: ${props => props.sanityHighlight? 'var(--normtext)' : props.selected? 'var(--strokepeach)' : props.dataHasIssue? 'var(--disabledtext)' : 'black'};
     @media ${media.optimal}{
         padding: 8px 13px;
     }
     @media ${media.compact}{
         padding: 6px 13px;    
     }
-
-    cursor: pointer;
+    ${props => props.invalid? `
+        &::after{
+            position: absolute;
+            content: '${props.text}';
+            // width: ${(props.length*12)+8}px;
+            color: rgba(0,0,0,0);
+            white-space: nowrap;
+            top: 0; bottom: 0; margin: auto;
+            left: 0;
+            padding: 0 16px;
+            height: 0px;
+            border-top: 1px solid var(--fainttext);
+        }
+    ` : ''}
+    cursor: ${props => props.invalid? 'auto' : 'pointer'};
     display: flex;
     align-items: center;
     white-space: nowrap;
     opacity: ${props => props.muted? 0.2 : 1};
+    transition: opacity .5s, color .25s;
     background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
     border: 1px solid ${props => props.sanityHighlight? 'var(--bordergrey)' : props.selected? 'var(--strokepeach)' : 'transparent'};
     &:hover{
-        background: #f3f3f5;
+        background: ${props => !props.invalid && !props.sanityHighlight? '#f3f3f5' : 'transparent'};
     }
     &.allctys{
         color: var(--strokepeach);
@@ -60,6 +74,8 @@ const GridItem = styled.li`
 `
 
 const Titleblock = styled.div`
+    opacity: ${props => props.muted? 0.2 : 1};
+    transition: opacity .5s;
     h1{
         margin: 0;
         font-weight: 400;
@@ -120,7 +136,7 @@ class CountyList extends React.Component{
 
         return(
             <div>
-                <Titleblock>
+                <Titleblock muted = {sanityCheck.county}>
                     <TitleSide>
                     <h1>Pick a county.</h1>
                    
@@ -157,12 +173,18 @@ class CountyList extends React.Component{
                     }).filter((cty)=>{
                         return !this.searchString? true : cty.id.includes(this.searchString.toLowerCase())
                     }).map((cty, i)=>{
-                        let disabled = false 
+                        let dataHasIssue = false 
+                        let straightUpNoData = false
                         const selected = cty.id === county
                         if(indicator){
+                            const arr = indicators[indicator].counties[cty.id]
+                            const allValues = Object.values(arr).flat()
                             const value = indicators[indicator].counties[cty.id][race||'totals'][year]   
-                            
-                            if((value!==0) && (!value || value === '*')) disabled = true
+                            if(allValues.filter((v)=>{return isValid(v)}).length === 0){
+                                 straightUpNoData = true
+                                 dataHasIssue = true
+                             }
+                            else if(!isValid(value)) dataHasIssue = true
                         }
 
                     //finding column and row numbers in order to position sanity check
@@ -186,9 +208,11 @@ class CountyList extends React.Component{
                     const sanityChecking = sanityCheck.county && sanityCheck.county===cty.id
 
                         return <GridItem
+                                text = {cty.label}
                                 selected = {selected}
                                 sanityHighlight = {sanityChecking}
-                                disabled = {disabled}
+                                dataHasIssue = {dataHasIssue}
+                                invalid = {straightUpNoData}
                                 muted = {sanityCheck.county && sanityCheck.county!==cty.id}
                                 key = {"countylist"+cty.id}
                                 onClick = {!sanityChecking?()=>{this.handleSelection(cty.id, colNum, rowNum)}
@@ -211,6 +235,7 @@ class CountyList extends React.Component{
                                 }
 
                                 {cty.label}
+                                {dataHasIssue && !straightUpNoData && '*'}
                             </GridItem>
 
                     })
@@ -221,66 +246,6 @@ class CountyList extends React.Component{
     }
 }
 
-
-// class SanityCheckTooltip extends React.Component{
-//     render(){
-//         const {index, data, store} = this.props
-//         const screen = getMedia()
-//         const sideChangeThreshold = screen === 'optimal'? 20 : 10
-//         return(
-//             <Tooltip
-//                 direction = {index > sideChangeThreshold? 'above' : 'below'}
-//                 theme = 'actionable'
-//                 pos = {{x: screen==='optimal'?87:50, y: 0}}
-//             >
-//                 <Check>
-//                 {data.message}
-//                 <SanityControls>
-//                     <Button 
-//                         className = {screen==='compact'?'compact':''}
-//                         label = 'Nevermind, back to list' 
-//                         style = {{marginRight: '15px'}}
-//                         onClick = {(e)=>{
-//                             store.clearSanityCheck('indicator')
-//                             e.nativeEvent.stopImmediatePropagation()
-//                         }}
-//                     />
-//                     <Button 
-//                         label = 'Yes, continue' 
-//                         className = {`dark ${screen}`} 
-//                         onClick = {()=>{
-//                             data.action()
-//                             store.clearSanityCheck('indicator')
-//                         }}
-// 
-//                     />
-// 
-//                 </SanityControls>
-//                 </Check>
-//             </Tooltip>    
-//         )
-//     }
-// }
-// const Check = styled.div`
-//     width: 400px;
-//     line-height: 180%;
-//     white-space: normal;
-//     @media ${media.optimal}{
-//         font-size: 16px;
-//         padding: 30px;
-//     }
-//     @media ${media.compact}{
-//         font-size: 13px;
-//         padding: 20px;
-//     }
-// 
-// `
-// const SanityControls = styled.div`
-//     margin-top: 20px;
-//     display: flex;
-//     justify-content: flex-end;
-// 
-// `
 
 export default CountyList
 

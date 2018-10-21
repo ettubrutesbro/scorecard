@@ -198,17 +198,6 @@ const GraphTable = styled.div`
    
     overflow: hidden;
 `
-// const Header = styled.div`
-//     width: 100%;
-//     // color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
-//     // margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
-//     // 
-//     // font-size: ${props=>props.expanded? '16px' : '13px'};
-//     color: var(--normtext);
-//     margin: 20px 0 10px 20px;
-//     font-size: 16px;
-//     transition: transform .25s, opacity .25s;
-// `
 
 const CropBox = styled.div`
     position: absolute;
@@ -273,9 +262,6 @@ const Label = styled.div`
 
 `
 const LeftLabel = styled.div`
-    // font-weight: bold;
-    // font-weight: 500;
-    // border: 1px solid red;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" : "var(--fainttext)"};
 
 `
@@ -366,16 +352,9 @@ const Bar = styled.div`
     transform: scaleX(${props=> props.percentage/100});
 
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
-    // border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
     border-right-color: transparent;
 `
-const EndHatch = styled.div`
-    position: absolute;
-    right: 0px;
-    transform: scaleX(${props => props.scaleX});
-    /*border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};*/
-    height: 100%;
-`
+
 const Value = styled.div`
     color: ${props => props.hovered?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
     letter-spacing: 0.5px;
@@ -385,23 +364,6 @@ const Value = styled.div`
     transition: transform .25s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
     margin-left: ${props => props.percentage===0? 0 : 5}px;
-`
-const Prompt = styled.div`
-    position: absolute;
-    width: 100%;
-    font-size: 13px;
-    // color: var(--strokepeach);
-    // font-weight: bold;
-    // letter-spacing: 0.1px;
-    text-align: center;
-    bottom: 0;
-    padding: 45px 0 10px 0;
-    // border-top: 1px solid red;
-    color: var(--normtext);
-    transition: transform .25s, opacity .25s;
-    transform: ${props => props.visible? 'translateY(0px)' : 'translateY(20px)'};
-    opacity: ${props => props.visible? 1 : 0};
-    background: linear-gradient(0deg, rgba(255,255,255,1) 35%, rgba(255,255,255,0) 100%)
 `
 
 HorizontalBarGraph.defaultProps = {
