@@ -35,6 +35,7 @@ export default class Sources extends React.Component{
 const AllSources = styled.div`
     position: relative;
     height: 100%;
+    width; 100%;
     border: 1px solid var(--bordergrey);
 
 `

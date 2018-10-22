@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
 			font-size: 24px;
 		}
 	    @media ${media.compact}{
-	    	font-size: 22px;
+	    	font-size: 20px;
 	    }
 	}
 

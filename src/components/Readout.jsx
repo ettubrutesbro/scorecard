@@ -40,12 +40,22 @@ const ReadoutBlock = styled.div`
         left: 0;
         margin: 0;
         font-size: 48px;
+        @media ${media.compact}{
+            font-size: 42px;
+        }
         font-weight: 600;
     }
 `
 const IndentedTitle = styled.div`
-    line-height: 40px;
-    padding-top: 18px;
+    
+    @media ${media.optimal}{
+        padding-top: 18px;
+        line-height: 40px;
+    }
+    @media ${media.compact}{
+        padding-top: 12px;
+        line-height: 34px;
+    }
 `
 const Crumb = styled.span`
     // display: inline-flex;

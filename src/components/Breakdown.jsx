@@ -20,6 +20,7 @@ import demopop from '../data/demographicsAndPopulation'
 import {getMedia} from '../utilities/media'
 
 const Wrapper = styled.div`
+    width: 100%;
     height: 100%;
     flex-grow: 1;
     display: flex;
@@ -55,8 +56,8 @@ export default class Breakdown extends React.Component{
                 if(hasRace) entryCount = 13
                 else entryCount = 20
             }if(screen==='compact'){
-                if(hasRace) entryCount = 7
-                else entryCount = 16    
+                if(hasRace) entryCount = 9
+                else entryCount = 18    
             }
         }
 
