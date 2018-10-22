@@ -23,6 +23,14 @@ import {isValid} from './utilities/isValid'
 import {capitalize} from './utilities/toLowerCase'
 
 import caret from './assets/caret.svg'
+import countyIco from './assets/county.svg'
+import countyHoveredIco from './assets/county-hovered.svg'
+import countySelectedIco from './assets/county-selected.svg'
+import indicatorIco from './assets/indicator.svg'
+import indicatorHoveredIco from './assets/indicator-hovered.svg'
+import indicatorSelectedIco from './assets/indicator-selected.svg'
+import resetIco from './assets/reset.svg'
+
 
 
 const Nav = styled.div`
@@ -39,7 +47,8 @@ const Nav = styled.div`
 `
 const Dropdown = styled.div`
     position: relative;
-    box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--strokepeach)':''};
+    font-weight: ${props => props.hasValue&&!props.isOpen? 500 : 400};
+    // box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--peach)':''};
     padding: 12px 45px 12px 20px;
     background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
     color: ${props => (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
@@ -58,7 +67,7 @@ const DropdownWorkflow = styled(Dropdown)`
         margin-top: 3px;
         width: 0px;
         border: 7px solid transparent;
-        border-top-color: ${props => props.hasValue? 'var(--peach)' : props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
+        border-top-color: ${props => props.hasValue && props.hovered? 'var(--strokepeach)' : props.hasValue&&!props.isOpen? 'var(--peach)' : props.isOpen || props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
         height: 0px;
         position: absolute;
     }
@@ -74,22 +83,65 @@ const DropdownWorkflow = styled(Dropdown)`
         height: 0px;
         position: absolute;
         transition: transform .25s;
-        ${props => props.hovered? `
-            transform: scale(0.5);    
+        ${props => props.hovered || props.isOpen? `
+            transform: scale(0.65);    
         ` : ''}
-        ${props => props.hasValue? `
+        ${props => props.hasValue&&!props.isOpen? `
             transform: scale(0);    
         ` : ''}
     }
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
     width: 395px;
-
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
 `
+const Icon = styled.div`
+    /*position: absolute;*/
+    width: 28px;
+    height: 24px;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    flex-shrink: 0;
+`
+const IndicatorIcon = styled(Icon)`
+    background-image: url(${p => p.hasValue&&!p.isOpen? indicatorSelectedIco : p.hovered && !p.isOpen? indicatorHoveredIco : indicatorIco});
+`
+const CountyIcon = styled(Icon)`
+    background-image: url(${p => p.hasValue&&!p.isOpen? countySelectedIco : p.hovered && !p.isOpen? countyHoveredIco : countyIco});
+`
+const SelectionValueContainer = styled.div`
+    display: flex;
+    max-width: 128px;
+    align-items: center;
+`
+const SelectionValue = styled.div`
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 7px;
+    margin-left: -7px;
+    &::after{
+        content: '${props => props.label}';
+        color: rgba(0,0,0,0);
+        position: absolute;
+        top: calc(50% - 1px);
+        left: -10px;
+        padding: 0 13px;
+        z-index: 5;
+        bottom: 0; 
+        margin: auto;
+        border-top: 2px solid var(--strokepeach);
+        transform: scaleX(${props => props.strikethrough? 1 : 0});
+        transition: transform .2s;
+        pointer-events: none;
+        transform-origin: ${p=>p.hasValue? '100% 50%' : '0% 50%'};
+
+    }
+`
 const CountySelect = styled(DropdownWorkflow)`
-    width: 200px;
+    width: 230px;
     position: relative;
     transform: ${props=>props.offset?'translateX(15px)':'translateX(1px)'};
 `
@@ -181,7 +233,12 @@ export default class ResponsiveNav extends React.Component{
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     // offset = {open==='county'}
                 >
-                    {store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }
+                    <IndicatorIcon 
+                        hovered = {this.hoveredWorkflow === 'indicator'}
+                        hasValue = {indicator} 
+                        isOpen = {this.props.open==='indicator'}
+                    />
+                    <SelectionValue>{store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}
@@ -193,8 +250,32 @@ export default class ResponsiveNav extends React.Component{
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     offset = {open}
                 >
-                    {store.county? countyLabels[store.county] : 'California' }
-                    {store.notifications.unselectCounty &&
+                    <CountyIcon 
+                        hovered = {this.hoveredWorkflow === 'county'}
+                        hasValue = {county} 
+                        isOpen = {this.props.open==='county'}
+                    />
+                    <SelectionValueContainer>
+                    <SelectionValue
+                        hasValue = {county}
+                        label = {store.county? countyLabels[store.county] : 'California'}
+                        strikethrough = {this.hoveredWorkflow === 'countyStrikeout'}
+                    >
+                        {store.county? countyLabels[store.county] : 'California' }
+                        
+                    </SelectionValue>
+                    <QuickClear 
+                        reveal = {county}
+                        onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
+                        onMouseLeave = {()=>{this.onHoverWorkflow('county')} }
+                        onClick = {county? (e)=>{
+                            store.completeWorkflow('county',null)
+                            e.stopPropagation()
+                            e.nativeEvent.stopImmediatePropagation()
+                        } : ()=>{} }
+                    />
+                </SelectionValueContainer>
+                    {/*store.notifications.unselectCounty &&
                         <Tooltip 
                             direction = 'below'
                             pos = {{x: 185, y: 0}}
@@ -204,7 +285,7 @@ export default class ResponsiveNav extends React.Component{
                                     The indicator you picked doesn’t have any data for {store.notifications.unselectCounty} county, so we’re showing you statewide data now. 
                                 </ForcedUnselectTip>   
                         </Tooltip>
-                    }
+                    */}
                 </CountySelect>
                 
 
@@ -274,7 +355,9 @@ const ResetIcon = styled.div`
     margin-left: 10px;
     width: 17px;
     height: 17px;
-    border: 1px solid white;
+    /*border: 1px solid white;*/
+    background-image: url(${resetIco});
+    background-repeat: no-repeat;
 `
 const RaceDropdownToggle = styled(DropdownToggle)`
     transform: translateX(${props=>props.offset?30:3}px);
@@ -307,6 +390,7 @@ const ShareIco = styled.div`
 `
 
 const xIcon = require('./assets/x.svg')
+const peachX = require('./assets/peach-x.svg')
 
 const X = styled.div`
     position: absolute;
@@ -320,7 +404,20 @@ const X = styled.div`
         opacity: 0.5;
     }
     z-index: 2;
-
+`
+const QuickClear = styled.div`
+    width: 15px; height: 15px;
+    margin-bottom: 2px;
+    margin-right: -5px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    background: url(${peachX}) no-repeat;
+    &:hover{
+        opacity: ${props => props.reveal? 1 : 0};
+    }
+    opacity: ${props => props.reveal? 0.5 : 0};
+    transition: opacity .2s;
+    pointer-events: ${props => props.reveal? 'auto' : 'none'};
 `
 const YearToggle = (props) =>{
     const {indicator,county,race} = props.store
@@ -330,7 +427,8 @@ const YearToggle = (props) =>{
         return {label:yr, value: i, disabled: disabled}
     }): false
 
-    return <YrToggle offset = {props.offset} hide = {!years}> 
+    return <YrToggle 
+    offset = {props.offset} hide = {!years}> 
             {years && <Toggle
                             size = "big"
                             options = {years}
@@ -344,8 +442,9 @@ const YearToggle = (props) =>{
 }
 const YrToggle = styled.div`
     margin-left: 15px;
+    /*transition: transform ${props=>props.offset===2? .65 : .25}s;*/
     transition: transform .65s;
-    transform: translateX(${props=>props.offset===2? 470 : props.offset===1? 30: 0}px);
+    transform: translateX(${props=>props.offset===2? 470 : props.offset===1? 25: 0}px);
 `
 
 const LargeWorkflow = styled.div`

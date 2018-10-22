@@ -281,6 +281,9 @@ const Btn = styled.div`
         background: white;
         color: var(--normtext);
         border: 1px solid var(--fainttext);
+        &:hover{
+            color: var(--strokepeach);
+        }
     }
 
     &.compact{
@@ -298,6 +301,11 @@ const Btn = styled.div`
         background: var(--offwhitebg);
         color: white;
         border: 1px solid white;
+        &:hover{
+            color: var(--peach);
+            border-color: var(--peach);
+
+        }
     }
 `
 
@@ -389,6 +397,7 @@ export class DropdownToggle extends React.Component {
                 disabled = {disabled}
                 hovered = {this.hovered && !this.dropdownOpen}
                 hasValue = {selected}
+                isOpen = {this.dropdownOpen}
             />
 
                 <FirstOptBorder
@@ -508,7 +517,7 @@ const DropdownOption = styled.li`
     list-style-type: none;
     margin-top: -1px;
     &:hover{
-        color: var(--strokepeach);
+        color: ${p => !p.disabled? 'var(--strokepeach)' : 'var(--fainttext)'};
     }
 `
 const TogOption = styled.div`
@@ -518,7 +527,7 @@ const TogOption = styled.div`
     position: absolute;
     left: 0;
     padding: 12px 25px;
-    border: 1px solid ${p => p.selected? 'var(--strokepeach)' : 'var(--offwhitebg)'};
+    // border: 1px solid ${p => p.selected? 'var(--strokepeach)' : 'var(--offwhitebg)'};
     background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
     cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
     color: ${p => p.dropdownOpen || p.muted || p.disabled? 'var(--fainttext)' : (p.hovered&&!p.dropdownOpen) || p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
@@ -532,28 +541,33 @@ const TogOption = styled.div`
         z-index: 3;
         background-color: transparent;
         border-color: transparent;
-        color: ${p => p.hasValue? 'var(--strokepeach)' : ''};
+        color: ${p => p.hovered && p.muted? 'var(--fainttext)' : p.hasValue || p.hovered? 'var(--strokepeach)' : ''};
+        font-weight: ${p => p.hasValue? 500 : 400};
 
     }
     &:not(.first){
         justify-content: center;
+
+        outline: 1px solid var(--offwhitebg);
         margin-left: ${props => 25 - props.index}px;
         width: 93px;
         z-index: ${props => 2 - props.index};
         // z-index: ${props => (props.length - props.index) + 2};
+        ${props => props.selected? `
+        // box-shadow: inset 0px 0px 0px 1px var(--strokepeach);
+        `: ''}
     }
     &:hover{
-        color: var(--strokepeach);
+        color: ${p => !p.disabled? 'var(--strokepeach)' : 'var(--fainttext)'};
     }
 `
 const FirstOptBorder = styled.div`
     position: absolute;
-    outline: 2px solid transparent;
-    outline-offset: -3px;
     ${props => props.hasValue? `
-        box-shadow: inset 0px 0px 0px 2px var(--strokepeach);
+        // box-shadow: inset 0px 0px 0px 2px var(--peach);
     `: ''}
-    border: ${p => p.selected? '1px solid var(--strokepeach)' : '1px solid transparent'};
+    outline: 1px solid var(--offwhitebg);
+    // border: ${p => p.selected || p.hasValue? '1px solid var(--strokepeach)' : '1px solid transparent'};
     width: ${props => props.defaultWidth}px;
     height: 100%;
     z-index: 3;
@@ -592,7 +606,7 @@ export const Caret = styled.div`
         right: 18px;
         width: 0px;
         border: 7px solid transparent;
-        border-top-color: ${props => props.hasValue? 'var(--peach)' : props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--bordergrey)' : 'var(--normtext)'};
+        border-top-color: ${props => props.disabled? 'var(--bordergrey)' : props.hovered && props.hasValue && !props.disabled? 'var(--strokepeach)' : props.hasValue&&!props.isOpen? 'var(--peach)' : props.hovered || props.isOpen? 'var(--strokepeach)' :  'var(--normtext)'};
         height: 0px;
         position: absolute;
     }
@@ -610,10 +624,10 @@ export const Caret = styled.div`
         position: absolute;
 
         transition: opacity .25s, transform .25s;
-        ${props => props.hovered? `
-            transform: scale(0.5);    
+        ${props => props.hovered || props.isOpen? `
+            transform: scale(0.65);    
         ` : ''}
-        ${props => props.hasValue? `
+        ${props => props.hasValue && !props.isOpen? `
             transform: scale(0);    
         ` : ''}
     }

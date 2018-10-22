@@ -25,9 +25,14 @@ import {Button} from './components/generic'
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
+import countyLabels from './assets/countyLabels'
+import pdfmanifest from './assets/pdfs/pdfmanifest'
 
 import media from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
+
+import cnico from './assets/cnlogo-long.svg'
+import maskImg from './assets/mask.png'
 
 const store = new ScorecardStore()
 window.store = store
@@ -46,7 +51,7 @@ const App = styled.div`
     @media ${media.optimal}{
         width: 1550px;
         height: 740px;
-        margin-top: 80px;
+        margin-top: 95px;
     }
     @media ${media.compact}{
         margin-top: 80px;
@@ -69,7 +74,6 @@ const TopRow = styled(Row)`
     justify-content: space-between;
     @media ${media.optimal}{
         height: 185px;
-        margin-top: 10px;
     } 
     @media ${media.compact}{
         height: 150px;
@@ -106,14 +110,26 @@ const Nav = styled(DarkBar)`
 const GreyMask = styled.div`
     position: fixed;
     left: 0;
-    top: 75px;
+    top: 0;
     width: 100%;
     height: 100%;
-    transform-origin: 50% 0%;
-    transition: transform ${props=>props.show? .5 :0.5}s;
-    transform: scaleY(${props=>props.show?1 : 0});
+    transform-origin: 0% 0%;
+    transition: transform .75s;
+    transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
+    // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
     z-index: 2;
+    &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 400px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        right: -400px;
+        background-image: url(${maskImg});
+    }
 `
 
 @observer
@@ -192,7 +208,7 @@ export default class ResponsiveScorecard extends React.Component{
                     /> 
                 </Nav>
                 <GreyMask 
-                    show = {this.navOpen}
+                    show = {this.navOpen || this.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
                 />
@@ -201,8 +217,15 @@ export default class ResponsiveScorecard extends React.Component{
                     {store.indicator &&
                     <ShareSources>
                         <Button label = "View sources and notes" />
-                        <Button label = "Share / download" style = {{marginLeft: '15px'}}/>
-
+                        <Button label = "Download PDF" style = {{marginLeft: '15px'}}
+                            onClick = {()=>{
+                                if(pdfmanifest[store.county||'california']){
+                                    window.open(pdfmanifest[store.county||'california'])
+                                }
+                                else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
+                                
+                            } }
+                        />
                     </ShareSources>
                     }
                 </TopRow>
@@ -253,10 +276,10 @@ export default class ResponsiveScorecard extends React.Component{
 
                 <Footer>
                     <FooterContent>
-                        <FooterLink>About us</FooterLink>
-                        <FooterLink>Contact</FooterLink>
-                        <FooterLink>Credits & Acknowledgments</FooterLink>
-                        <CNLogo />
+                        <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
+                        <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
+                        <FooterLink href = 'https://www.childrennow.org/reports-research/scorecard/'>Credits & Acknowledgments</FooterLink>
+                        <a href = "https://www.childrennow.org"><CNLogo /></a>
                     </FooterContent>
                 </Footer>
             </App>
@@ -283,7 +306,7 @@ const MapContainer = styled(Quadrant)`
         width: 525px;
         height: 100%;
         transform: translateX(${props => props.offset? '350px' : 0});
-        transform: ${props => props.offset? 'translateX(350px) scale(1.08)' : 'translateX(0) scale(1)'};
+        transform: ${props => props.offset? 'translateX(350px)' : 'translateX(0) scale(1)'};
     }
     @media ${media.compact}{
         left: 510px;
@@ -326,8 +349,12 @@ const Footer = styled(DarkBar)`
     z-index: 3;
 `
 const CNLogo = styled.div`
-    width: 175px; height: 15px;
-    border: 1px solid white;
+    width: 175px; height: 21px;
+    /*border: 1px solid white;*/
+    background-image: url(${cnico});
+    background-size: cover;
+    background-repeat: none;
+
 `
 const FooterContent = styled.div`
     @media ${media.optimal}{
@@ -344,4 +371,8 @@ const FooterContent = styled.div`
 const FooterLink = styled.a`
     color: white;
     margin-right: 70px;
+    text-decoration: none;
+    &:hover{
+        color: var(--peach);
+    }
 `

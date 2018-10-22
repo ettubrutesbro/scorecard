@@ -85,7 +85,7 @@ const Segment = styled.div`
     width: 100%;
     outline: 2px solid var(--bordergrey);
     mask-repeat: repeat;
-    background-color: ${props => props.infinitesimal? 'var(--offwhitebg)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
+    background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
     background-position: 0% -10px;
     mask-size: 30px;
     ${props => props.zero? 'display: none;' : ''}
