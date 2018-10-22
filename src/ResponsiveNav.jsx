@@ -49,7 +49,12 @@ const Dropdown = styled.div`
     position: relative;
     font-weight: ${props => props.hasValue&&!props.isOpen? 500 : 400};
     // box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--peach)':''};
-    padding: 12px 45px 12px 20px;
+    @media ${media.optimal}{
+        padding: 12px 45px 12px 20px;
+    }
+    @media ${media.compact}{
+        padding: 10px 45px 10px 20px;
+    }
     background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
     color: ${props => (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
@@ -221,6 +226,7 @@ export default class ResponsiveNav extends React.Component{
         const nowht = !noRace && indicator && county && (ind.counties[county].white[year] === '' || ind.counties[county].white[year]==='*')
         const nooth = !noRace && indicator && county && (ind.counties[county].other[year] === '' || ind.counties[county].other[year]==='*')
 
+        const screen = getMedia()
 
         return(
             <Nav ref = {this.nav}>
@@ -294,7 +300,7 @@ export default class ResponsiveNav extends React.Component{
                         selected = {race}
                         defaultWidth = {140}
                         disabled = {noRace}
-                        toggleMode = {open && !noRace}
+                        toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
                             {label: 'All races', value: '', disabled: noall},
                             {label: 'Asian', value: 'asian', disabled: noazn},
@@ -315,6 +321,7 @@ export default class ResponsiveNav extends React.Component{
                         offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
+                        bigscreen = {screen==='optimal'}
                     />
 
                     
@@ -348,13 +355,17 @@ export default class ResponsiveNav extends React.Component{
     }
 }
 const BtnLabel = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
+    padding-right: 30px;
 `
 const ResetIcon = styled.div`
-    margin-left: 10px;
-    width: 17px;
-    height: 17px;
+    position: absolute;
+       right: 0px;
+       top: 0; bottom: 0; margin: auto;
+    width: 19px;
+    height: 19px;
     /*border: 1px solid white;*/
     background-image: url(${resetIco});
     background-repeat: no-repeat;
@@ -362,6 +373,7 @@ const ResetIcon = styled.div`
 const RaceDropdownToggle = styled(DropdownToggle)`
     transform: translateX(${props=>props.offset?30:3}px);
     transition: transform .25s;
+    z-index: 4;
 `
 
 const Reset = styled(Button)`
@@ -443,8 +455,8 @@ const YearToggle = (props) =>{
 const YrToggle = styled.div`
     margin-left: 15px;
     /*transition: transform ${props=>props.offset===2? .65 : .25}s;*/
-    transition: transform .65s;
-    transform: translateX(${props=>props.offset===2? 470 : props.offset===1? 25: 0}px);
+    transition: transform ${props=>props.bigscreen?.65:.25}s;
+    transform: translateX(${props=>props.offset===2 && props.bigscreen? 470 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
 `
 
 const LargeWorkflow = styled.div`

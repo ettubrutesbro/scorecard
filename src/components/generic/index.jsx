@@ -8,6 +8,8 @@ import makeHash from '../../utilities/makeHash'
 import {findDOMNode} from 'react-dom'
 import {find} from 'lodash'
 
+import media from '../../utilities/media'
+
 import FlipMove from 'react-flip-move'
 import {capitalize} from '../../utilities/toLowerCase'
 
@@ -26,7 +28,12 @@ const Option = styled.div`
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
-    padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};
+    @media ${media.optimal}{
+        padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};    
+    }
+    @media ${media.compact}{
+        padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};    
+    }
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
     white-space: nowrap;
@@ -277,7 +284,12 @@ const Btn = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 25px;
+    @media ${media.optimal}{
+        padding: 12px 25px;    
+    }
+    @media ${media.compact}{
+        padding: 10px 21px;
+    }
     cursor: pointer;
     &.default{
         background: white;
@@ -489,13 +501,23 @@ export class DropdownToggle extends React.Component {
 const DropdownToggleWrapper = styled.div`
     position: relative;
     width: ${props => props.width}px;
-    height: 48px;
+    @media ${media.optimal}{
+        height: 48px;
+    }
+    @media ${media.compact}{
+        height: 44px;
+    }
 `
 
 const DropdownList = styled.ul`
     position: absolute;
     width: 100%;
-    top: 48px;
+    @media ${media.optimal}{
+        top: 48px;
+    }
+    @media ${media.compact}{
+        top: 44px;
+    }
     border: 1px solid var(--bordergrey);
     padding: 0; margin: 0;
     opacity: 0; 
@@ -522,7 +544,12 @@ const DropdownOption = styled.li`
     background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
     color: ${p => p.disabled? 'var(--fainttext)' : p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
     cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
-    padding: 12px 25px;
+    @media ${media.optimal}{
+        padding: 12px 25px;
+    }
+    @media ${media.compact}{
+        padding: 10px 21px;
+    }
     list-style-type: none;
     margin-top: -1px;
     &:hover{
@@ -535,7 +562,12 @@ const TogOption = styled.div`
     height: 100%;
     position: absolute;
     left: 0;
-    padding: 12px 25px;
+    @media ${media.optimal}{
+        padding: 12px 25px;
+    }
+    @media ${media.compact}{
+        padding: 10px 21px;
+    }
     // border: 1px solid ${p => p.selected? 'var(--strokepeach)' : 'var(--offwhitebg)'};
     background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
     cursor: ${p => p.disabled? 'auto' : 'pointer'}; 

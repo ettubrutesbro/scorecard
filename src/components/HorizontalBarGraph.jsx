@@ -5,6 +5,8 @@ import {observer} from 'mobx-react'
 import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
+import media from '../utilities/media'
+
 import PerfectScrollBar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
@@ -17,7 +19,12 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     max-height: 100%;
-    ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
+    @media ${media.optimal}{
+        ${props => props.fullHeight? 'height: calc(100% - 10px);' : ''}    
+    }
+    @media ${media.compact}{
+        ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
+    }
     border: 1px solid var(--bordergrey);
 `
 
@@ -148,7 +155,7 @@ export default class HorizontalBarGraph extends React.Component{
                                     <Invalid> No data </Invalid>
                                 }
                                 {invalidValue && item.value==='*' &&
-                                    <Invalid> Data set too small or unstable </Invalid>
+                                    <Invalid> Data too small or unstable </Invalid>
                                 }
                             </Row>
                         )

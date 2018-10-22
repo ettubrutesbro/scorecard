@@ -7,14 +7,29 @@ import {find, findIndex} from 'lodash'
 
 import {Button, Toggle} from './generic/'
 
-import sources from '../data/sources'
+import sources from '../data/sourcesfinal'
+import indicators from '../data/indicators'
 import media from '../utilities/media'
 
 import PerfectScrollBar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export default class Sources extends React.Component{
+
     render(){
+
+//         console.log('sources')
+//         const allSourceKeys = sources.map((s)=>{return s.indicator})
+//         console.log(allSourceKeys)
+//         Object.keys(indicators).forEach((ind)=>{
+//             if(allSourceKeys.includes(ind)){
+// 
+//             }
+//             else{
+//                 console.log('sources is missing ind', ind)
+//             }
+//         })
+
         return(
             <AllSources>
                 <FadeCropper />
@@ -35,6 +50,7 @@ export default class Sources extends React.Component{
 const AllSources = styled.div`
     position: relative;
     height: 100%;
+    width; 100%;
     border: 1px solid var(--bordergrey);
 
 `
@@ -131,15 +147,60 @@ export const IndicatorSourceInfo = (props) => {
                 <h1>{src.source}</h1>
                 <a href = {src.url} >{src.url}</a>
             </SourceBlock>
+            {src.source2 &&
+                <SourceBlock>
+                <h1>{src.source}</h1>
+                <a href = {src.url2} >{src.url2}</a>
+                </SourceBlock>
+            }
 
             {src.notes && 
             <NotesBlock>
                 <p>{src.notes}</p>
             </NotesBlock>
             }
+            {src.notes2 && 
+            <NotesBlock>
+                <p>{src.notes2}</p>
+            </NotesBlock>
+            }
+            {src.notes3 && 
+            <NotesBlock>
+                <p>{src.notes3}</p>
+            </NotesBlock>
+            }
+            {src.notes4 && 
+            <NotesBlock>
+                <p>{src.notes4}</p>
+            </NotesBlock>
+            }
+            {src.redirect &&
+                <Redirect 
+                    text = {src.redirect}
+                    link = {src.methoURL}
+                />
+            }
         </Indicator>
     )
 }
+
+const Redirect = (props) => {
+    return(
+        <RedirectLink href = {props.link}>
+            <RedirectSpan>
+            {props.text}
+            </RedirectSpan>
+        </RedirectLink>    
+    )
+}
+const RedirectSpan = styled.div`
+margin-top: 10px;
+    color: var(--fainttext);
+    font-size: 13px;
+`
+const RedirectLink = styled.a`
+    text-decoration: none;
+`
 
 @observer
 export class DemographicSourceInfo extends React.Component{
@@ -176,6 +237,12 @@ export class DemographicSourceInfo extends React.Component{
                             <NotesBlock>
                                 <p>{srcs[src].notes}</p>
                             </NotesBlock>
+                            }
+                            {srcs[src].redirect &&
+                                <Redirect 
+                                    text = {srcs[src].redirect}
+                                    link = {srcs[src].methoURL}
+                                />
                             }
                         </Indicator>
                     )

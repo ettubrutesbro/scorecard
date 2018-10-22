@@ -52,6 +52,7 @@ const App = styled.div`
         width: 1550px;
         height: 740px;
         margin-top: 95px;
+        justify-content: center;
     }
     @media ${media.compact}{
         margin-top: 80px;

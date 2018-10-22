@@ -1,6 +1,7 @@
 *{
     font-family: 'Heebo', sans-serif;
     box-sizing: border-box;
+    /*overscroll-behavior: none;*/
 }
 
 html{
@@ -37,6 +38,12 @@ body{
     font-size: 16px;
     letter-spacing: 0.7px;
     user-select: none;
+    margin: 0;
+}
+#root{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .text{

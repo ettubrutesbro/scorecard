@@ -192,7 +192,7 @@ export default class IndicatorByCounties extends React.Component{
         const {county, race, year, indicator, completeWorkflow, colorScale} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
-
+        const unstable = ind.categories.includes('unstable')
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
@@ -202,7 +202,7 @@ export default class IndicatorByCounties extends React.Component{
 
                 return {
                     ...e,
-                    leftLabel: !this.distribute? e.rank + '.' : '',
+                    leftLabel: !this.distribute && !unstable? e.rank + '.' : '',
                     label: <LabelComponent selected = {e.id===county} label = {e.label} right = {truncateNum(e.population)} />
                 }
             })
@@ -210,13 +210,13 @@ export default class IndicatorByCounties extends React.Component{
         else performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
             if(!this.distribute){
-                return {...e, leftLabel: e.rank+'.'}
+                return {...e, leftLabel: !unstable? e.rank+'.' : ''}
             }
             else if(distrib.includes(i)){ 
                 return {
                     ...e,
                     label: <LabelComponent 
-                        left = {i===0? '1.' 
+                        left = {unstable? '' : i===0? '1.' 
                             : i===arr.length-1? arr.length+'.' 
                             : e.id===county? e.rank+'.'
                             : ''
@@ -266,7 +266,7 @@ export default class IndicatorByCounties extends React.Component{
                 const selected = cty.id===county
                 return {
                     ...cty,
-                    label: <LabelComponent selected = {selected} label = {cty.label} right = {truncateNum(cty.value)} />,  
+                    label: <LabelComponent selected = {selected} label = {cty.label} />,  
                     value: val,
                     fill: selected? 'var(--peach)'  : colorScale? colorScale(val): '',
                     trueValue: val + '%'

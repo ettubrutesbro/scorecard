@@ -23,7 +23,7 @@ const ReadoutBlock = styled.div`
         width: 950px;   
     }
     @media ${media.compact}{
-        width: 720px;   
+        width: 850px;   
     }
     left: 0;
     top: 0;
@@ -40,12 +40,22 @@ const ReadoutBlock = styled.div`
         left: 0;
         margin: 0;
         font-size: 48px;
+        @media ${media.compact}{
+            font-size: 42px;
+        }
         font-weight: 600;
     }
 `
 const IndentedTitle = styled.div`
-    line-height: 40px;
-    padding-top: 18px;
+    
+    @media ${media.optimal}{
+        padding-top: 18px;
+        line-height: 40px;
+    }
+    @media ${media.compact}{
+        padding-top: 12px;
+        line-height: 34px;
+    }
 `
 const Crumb = styled.span`
     // display: inline-flex;
@@ -194,10 +204,14 @@ export default class Readout extends React.Component{
                             }}
                         > 
                             {this.firstLine}
+                            {indicators[indicator].categories.includes('unstable') && 
+                                <UnstableAddendum>
+                                    Indicator data is unstable; exceptions listed in notes and sources.
+                                </UnstableAddendum>
+                            }
                         </IndentedTitle>
-                        <SubsequentLines offsetBreakdown = {this.props.setBreakdownOffset} >
-                            {this.subsequentLines}
-                        </SubsequentLines>
+
+
 
                     </div >
                 }
@@ -205,7 +219,11 @@ export default class Readout extends React.Component{
         )
     }
 }
-
+const UnstableAddendum = styled.span`
+    font-size: 13px;
+    margin-left: 10px;
+    color: var(--fainttext);
+`
 const Sublines = styled.div`
     // border: 1px solid red;
     padding-top: 3px;
