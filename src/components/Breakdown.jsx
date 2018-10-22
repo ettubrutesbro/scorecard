@@ -12,7 +12,7 @@ import CountiesByRacePopulation from './CountiesByRacePopulation'
 
 
 import DemoDataTable from './DemoDataTable'
-import {FullSourcesView} from './Sources'
+import Sources from './Sources'
 
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
@@ -79,7 +79,7 @@ export default class Breakdown extends React.Component{
                     />
                 }
                 {indicator && this.props.sources &&
-                    <FullSourcesView indicator = {indicator} />
+                    <Sources indicator = {indicator} />
                 }
             </Wrapper>
         )

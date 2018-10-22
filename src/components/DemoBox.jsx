@@ -6,6 +6,8 @@ import commaNumber from 'comma-number'
 import RaceBreakdownBar from './RaceBreakdownBar'
 import CountingNumber from './CountingNumber'
 
+import {DemographicSourceInfo} from './Sources'
+
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
@@ -50,13 +52,16 @@ const DemoBox = (props) => {
             id = "demobox"
             {...props}
         >
+                    <Title>
+                         Current {county? 'county' : 'state'} demographics
+                    </Title>
+                    <Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
+                    <Content>
+                        <DataTable store = {store} />
+                        <RaceBreakdownBar store = {store} />
+                    </Content>
+            
 
-            <Title>Current {county? 'county' : 'state'} demographics</Title>
-            <Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
-            <Content>
-                <DataTable store = {store} />
-                <RaceBreakdownBar store = {store} />
-            </Content>
             <StrokeShape 
                 viewBox = {screen==='optimal'? "0 0 515 433" : screen === 'compact'? "0 0 515 375": "0 0 100 100"}
                 preserveAspectRatio = "none"
@@ -68,10 +73,6 @@ const DemoBox = (props) => {
                         : "0,45 0,0 100,0 100,100 45,100"
                     }
                 />
-                
-
-
-
             </StrokeShape>
         </Box>  
     )

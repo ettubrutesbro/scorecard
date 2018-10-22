@@ -336,7 +336,7 @@ export default class ResponsiveNav extends React.Component{
                 {/*open && <X onClick = {()=>openNav(false)}/>*/}
                 
                 <Reset 
-                    className = 'negative' 
+                    className = 'negativeOnDark' 
                     label = {<BtnLabel>Reset<ResetIcon /></BtnLabel>}
                     visible = {indicator}
                     onClick = {this.props.reset}

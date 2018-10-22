@@ -17,7 +17,7 @@ import MapComponent from './components/InteractiveMap'
 import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
-import SourcesButton, {DemoSources} from './components/Sources'
+import {DemoSources} from './components/Sources'
 import DemoBox from './components/DemoBox'
 
 import {Button} from './components/generic'
@@ -131,6 +131,9 @@ const GreyMask = styled.div`
         background-image: url(${maskImg});
     }
 `
+const SourcesButton = styled(Button)`
+    width: 238px;
+`
 
 @observer
 export default class ResponsiveScorecard extends React.Component{
@@ -216,7 +219,11 @@ export default class ResponsiveScorecard extends React.Component{
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
-                        <Button label = "View sources and notes" />
+                        <SourcesButton 
+                            label = {this.sourcesMode? "Hide sources and notes" : "View sources and notes"}
+                            className = {this.sourcesMode? 'negative' : 'default' }
+                            onClick = {()=>{this.setSourcesMode(!this.sourcesMode)}}
+                        />
                         <Button label = "Download PDF" style = {{marginLeft: '15px'}}
                             onClick = {()=>{
                                 if(pdfmanifest[store.county||'california']){
@@ -233,8 +240,10 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        show = {!this.sourcesMode && !this.init}
+                        // show = {!this.sourcesMode && !this.init}
+                        show = {!this.init}
                         store = {store}
+                        sources = {this.sourcesMode}
                     />
 
                     {this.init &&
@@ -251,7 +260,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </Breakdown>
 
                     <MapContainer 
-                        offset = {this.init || this.navOpen || this.sourcesMode} 
+                        offset = {this.init || this.navOpen} 
                         // init = {this.init}
                     >
                         <MapComponent 

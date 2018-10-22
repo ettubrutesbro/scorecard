@@ -14,6 +14,7 @@ import {capitalize} from '../../utilities/toLowerCase'
 const ToggleBody = styled.div`
     position: relative;
     display: inline-flex;
+    flex-wrap: wrap;
     // border: 1px solid var(--fainttext);
     // padding: 10px;
 `
@@ -28,6 +29,7 @@ const Option = styled.div`
     padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
+    white-space: nowrap;
     &:hover{
         color: var(--strokepeach);
         outline-color: var(--strokepeach);
@@ -300,7 +302,14 @@ const Btn = styled.div`
     &.negative{
         background: var(--offwhitebg);
         color: white;
-        border: 1px solid white;
+        &:hover{
+            color: var(--faintpeach);
+        }
+    }
+    &.negativeOnDark{
+        background: var(--offwhitebg);
+        color: white;
+        border: 1px solid var(--offwhitefg);
         &:hover{
             color: var(--peach);
             border-color: var(--peach);
