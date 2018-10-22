@@ -4,7 +4,6 @@
 }
 
 html{
-    --disabledtext: #c2c2c2;
     --fainttext: #919191;
     --normtext: #1e1e1e;
     --faintpeach: #FFF6F2;
@@ -16,8 +15,9 @@ html{
     --offwhitefg: #FCFDFF;
     --bordergrey: #c2c2c2;
 
-    /*TO DEPRECATE: */
-    --inactivegrey: #E0E0E0;
+    /*inactive for map (darker); disabled for UI fills; optically the same?*/
+    --inactivegrey: #e0e0e0;
+    --disabledgrey: #ededed;
 
 
     --black: #1e1e1e;

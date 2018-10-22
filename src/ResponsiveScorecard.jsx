@@ -197,7 +197,7 @@ export default class ResponsiveScorecard extends React.Component{
 
                 />
                 <TopRow>
-                    <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> 
+                    <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
                         <Button label = "View sources and notes" />
@@ -282,7 +282,8 @@ const MapContainer = styled(Quadrant)`
         left: 675px;
         width: 525px;
         height: 100%;
-        transform: translateX(${props => props.offset? '40%' : 0});
+        transform: translateX(${props => props.offset? '350px' : 0});
+        transform: ${props => props.offset? 'translateX(350px) scale(1.08)' : 'translateX(0) scale(1)'};
     }
     @media ${media.compact}{
         left: 510px;

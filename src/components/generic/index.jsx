@@ -6,8 +6,10 @@ import {observer} from 'mobx-react'
 
 import makeHash from '../../utilities/makeHash'
 import {findDOMNode} from 'react-dom'
+import {find} from 'lodash'
 
 import FlipMove from 'react-flip-move'
+import {capitalize} from '../../utilities/toLowerCase'
 
 const ToggleBody = styled.div`
     position: relative;
@@ -24,10 +26,10 @@ const Option = styled.div`
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
     padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};
-    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--fainttext)'};
-    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'transparent' : 'white'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
+    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
     &:hover{
-        color: ${props => props.disabled? 'var(--fainttext)' : props.selected?'var(--strokepeach)':'var(--strokepeach)'};
+        color: var(--strokepeach);
         outline-color: var(--strokepeach);
         z-index: 1;
     }
@@ -342,82 +344,118 @@ const Shpitz = styled.div`
 @observer
 export class DropdownToggle extends React.Component {
     @observable dropdownOpen = false
-    @action setDropdown = (tf) => this.dropdownOpen = tf
+    @action setDropdown = (tf) => {
+        if(tf) document.addEventListener('click', this.handleOutside)
+        else document.removeEventListener('click', this.handleOutside)
+        this.dropdownOpen = tf
+    }
+    @observable hovered = false
+    @action hover = (tf) => {this.hovered = tf}
+
+    constructor(){
+        super()
+        this.dropdown = React.createRef()
+    }
+
+    handleOutside = (e) => {
+        if(!this.dropdown.current.contains(e.target)){
+            // console.log('clicked outnside')
+            this.setDropdown(false)
+        }
+    }
+
+    handleSelectionFromDropdown = (val) => {
+        const validSelect = this.props.select(val)
+        if(validSelect) this.setDropdown(false)
+        else{ //sanity check tings?
+            console.log('sanity check race?')
+        }
+    }
+
     render(){
-        const {race} = this.props.store
+        // const {race} = this.props.store
+        const {selected, toggleMode, disabled, options, defaultWidth} = this.props
         return(
             <DropdownToggleWrapper
-                width = {this.props.defaultWidth}
+                className = {this.props.className}
+                width = {defaultWidth}
+                disabled = {disabled}
+                onMouseEnter = {()=>{this.hover(true)}}
+                onMouseLeave = {()=>{this.hover(false)}}
             >
-            <TeleTog
-                defaultWidth = {this.props.defaultWidth}
-            >
-                <FirstOptBorder 
-                    defaultWidth = {this.props.defaultWidth}
-                    toggleMode = {this.props.toggleMode}
+            <Caret 
+                visible = {!toggleMode}
+                length = {options.length}
+                disabled = {disabled}
+                hovered = {this.hovered && !this.dropdownOpen}
+                hasValue = {selected}
+            />
+
+                <FirstOptBorder
+                    length = {options.length} 
+                    defaultWidth = {defaultWidth}
+                    toggleMode = {toggleMode}
+                    selected = {toggleMode && !selected}
+                    hasValue = {selected && !toggleMode && !this.dropdownOpen}
+                    disabled = {disabled}
                 />
-                {this.props.options.slice(0,1).map((o)=>{
+                {options.slice(0,1).map((o)=>{
                     return(
                         <TogOption 
-                            defaultWidth = {this.props.defaultWidth } 
+                            defaultWidth = {defaultWidth } 
                             className = 'first'
-                            toggleMode = {this.props.toggleMode}
-                            onClick = {this.props.toggleMode? ()=>{
+                            toggleMode = {toggleMode}
+                            onClick = {toggleMode? ()=>{
                                 this.props.select(o.value)
-                            }:()=>{
+                            }:!disabled? ()=>{
                                 this.setDropdown(!this.dropdownOpen)
-                            }}
-                            selected = {!race}
+                            } : ()=>{}}
+                            hasValue = {selected && !toggleMode && !this.dropdownOpen}
+                            selected = {toggleMode && !selected}
+                            disabled = {o.disabled}
+                            muted = {disabled}
+                            hovered = {this.hovered && !toggleMode}
+                            dropdownOpen = {this.dropdownOpen}
                         >
-                            {o.label}
+                            {!toggleMode && selected? find(options, (opt)=>{return opt.value===selected}).label
+                                : toggleMode || !selected? o.label
+                                : 'wat'
+                            }
+                            
                         </TogOption>
                     )
                 })}
-                <FMCont
-                    typeName = {null}
-                    duration = {115}
-                    delay = {this.props.toggleMode? 0 : (this.props.options.length-1)*115}
-                    staggerDelayBy = {this.props.toggleMode? 115 : -115 }
-                    appearAnimation = {{
-                        from: {opacity: 0, transform: 'translateX(-35%)'},
-                        to: {opacity: 1, transform: 'translateX(0)'}
-                    }}
-                    enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateX(-35%)'},
-                        to: {opacity: 1, transform: 'translateX(0)'}
-                    }}
-                    leaveAnimation = {{
-                        from: {opacity: 1, transform: 'trantwilateX(0%)'},
-                        to: {opacity: 0, transform: 'translateX(-35%)'}  
-                    }}
-                    onStart = {(r,domnode)=>{
-                        domnode.style.zIndex = 1
-                    }}
-                >
 
-                    {this.props.toggleMode && this.props.options.slice(1).map((o,i)=>{
+                    {this.props.options.slice(1).map((o,i,arr)=>{
                         return(
                             <TogOption
+                                length = {arr.length}
                                 offset = {i===0? true : false}
+                                reveal = {toggleMode}
+                                index = {i}
                                 onClick = {()=>{this.props.select(o.value)}}
-                                selected = {!o.value? !race : o.value===race}
+                                selected = {!o.value? !selected : o.value===selected}
+                                disabled = {o.disabled}
                             >
                                 {o.label}
                             </TogOption>
                         )
                     })}
-                </FMCont>
 
-            </TeleTog>
 
                 <DropdownList
+                    ref = {this.dropdown}
                     open = {this.dropdownOpen && !this.props.toggleMode}
+                    close = {()=>this.setDropdown(false)}
                 >
-                <Shpitz />
-                    {this.props.options.map((o)=>{
+                    {this.props.options.map((o,i)=>{
                         return(
                         <DropdownOption
-                            onClick = {()=>{this.props.select(o.value)}}
+                            index = {i}
+                            // onClick = {()=>{this.props.select(o.value)}}
+                            onClick = {()=>{this.handleSelectionFromDropdown(o.value)}}
+                            disabled = {o.disabled}
+                            selected = {!o.value? !selected : o.value===selected}
                         >
                             {o.label}
                         </DropdownOption>
@@ -433,23 +471,13 @@ export class DropdownToggle extends React.Component {
 const DropdownToggleWrapper = styled.div`
     position: relative;
     width: ${props => props.width}px;
+    height: 48px;
 `
 
-const TeleTog = styled.div`
-    position: absolute;
-    display: flex;
-    align-items: center;
-    width: 100%;
-`
-const FMCont = styled(FlipMove)`
-    position: absolute;
-    display: flex;
-    align-items: center;
-`
 const DropdownList = styled.ul`
     position: absolute;
     width: 100%;
-    top: 65px;
+    top: 48px;
     border: 1px solid var(--bordergrey);
     padding: 0; margin: 0;
     opacity: 0; 
@@ -467,71 +495,80 @@ const DropdownList = styled.ul`
 const DropdownOption = styled.li`
     &:not(:first-of-type){
         border-top: 1px solid var(--bordergrey);
+        // border-bottom: 1px solid ${p=>p.selected? 'var(--strokepeach)' :'transparent'};
     }
-
+    ${props => props.selected? `
+        outline: 1px solid var(--strokepeach);
+        outline-offset: -1px;    
+    ` : ''}
+    background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    color: ${p => p.disabled? 'var(--fainttext)' : p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+    cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
     padding: 12px 25px;
     list-style-type: none;
-
+    margin-top: -1px;
+    &:hover{
+        color: var(--strokepeach);
+    }
 `
-
-class TogOption extends React.Component{
-    render(){
-        const {children, ...restOfProps} = this.props
-        return(
-            <Opt 
-                {...restOfProps}
-            >
-                {children}
-            </Opt>
-        )
-    }
-}
-
-const Opt = styled.div`
-    position: relative;
+const TogOption = styled.div`
+    display: inline-flex; 
+    align-items: center;
+    height: 100%;
+    position: absolute;
+    left: 0;
     padding: 12px 25px;
-    border: 1px solid var(--bordergrey);
+    border: 1px solid ${p => p.selected? 'var(--strokepeach)' : 'var(--offwhitebg)'};
+    background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
+    color: ${p => p.dropdownOpen || p.muted || p.disabled? 'var(--fainttext)' : (p.hovered&&!p.dropdownOpen) || p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
     white-space: nowrap;
-    &:not(:first-of-type){
-        margin-left: ${props => props.offset?25 : -1}px;
-    }
-    background: white;
+
+    transform: translateX(${props => props.reveal? (props.index+1)*100 : 0}% );
+    transition: transform ${props=> .15 * (props.index+1)}s;
     &.first{
         width: ${props => props.defaultWidth}px;
         margin-right: -20px;
         z-index: 3;
         background-color: transparent;
         border-color: transparent;
+        color: ${p => p.hasValue? 'var(--strokepeach)' : ''};
 
     }
-    z-index: 2;
+    &:not(.first){
+        justify-content: center;
+        margin-left: ${props => 25 - props.index}px;
+        width: 93px;
+        z-index: ${props => 2 - props.index};
+        // z-index: ${props => (props.length - props.index) + 2};
+    }
+    &:hover{
+        color: var(--strokepeach);
+    }
 `
 const FirstOptBorder = styled.div`
     position: absolute;
-    border: 1px solid blue;
+    outline: 2px solid transparent;
+    outline-offset: -3px;
+    ${props => props.hasValue? `
+        box-shadow: inset 0px 0px 0px 2px var(--strokepeach);
+    `: ''}
+    border: ${p => p.selected? '1px solid var(--strokepeach)' : '1px solid transparent'};
     width: ${props => props.defaultWidth}px;
     height: 100%;
     z-index: 3;
-    background: white;
+    background: ${p => p.hasValue? 'var(--faintpeach)' : p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    
     left: -1px;
     transform-origin: 0% 50%;
-    transition: transform .2s;
-    transition-delay: ${p => p.toggleMode? 0 : .85}s;
-    transform: ${p => !p.toggleMode? 'scaleX(1)' : `scaleX(${(p.defaultWidth-15)/p.defaultWidth})`};
-        &::after{
-            opacity: ${props => props.toggleMode? 0: 1};
-            content: '';
-            width: 10px;
-            height: 10px;
-            border: 1px solid black;
-            position: absolute;
-            right: 15px;
-            top: 0; bottom: 0; margin: auto;
-            transition: opacity .25s;
-            transition-delay: ${p => p.toggleMode? 0 : .9}s;
-        }
+    // transition: transform .2s, outline-color ${p=>p.hasValue?'.':''}2s;
+    transition: transform .2s, box-shadow .25s, background-color .25s;
+    // transition-delay: ${p => p.toggleMode? 0 : (p.length * .15) + .15}s;
+    transform: ${p => !p.toggleMode? 'scaleX(1)' : `scaleX(${(p.defaultWidth-20)/p.defaultWidth})`};
+        
 
 `
+
 
 
 DropdownToggle.defaultProps = {
@@ -539,3 +576,45 @@ DropdownToggle.defaultProps = {
     select: (id)=>{console.log('selected', id)}
 }
 
+
+export const Caret = styled.div`
+    position: absolute;
+    opacity: ${props => props.visible? 1 : 0};
+    transition: opacity .15s;
+    // transition-delay: ${props => props.visible? (props.length*.15)+.15 : 0}s;
+    right: 0;
+    z-index: 5;
+    top: 0; bottom: 0; margin: auto;
+    height: 13px;
+    &::before{
+        margin-top: 2px;
+        content: '';
+        right: 18px;
+        width: 0px;
+        border: 7px solid transparent;
+        border-top-color: ${props => props.hasValue? 'var(--peach)' : props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--bordergrey)' : 'var(--normtext)'};
+        height: 0px;
+        position: absolute;
+    }
+    &::after{
+        margin-top: 2px;
+        content: '';
+        right: 18px;
+        width: 0px;
+        border: 7px solid transparent;
+        transform: scale(0.75);
+        transform-origin: 50% 20%;
+        border-top-color: white;
+        opacity: ${props => props.disabled? 0 : 1};
+        height: 0px;
+        position: absolute;
+
+        transition: opacity .25s, transform .25s;
+        ${props => props.hovered? `
+            transform: scale(0.5);    
+        ` : ''}
+        ${props => props.hasValue? `
+            transform: scale(0);    
+        ` : ''}
+    }
+`

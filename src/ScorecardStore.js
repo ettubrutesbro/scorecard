@@ -289,6 +289,10 @@ export default class AppStore{
             //     console.log('tried to pick race but it woludve resulted in invalid value: canceling')
             //     return
             // }
+            if(!indicators[this.indicator].categories.includes('hasRace')){
+                console.log('whyd this happen? tried to select race when indicator !hasRace...FOH')
+                return false
+            }
             const arr = indicators[this.indicator].counties[this.county||'california'][value||'totals']
             if(isValid(arr[this.year])) console.log('race selection valid')
             else{
@@ -383,7 +387,7 @@ export default class AppStore{
             this.setColorOption('padHi',(1 - hi/100) + adjustHi)
             
         }
-
+        console.log('returning true!')
         return true
         
     }

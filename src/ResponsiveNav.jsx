@@ -16,7 +16,7 @@ import semanticTitles from './assets/semanticTitles'
 
 import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
-import {Tooltip} from './components/generic'
+import {Tooltip, DropdownToggle} from './components/generic'
 
 import media, {getMedia} from './utilities/media'
 import {isValid} from './utilities/isValid'
@@ -39,26 +39,26 @@ const Nav = styled.div`
 `
 const Dropdown = styled.div`
     position: relative;
+    box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--strokepeach)':''};
     padding: 12px 45px 12px 20px;
-    background: ${props => props.disabled? 'var(--offwhitefg)' : 'white'};
-    color: ${props => props.disabled? 'var(--fainttext)' : 'black'};
+    background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
+    color: ${props => (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
     align-items: center;
-    outline: 1px solid var(--offwhitebg);
-
-    transition: transform .25s;
+    /*outline: 1px solid var(--offwhitebg);*/
+    transition: box-shadow .25s, background-color .25s, color .25s, transform .25s;
     white-space: nowrap;
-
+    cursor: pointer;
 `  
 
 const DropdownWorkflow = styled(Dropdown)`
-        &::before{
+    &::before{
         content: '';
         right: 18px;
         margin-top: 3px;
         width: 0px;
         border: 7px solid transparent;
-        border-top-color: black;
+        border-top-color: ${props => props.hasValue? 'var(--peach)' : props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
         height: 0px;
         position: absolute;
     }
@@ -73,10 +73,17 @@ const DropdownWorkflow = styled(Dropdown)`
         border-top-color: white;
         height: 0px;
         position: absolute;
+        transition: transform .25s;
+        ${props => props.hovered? `
+            transform: scale(0.5);    
+        ` : ''}
+        ${props => props.hasValue? `
+            transform: scale(0);    
+        ` : ''}
     }
 `
 const IndicatorSelect = styled(DropdownWorkflow)`
-    width: 410px;
+    width: 395px;
 
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
@@ -84,141 +91,9 @@ const IndicatorSelect = styled(DropdownWorkflow)`
 const CountySelect = styled(DropdownWorkflow)`
     width: 200px;
     position: relative;
-    transform: ${props=>props.offset?'translateX(15px)':'translateX(-1px)'};
-`
-const CaretForRace = styled.div`
-    height: 13px;
-    &::before{
-        content: '';
-        right: 18px;
-        margin-top: 3px;
-        width: 0px;
-        border: 7px solid transparent;
-        border-top-color: ${props => props.disabled? 'var(--disabledtext)' : 'var(--normtext)'};
-        height: 0px;
-        position: absolute;
-    }
-    &::after{
-        content: '';
-        right: 18px;
-        margin-top: 3px;
-        width: 0px;
-        border: 7px solid transparent;
-        transform: scale(0.75);
-        transform-origin: 50% 20%;
-        border-top-color: white;
-        opacity: ${props => props.disabled? 0 : 1};
-        height: 0px;
-        position: absolute;
-        transition: opacity .25s;
-    }
-`
-const NormalDropdown = styled(Dropdown)`
-    width: 145px;
-
-    transform: translateX(${props=>(props.offset*15)-2}px);
-    &::before{
-        content: '';
-        position: absolute;
-        
-        z-index: 10;
-    }
-    
-    color: ${props => props.mode==='horz'&& props.allRacesSelected?'var(--strokepeach)' : props.disabled || props.mode === 'vert'? 'var(--fainttext)' : 'black'};
-    ${props => props.mode==='horz'? `
-        &::after{
-            display: none;
-        }
-    `: ''}
-    ${props => props.allRacesSelected && props.mode==='vert'? `
-        &::before{
-            width: 100%;
-            height: 100%;
-            left: 0; top: 0px;
-            outline: 1px solid var(--bordergrey);
-            // background: white;
-        }
-    ` : props.mode==='vert' && !props.allRacesSelected? `
-
-
-    ` : props.allRacesSelected && props.mode==='horz'? `
-        &::before{
-            height: 100%;
-            width: 77%;
-            left: 0px; top: 0px;
-            outline: 1px solid var(--strokepeach);
-            background: var(--faintpeach);
-        }
-    `: ''}
-`
-const DropdownReading = styled.span`
-    z-index: 11;
-    color: ${props => props.greyed? 'var(--fainttext)' : 'var(--normtext)'};
+    transform: ${props=>props.offset?'translateX(15px)':'translateX(1px)'};
 `
 
-const RaceList = styled.ul`
-    width: calc(100% + 2px);
-    border: 1px solid var(--bordergrey);
-    background: white;
-    position: absolute;
-    z-index: 4;
-    top: 44px;
-    border-top: none;
-    left: -1px;
-    padding: 0;
-    margin: 0;
-    transition: clip-path .2s;
-    z-index: 10;
-    // clip-path: ${props=>props.vertOpen? 'polygon(0% -1%, 100% -1%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)'};
-    display: ${props=>props.vertOpen? 'block' : 'none'};
-
-`
-const Race = styled.li`
-    list-style-type: none;
-    padding: 12px 20px;
-    ${props => props.disabled? `
-       color: var(--inactivegrey);
-    `: ''}
-    outline: 1px solid ${props=>props.selected?'var(--strokepeach)': 'transparent'};
-    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
-    background: ${props=> props.disabled? 'var(--offwhitefg)'  : props.selected? 'var(--faintpeach)' : 'white'};
-    pointer-events: ${props=>props.disabled? 'none' : 'auto'};
-
-`
-const RaceToggle = styled.div`
-    position: absolute;
-    left: 77%;
-    top: -1px;
-    height: calc(100% + 2px);
-    display: flex;
-    align-items: center;
-    width: 340px;
-    transition: clip-path .45s;
-    // clip-path: ${props=>props.open? 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)' : 'polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%)'};
-    display: ${props=>props.open? 'flex' : 'none'};
-    
-
-`
-const HorzRace = styled.div`
-    position: absolute;
-    width: 25%;
-    height: 100%;
-    display: flex;
-    align-items: center; justify-content: center;
-    border: 1px solid ${props=> props.selected?'var(--strokepeach)':'var(--offwhitebg)'};
-    left: 0;
-    transform: translateX(${props=>props.open?( props.index*85) - (props.index) : 0}px);
-    transition: transform ${props=> .2 + (props.index*.1)}s;
-    z-index: ${props=> props.selected? 8 : 8 - props.index};
-    background: ${props=> props.selected? 'var(--faintpeach)' : 'white'};
-    color: ${props=>props.disabled? 'var(--inactivegrey)' : props.selected? 'var(--strokepeach)' : 'black'};
-    pointer-events: ${props=>props.disabled? 'none' : 'auto'};
-
-`
-
-
-const twIcon = require('./assets/twitter.svg')
-const fbIcon = require('./assets/fb.svg')
 
 
 const countyIds = Object.keys(countyLabels)
@@ -242,8 +117,11 @@ export default class ResponsiveNav extends React.Component{
         }
         // this.props.closeSplash()
     }
-    @observable raceSelectIsHovered = false
-    @action hoveredRaceSelect = (tf) => {this.raceSelectIsHovered = tf}
+    @observable hoveredWorkflow = null
+    @action onHoverWorkflow = (which) => this.hoveredWorkflow = which
+
+    // @observable raceSelectIsHovered = false
+    // @action hoveredRaceSelect = (tf) => {this.raceSelectIsHovered = tf}
 
     constructor(){
         super()
@@ -295,17 +173,27 @@ export default class ResponsiveNav extends React.Component{
         return(
             <Nav ref = {this.nav}>
                 <IndicatorSelect 
-                    onClick = {()=>openNav('indicator')} 
+                    onClick = {()=>openNav('indicator')}
+                    hovered = {this.hoveredWorkflow === 'indicator' && this.props.open!=='indicator'}
+                    hasValue = {indicator}
+                    isOpen = {this.props.open==='indicator'}
+                    onMouseEnter = {()=>{this.onHoverWorkflow('indicator')}} 
+                    onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     // offset = {open==='county'}
                 >
-                    {store.indicator? semanticTitles[store.indicator].shorthand : init? 'Indicator' : 'Pick an indicator'}
+                    {store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}
                     onClick = {()=>openNav('county')}
+                    hovered = {this.hoveredWorkflow === 'county' && this.props.open!=='county'}
+                    hasValue = {county}
+                    isOpen = {this.props.open==='county'}
+                    onMouseEnter = {()=>{this.onHoverWorkflow('county')}} 
+                    onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     offset = {open}
                 >
-                    {store.county? countyLabels[store.county] : init? 'County' : 'All counties' }
+                    {store.county? countyLabels[store.county] : 'California' }
                     {store.notifications.unselectCounty &&
                         <Tooltip 
                             direction = 'below'
@@ -320,63 +208,35 @@ export default class ResponsiveNav extends React.Component{
                 </CountySelect>
                 
 
-                
-                    <NormalDropdown
-                        ref = {this.dropdown}
-                         // disabled = {noall} 
-                        onClick = {!open && !noRace? this.openRaceDropdown : ()=>{console.log('notopen')}} 
-                        offset = { open? 2 : 0 }
-                        allRacesSelected = {(open || this.raceDropdown) && !noRace && !race}
-                        mode = {open? 'horz' : this.raceDropdown? 'vert' : ''}
+                    <RaceDropdownToggle 
+                        offset = {open}
+                        selected = {race}
+                        defaultWidth = {140}
                         disabled = {noRace}
-                        onMouseEnter = {()=>{this.hoveredRaceSelect(true)}}
-                        onMouseLeave = {()=>{this.hoveredRaceSelect(false)}}
-                    >   
-                        <CaretForRace disabled = {noRace}/>
-                        <DropdownReading 
-                            greyed = {(open && noall) || (!open && noRace)}
-                            onClick = {!noall && (open || this.raceDropdown)? ()=>store.completeWorkflow('race',null) : ()=>{}}
-                        >
-                            {(!open && !this.raceDropdown && store.race) || this.raceDropdown && store.race? capitalize(store.race) : init? 'Race' : this.raceDropdown? 'Pick race' : 'All races'}
-                        </DropdownReading>
-                        
-                            <RaceList disabled = {noRace} vertOpen = {this.raceDropdown && !open} >
-                                <Race selected = {!race} disabled = {noall} onClick = {()=>store.completeWorkflow('race',null)}> All Races </Race>
-                                <Race selected = {race==='asian'} disabled = {noRace || noazn} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{}}> Asian </Race>
-                                <Race selected = {race==='black'} disabled = {noRace || noblk} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </Race> 
-                                <Race selected = {race==='latinx'} disabled = {noRace || noltx} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </Race> 
-                                <Race selected = {race==='white'} disabled = {noRace || nowht} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </Race> 
-                                <Race selected = {race==='other'} disabled = {noRace || nooth} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </Race> 
-                            </RaceList>
+                        toggleMode = {open && !noRace}
+                        options = {[
+                            {label: 'All races', value: '', disabled: noall},
+                            {label: 'Asian', value: 'asian', disabled: noazn},
+                            {label: 'Black', value: 'black', disabled: noblk},
+                            {label: 'Latinx', value: 'latinx', disabled: noltx},
+                            {label: 'White', value: 'white', disabled: nowht},
+                            {label: 'Other', value: 'other', disabled: nooth},
+                        ]}
+                        select = {(val)=>{
+                            const valid = store.completeWorkflow('race',val)
+                            if(valid) return true
+                            else return false
+                        }}
+                    />
 
-                            <RaceToggle disabled = {noRace} open = {open} >
-                                <HorzRace selected = {race==='asian'} disabled = {noRace || noazn} index = {0} open = {open} onClick = {!noazn?()=>store.completeWorkflow('race','asian'):()=>{console.log('nazn')}}> Asian </HorzRace>
-                                <HorzRace selected = {race==='black'} disabled = {noRace || noblk} index = {1} open = {open} onClick = {!noblk?()=>store.completeWorkflow('race','black'):()=>{}}> Black </HorzRace>
-                                <HorzRace selected = {race==='latinx'} disabled = {noRace || noltx} index = {2} open = {open} onClick = {!noltx?()=>store.completeWorkflow('race','latinx'):()=>{}}> Latinx </HorzRace>
-                                <HorzRace selected = {race==='white'} disabled = {noRace || nowht} index = {3} open = {open} onClick = {!nowht?()=>store.completeWorkflow('race','white'):()=>{}}> White </HorzRace>
-                                <HorzRace selected = {race==='other'} disabled = {noRace || nooth} index = {4} open = {open} onClick = {!nooth?()=>store.completeWorkflow('race','other'):()=>{}}> Other </HorzRace>
-                            </RaceToggle>
-                            
-                            {this.raceSelectIsHovered && noRace && !open && 
-                                <Tooltip
-                                    direction = 'below'
-                                    pos = {{x: 75, y: 28}}
-
-                                    duration = '.25s'
-                                >
-                                    <NoRaceTip>
-                                        This indicator doesn't have any race data. 
-                                    </NoRaceTip>
-                                </Tooltip>
-                            }
-                        
-                    </NormalDropdown>
                     <YearToggle 
                         store = {store}
-                        offset = { open? 2 : 0 }
+                        offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
                     />
+
+                    
 
                 <FlipMove 
                     typeName = {null}
@@ -396,7 +256,7 @@ export default class ResponsiveNav extends React.Component{
                 
                 <Reset 
                     className = 'negative' 
-                    label = 'Reset search'
+                    label = {<BtnLabel>Reset<ResetIcon /></BtnLabel>}
                     visible = {indicator}
                     onClick = {this.props.reset}
                 />
@@ -406,6 +266,20 @@ export default class ResponsiveNav extends React.Component{
         )
     }
 }
+const BtnLabel = styled.div`
+    display: flex;
+    align-items: center;
+`
+const ResetIcon = styled.div`
+    margin-left: 10px;
+    width: 17px;
+    height: 17px;
+    border: 1px solid white;
+`
+const RaceDropdownToggle = styled(DropdownToggle)`
+    transform: translateX(${props=>props.offset?30:3}px);
+    transition: transform .25s;
+`
 
 const Reset = styled(Button)`
     position: absolute;
@@ -430,25 +304,6 @@ const ShareIco = styled.div`
     background-color: var(--fainttext);
     background-position: center;
     background-size: contain;
-`
-const Fb = styled(ShareIco)`
-    background-image: url(${fbIcon});
-    background-position: center;
-    background-size: contain;
-    margin-right: 15px;
-    border-radius: 2px;
-    width: 19px;
-    height: 19px;
-    &:hover{
-        background-color: #3b5998;
-    }
-`
-const Twitter = styled(ShareIco)`
-    background-image: url(${twIcon});
-    &:hover{
-        background-color:  #00aced;
-    }
-
 `
 
 const xIcon = require('./assets/x.svg')
@@ -489,20 +344,20 @@ const YearToggle = (props) =>{
 }
 const YrToggle = styled.div`
     margin-left: 15px;
-    transition: transform .6s;
-    transform: translateX(${props=>props.offset? 415 : 0}px);
+    transition: transform .65s;
+    transform: translateX(${props=>props.offset===2? 470 : props.offset===1? 30: 0}px);
 `
 
 const LargeWorkflow = styled.div`
     position: absolute;
-    top: 65px;
+    top: 90px;
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
     z-index: 3;
     transform-origin: 0% 0%;
     @media ${media.optimal}{
         width: 1000px;
-        height: 720px;
+        height: 745px;
         padding: 30px 45px;
     }
     @media ${media.compact}{

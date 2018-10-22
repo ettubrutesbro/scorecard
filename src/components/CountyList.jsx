@@ -36,7 +36,7 @@ const GridList = styled.ul`
 `
 const GridItem = styled.li`
     position: relative;
-    color: ${props => props.sanityHighlight? 'var(--normtext)' : props.selected? 'var(--strokepeach)' : props.dataHasIssue? 'var(--disabledtext)' : 'black'};
+    color: ${props => props.sanityHighlight? 'var(--normtext)' : props.selected? 'var(--strokepeach)' : props.dataHasIssue? 'var(--fainttext)' : 'black'};
     @media ${media.optimal}{
         padding: 8px 13px;
     }
@@ -240,7 +240,6 @@ class CountyList extends React.Component{
                                 }
 
                                 {cty.label}
-                                {dataHasIssue && !straightUpNoData && '*'}
                             </GridItem>
 
                     })

@@ -63,6 +63,9 @@ storiesOf('Generic components', module)
     return(
         <Cont>
         <DropdownToggle 
+            store = {{
+                race: null
+            }}
             defaultWidth = {140}
             toggleMode = {toggleMode}
             options = {[
