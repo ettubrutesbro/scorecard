@@ -355,13 +355,17 @@ export default class ResponsiveNav extends React.Component{
     }
 }
 const BtnLabel = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
+    padding-right: 30px;
 `
 const ResetIcon = styled.div`
-    margin-left: 10px;
-    width: 17px;
-    height: 17px;
+    position: absolute;
+       right: 0px;
+       top: 0; bottom: 0; margin: auto;
+    width: 19px;
+    height: 19px;
     /*border: 1px solid white;*/
     background-image: url(${resetIco});
     background-repeat: no-repeat;
