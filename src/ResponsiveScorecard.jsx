@@ -3,7 +3,7 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-import {mapValues, find} from 'lodash'
+import {mapValues, find, debounce} from 'lodash'
 
 
 import ScorecardStore from './ScorecardStore'
@@ -28,7 +28,7 @@ import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
 import pdfmanifest from './assets/pdfs/pdfmanifest'
 
-import media from './utilities/media'
+import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
 
 import cnico from './assets/cnlogo-long.svg'
@@ -52,7 +52,7 @@ const App = styled.div`
         width: 1550px;
         height: 740px;
         margin-top: 95px;
-        justify-content: center;
+        justify-content: flex
     }
     @media ${media.compact}{
         margin-top: 80px;
@@ -182,12 +182,21 @@ export default class ResponsiveScorecard extends React.Component{
         if(id) this.hoveredCounty = camelLower(id)
         else this.hoveredCounty = null
     }
-
+    @observable screen = getMedia()
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
 
+    resizeRefresh = debounce(() => {
+        console.log('at the end of resize, new screen size was: ')
+        console.log(getMedia())
+        if(this.screen !== getMedia()){
+            window.location.reload()
+        }
+    }, 250)
+
     componentDidMount(){
         store.setIndicatorPages()
+        window.addEventListener('resize', this.resizeRefresh, false)
     }
 
     render(){

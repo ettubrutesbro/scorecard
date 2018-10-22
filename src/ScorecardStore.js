@@ -424,7 +424,7 @@ export default class AppStore{
         }
     }
 
-    @observable indicatorPageSize = 1
+    @observable indicatorPageSize = 8
     @action setIndicatorPages = () => {
         const screen = getMedia()
         let pages = []
