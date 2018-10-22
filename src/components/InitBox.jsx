@@ -60,7 +60,7 @@ export default class InitBox extends React.Component{
                 The 2018-19 California Scorecard of Children’s Well-Being provides a comprehensive snapshot of how children are faring in each of the 58 counties, over time, and by race and ethnicity.
                 </p>
                 <p>
-Data that has been suppressed due to small sample size, large margin of error, or which is otherwise unavailable is colored grey.
+Data that has been suppressed due to small sample size, large margin of error, or which is otherwise unavailable, is colored grey.
                 </p>
                 <StartButton
                     className = 'negative'

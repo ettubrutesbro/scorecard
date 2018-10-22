@@ -155,7 +155,7 @@ export default class HorizontalBarGraph extends React.Component{
                                     <Invalid> No data </Invalid>
                                 }
                                 {invalidValue && item.value==='*' &&
-                                    <Invalid> Data set too small or unstable </Invalid>
+                                    <Invalid> Data too small or unstable </Invalid>
                                 }
                             </Row>
                         )
