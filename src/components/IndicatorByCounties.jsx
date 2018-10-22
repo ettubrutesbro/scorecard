@@ -266,7 +266,7 @@ export default class IndicatorByCounties extends React.Component{
                 const selected = cty.id===county
                 return {
                     ...cty,
-                    label: <LabelComponent selected = {selected} label = {cty.label} right = {truncateNum(cty.value)} />,  
+                    label: <LabelComponent selected = {selected} label = {cty.label} />,  
                     value: val,
                     fill: selected? 'var(--peach)'  : colorScale? colorScale(val): '',
                     trueValue: val + '%'
