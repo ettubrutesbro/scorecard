@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     width: 100%;
     max-height: 100%;
     @media ${media.optimal}{
-        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}    
+        ${props => props.fullHeight? 'height: calc(100% - 10px);' : ''}    
     }
     @media ${media.compact}{
         ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    

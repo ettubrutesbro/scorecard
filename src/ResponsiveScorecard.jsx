@@ -52,12 +52,12 @@ const App = styled.div`
         width: 1550px;
         height: 740px;
         margin-top: 95px;
+        justify-content: center;
     }
     @media ${media.compact}{
-        // margin-top: 80px;
-        width: 100%;
-        height: 690px;
-        align-items: center;
+        margin-top: 80px;
+        width: 1300px;
+        height: 630px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -68,10 +68,6 @@ const Row = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-    @media ${media.compact}{
-        width: 1300px;
-
-    }
 `
 const TopRow = styled(Row)`
     position: relative;
@@ -82,7 +78,6 @@ const TopRow = styled(Row)`
     } 
     @media ${media.compact}{
         height: 150px;
-        margin-top: 80px;
     }
 `
 
@@ -99,7 +94,6 @@ const DarkBar = styled.div`
         padding: 0 calc(50% - 775px);
     }
     @media ${media.compact}{
-        position: absolute;
         padding: 0 calc(50% - 650px);
     }
 `
@@ -112,9 +106,6 @@ const Nav = styled(DarkBar)`
     align-items: center;
     justify-content: center;
     z-index: 3;
-    @media ${media.compact}{
-        height: 75px;
-    }
 `
 
 const GreyMask = styled.div`
@@ -311,12 +302,7 @@ export default class ResponsiveScorecard extends React.Component{
 
 const BottomRow = styled(Row)`
     height: 100%;
-    @media ${media.optimal}{
-        margin-top: 25px;
-    }
-    @media ${media.compact}{
-        margin-top: 18px;
-    }
+    margin-top: 25px;
 `
 
 const MapContainer = styled(Quadrant)`
@@ -368,7 +354,7 @@ const Footer = styled(DarkBar)`
         bottom: 0;
     }
     @media ${media.compact}{
-        top: 760px;
+        bottom: 0;
     }
     z-index: 3;
 `
