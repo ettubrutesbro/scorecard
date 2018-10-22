@@ -6,12 +6,15 @@ import {observer} from 'mobx-react'
 
 import makeHash from '../../utilities/makeHash'
 import {findDOMNode} from 'react-dom'
+import {find} from 'lodash'
 
 import FlipMove from 'react-flip-move'
+import {capitalize} from '../../utilities/toLowerCase'
 
 const ToggleBody = styled.div`
     position: relative;
     display: inline-flex;
+    flex-wrap: wrap;
     // border: 1px solid var(--fainttext);
     // padding: 10px;
 `
@@ -19,25 +22,23 @@ const Option = styled.div`
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
-    // margin: 0 -1px;
-    border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--fainttext)'};
+    border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--bordergrey)'};
     z-index: ${props => props.selected? 1 : 0}
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
-    padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};
-    // border-radius: ${props => props.firstLast==='first'? '4px 0 0 4px' : props.firstLast === 'last'? '0 4px 4px 0' : ''};
-    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--inactivegrey)' : 'var(--fainttext)'};
-    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--inactivegrey)' : 'white'};
-    // background: ${props => props.disabled? '#f3f3f5' : 'white'};
+    padding: ${props => props.size==='big'? '12px 20px' : '6px 15px'};
+    color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
+    background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
+    white-space: nowrap;
     &:hover{
-        // background: white;
-        color: ${props => props.selected?'var(--strokepeach)':'var(--strokepeach)'};
+        color: var(--strokepeach);
         outline-color: var(--strokepeach);
         z-index: 1;
     }
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);
     }
+
 ` 
 
 const Accent = styled.div`
@@ -68,25 +69,25 @@ export class Toggle extends React.Component {
     @observable accentPosition = 0
     @observable lastSelected = 0
     @action setLastSelected = () => this.lastSelected = this.props.selected
-    @action updateAccent = () => {
-        const node = findDOMNode(this['option'+this.props.selected])
-        this.accentPosition =  node.offsetLeft
-        this.accentWidth = node.offsetWidth
-    }
-    componentWillUpdate(){
-        this.setLastSelected()
-    }
-    componentDidMount(){
-        this.updateAccent()
-    }
-    componentDidUpdate(){
-        this.updateAccent()
-    }
+    // @action updateAccent = () => {
+    //     const node = findDOMNode(this['option'+this.props.selected])
+    //     this.accentPosition =  node.offsetLeft
+    //     this.accentWidth = node.offsetWidth
+    // }
+    // componentWillUpdate(){
+    //     this.setLastSelected()
+    // }
+    // componentDidMount(){
+    //     this.updateAccent()
+    // }
+    // componentDidUpdate(){
+    //     this.updateAccent()
+    // }
 
 
-    render(){
+     render(){
     return(
-        <ToggleBody size = {this.props.size}>
+        <ToggleBody style = {this.props.style} size = {this.props.size}>
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
@@ -105,12 +106,13 @@ export class Toggle extends React.Component {
             <Accent 
                 style = {{
                     transform: `translateX(${this.accentPosition}px) scaleX(${this.accentWidth/100})`,
-                    transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
+                    // transition: `transform ${.25*Math.abs(this.lastSelected - this.props.selected)}s`
                 }}
             />
         </ToggleBody>
     )
     }
+
 
 }
 
@@ -200,11 +202,14 @@ export const Tip = styled.div`
     &.default{
         background: var(--normtext);
         color: white;
+        outline: 1px solid var(--offwhitefg);
         &.above{
             &::after{ border-top: 9.5px var(--normtext) solid;  }
+            &::before{ border-top: 10.5px var(--offwhitefg) solid; margin-top: 1px;}
         }
         &.below{
             &::after{ border-bottom: 9.5px var(--normtext) solid;  }
+            &::before{ border-bottom: 10.5px var(--offwhitefg) solid;  margin-top: -1px;}
         }
     }
     &.actionable{
@@ -213,7 +218,7 @@ export const Tip = styled.div`
         padding: 0;
         &.above{
             &::before { border-top: 10.5px var(--bordergrey) solid; }
-            &::after{ border-top: 9.5px var(--offwhitefg) solid;  }
+            &::after{ border-top: 9.5px var(--offwhitefg) solid; }
         }
         &.below{
             &::before { border-bottom: 10.5px var(--bordergrey) solid; }
@@ -272,12 +277,15 @@ const Btn = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 15px 20px;
+    padding: 12px 25px;
     cursor: pointer;
     &.default{
         background: white;
         color: var(--normtext);
         border: 1px solid var(--fainttext);
+        &:hover{
+            color: var(--strokepeach);
+        }
     }
 
     &.compact{
@@ -290,6 +298,23 @@ const Btn = styled.div`
         background: var(--normtext);
         color: white;
         border: none;
+    }
+    &.negative{
+        background: var(--offwhitebg);
+        color: white;
+        &:hover{
+            color: var(--faintpeach);
+        }
+    }
+    &.negativeOnDark{
+        background: var(--offwhitebg);
+        color: white;
+        border: 1px solid var(--offwhitefg);
+        &:hover{
+            color: var(--peach);
+            border-color: var(--peach);
+
+        }
     }
 `
 
@@ -304,3 +329,315 @@ export const Button = (props) => {
         </Btn>
     )
 }
+
+export const Triangle = (props) => {
+    return(
+        <Shpitz />
+    )
+}
+
+const Shpitz = styled.div`
+
+    &::after, &::before{
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+    }
+    &::after{
+        left: calc(50% - 9.5px);
+        top: -19px;
+        border: 9.5px solid transparent;
+        border-bottom: 9.5px white solid;
+    }
+    &::before{
+        left: calc(50% - 10.5px);
+        top: -21.5px;
+        border: 10.5px solid transparent;
+        border-bottom: 10.5px var(--bordergrey) solid;
+    }
+
+`
+
+@observer
+export class DropdownToggle extends React.Component {
+    @observable dropdownOpen = false
+    @action setDropdown = (tf) => {
+        if(tf) document.addEventListener('click', this.handleOutside)
+        else document.removeEventListener('click', this.handleOutside)
+        this.dropdownOpen = tf
+    }
+    @observable hovered = false
+    @action hover = (tf) => {this.hovered = tf}
+
+    constructor(){
+        super()
+        this.dropdown = React.createRef()
+    }
+
+    handleOutside = (e) => {
+        if(!this.dropdown.current.contains(e.target)){
+            // console.log('clicked outnside')
+            this.setDropdown(false)
+        }
+    }
+
+    handleSelectionFromDropdown = (val) => {
+        const validSelect = this.props.select(val)
+        if(validSelect) this.setDropdown(false)
+        else{ //sanity check tings?
+            console.log('sanity check race?')
+        }
+    }
+
+    render(){
+        // const {race} = this.props.store
+        const {selected, toggleMode, disabled, options, defaultWidth} = this.props
+        return(
+            <DropdownToggleWrapper
+                className = {this.props.className}
+                width = {defaultWidth}
+                disabled = {disabled}
+                onMouseEnter = {()=>{this.hover(true)}}
+                onMouseLeave = {()=>{this.hover(false)}}
+            >
+            <Caret 
+                visible = {!toggleMode}
+                length = {options.length}
+                disabled = {disabled}
+                hovered = {this.hovered && !this.dropdownOpen}
+                hasValue = {selected}
+                isOpen = {this.dropdownOpen}
+            />
+
+                <FirstOptBorder
+                    length = {options.length} 
+                    defaultWidth = {defaultWidth}
+                    toggleMode = {toggleMode}
+                    selected = {toggleMode && !selected}
+                    hasValue = {selected && !toggleMode && !this.dropdownOpen}
+                    disabled = {disabled}
+                />
+                {options.slice(0,1).map((o)=>{
+                    return(
+                        <TogOption 
+                            defaultWidth = {defaultWidth } 
+                            className = 'first'
+                            toggleMode = {toggleMode}
+                            onClick = {toggleMode? ()=>{
+                                this.props.select(o.value)
+                            }:!disabled? ()=>{
+                                this.setDropdown(!this.dropdownOpen)
+                            } : ()=>{}}
+                            hasValue = {selected && !toggleMode && !this.dropdownOpen}
+                            selected = {toggleMode && !selected}
+                            disabled = {o.disabled}
+                            muted = {disabled}
+                            hovered = {this.hovered && !toggleMode}
+                            dropdownOpen = {this.dropdownOpen}
+                        >
+                            {!toggleMode && selected? find(options, (opt)=>{return opt.value===selected}).label
+                                : toggleMode || !selected? o.label
+                                : 'wat'
+                            }
+                            
+                        </TogOption>
+                    )
+                })}
+
+                    {this.props.options.slice(1).map((o,i,arr)=>{
+                        return(
+                            <TogOption
+                                length = {arr.length}
+                                offset = {i===0? true : false}
+                                reveal = {toggleMode}
+                                index = {i}
+                                onClick = {()=>{this.props.select(o.value)}}
+                                selected = {!o.value? !selected : o.value===selected}
+                                disabled = {o.disabled}
+                            >
+                                {o.label}
+                            </TogOption>
+                        )
+                    })}
+
+
+                <DropdownList
+                    ref = {this.dropdown}
+                    open = {this.dropdownOpen && !this.props.toggleMode}
+                    close = {()=>this.setDropdown(false)}
+                >
+                    {this.props.options.map((o,i)=>{
+                        return(
+                        <DropdownOption
+                            index = {i}
+                            // onClick = {()=>{this.props.select(o.value)}}
+                            onClick = {()=>{this.handleSelectionFromDropdown(o.value)}}
+                            disabled = {o.disabled}
+                            selected = {!o.value? !selected : o.value===selected}
+                        >
+                            {o.label}
+                        </DropdownOption>
+                        )
+                    })}
+                </DropdownList>
+                
+            </DropdownToggleWrapper>
+        )
+    }
+}   
+
+const DropdownToggleWrapper = styled.div`
+    position: relative;
+    width: ${props => props.width}px;
+    height: 48px;
+`
+
+const DropdownList = styled.ul`
+    position: absolute;
+    width: 100%;
+    top: 48px;
+    border: 1px solid var(--bordergrey);
+    padding: 0; margin: 0;
+    opacity: 0; 
+    transform: translateY(-25px);
+    clip-path: polygon(0 -10px, 100% -10px, 100% 0, 0 0);
+    transition: opacity .25s, transform .25s, clip-path .25s;
+    pointer-events: none;
+    ${props => props.open? `
+        opacity: 1;
+        transform: translateY(0);
+        clip-path: polygon(0 -10px, 100% -10px, 100% 100%, 0 100%);
+        pointer-events: auto;
+    `: ''}
+`
+const DropdownOption = styled.li`
+    &:not(:first-of-type){
+        border-top: 1px solid var(--bordergrey);
+        // border-bottom: 1px solid ${p=>p.selected? 'var(--strokepeach)' :'transparent'};
+    }
+    ${props => props.selected? `
+        outline: 1px solid var(--strokepeach);
+        outline-offset: -1px;    
+    ` : ''}
+    background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    color: ${p => p.disabled? 'var(--fainttext)' : p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+    cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
+    padding: 12px 25px;
+    list-style-type: none;
+    margin-top: -1px;
+    &:hover{
+        color: ${p => !p.disabled? 'var(--strokepeach)' : 'var(--fainttext)'};
+    }
+`
+const TogOption = styled.div`
+    display: inline-flex; 
+    align-items: center;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    padding: 12px 25px;
+    // border: 1px solid ${p => p.selected? 'var(--strokepeach)' : 'var(--offwhitebg)'};
+    background: ${p => p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    cursor: ${p => p.disabled? 'auto' : 'pointer'}; 
+    color: ${p => p.dropdownOpen || p.muted || p.disabled? 'var(--fainttext)' : (p.hovered&&!p.dropdownOpen) || p.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+    white-space: nowrap;
+
+    transform: translateX(${props => props.reveal? (props.index+1)*100 : 0}% );
+    transition: transform ${props=> .15 * (props.index+1)}s;
+    &.first{
+        width: ${props => props.defaultWidth}px;
+        margin-right: -20px;
+        z-index: 3;
+        background-color: transparent;
+        border-color: transparent;
+        color: ${p => p.hovered && p.muted? 'var(--fainttext)' : p.hasValue || p.hovered? 'var(--strokepeach)' : ''};
+        font-weight: ${p => p.hasValue? 500 : 400};
+
+    }
+    &:not(.first){
+        justify-content: center;
+
+        outline: 1px solid var(--offwhitebg);
+        margin-left: ${props => 25 - props.index}px;
+        width: 93px;
+        z-index: ${props => 2 - props.index};
+        // z-index: ${props => (props.length - props.index) + 2};
+        ${props => props.selected? `
+        // box-shadow: inset 0px 0px 0px 1px var(--strokepeach);
+        `: ''}
+    }
+    &:hover{
+        color: ${p => !p.disabled? 'var(--strokepeach)' : 'var(--fainttext)'};
+    }
+`
+const FirstOptBorder = styled.div`
+    position: absolute;
+    ${props => props.hasValue? `
+        // box-shadow: inset 0px 0px 0px 2px var(--peach);
+    `: ''}
+    outline: 1px solid var(--offwhitebg);
+    // border: ${p => p.selected || p.hasValue? '1px solid var(--strokepeach)' : '1px solid transparent'};
+    width: ${props => props.defaultWidth}px;
+    height: 100%;
+    z-index: 3;
+    background: ${p => p.hasValue? 'var(--faintpeach)' : p.disabled? 'var(--disabledgrey)' : p.selected? 'var(--faintpeach)' : 'white'};
+    
+    left: -1px;
+    transform-origin: 0% 50%;
+    // transition: transform .2s, outline-color ${p=>p.hasValue?'.':''}2s;
+    transition: transform .2s, box-shadow .25s, background-color .25s;
+    // transition-delay: ${p => p.toggleMode? 0 : (p.length * .15) + .15}s;
+    transform: ${p => !p.toggleMode? 'scaleX(1)' : `scaleX(${(p.defaultWidth-20)/p.defaultWidth})`};
+        
+
+`
+
+
+
+DropdownToggle.defaultProps = {
+    selected: 0,
+    select: (id)=>{console.log('selected', id)}
+}
+
+
+export const Caret = styled.div`
+    position: absolute;
+    opacity: ${props => props.visible? 1 : 0};
+    transition: opacity .15s;
+    // transition-delay: ${props => props.visible? (props.length*.15)+.15 : 0}s;
+    right: 0;
+    z-index: 5;
+    top: 0; bottom: 0; margin: auto;
+    height: 13px;
+    &::before{
+        margin-top: 2px;
+        content: '';
+        right: 18px;
+        width: 0px;
+        border: 7px solid transparent;
+        border-top-color: ${props => props.disabled? 'var(--bordergrey)' : props.hovered && props.hasValue && !props.disabled? 'var(--strokepeach)' : props.hasValue&&!props.isOpen? 'var(--peach)' : props.hovered || props.isOpen? 'var(--strokepeach)' :  'var(--normtext)'};
+        height: 0px;
+        position: absolute;
+    }
+    &::after{
+        margin-top: 2px;
+        content: '';
+        right: 18px;
+        width: 0px;
+        border: 7px solid transparent;
+        transform: scale(0.75);
+        transform-origin: 50% 20%;
+        border-top-color: white;
+        opacity: ${props => props.disabled? 0 : 1};
+        height: 0px;
+        position: absolute;
+
+        transition: opacity .25s, transform .25s;
+        ${props => props.hovered || props.isOpen? `
+            transform: scale(0.65);    
+        ` : ''}
+        ${props => props.hasValue && !props.isOpen? `
+            transform: scale(0);    
+        ` : ''}
+    }
+`

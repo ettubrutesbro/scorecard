@@ -11,20 +11,18 @@ html{
     --strokepeach: #ef6732;
 
     /*NEEDS MODIFICATION*/
-    --offwhitebg: #E7E6EB;
+    --offwhitebg: #353535;
     --offwhitefg: #FCFDFF;
     --bordergrey: #c2c2c2;
 
-    /*TO DEPRECATE: */
-    --strokepurple: #6E016B;
-    --inactivegrey: #EFEFEF;
-    --shadow: 0 3px 5px rgba(0,0,0,0.25);
-    --highlightshadow: 0 5px 8px rgba(0,0,0,0.375);
+    /*inactive for map (darker); disabled for UI fills; optically the same?*/
+    --inactivegrey: #e0e0e0;
+    --disabledgrey: #ededed;
 
 
     --black: #1e1e1e;
 
-    overflow: hidden;
+    /*overflow: hidden;*/
 
     background: var(--offwhitefg);
 }
@@ -54,12 +52,12 @@ body{
     color: var(--fainttext);
 }
 
-.title{
+/*.title{
     font-size: 24px;
     letter-spacing: .92px;
     font-weight: 400;
 }
-
+*/
 .tinytext{
     font-size: 10px;
     letter-spacing: .62px;

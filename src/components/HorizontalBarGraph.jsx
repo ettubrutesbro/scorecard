@@ -15,11 +15,10 @@ import {floatingCorner, flushHard} from './BoxStyling'
 
 const Wrapper = styled.div`
     position: relative;
-    margin-top: 10px;
     width: 100%;
     max-height: 100%;
     ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}
-    border: 2px solid var(--bordergrey);
+    border: 1px solid var(--bordergrey);
 `
 
 @observer
@@ -60,7 +59,7 @@ export default class HorizontalBarGraph extends React.Component{
             <Header>
                 {this.props.header}
             </Header>
-            <FadeCropper />
+            {this.props.beefyPadding && <FadeCropper />}
             <PerfectScrollBar>
             <GraphTable
                 ref = {this.graph}
@@ -76,7 +75,7 @@ export default class HorizontalBarGraph extends React.Component{
                     }
                 </Header>
                 */}
-                <Content>
+                <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
                     duration = {250}
                     typeName = {null}
@@ -104,13 +103,16 @@ export default class HorizontalBarGraph extends React.Component{
                                         hovered = {item.id === this.hoveredRow}
                                         onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                         onMouseLeave = {()=>{this.handleHoverRow(null)}}
+                                        hasLeftLabel = {item.leftLabel}
                                     >
-                                        <LeftLabel
-                                            hovered = {item.id === this.hoveredRow}
-                                        >
-                                            {!condensed && item.leftLabel}
+                                        {item.leftLabel && 
+                                            <LeftLabel
+                                                hovered = {item.id === this.hoveredRow}
+                                            >
+                                                {!condensed && item.leftLabel}
 
-                                        </LeftLabel>
+                                            </LeftLabel>
+                                        }
                                         {!condensed && item.label}
                                     </Label>
                                 
@@ -136,14 +138,17 @@ export default class HorizontalBarGraph extends React.Component{
                                         >
                                             {item.trueValue && item.trueValue}
                                             {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
-                                            {i===0 && !item.trueValue && <Pct>%</Pct>}
+                                            {!item.trueValue && <Pct>%</Pct>}
                                             
                                         </Value>
                                         }
                                     </React.Fragment>
                                 }
-                                {invalidValue && 
-                                    <Invalid> N/A </Invalid>
+                                {invalidValue && !item.value && 
+                                    <Invalid> No data </Invalid>
+                                }
+                                {invalidValue && item.value==='*' &&
+                                    <Invalid> Data set too small or unstable </Invalid>
                                 }
                             </Row>
                         )
@@ -155,7 +160,7 @@ export default class HorizontalBarGraph extends React.Component{
                             // offset = {0}
                             side = {this.props.average>65?'left':'right'}
                             muted = {this.hoveredRow}
-                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-77)}
+                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-75)}
                         >
                             <AverageLabel side = {this.props.average>65?'left':'right'}>
                              CA Avg 
@@ -168,7 +173,7 @@ export default class HorizontalBarGraph extends React.Component{
             </GraphTable>
             </PerfectScrollBar>
 
-            <FadeCropperBottom />
+           {this.props.beefyPadding && <FadeCropperBottom />}
             {this.props.footer && 
             <Footer>
                 {this.props.footer}
@@ -193,17 +198,6 @@ const GraphTable = styled.div`
    
     overflow: hidden;
 `
-// const Header = styled.div`
-//     width: 100%;
-//     // color: ${props=>props.expanded?'var(--normtext)' : 'var(--fainttext)'};
-//     // margin: ${props=>props.expanded? '20px 0 20px 20px' : '20px 0 10px 20px'};
-//     // 
-//     // font-size: ${props=>props.expanded? '16px' : '13px'};
-//     color: var(--normtext);
-//     margin: 20px 0 10px 20px;
-//     font-size: 16px;
-//     transition: transform .25s, opacity .25s;
-// `
 
 const CropBox = styled.div`
     position: absolute;
@@ -248,8 +242,8 @@ const Subheader = styled.div`
 const Content = styled.div`
     width: 100%;
     height: 100%;
-    padding: 0 36px 0px 20px;
-    margin: 35px 0 28px 0;
+    padding: 0 36px 0px 25px;
+    margin: ${props => props.beefyPadding?'42px 0 32px 0' : '25px 0 18px 0'};
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
@@ -259,17 +253,15 @@ const Label = styled.div`
     width: ${props => props.labelWidth}px;
     align-items: center;
     flex-shrink: 0;
-    justify-content: flex-end;
-    // justify-content: space-between;
-    padding-right: 10px;
+    justify-content: ${props => props.hasLeftLabel? 'space-between' : 'flex-end'};
+    padding-right: 20px;
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
     white-space: nowrap;
+
+
 `
 const LeftLabel = styled.div`
-    font-weight: bold;
-    // font-weight: 500;
-    // border: 1px solid red;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" : "var(--fainttext)"};
 
 `
@@ -292,16 +284,16 @@ const RowComponent = styled.div`
     width: calc(100% - 20px);
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 3px;
 `
 const AverageLine = styled.div`
     position: absolute;
     bottom: -12px;
-    left: ${props => props.labelWidth + 18}px;
+    left: ${props => props.labelWidth + 20}px;
     width: 1px;
     background-color: var(--fainttext);
     height: calc(100% + 21px);
-    box-shadow: -1px 0 0 0 var(--offwhitefg);
+    box-shadow: -1.5px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
     z-index: 2;
@@ -354,22 +346,15 @@ const AverageValue = styled.span`
 const Bar = styled.div`
     position: relative;
     width: 100%;
-    height: ${props => props.condensed? '6px' : '15.5px'};
+    height: ${props => props.condensed? '6px' : '13px'};
     transform-origin: 0% 0%;
     transition: transform .25s, background-color .25s;
     transform: scaleX(${props=> props.percentage/100});
 
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
-    // border: ${props => props.condensed? '' : props.selected? '1px solid var(--strokepeach)' : '1px solid var(--strokepurple)'};
     border-right-color: transparent;
 `
-const EndHatch = styled.div`
-    position: absolute;
-    right: 0px;
-    transform: scaleX(${props => props.scaleX});
-    /*border-left: 1px solid ${props => props.selected? 'var(--strokepeach)' : 'var(--strokepurple)'};*/
-    height: 100%;
-`
+
 const Value = styled.div`
     color: ${props => props.hovered?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
     letter-spacing: 0.5px;
@@ -379,23 +364,6 @@ const Value = styled.div`
     transition: transform .25s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
     margin-left: ${props => props.percentage===0? 0 : 5}px;
-`
-const Prompt = styled.div`
-    position: absolute;
-    width: 100%;
-    font-size: 13px;
-    // color: var(--strokepeach);
-    // font-weight: bold;
-    // letter-spacing: 0.1px;
-    text-align: center;
-    bottom: 0;
-    padding: 45px 0 10px 0;
-    // border-top: 1px solid red;
-    color: var(--normtext);
-    transition: transform .25s, opacity .25s;
-    transform: ${props => props.visible? 'translateY(0px)' : 'translateY(20px)'};
-    opacity: ${props => props.visible? 1 : 0};
-    background: linear-gradient(0deg, rgba(255,255,255,1) 35%, rgba(255,255,255,0) 100%)
 `
 
 HorizontalBarGraph.defaultProps = {

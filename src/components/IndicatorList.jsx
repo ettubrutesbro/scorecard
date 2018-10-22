@@ -15,6 +15,7 @@ import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
 import {capitalize} from '../utilities/toLowerCase'
+import {isValid} from '../utilities/isValid'
 import semanticTitles from '../assets/semanticTitles'
 
 import media, {getMedia} from '../utilities/media'
@@ -30,6 +31,12 @@ const IndRows = styled.ul`
 
 `
 const RowItem = styled.li`
+    &:first-of-type{
+        border-radius: 4px 4px 0 0;
+    }
+    &:last-of-type{
+        border-radius: 0 0 4px 4px;
+    }
     /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
@@ -167,7 +174,7 @@ export default class IndicatorList extends React.Component{
     @observable interrupt = false
 
     @action setAnimating = (tf) => {
-        console.log('animating: ', tf)
+        // console.log('animating: ', tf)
         this.animating = tf
     }
     @action setInterrupt = (tf) => {this.interrupt = tf}
@@ -209,10 +216,10 @@ export default class IndicatorList extends React.Component{
         const {store, animDir, prevOffset} = this.props
         const {county, race, indicatorFilter} = store
         // const page = this.pages[this.currentPage]
-        console.log(store.indicatorPages.toJS())
-        console.log(store.indicatorListPage)
+        // console.log(store.indicatorPages.toJS())
+        // console.log(store.indicatorListPage)
         const page = store.indicatorPages[store.indicatorListPage]
-        console.log(page)
+        // console.log(page)
 
         // this.props.setNumPages(this.pages.length)
 
@@ -223,7 +230,7 @@ export default class IndicatorList extends React.Component{
         }).length
 
         const showSanityCheck = store.sanityCheck.indicator
-        console.log('sanity', showSanityCheck)
+        // console.log('sanity', showSanityCheck)
 
         return(
             <Workflow>
@@ -250,7 +257,7 @@ export default class IndicatorList extends React.Component{
                 />
                  <Readout>
                    <AboutPcts>
-                       {`${county?countyLabels[county]:'Statewide'} %s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
+                       {`${county?countyLabels[county]:'Statewide'} %'s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
                     </AboutPcts> 
                    Viewing {(store.indicatorPageSize * store.indicatorListPage)+1} 
                    &#8212; 
@@ -298,9 +305,19 @@ export default class IndicatorList extends React.Component{
                         const noRace = !cats.includes('hasRace')
 
                         const noRaceNeedRace = noRace && race
-
-                        let val = indicator.counties[county||'california'][race||'totals']
-                        val = val && val!=='*'? val[val.length-1] : ''
+                        let valArr
+                        let val
+                        if(!noRaceNeedRace && indicator.counties[county||'california'][race||'totals']){
+                            valArr = indicator.counties[county||'california'][race||'totals'].filter((v)=>{return isValid(v)})
+                        }
+                        else{
+                            valArr = indicator.counties[county||'california'].totals.filter((v)=>{return isValid(v)})
+                        }
+                        if(valArr.length > 0 ){
+                            val = valArr[valArr.length-1]
+                        }
+                        else val = ''
+                        // val = val && val!=='*'? val[val.length-1] : ''
 
                         const disabled = (county && !val) || (county && val==='*') || noRaceNeedRace
 
@@ -370,16 +387,16 @@ class SanityCheck extends React.Component{
         this.sanityCheck = React.createRef()
     }
     handleClick = (e) => {
-        console.log(this.sanityCheck)
+        // console.log(this.sanityCheck)
         if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-            this.props.store.clearSanityCheck()
+            this.props.store.clearSanityCheck('indicator')
         }
     }
     componentDidMount(){
         document.addEventListener('click', this.handleClick)
     }
     componentWillUnmount(){
-        console.log('unmounting sanitycheck')
+        // console.log('unmounting sanitycheck')
         document.removeEventListener('click', this.handleClick)
     }
 
@@ -406,7 +423,7 @@ class SanityCheck extends React.Component{
                         label = 'Nevermind, back to list' 
                         style = {{marginRight: '15px'}}
                         onClick = {(e)=>{
-                            store.clearSanityCheck()
+                            store.clearSanityCheck('indicator')
                             e.nativeEvent.stopImmediatePropagation()
                         }}
                     />
@@ -415,7 +432,7 @@ class SanityCheck extends React.Component{
                         className = {`dark ${screen}`} 
                         onClick = {()=>{
                             data.action()
-                            store.clearSanityCheck()
+                            store.clearSanityCheck('indicator')
                         }}
 
                     />

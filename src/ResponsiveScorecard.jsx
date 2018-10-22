@@ -17,14 +17,22 @@ import MapComponent from './components/InteractiveMap'
 import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
-import SourcesButton, {DemoSources} from './components/Sources'
+import {DemoSources} from './components/Sources'
+import DemoBox from './components/DemoBox'
+
+import {Button} from './components/generic'
 
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
+import countyLabels from './assets/countyLabels'
+import pdfmanifest from './assets/pdfs/pdfmanifest'
 
 import media from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
+
+import cnico from './assets/cnlogo-long.svg'
+import maskImg from './assets/mask.png'
 
 const store = new ScorecardStore()
 window.store = store
@@ -41,15 +49,14 @@ const App = styled.div`
     justify-content: flex-start;
     height: 100%;
     @media ${media.optimal}{
-        width: 1600px;
+        width: 1550px;
         height: 740px;
-        margin-top: 110px;
+        margin-top: 95px;
     }
     @media ${media.compact}{
-
-    margin-top: 80px;
-        width: 1280px;
-        height: 640px;
+        margin-top: 80px;
+        width: 1300px;
+        height: 630px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -59,30 +66,40 @@ const Row = styled.div`
     width: 100%;
     display: flex;
     position: relative;
+    align-items: center;
 `
 const TopRow = styled(Row)`
     position: relative;
-    height: 80px;
-    // flex-grow: 1;
-    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    @media ${media.optimal}{
+        height: 185px;
+    } 
+    @media ${media.compact}{
+        height: 150px;
+    }
 `
-const BottomRow = styled(Row)`
-    height: 100%;
-    flex-grow: 1;
-    // flex-shrink: 0;
+
+const ShareSources = styled.div`
+    
+
 `
-const Nav = styled(Row)`
+const DarkBar = styled.div`
     position: fixed;
     width: 100%;
     left: 0;
-    top: 0;
     background: var(--offwhitebg);
     @media ${media.optimal}{
-        height: 95px;
+        padding: 0 calc(50% - 775px);
     }
     @media ${media.compact}{
-        height: 75px;
+        padding: 0 calc(50% - 650px);
     }
+`
+
+const Nav = styled(DarkBar)`
+    top: 0;
+    height: 90px;
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -90,103 +107,32 @@ const Nav = styled(Row)`
     z-index: 3;
 `
 
-const Readout = styled(Quadrant)`
-    @media ${media.optimal}{
-                width: calc(100% - 460px);
-        height: 120px;
-        padding-right: 30px;
-    }
-    @media ${media.compact}{
-        width: calc(100% - 460px);
-        height: 80px;
-        padding-right: 30px;
-    }
-    @media ${media.mobile}{}
-`
-const Breakdown = styled(Quadrant)`
-    top: 0; left: 0;
-    height: 100%;
-    @media ${media.optimal}{
-        width: 38%;
-
-    }
-    @media ${media.compact}{
-        width: 480px;
-    }
-    @media ${media.mobile}{}
-    z-index: ${props=>props.sources? 20 : 1}; 
-`
-const Legend = styled(Quadrant)`
-    z-index: 0;
-    right: 0;
-    top: 0;
-    flex-shrink: 0;
-    @media ${media.optimal}{
-        width: 500px;
-        height: 80px;
-    }
-    @media ${media.compact}{
-        width: 500px;
-        height: 80px;
-
-    }
-    @media ${media.mobile}{}
-`
-const MapContainer = styled(Quadrant)`
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    transform-origin: 0% 100%;
-    transition: transform .5s;
-    @media ${media.optimal}{
-        width: 60%;
-        height: 97%;
-        transform: translateX(${props => props.offset? '40%' : 0});
-    }
-    @media ${media.compact}{
-        width: 768px; height: 560px;
-        transform: translateX(${props => props.offset? '280px' : 0});
-    }
-    @media ${media.mobile}{}
-`
 const GreyMask = styled.div`
     position: fixed;
     left: 0;
-    top: 75px;
+    top: 0;
     width: 100%;
     height: 100%;
-    transform-origin: 50% 0%;
-    transition: transform ${props=>props.show? .5 :0.5}s;
-    transform: scaleY(${props=>props.show?1 : 0});
-    background: var(--offwhitebg);
+    transform-origin: 0% 0%;
+    transition: transform .75s;
+    transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
+    // transform: scaleX(${props=>props.show?1 : 0});
+    background: var(--offwhitefg);
     z-index: 2;
-`
-const DemoBox = styled.div`
-    position: absolute;
-    opacity: ${props => props.show? 1 : 0};
-    @media ${media.optimal}{
-        width: 650px;
-        height: 400px;
-        padding: 35px;
-        top: 35px;
-    }
-    @media ${media.compact}{
+    &::after{
+        content: '';
+        position: absolute;
         top: 0;
-        padding: 20px;
-        width: 500px;
-        height: 300px;   
-
+        width: 400px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        right: -400px;
+        background-image: url(${maskImg});
     }
-    right: 0;
-    border: 2px solid var(--bordergrey);
-    display: flex;
-    z-index: 1;
-    transition: transform .4s, opacity .4s;
-    @media ${media.compact}{
-        // transform: ${props => !props.hide? 'translateX(0)' : 'translateX(-30px)'};
-        // opacity: ${props => props.hide? 0 : 1};
-        // transform-origin: 100% 0%;
-    }
+`
+const SourcesButton = styled(Button)`
+    width: 238px;
 `
 
 @observer
@@ -203,6 +149,13 @@ export default class ResponsiveScorecard extends React.Component{
         @action setBreakdownOffset = (val) => this.breakdownOffset = val
 
     @observable extraReadoutLines = ''
+
+    @action reset = () => {
+       store.completeWorkflow('race',null)
+       store.completeWorkflow('county',null)
+       store.completeWorkflow('indicator',null)
+       this.openNav('indicator')
+    }
 
     @action openNav = (status) => {
         console.log('nav', status)
@@ -245,6 +198,8 @@ export default class ResponsiveScorecard extends React.Component{
             <React.Fragment>
             <Styles />
             <App>
+
+                
                 <Nav> 
                     <NavComponent 
                         init = {this.init}
@@ -252,35 +207,45 @@ export default class ResponsiveScorecard extends React.Component{
                         open = {this.navOpen}
                         openNav = {this.openNav}
                         closeSplash = {this.closeSplash}
+                        reset = {this.reset}
                     /> 
                 </Nav>
                 <GreyMask 
-                    show = {this.navOpen}
+                    show = {this.navOpen || this.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
                 />
                 <TopRow>
-                    <Readout> <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset}/> </Readout>
-                    <Legend> <LegendComponent store = {store} /> </Legend>
+                    <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
+                    {store.indicator &&
+                    <ShareSources>
+                        <SourcesButton 
+                            label = {this.sourcesMode? "Hide sources and notes" : "View sources and notes"}
+                            className = {this.sourcesMode? 'negative' : 'default' }
+                            onClick = {()=>{this.setSourcesMode(!this.sourcesMode)}}
+                        />
+                        <Button label = "Download PDF" style = {{marginLeft: '15px'}}
+                            onClick = {()=>{
+                                if(pdfmanifest[store.county||'california']){
+                                    window.open(pdfmanifest[store.county||'california'])
+                                }
+                                else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
+                                
+                            } }
+                        />
+                    </ShareSources>
+                    }
                 </TopRow>
 
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        show = {!this.sourcesMode && !this.init}
-                    >
-                        <DemoDataTable
-                            store = {store}
-                        />
+                        // show = {!this.sourcesMode && !this.init}
+                        show = {!this.init}
+                        store = {store}
+                        sources = {this.sourcesMode}
+                    />
 
-                        <RaceBreakdownBar 
-                            // height = {this.demoBoxDims.height}
-                            store = {store}
-
-                        />
-                        
-
-                    </DemoBox>
                     {this.init &&
                        <InitBox closeSplash = {this.closeSplash}/>
                     }
@@ -295,7 +260,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </Breakdown>
 
                     <MapContainer 
-                        offset = {this.init || this.navOpen || this.sourcesMode} 
+                        offset = {this.init || this.navOpen} 
                         // init = {this.init}
                     >
                         <MapComponent 
@@ -310,38 +275,113 @@ export default class ResponsiveScorecard extends React.Component{
                             // mode = 'wire'
                         />
                     </MapContainer>
+
+                    <LegendContainer>
+                        <LegendComponent 
+                            store = {store}
+                        />
+                    </LegendContainer>
                 </BottomRow>
 
-
-                {indicator && !this.navOpen &&
-                    <React.Fragment>
-                    <SourcesButton
-                        sources = {this.sourcesMode}
-                        store = {store}
-                        onClick = {()=>this.setSourcesMode(!this.sourcesMode)}
-                        fullView = {this.sourcesMode}
-                    />
-                    <PDFButton> Export PDF </PDFButton>
-                    </React.Fragment>
-                }
+                <Footer>
+                    <FooterContent>
+                        <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
+                        <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
+                        <FooterLink href = 'https://www.childrennow.org/reports-research/scorecard/'>Credits & Acknowledgments</FooterLink>
+                        <a href = "https://www.childrennow.org"><CNLogo /></a>
+                    </FooterContent>
+                </Footer>
             </App>
-
             </React.Fragment>
         )
     }
 }
 
-const PDFButton = styled.div`
+
+
+const BottomRow = styled(Row)`
+    height: 100%;
+    margin-top: 25px;
+`
+
+const MapContainer = styled(Quadrant)`
+    z-index: 2;
+    transform-origin: 0% 100%;
+    transition: transform .5s;
     position: absolute;
-    right: 0;
-    z-index: 21;
+
     @media ${media.optimal}{
-        bottom: 165px;
+        left: 675px;
+        width: 525px;
+        height: 100%;
+        transform: translateX(${props => props.offset? '350px' : 0});
+        transform: ${props => props.offset? 'translateX(350px)' : 'translateX(0) scale(1)'};
     }
     @media ${media.compact}{
-        bottom: 165px;
-    }}
-    padding: 10px 25px;
-    border: 2px solid var(--bordergrey);
+        left: 510px;
+        width: 450px; 
+        height: 100%;
+        transform: translateX(${props => props.offset? '280px' : 0});
+    }
+    @media ${media.mobile}{}
+`
+const Breakdown = styled(Quadrant)`
+    top: 0; left: 0;
+    height: 100%;
+    @media ${media.optimal}{
+        width: 610px;
+    }
+    @media ${media.compact}{
+        width: 480px;
+    }
+    @media ${media.mobile}{}
+    z-index: ${props=>props.sources? 20 : 1}; 
+`
+const LegendContainer = styled.div`
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    width: 300px; 
+    height: 80px;
 
+`
+
+const Footer = styled(DarkBar)`
+    
+    @media ${media.optimal}{
+        bottom: 0;
+    }
+    @media ${media.compact}{
+        bottom: 0;
+    }
+    z-index: 3;
+`
+const CNLogo = styled.div`
+    width: 175px; height: 21px;
+    /*border: 1px solid white;*/
+    background-image: url(${cnico});
+    background-size: cover;
+    background-repeat: none;
+
+`
+const FooterContent = styled.div`
+    @media ${media.optimal}{
+        width: 1550px;
+    }
+    @media ${media.compact}{
+        width: 1295px;
+    }
+    display: flex;
+    height: 75px;
+    align-items: center;
+    justify-content: flex-end;
+`
+const FooterLink = styled.a`
+    color: white;
+    margin-right: 70px;
+    text-decoration: none;
+    &:hover{
+        color: var(--peach);
+    }
 `

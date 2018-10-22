@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
-import {Toggle, Tooltip, Button} from '../src/components/generic/index'
+import {Toggle, DropdownToggle, Tooltip, Button} from '../src/components/generic/index'
 
 
 storiesOf('Generic components', module)
@@ -58,6 +58,33 @@ storiesOf('Generic components', module)
         </Void>
     )
 })
+.add('DropdownToggle', ()=>{
+    const toggleMode = boolean('toggle mode', false)
+    return(
+        <Cont>
+        <DropdownToggle 
+            store = {{
+                race: null
+            }}
+            defaultWidth = {140}
+            toggleMode = {toggleMode}
+            options = {[
+                {label: 'All races', value: ''},
+                {label: 'Asian', value: 'asian'},
+                {label: 'Black', value: 'black'},
+                {label: 'Latinx', value: 'latinx'},
+                {label: 'White', value: 'white'},
+                {label: 'Other', value: 'other'},
+            ]}
+        />
+        </Cont>
+    )
+})
+
+const Cont = styled.div`
+    // width: 400px;
+    // border: 1px solid black;
+`
 
 const Note = styled.h3`
     display: inline-flex;

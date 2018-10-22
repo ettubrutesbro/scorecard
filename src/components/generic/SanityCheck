@@ -1,0 +1,11 @@
+import React from 'react'
+import styled from 'styled-components'
+import {Tooltip} from './index'
+
+const SanityCheckTip = (props) => {
+    return(
+        <Tooltip>
+
+        </Tooltip>
+    )
+}

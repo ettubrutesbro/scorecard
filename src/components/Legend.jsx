@@ -48,19 +48,20 @@ export default class Legend extends React.Component{
 
         return(
             <Lgd
-                onMouseEnter = {()=>this.handleHover(true)}
-                onMouseLeave = {()=>this.handleHover(false)}
+                // onMouseEnter = {()=>this.handleHover(true)}
+                // onMouseLeave = {()=>this.handleHover(false)}
             >
+                <Labels>
                 <NumCountiesLabel show = {this.hovered}> 
                     Number of counties in each range 
                 </NumCountiesLabel>
+                <ColorGuideLabel hide = {this.hovered}>
+                    Color guide
+                </ColorGuideLabel>
+                </Labels>
+                <Swatches>
                 {
                     breaks.map((ele,i,arr)=>{
-                    
-                        // let lo = los[i].toFixed(1)
-                        // let hi = his[i].toFixed(1)
-                        // if(lo[lo.length-1]==='0') lo = Number(lo).toFixed(0)
-                        // if(hi[hi.length-1]==='0') hi = Number(hi).toFixed(0)
 
                         const numCountiesInClass = nums[i]
                         const pctCountiesInClass = pcts[i]
@@ -88,7 +89,8 @@ export default class Legend extends React.Component{
                                     <LabelRange hide = {this.hovered}
                                         last = {i===arr.length-2}
                                     >
-                                        {Math.ceil(breaks[i])} <Dash /> {Math.floor(breaks[i+1])}%
+                                        {Math.ceil(breaks[i])}-{Math.floor(breaks[i+1])}
+                                        <Pct>%</Pct>
                                     </LabelRange>
                                     <LabelNum show = {this.hovered}>
                                         {nums[i]!==0 && nums[i]}
@@ -98,6 +100,7 @@ export default class Legend extends React.Component{
                         ): ''
                     })
                 }
+                </Swatches>
             </Lgd>
         )
         }
@@ -111,36 +114,34 @@ export default class Legend extends React.Component{
 
 const Lgd = styled.div`
     display: flex;
+    flex-direction: column;
     position: relative;
     width: 100%;
     overflow: hidden;
-    cursor: pointer;
+    /*cursor: pointer;*/
+    /*width: 450px;*/
+    width: 100%;
 `
 
 const Dash = styled.div`
     height: 0;
     border-top: 1px solid var(--bordergrey);
-    width: 8px;
-    margin: 0 5px;
+    width: 5px;
+    margin: 0 3px;
+`
+const Pct = styled.span`
+    margin-left: 2px;
 `
 
 
 const Section = styled.div`
-    @media ${media.optimal}{
-        padding-top: 35px;
-    }
-    @media ${media.compact}{
-
-        padding-top: 30px;   
-    }
     width: ${props=>100/props.classes}%;
 `
 
 const Swatch = styled.div`
-    height: 15px;
+    height: 13px;
     background: ${props => props.fill};
     position: absolute;
-    top: 30px;
     left: -100%;
     width: 100%;
     z-index: ${props => props.classes - props.index};
@@ -160,8 +161,8 @@ const Label = styled.div`
     justify-content: center;
 
         transform: translateX(${p=> p.mode==='truescale'&&p.firstLast==='first'?0
-            :p.mode==='truescale'?  481*((p.offset+(p.scale/2)))+'px' 
-            : (481/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(40%)' 
+            :p.mode==='truescale'?  320*((p.offset+(p.scale/2)))+'px' 
+            : (320/p.classes)*(p.index) + 'px'}) ${p=>p.mode!=='truescale' && !p.firstLast? 'translateX(10%)' 
             : 'translateX(0)'
         };        
     
@@ -195,17 +196,33 @@ const Label = styled.div`
         // transform: translateY(${props=>props.show?0:10}px);
     `
 
-const NumCountiesLabel = styled.div`
+const Labels = styled.div`
+    width: 100%;
+    height: 40px;
+`
+const Swatches = styled.div`
+    width: 100%;
+    // border: 1px solid blue;
+    height: 40px;
+`
+
+const Titles = styled.div`
     position: absolute;
-    top: 5px; font-size: 13px;
-    left: 0;
-    color: var(--fainttext);
+    top: 0; font-size: 16px;
+    right: 0;
+    color: var(--normtext);
+`
+const ColorGuideLabel = styled(Titles)`
+    opacity: ${props => props.hide?
+        0: 1
+    };
+    transition: opacity .35s;
+`
+const NumCountiesLabel = styled(Titles)`
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity .25s, transform .25s;
+    transition: opacity .25s;
     ${props => props.show? `
         opacity: 1;
-        transform: translateY(0);
     `: ''}
 
 `

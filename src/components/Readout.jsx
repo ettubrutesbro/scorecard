@@ -17,11 +17,18 @@ import demopop from '../data/demographicsAndPopulation.json'
 import media, {getMedia} from '../utilities/media'
 
 const ReadoutBlock = styled.div`
+    display: flex;
+    align-items: center;
+    @media ${media.optimal}{
+        width: 950px;   
+    }
+    @media ${media.compact}{
+        width: 720px;   
+    }
     left: 0;
     top: 0;
     transform-origin: 50% 0%;
-    font-size: 24px;
-    position: absolute;
+    /*position: absolute;*/
     padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
     b{
@@ -29,7 +36,7 @@ const ReadoutBlock = styled.div`
     }
     h1{
         position: absolute;
-        top: 0;
+        top: -6px;
         left: 0;
         margin: 0;
         font-size: 48px;
@@ -37,7 +44,7 @@ const ReadoutBlock = styled.div`
     }
 `
 const IndentedTitle = styled.div`
-    line-height: 36px;
+    line-height: 40px;
     padding-top: 18px;
 `
 const Crumb = styled.span`
@@ -94,12 +101,13 @@ export default class Readout extends React.Component{
                 }
                 i++
             }
-            this.firstLine = readout.slice(0,actualBreakIndex)
-            this.subsequentLines = this.nbspString(readout.slice(actualBreakIndex))
+            // this.firstLine = readout.slice(0,actualBreakIndex)
+            // this.subsequentLines = this.nbspString(readout.slice(actualBreakIndex))
+            this.firstLine = readout
         }
         else{
          this.firstLine = readout
-         this.subsequentLines = ''
+         // this.subsequentLines = ''
      }
     }
 
@@ -160,6 +168,7 @@ export default class Readout extends React.Component{
 
         return(
             <ReadoutBlock
+                className = 'title'
                 compact = {this.props.store.activeWorkflow}
             >
                 {/*!indicator && (county || race) && 

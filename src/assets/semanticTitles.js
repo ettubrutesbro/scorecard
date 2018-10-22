@@ -1,207 +1,200 @@
 const semanticTitles = {
-    // 'EarlyPrenatalCare': 'of pregnant women get early prenatal care',
-    // 'NotFoodInsecure': ' of children don\'t have to deal with food insecurity',
-    // 'RegisteredToVote': ' of people are registered to vote..?'
 
     'earlyPrenatalCare': {
         descriptor: 'pregnant',
         who: 'women',
-        what: 'got early prenatal care',
-        label: 'Pregnant women who get early prenatal care',
-        shorthand: 'Early prenatal care'
+        what: 'received prenatal care beginning the first trimester',
+        label: 'Pregnant women who received prenatal care beginning the first trimester',
+        shorthand: 'Prenatal care'
     },
     'notFoodInsecure': {
         who: 'children',
-        what: 'didn\'t have to deal with food insecurity',
-        label: 'Children that don\'t face food insecurity',
-        shorthand: 'Food insecurity'
+        what: 'were not food insecure',
+        label: 'Children who were not food insecure',
+        shorthand: 'Not food insecure'
     },
     'registeredToVote': {
-        who: '18-25 year olds',
+        who: '18-25-year-olds',
         shortWho: '18-25 y/o\'s',
         what: 'were registered to vote',
-        label: '18-25 year olds registered to vote',
-        shorthand: 'Youth voter registration'
+        label: '18-25-year-olds registered to vote',
+        shorthand: 'Young adult voter registration'
     },
     'collegeCareerReady': {
         who: 'students',
-        what: 'were college or career ready',
-        label: 'Students who are college or career ready',
+        what: 'were college- or career-ready',
+        label: 'Students who were college- or career-ready',
         shorthand: 'College / career readiness'
     },
     'lowIncomeDental': {
         descriptor: 'Low-income',
         who: 'children, ages 0-5,',
-        shortWho: 'children',
-        what: 'had visited a dentist within the last year',
-        label: 'Low-income children, age 0-5, who saw a dentist in the last year',
-        shorthand: 'Dental visits for low-income children'
+        shortWho: '0-5 y/o\'s',
+        what: 'had visited a dentist in the last year',
+        label: 'Children, birth-5, of low-income families who had visited a dentist in the last year',
+        shorthand: 'Children dental visits'
     },
     'upToDateImmunizations': {
         who: 'Kindergarteners',
         what: 'had up-to-date immunizations',
         label: 'Kindergarteners with up-to-date immunizations',
-        shorthand: 'Kindergartener vaccination'
+        shorthand: 'Up-to-date immunizations'
     },
-    'allegations': {
-        who: 'children',
-        what: ', ages birth-18, had not reportedly suffered abuse/neglect within 12 months',
-        label: 'Children, ages birth-18, with no report of abuse or neglect in a 12 month time period',
-        shorthand: 'Abuse and neglect'
-    },
+
     'connected':{
         who: 'students',
         what: 'reported feeling connected to their school',
-        label: 'Students who report feeling connected to their school',
-        shorthand: 'Student-school connection'
+        label: 'Students who reported feeling connected to their school',
+        shorthand: 'Connection to school'
     },
     'difference':{
         who: 'students',
-        what: 'report feeling like they do things at school that make a difference',
-        label: 'Students who report feeling like they do things at school that make a difference',
-        shorthand: 'Feelings of school making a difference'
+        what: 'reported feeling like they did things at school that made a difference',
+        label: 'Students who reported feeling like they do things at school that make a difference',
+        shorthand: 'Making a difference at school'
     },
     'breastFeeding': {
         who: 'newborns',
         what: 'were exclusively breastfed while in the hospital',
-        label: 'Newborns exclusively breastfed while in the hospital',
-        shorthand: 'Breastfeeding in-hospital'
+        label: 'Newborns who were exclusively breastfed while in the hospital',
+        shorthand: 'Newborns breastfed in hospital'
     },
     'childCareSlots': {
         who: 'children',
-        what: 'with parents in the labor force had a licensed child care slot available',
-        label: 'Children with parents in the labor force for whom a licensed child care slot is available',
-        shorthand: 'Child care availability'
+        what: 'with parents in the labor force for whom a licensed child care slot was available',
+        label: 'Children with parents in the labor force for whom a licensed child care slot was available',
+        shorthand: 'Child care slots'
     },
     'collegeLevelMath': {
         who: 'students',
         what: 'were ready or conditionally ready for college-level math courses',
-        label: 'Students who are ready or conditionally ready for college-level math courses',
+        label: 'Students who were ready or conditionally ready for college-level math courses',
         shorthand: 'College math readiness'
     },
     'englishLearners': {
-        who: 'English-language-learning students',
+        who: 'English language learners',
+        shortWho: 'ELL students',
         what: 'gained proficiency in English',
-        label: 'English Language Learner students who gain proficiency in English',
-        shorthand: 'English learner proficiency'
+        label: 'English Language Learners who gained proficiency in English',
+        shorthand: 'English language learner proficiency'
     },
     'enrolled34': {
         who: '3- and 4-year-olds',
         shortWho: '3-4 y/o\'s',
         what: 'enrolled in preschool or transitional kindergarten',
         label: '3- and 4-year-olds enrolled in preschool or transitional kindergarten',
-        shorthand: 'Preschool and kindergarten enrollment'
+        shorthand: 'Preschool/transitional kindergarten'
     },
     'familyLike': {
         who: 'adolescents in the child welfare system',
         shortWho: 'adolescents',
         what: 'were placed in family-like settings',
-        label: 'Adolescents in the child welfare system who are placed in family-like settings',
-        shorthand: 'Family-like settings for adolescents'
+        label: 'Adolescents in the child welfare system who were placed in family-like settings',
+        shorthand: 'Adolescents placed in family-like settings'
     },
     'fosterYouthGraduation': {
-        who: 'foster youth',
+        who: 'youth in foster care',
         what: 'graduated high school on time',
-        label: 'Foster youth who graduate high school on time',
-        shorthand: 'Foster youth HS graduation'
+        label: 'Youth in foster care who graduated high school on time',
+        shorthand: 'Youth in foster care graduation'
     },
     'FRPMSchoolYear': {
         descriptor: 'eligible',
         who: 'students',
-        what: 'received free and reduced price meals during the school year',
-        label: 'Eligible students who receive free and reduced price meals during the school year',
-        shorthand: 'School Year: Free/Discounted Meals'
+        what: 'received free or reduced-price meals during the school year',
+        label: 'Eligible students who received free or reduced-price meals during the school year',
+        shorthand: 'School year free/reduced-price meals'
     },
     'FRPMSummer': {
         descriptor: 'eligible',
         who: 'students',
-        what: 'recieved free and reduced price meals during the summer',
-        label: 'Eligible students who receive free and reduced price meals during the summer',
-        shorthand: 'Summer: Free/Discounted Meals'
+        what: 'received free or reduced-price meals during the summer',
+        label: 'Eligible students who received free or reduced-price meals during the summer',
+        shorthand: 'Summer free/reduced-price meals'
     },
     'FYTimelyDental': {
         who: 'children in the child welfare system',
         shortWho: 'children',
         what: 'had a timely dental exam',
-        label: 'Timely dental exams for children in the child welfare system',
-        shorthand: 'Dental exams in child welfare'
+        label: 'Children in the child welfare system who had a timely dental exam',
+        shorthand: 'Dental exam for children in child welfare'
     },
     'FYTimelyMedical': {
         who: 'children in the child welfare system',
         shortWho: 'children',
         what: 'had a timely medical exam',
-        label: 'Timely medical exams for children in the child welfare system',
-        shorthand: 'Medical exams in child welfare'
+        label: 'Children in the child welfare system who had a timely medical exam',
+        shorthand: 'Medical exam for children in child welfare'
     },
     'graduation': {
         who: '12th-graders',
         what: 'graduated high school on time',
         label: '12th-graders who graduated high school on time',
-        shorthand: 'Timely high school graduation'
+        shorthand: 'On-time high school graduation'
     },
     'healthInsurance': {
         who: 'children',
         what: 'had health insurance',
-        label: 'Children with health insurance',
+        label: 'Children who had health insurance',
         shorthand: 'Children\'s health insurance' 
     },
     'mathStandards8': {
         who: '8th-graders',
         what: 'met or exceeded grade-level standards in math',
-        label: '8th-graders who meet or exceed grade-level standards in math',
-        shorthand: '8th grade math excellence'
+        label: '8th-graders who met or exceeded grade-level standards in math',
+        shorthand: '8th grade math standards'
     },
     'notAbsent': {
         who: 'students',
         what: 'were not chronically absent from school',
-        label: 'Students who are not chronically absent from school',
-        shorthand: 'Student chronic absence'
+        label: 'Students who were not chronically absent from school',
+        shorthand: 'Chronic absence'
     },
     'notLowBirthWeight': {
         who: 'newborns',
         what: 'were not low birthweight',
-        label: 'Newborns who are not low birthweight',
-        shorthand: 'Newborn birthweight'
+        label: 'Newborns who were not low birthweight',
+        shorthand: 'Not low birthweight'
     },
     'notObese': {
         who: '7th-graders',
         what: 'were not overweight or obese',
-        label: '7th graders who are not overweight or obese',
-        shorthand: 'Obesity in 7th graders'
+        label: '7th-graders who were not overweight or obese',
+        shorthand: 'Not Overweight/obese'
     },
     'permanency': {
         who: 'children in the child welfare system',
         shortWho: 'children',
         what: 'exited to permanency within one year',
-        label: 'Children in the child welfare system who exit to permanency within one year',
-        shorthand: 'Permanency in child welfare'
+        label: 'Children in the child welfare system who exited to permanency within one year',
+        shorthand: 'Child welfare permanency'
     },
     'placementStability': {
-        who: 'children in the child welfare system',
+        who: 'children',
         shortWho: 'children',
-        what: 'had been in one placement after 24 months in care',
-        label: 'Children in the child welfare system who have been in one placement after 24 months in care',
-        shorthand: 'Placement stability in child welfare'
+        what: 'in the child welfare system had been in one placement after 24 months in care',
+        label: 'Children in the child welfare system who had been in one placement after 24 months in care',
+        shorthand: 'Child welfare placement stability'
     },
     'readingStandards': {
         who: '3rd-graders',
         what: 'read near or above grade-level standards',
         label: '3rd-graders who read near or above grade-level standards',
-        shorthand: '3rd grade reading standards'
+        shorthand: '3rd-grade reading standards'
     },
     'readToEveryday': {
         who: 'children, ages birth-5',
         shortWho: 'children',
         what: 'were read to everyday by an adult',
-        label: 'Children, ages birth-5, who are read to everyday by an adult',
-        shorthand: 'Daily reading to children'
+        label: 'Children, ages birth-5, who were read to everyday by an adult',
+        shorthand: 'Children read to everyday'
     },
     'suspension': {
         who: 'student suspensions',
         shortWho: 'students',
-        what: 'were not due to "defiance or disruption"',
+        what: 'were not due to "defiance/disruption"',
         label: 'Student suspensions not due to "defiance/disruption"',
-        shorthand: 'Suspensions for defiance/disruption'
+        shorthand: 'Suspensions not defiance/disruption'
     },
     'foo': {
         who: 'bar',
@@ -212,3 +205,4 @@ const semanticTitles = {
 }
 
 export default semanticTitles
+

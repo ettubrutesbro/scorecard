@@ -5,17 +5,18 @@ import chroma from 'chroma-js'
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import countyLabels from './assets/countyLabels'
+import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
 import {findIndex} from 'lodash'
+import {isValid} from './utilities/isValid'
 
 export default class AppStore{
     @observable indicator = null
     @observable county = null
     @observable race = null
     @observable year = null
-    @observable activeWorkflow = null
 
     @observable colorOptions = {
         scheme: 'OrRd',
@@ -46,57 +47,66 @@ export default class AppStore{
     @action setColorOption = (which,what) => this.colorOptions[which] = what
     @action setYearIndex = () => {
         const yrs = indicators[this.indicator].years
-        if(!this.year && yrs.length>1) this.year = yrs.length-1
-        else if(!this.year) this.year = 0
-        else if(this.year === 1 && yrs.length===1) this.year = 0
+        //these facile checks work for setting yearIndex presuming there's data, but break on
+        //complex selections wherein county/race may not have a value for this year, even if the ind
+        // has data for this year generally
+        let targetYear = this.year || 0
+        if(!this.year && yrs.length>1) targetYear = yrs.length-1
+        else if(!this.year) targetYear = 0
+        else if(this.year === 1 && yrs.length===1) targetYear = 0
+
+        //next, test targetYr's validity datawise
+
+        if(isValid(indicators[this.indicator].counties[this.county||'california'][this.race||'totals'][targetYear])){
+            console.log('final gauntlet: indicator selection passed year validity test')
+            this.year = targetYear
+        }
+        else{
+            console.log('year correction at setYearIndex')
+            if(targetYear === 0) targetYear = 1
+            else targetYear = 0
+            this.year = targetYear
+        }
+
+
         console.log(`year ${this.year} (${yrs[this.year]})`)
     }
 
-    @action setWorkflow = (mode) => this.activeWorkflow = mode===this.activeWorkflow? '' : mode
     
 
     @action completeWorkflow = (which, value) => {
-        if(which==='indicator'){
-            const {county, race, year} = this
-            const ind = indicators[value]
-            if(race && !ind.categories.includes('hasRace')){
-                if(county){//even without race, will this work with user's selected county?
-                    const arr = ind.counties[county].totals
 
-                    // const validYears = arr.filter((val)=>{return val >= 0})
-                    // console.log(arr)
-                    if(arr.filter((v)=>{return v>=0}).length>0){
-                        //this county does have valid values
-                        //check if current yearindex is ok
-                        let validYear 
-                        if(year && arr[year]>=0){
-                            validYear = year
-                            //no need to change year
-                        }
-                        else if(year && arr[year]!==0 && (!arr[year] || arr[year]==='*')){
-                            //but not for the currently selected yearindex
-                            //go to the last year that has a valid value
-                            console.log('!hasRace, gonna unset race but need to switch the year, here are the values for totals for the picked ind in', county)
-                            const revLastInd = arr.reverse().findIndex((v)=>{return v>=0}) //get last number
-                            validYear = (arr.length-1)-revLastInd
-                            // console.log(arr, revLastInd, latestValidYear)
-                            // this.year = latestValidYear
-                        }
-                        //now we can sanity check race
-                        // alert('sanity check: race (countys fine)')
+        const {county, race, year} = this
+
+        //INDICATOR SELECTION CHECKS
+        if(which==='indicator'){
+            if(!value){ //clearing value for reset
+                this[which] = value
+                return
+            }
+            const ind = indicators[value]
+            console.log('attempting to select indicator')
+            if(race && !ind.categories.includes('hasRace')){
+                //even without race, will this work with user's selected county?
+                if(county){
+                    const arr = ind.counties[county].totals
+                    //without any races, does this county have valid values in the indicator?
+                    if(arr.filter((v)=>{return isValid(v)}).length>0){ 
+                        //yes: sanity check just for race, we can keep the county
                         this.setSanityCheck(
+                            'indicator',
                             value, 
                             `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('indicator',value)
-                                // this.completeWorkflow('year',validYear)
                             }
                         )
                     }
                     else {
-                        // alert('sanity check: even though !hasRace, both race and county wouldve broken the selection')
+                        //no: sanity check for unselecting both race and county
                         this.setSanityCheck(
+                            'indicator',
                             value, 
                             `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
                             ()=>{
@@ -107,8 +117,10 @@ export default class AppStore{
                         )
                     }
                 }
+                //user didn't have a county: we still need to sanity check race
                 else{
                     this.setSanityCheck(
+                        'indicator',
                         value, 
                         `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
                         ()=>{
@@ -118,15 +130,20 @@ export default class AppStore{
                     )
                  }
                 return false
-            }
+            } //end facile race w. !hasRace condition
             else{
-                //indicator hasRace, but it might not have data for user's race/county/ind combo.
+                // the more complicated case: indicator has race, but does it for selected?
                 const arr = ind.counties[county||'california'][race||'totals']
-                if(arr.filter((val)=>{ return val>=0}).length===0){
-                    //there are no valid years for the user's selection combo
+                if(arr.filter((val)=>{ return isValid(val)}).length>0){
+                    //YES: indicator selection is valid, proceed
+                    console.log('user\'s indicator selection is valid, proceed') 
+                }
+                else{
+                    //no valid years for the user's selection combo
                     if(county && race){
-                         // alert('sanity check: both race and county')
+                         //reset both race and county
                          this.setSanityCheck(
+                            'indicator',
                             value, 
                             `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
                             ()=>{
@@ -137,17 +154,22 @@ export default class AppStore{
                         )
                      }
                     else if(county){
+                        //reset county
                         this.setSanityCheck(
+                            'indicator',
                             value, 
                             `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
                             ()=>{
                                 this.completeWorkflow('county',null)
                                 this.completeWorkflow('indicator',value)
+                                this.notify('unselectCounty', countyLabels[this.county], 8000)
                             }
                         )
                     }
                     else if(race){
+                        //reset race
                         this.setSanityCheck(
+                            'indicator',
                             value, 
                             `This indicator has no data for your selected race (${capitalize(race)}), so picking it will revert your selection to all races.`,
                             ()=>{
@@ -159,68 +181,166 @@ export default class AppStore{
 
                     return false
                 }
-                else{
+            }
+        } // END INDICATOR CHECKS
 
+        //COUNTY SELECTION CHECKS
+        else if(which==='county'){
+            console.log('county selection')
+            if(this.indicator){
+                const val = indicators[this.indicator].counties[value||'california'][this.race||'totals'][this.year]
+                if(isValid(val)){
+                    //valid: user can continue
+                    console.log('user\'s selected county works with existing indicator/race/year')
                 }    
+                else{
+                    //invalid: this combo of ind/county/race/year doesnt have a value
+                    console.log('invalid county selection')
+                    if(value){
+
+                        const indCty = indicators[this.indicator].counties[value]
+                        //user picked a county (not CA)
+                        if(indCty.totals.filter((v)=>{return isValid(v)}).length>0){
+                            //county contains values, at least
+                            if(this.race){
+                                //no need to check for hasRace: should have never gotten to this point...
+                                //if user has race, does county have values for that?
+                                if(indCty[this.race].filter((v)=>{return isValid(v)}).length > 0){
+                                    //race does have values, just not your year
+                                    const yrs = indicators[this.indicator].years
+                                    const validYear = year ===0? 1 : 0
+                                    this.setSanityCheck(
+                                        'county',
+                                        value,
+                                        `This county doesn\'t have indicator data for your selected race in ${yrs[year]}, but you can view ${yrs[validYear]}.`,
+                                        ()=>{
+                                            this.completeWorkflow('year', validYear)
+                                            this.completeWorkflow('county',value)
+                                        }
+                                    )
+                                }
+                                else{
+                                    //race has no values: does totals have current year?
+                                    if(isValid(indCty.totals[year])){
+                                        //yes: sanity check race
+                                        this.setSanityCheck(
+                                            'county',
+                                            value,
+                                            'This county doesn\'t have indicator data for your selected race, so picking it will revert your selection to all races.',
+                                            ()=>{
+                                                this.completeWorkflow('race', null)
+                                                this.completeWorkflow('county',value)
+                                            }
+                                        )
+                                    }
+                                    else{
+                                        //no: sanity check race + year
+                                        const yrs = indicators[this.indicator].years
+                                        const validYear = year===0?1:0
+                                        this.setSanityCheck(
+                                            'county',
+                                            value,
+                                            `This county doesn\'t have indicator data for your selected race in ${yrs[year]}, but you can view its indicator data from ${yrs[validYear]} for all races.`,
+                                            ()=>{
+                                                this.completeWorkflow('race', null)
+                                                this.completeWorkflow('year', validYear)
+                                                this.completeWorkflow('county',value)
+                                            }
+                                        )
+                                    }
+                                }
+                            } // end race check
+                            else{
+                                //county has values, but returned invalid: switch the year
+                                const yrs = indicators[this.indicator].years
+                                const validYear = year===0?1:0
+                                this.setSanityCheck(
+                                    'county',
+                                    value,
+                                     `This county doesn\'t have indicator data from ${yrs[year]}, but you can view it for ${yrs[validYear]}.`,
+                                     ()=>{
+                                        this.completeWorkflow('year',validYear)
+                                        this.completeWorkflow('county',value)
+                                     }
+                                )
+                            }
+                        } 
+                        else{
+                            //county doesnt even have values, disallow selection
+                            console.log('county contains no info for this indicator - disallowing entirely')
+                            return false
+                        }
+                    } //end check if theres values
+                    else{
+                        //null value for county; user is returning to california
+                        //but this is still in the invalid part of the conditional; how could there be no value?
+                        console.log('california doesnt have data for this indicator with race and/or year...this shouldnt happen - inds should always have both years and all races at the california level.')
+                        alert('Sorry, an error occurred with our data - please refresh the app.')
+                    }
+                    console.log('returning false')
+                    return false
+                } //end invalid values operations
+            } //end county-indicator comaptibilyt check
+        }// END COUNTY CHECK
+
+
+        else if(which==='race' && this.indicator){
+            // if(!this.checkValidity(which,value)){
+            //     console.log('tried to pick race but it woludve resulted in invalid value: canceling')
+            //     return
+            // }
+            if(!indicators[this.indicator].categories.includes('hasRace')){
+                console.log('whyd this happen? tried to select race when indicator !hasRace...FOH')
+                return false
             }
-            
-
-        }
-
-
-
-
-        if(which==='indicator' && this.race &&!indicators[value].categories.includes('hasRace')){
-            //picked no-race indicator with a race already selected: unset
-            //TODO: sanity check here
-            // alert('sanity check for race unselect')
-            this.race = null
-        }
-        else if(which==='indicator' && this.county){
-            const val = indicators[value].counties[this.county][this.race||'totals'][this.year]
-
-            if(!val || val==='*'){
-                // alert(`${this.county} had no data for this indicator, so you're seeing statewide data now.`)
-                // alert('sanity check for county unselect')
-                this.notify('unselectCounty', countyLabels[this.county], 8000)
-                this.county = null
-            }
-        }
-        else if(which==='county' && this.indicator){
-            const val = indicators[this.indicator].counties[value||'california'][this.race||'totals'][this.year]
-            if(this.race && (!val || val==='*')){ 
-                const holdOnToRace = this.race
-                this.race = null
-                if(!this.checkValidity('county',value)){
-                    this.race = holdOnToRace
-                    return
+            const arr = indicators[this.indicator].counties[this.county||'california'][value||'totals']
+            if(isValid(arr[this.year])) console.log('race selection valid')
+            else{
+                //invalid
+                console.log('race selection invalid, determining....')
+                if(arr.filter((v)=>{return isValid(v)}).length > 0){
+                    const otherYear = this.year===0? 1 : 0
+                    console.log('race selection can be sanity checked: year')
+                    this.setSanityCheck('race',value,
+                        `This indicator has no data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county? countyLabels[this.county] : 'California'} for the year ${indicators[this.indicator].years[this.year]}, but you can view ${indicators[this.indicator].years[otherYear]}.`,
+                        ()=>{
+                            this.completeWorkflow('year',otherYear)
+                            this.completeWorkflow('race', value)
+                        }
+                    )
+                        
+                    return false
                 }
+                    
+                
+                if(this.county && indicators[this.indicator].counties.california[value||'totals'].filter((v)=>{return isValid(v)}).length > 0){
+                    console.log('race selection can be sanity checked: county')
+                    this.setSanityCheck('race',value,
+                        `This indicator doesn't have value for this race for the county you have selected, but you can continue without the county selection...`, 
+                        ()=>{
+                            this.completeWorkflow('county',null)
+                            this.completeWorkflow('race',value)
+                        }    
+                    )
+                    return false
+                }
+
+                console.log('got to the end of the invalid race selection check without another solution...uh oh')
+
+                
             }
-            else if(!this.race && val!==0 && (!val || val==='*')){
-                console.log('this county has no data, stopping selection')
-                return
-            }
-        }
-        else if(which==='race'){
-            if(!this.checkValidity(which,value)){
-                console.log('tried to pick race but it woludve resulted in invalid value: canceling')
-                return
-            }
-        }
-        if(which==='indicator'){
-            if(indicators[value].years.length <= this.year){
-                this.year = 0
-            }
-        }
-        if(!this.checkValidity(which,value)){ 
-            console.log('something invalid, stopping selection -- which and value were')
-            console.log(which, value)
-            alert('oops! something bad happened.')
-            return
         }
 
-        this.activeWorkflow = null
+
+        // if(which==='indicator'){
+        //     if(indicators[value].years.length <= this.year){
+        //         this.year = 0
+        //     }
+        // }
+
+
         this[which] = value
+
         if(which==='indicator'){
             //ensure year validity when changing indicators
             this.setYearIndex()
@@ -267,8 +387,7 @@ export default class AppStore{
             this.setColorOption('padHi',(1 - hi/100) + adjustHi)
             
         }
-        if(this.race && this.indicator && this.county && !indicators[this.indicator].counties[this.county][this.race][this.year]){
-        }
+        console.log('returning true!')
         return true
         
     }
@@ -277,11 +396,20 @@ export default class AppStore{
 
     checkValidity = (which, value) => {
         const {indicator, county, race, year} = this
-        console.log(which,value)
-        console.log(indicator,county,race,year)
-        const nullVal = !value
-        const val = indicator? indicators[which==='indicator'?value:indicator].counties[which==='county'&&!nullVal?value:county||'california'][which==='race'&&!nullVal?value:race||'totals'][year]
-            : demopop[county||'california'][race||'population']
+        
+        if((which!=='indicator' && !indicator) || !value){
+            //picking county and race without an indicator; this can basically only happen
+            //from the init and we can probably just ignore it...
+            return true
+        }
+
+        const ind = which==='indicator' && value? value : indicator 
+        const cty = which === 'county' && value? value : county? county : 'california'
+        const rce = which === 'race' && value? value: race? race : 'totals'
+
+        console.log(ind, cty, rce, year)
+        console.log(indicators[ind].counties[cty][rce])
+        const val = indicators[ind].counties[cty][rce][year]
         console.log(val)
         return val!==0 && (val==='*' || !val)? false : true
     }
@@ -337,15 +465,20 @@ export default class AppStore{
     @observable sanityCheckMessage = ''
     @observable sanityCheck = {
         indicator: null,
+        county: null, 
+        race: null,
+        year: null,
         message: '',
         action: ()=>{}
     }
-    @action setSanityCheck = (targetInd, message, action) => {
-        console.log('setting sanity check ind on', targetInd)
-        // this.sanityCheckIndicator = targetInd
-        this.sanityCheck.indicator = targetInd
+    @action setSanityCheck = (which, target, message, action) => {
+        console.log('setting sanity check on', which, target)
+        this.sanityCheck[which] = target
         this.sanityCheck.message = message
         this.sanityCheck.action = action
     }
-    @action clearSanityCheck = () => { this.sanityCheck.indicator = null}
+    @action clearSanityCheck = (which) => { 
+        console.log('clearing sanity check for', which)
+        this.sanityCheck[which] = null
+    }
 }

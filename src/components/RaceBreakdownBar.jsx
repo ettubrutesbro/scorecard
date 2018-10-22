@@ -14,12 +14,10 @@ import media from '../utilities/media'
 
 const Container = styled.div`
     display: flex;
-    // border: 1px solid black;
-    // padding: 30px;
     box-sizing: border-box;
     flex-direction: column;
     @media ${media.optimal}{
-        height: 320px;
+        height: 305px;
     }
     @media ${media.compact}{
         height: 256px;   
@@ -33,39 +31,11 @@ const centerText = css`
         height: ${props=> props.height}px;
 `
 
-const LabelColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 100px;
-    // outline: 1px solid green;
-    margin-right: 30px;
-`
 const RaceLabel = styled.div`
-
-    // text-align: right;
     position: absolute;
-    // height: 0;
     display: flex;
-    // align-items: center;
     ${props => props.centerText? centerText: ''};
     transform: translateY(${props=>props.offset}px);
-    &.compressed1{
-        /*border: 1px solid pink;*/
-        margin-top: -.5rem;
-    }
-    &.compressed2{
-        height: 1rem;
-        /*margin-bottom: 1rem;*/
-        border: 1px solid red;
-        margin-top: -1rem;
-    }
-    &.compressed2 ~ .compressed2{
-        border: 1px solid green;
-        /*margin-bottom: 2rem;*/
-        margin-top: -2rem;
-    }
-
 `
 const LabelPct = styled.div`
     display: flex;
@@ -73,47 +43,70 @@ const LabelPct = styled.div`
     width: 100%;
 `
 const Label = styled.div`
-    
+    ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
 const Percentage = styled.div`
     margin-left: 7px;
     font-weight: bold;
+     ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
 const VertBar = styled.div`
     position: relative;
     // height: 500px; //arbitrary
     height: ${props => props.height}%;
+    background-color: white;
     // outline: 1px solid #999999;
-    border-top: 2px solid var(--bordergrey);
+    border: 2px solid var(--bordergrey);
     // padding: 30px;
     box-sizing: border-box;
-    width: 40px;
+    width: 50px;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    background: var(--offwhitebg);
+    // overflow: hidden;
+`
+const hatch1 = require('../assets/hatch1-2.svg')
+const hatch2 = require('../assets/hatch2-4.svg')
+const hatch3 = require('../assets/hatch3-2.svg')
+const hatch4 = require('../assets/hatch4-2.svg')
+const hatch5 = require('../assets/hatch5-2.svg')
+
+const SelectionAccent = styled.div`
+    position: absolute;
+    top: calc(${props=>props.offset}% ${props=>!props.first?'+ 1px' : ''});
+    height: calc(${props=>props.pct}% ${props=>!props.first?'- 1px' : ''});
+    outline: 2px solid var(--peach);
+    width: 100%;
+    z-index: 10;
 `
 const Segment = styled.div`
     position: absolute;
-    top: -100%;
+    top: ${props=>props.offset}%;
+    height: ${props=>props.pct}%;
     width: 100%;
-    background-color: ${props=>props.selected?'rgba(239,103,50,0.25)':'white'};
-    height: 100%;
-    transition: transform .5s, background-color .25s;
-    transform: translateY(${props=>props.offset}%);
-    transform-origin: 50% 0%;
-    // background-color: ${props=>props.fill};
-     // outline: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
-     border: 2px solid var(--bordergrey);
-    /*&.asian{
-        background-color: red;
+    outline: 2px solid var(--bordergrey);
+    mask-repeat: repeat;
+    background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
+    background-position: 0% -10px;
+    mask-size: 30px;
+    ${props => props.zero? 'display: none;' : ''}
+    &.asian{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
     }
     &.black{
-        background-color: blue;
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch4})` : 'none'};
+
     }
-    &.latinx{ background-color: green;}
-    &.white{background-color: orange;}
-    &.other{background-color: grey;}*/
+    &.latinx{ 
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch1})` : 'none'};
+
+    }
+    &.white{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
+
+    }
+    &.other{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
+    }
 `
 const Hatch = styled.div`
     position: absolute;
@@ -122,6 +115,14 @@ const Hatch = styled.div`
     transform: translateY(${props=>props.offset}px);
     border-top: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
 `
+
+const Notch = styled.div`
+    position: absolute;
+    width: 100%;
+    top: ${props=>props.offset}%;
+    border-top: 1px solid var(--bordergrey);
+`
+
 const Title = styled.div`
     width: 100%;
     margin-bottom: 20px;
@@ -155,7 +156,7 @@ export default class RaceBreakdownBar extends React.Component{
         // console.log(findDOMNode(node).offsetHeight)
     }
     render(){
-        let {county} = this.props.store
+        let {county, race} = this.props.store
         if(!county) county = 'california'
         county = demopop[county]
 
@@ -168,6 +169,8 @@ export default class RaceBreakdownBar extends React.Component{
         }).sort((a,b)=>{
             return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
         })
+        const totalOfPcts = racePercentages.map((o)=>{return o.percentage}).reduce((a,b)=>{return a+b})
+        if(totalOfPcts!==100) console.log('non-100 total percentage for race breakdown: ', totalOfPcts)
 
         console.log('number of compressed labels:', numOfCompressedLabels)
         return(
@@ -175,73 +178,94 @@ export default class RaceBreakdownBar extends React.Component{
                 // innerRef = {(container)=>{this.container = container}}
             >
             <Content>
+
+            <VertBar
+                // height = {this.props.height}
+            >
+                {racePercentages.map((o,i,arr)=>{
+                    const previousSegs = arr.slice(0,i)
+                    const offset = previousSegs.map((seg)=>{
+                        return (seg.percentage * 100) / totalOfPcts
+                        
+                    }).reduce((a,b)=>a+b,0)
+                    
+                    const pct = totalOfPcts!==100? o.percentage * 100 / totalOfPcts : o.percentage
+
+
+                    return (
+                        <React.Fragment>
+                            {race===o.label && 
+                                <SelectionAccent 
+                                    pct = {pct}
+                                    first = {i===0}
+                                    offset = {i===0? 0 : offset}
+                                />
+                            }
+                            <Segment
+                                key = {i}
+                                style = {{zIndex: arr.length-i}}
+                                className = {o.label}
+                                pct = {pct}
+                                offset = {i===0? 0 : offset}
+                                infinitesimal = {pct < 3}
+                                zero = {pct == 0}
+                                selected = {o.label===race}
+                            />
+                            {i>0 && i<(arr.length-1) && 
+                                <Notch
+                                    offset = {offset}
+                                />
+                            }
+                        </React.Fragment>
+                    )
+                })}
+
+            </VertBar>
             <LabelColumn
                 ref = {(column) => this.labelcolumn = column}
                 centerText = {this.props.centerText}
             >
-                {racePercentages.map((race,i,arr)=>{
-                    const previousSegs = arr.slice(0,i)
-
-                    //let offsets = []
-                    // if(numOfCompressedLabels===4){
-                    //     offsets = ['-250%', '-150%','-75%','25%']
-                    // }
-                    // else if(numOfCompressedLabels===3){
-                    //     offsets = ['-60%', '-20%', '20%']
-                    // }
-                    // else if(numOfCompressedLabels===2){
-                    //     offsets = ['-25%','25%']
-
-                    // }
-                    // else if(numOfCompressedLabels===1){
-                    //     // offsets = [-250, -150,-50]
-                    //     offsets = [-50]
-                    // }
-                    // const firstCompressed = findIndex(arr,(r)=>{return r.percentage < clt})
-
-                    // const afterCompressed = i>0 && race.percentage > 10 && arr[i-1].percentage < clt
-                    // console.log(i, race.percentage, i>0?arr[i-1].percentage:'')
-                    // console.log(afterCompressed)
-
+                {racePercentages.map((o,i,arr)=>{
+                    const selected = o.label === race
                     return(
-
                         <LabelSection 
                             key = {'rbblabelsection'+i}
-                            hide = {race.percentage === 0}
-                            pct = {race.percentage}
+                            hide = {o.percentage === 0}
+                            pct = {o.percentage}
+                            lastAndSmall = {i===arr.length-1 && o.percentage < 10}
+                            small = {i<arr.length-1 && o.percentage < 10}
+                            selected = {selected}
                         >
-                            <Label> {race.label[0].toUpperCase()+race.label.substr(1)} </Label>
-                            <Percentage> {race.percentage}% </Percentage>
+                            <Label selected = {selected}> {o.label[0].toUpperCase()+o.label.substr(1)} </Label>
+                            <Percentage selected = {selected}> {o.percentage}% </Percentage>
                         </LabelSection>
                     )
                 })}
 
             </LabelColumn>
-            <VertBar
-                // height = {this.props.height}
-            >
-
-                {racePercentages.map((o,i,arr)=>{
-                    const previousSegs = arr.slice(0,i)
-                    const offset = previousSegs.map((seg)=>{return seg.percentage}).reduce((a,b)=>a+b,0)
-                    return <Segment
-                        key = {i}
-                        style = {{zIndex: arr.length-i}}
-                        className = {o.label}
-                        offset = {((o.percentage+offset))}
-              
-                    />
-                })}
-            </VertBar>
             </Content>
             </Container>
         )
     }
 }
 
+const LabelColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+    width: 100px;
+    margin-left: 25px;
+    height: 100%;
+    justify-content: space-between;
+`
 const LabelSection = styled.div`
+    position: relative;
+
+    // outline: 1px solid grey;
     display: ${props=>!props.hide?'flex':'none'};
     align-items: center;
+    flex-grow: 1;
 
         @media ${media.optimal}{   
         font-size: 16px;   
@@ -249,8 +273,20 @@ const LabelSection = styled.div`
     @media ${media.compact}{   
         font-size: 13px;   
     }
-    height: ${props => props.pct}%;
+    flex-basis: ${props => props.pct}%;
     min-height: 15px;
+    padding-top: ${props => props.lastAndSmall? '10px' : 0};
+    &::after{
+        content: '';
+        position: absolute;
+        height: 0; 
+        width: 15px;
+        ${props => !props.small && props.selected? 'border-top: 2px solid var(--peach);'
+            : !props.small? `border-top: 2px solid var(--bordergrey);`
+        : ''}
+        ${props => props.lastAndSmall? 'bottom: 0;' : ''}
+        left: -25px;
+    }
 `
 
 RaceBreakdownBar.defaultProps = {

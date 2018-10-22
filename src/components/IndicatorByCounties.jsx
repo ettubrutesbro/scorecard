@@ -8,19 +8,18 @@ import {find, findIndex} from 'lodash'
 import commaNumber from 'comma-number'
 
 import {counties} from '../assets/counties'
+import countyLabels from '../assets/countyLabels'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
 import semanticTitles from '../assets/semanticTitles'
 
 import {capitalize} from '../utilities/toLowerCase'
+import {truncateNum} from '../utilities/sigFig'
 
 import ordinal from 'ordinal'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
 import {Button,Toggle} from './generic'
-
-// const defaultEntries = 8
-// const moreEntries = 12
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -47,6 +46,11 @@ export default class IndicatorByCounties extends React.Component{
     @observable distribution = []
     @observable condensed = []
 
+    @observable sortOverviewBy = 'pct'
+    @action setOverviewSort = (v) => {
+        console.log('setting sort for overview')
+        this.sortOverviewBy = v
+    }
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
@@ -69,12 +73,13 @@ export default class IndicatorByCounties extends React.Component{
             return {
                 //label should be dom element featuring rank ordinal
                 id: cty,
-                label: find(counties,(c)=>{return c.id===cty}).label, 
+                label: countyLabels[cty], 
                 // leftLabel: !race? ordinal(rank) : '',
                 rank: !race?rank:'', 
                 value: value,
                 //should i do this at the bargraph level?
-                fill: colorScale? colorScale(value): ''
+                fill: colorScale? colorScale(value): '',
+                population: demopop[cty].population
             }
         }).sort((a,b)=>{
             if(race) return a.value > b.value? -1 : a.value < b.value? 1 : 0
@@ -88,12 +93,12 @@ export default class IndicatorByCounties extends React.Component{
             }
         })
 
-        // console.log(this.performance.toJS())
     } 
 
     @action toggleDistribute = () => {
         this.distribute = !this.distribute
         this.fullHeight = !this.distribute
+        if(this.props.onExpand) this.props.onExpand(!this.distribute)
     }
 
     @action generateDistribution = () => {
@@ -113,7 +118,6 @@ export default class IndicatorByCounties extends React.Component{
             }
         })
 
-        // const entries = this.props.store.county? moreEntries : defaultEntries
         const entries = this.props.entries
         const countyCount = validCounties.length
         const unit = parseInt((countyCount / entries).toFixed(0))
@@ -140,10 +144,8 @@ export default class IndicatorByCounties extends React.Component{
                 .sort((a,b)=>{
                      return a.value > b.value? -1 : a.value < b.value? 1 : 0
                 })
-                // console.log(county)
                 mustInclude = findIndex(valueSortedCounties, (item)=>{return item.county===county})
-                // console.log(valueSortedCounties)
-                // console.log('race: mustinclude is', mustInclude)
+
             }
                 
             let replaceIndex = indexOfClosest(distribution, mustInclude)
@@ -166,9 +168,6 @@ export default class IndicatorByCounties extends React.Component{
         else if (!county){
             this.condensed = []
         }
-        // console.log('distribution')
-        // console.log(distribution)
-        // return distribution
         this.distribution = distribution
     }
 
@@ -195,22 +194,42 @@ export default class IndicatorByCounties extends React.Component{
         const ind = indicators[indicator]
 
 
+        if(this.sortOverviewBy === 'pop'){
+            performance = performance.sort((a,b)=>{
+                return a.population > b.population? -1 : a.population < b.population? 1 : 0
+            }).slice(0,this.distribute?this.props.entries:performance.length)
+            .map((e)=>{
 
-        performance = performance.map((e,i,arr)=>{
+                return {
+                    ...e,
+                    leftLabel: !this.distribute? e.rank + '.' : '',
+                    label: <LabelComponent selected = {e.id===county} label = {e.label} right = {truncateNum(e.population)} />
+                }
+            })
+        }
+        else performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-            if(!this.distribute) return e
+            if(!this.distribute){
+                return {...e, leftLabel: e.rank+'.'}
+            }
             else if(distrib.includes(i)){ 
                 return {
                     ...e,
-                    label: i===0? (<Fragment> <Faint>1.</Faint> {e.label}  </Fragment>)
-                        : i===arr.length-1? <Fragment><Faint>{arr.length}.</Faint> {e.label} </Fragment>
-                        : e.id===county? <Fragment><SelectedNum>{e.rank}.</SelectedNum> {e.label} </Fragment>
-                        : e.label,
+                    label: <LabelComponent 
+                        left = {i===0? '1.' 
+                            : i===arr.length-1? arr.length+'.' 
+                            : e.id===county? e.rank+'.'
+                            : ''
+                        }
+                        selected = {e.id===county}
+                        label = {e.label}
+                    />
                 }
 
             }
             else return null
         })
+
         .filter((e,i)=>{
             if(!this.distribute) return true
             if(e===null) return false
@@ -233,40 +252,35 @@ export default class IndicatorByCounties extends React.Component{
                 if(pop > highestValue) highestValue = pop
                 return {
                     id: cty,
-                    label: find(counties, (c)=>{return c.id===cty}).label,
+                    label: countyLabels[cty],
                     value: pop,
                 }
             })
             .sort((a,b)=>{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
-            .slice(0,this.props.entries) //TODO: use entries instead of 5 (but needs to be responsive)
+        if(race){
+            withRace = withRace.slice(0,this.distribute?this.props.entries:withRace.length) 
             .map((cty)=>{
-                //if indicator active, value is indicator perf.
-
-                //TODO: right now, most populous county is '100%'
-                //and the rest are fractions of it, but a true, static 100% should
-                //be the largest % of the largest county (hmm, maybe?)
-
-                //or it could be the total of all [race] in CA
                 const val = indicators[indicator].counties[cty.id][race][year]
                 const selected = cty.id===county
                 return {
-                    ...cty, 
-                    label: selected? <SelectedCounty>{cty.label}</SelectedCounty> : cty.label,   
+                    ...cty,
+                    label: <LabelComponent selected = {selected} label = {cty.label} right = {truncateNum(cty.value)} />,  
                     value: val,
                     fill: selected? 'var(--peach)'  : colorScale? colorScale(val): '',
                     trueValue: val + '%'
 
                 }
             })
-        if(race && county){
+        }
+        if(race && county && this.distribute){
             if(find(withRace, (o)=>{return o.id===county})){
                 console.log('withRace bars already includes selected county, no need to replace last')
             }
             else{
                 withRace[withRace.length-1] = {
-                    label: <SelectedCounty>{find(counties,(o)=>{return o.id===county}).label}</SelectedCounty>,
+                    label: <LabelComponent selected label = {countyLabels[county]} right = {truncateNum(demopop[county].population * (demopop[county][race]/100))}/>,
                     value: indicators[indicator].counties[county][race][year],
                     fill: 'var(--peach)',
                 }
@@ -277,15 +291,16 @@ export default class IndicatorByCounties extends React.Component{
             <HorizontalBarGraph
                 selected = {county}
                 selectable
-                header = {
-                    race==='other'? 'In counties with the most children of other races' 
-                    : race? `In counties with the most ${capitalize(race)} children:` 
-                    : this.distribute?  'County overview'
-                    : 'All counties'
-                }
+                beefyPadding
+                header = {(<HeaderComponent 
+                    race = {race} 
+                    distribute = {this.distribute}
+                    setOverviewSort = {this.setOverviewSort}
+                    sortOverviewBy = {this.sortOverviewBy}
+                />)}
                 expandedHeader = {expandedHeader}
                 expandedSubHeader = {performance.length + ' counties reported data'}
-                labelWidth = {140}
+                labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
@@ -297,6 +312,32 @@ export default class IndicatorByCounties extends React.Component{
     }
 }
 
+const HeaderComponent = (props) => {
+    return(
+        <Header>
+            {props.race && props.race === 'other' && 'In counties with the most children of other races'}
+            {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+            {!props.race && props.distribute && 'County overview'}
+            {!props.race && !props.distribute && 'All counties'}
+            {!props.race &&
+        <Toggle
+            style = {{marginLeft: '15px'}}
+            options = {[
+                {label: 'by %', value: 'pct'},
+                {label: 'by Child Population', value: 'pop'}
+            ]}
+            theme = "bw"
+            onClick = {props.setOverviewSort}
+            selected = {props.sortOverviewBy === 'pct'? 0 : 1}
+        />
+        }
+        </Header>
+    )
+}
+const Header = styled.div`
+    display: flex; align-items: center; 
+    height: 3px;
+`
 const Prompt = styled.div`
     position: absolute;
     width: 100%;
@@ -310,10 +351,14 @@ const Prompt = styled.div`
 // }
 
 
-const Faint = styled.span`
-    color: var(--fainttext);
-    margin-right: 4px;
-`
+// const Faint = styled.span`
+//     color: var(--fainttext);
+//     margin-right: 5px;
+// `
+// const FaintPop = styled.span`
+//     color: var(--fainttext);
+//     margin-left: 4px;
+// `
 
 const SelectedNum = styled.span`
     color: var(--peach);
@@ -322,4 +367,31 @@ const SelectedNum = styled.span`
 const SelectedCounty = styled.span`
     color: var(--strokepeach);
     // margin-right: 4px;
+`
+
+
+const LabelComponent = (props) => {
+    return(
+        <RowLabel selected = {props.selected}>
+            <FaintLeft selected = {props.selected}>
+                {props.left}
+            </FaintLeft>
+            {props.label}
+            <FaintRight selected = {props.selected}>
+                {props.right}
+            </FaintRight>
+        </RowLabel>    
+    )
+}
+const RowLabel = styled.span`
+    color: ${props => props.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+`
+const Faint = styled.span`
+    color: ${props => props.selected? 'var(--peach)' : 'var(--fainttext)'};
+`
+const FaintLeft = styled(Faint)`
+    margin-right: 5px;
+`
+const FaintRight = styled(Faint)`
+    margin-left: 5px;
 `

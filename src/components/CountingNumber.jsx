@@ -18,10 +18,10 @@ export default class CountingNumber extends React.Component{
 		const diff = Math.abs(newnum - old)
 		console.log(diff)
 
-		this.speed = (diff/100) * 2
+		this.speed = (diff/100) * this.props.maxDuration
 		// if(this.speed < 0.2) this.speed = 0.01
 		// else if(this.speed < 0.4) this.speed = 0.4
-		if(this.speed > 2) this.speed = 2
+		if(this.speed > this.props.maxDuration) this.speed = this.props.maxDuration
 	}
 
 	componentWillUpdate(oldProps){
@@ -51,4 +51,8 @@ export default class CountingNumber extends React.Component{
 			/>
 		)
 	}
+}
+
+CountingNumber.defaultProps = {
+	maxDuration: 2,
 }
