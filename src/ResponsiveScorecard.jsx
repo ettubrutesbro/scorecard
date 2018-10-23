@@ -34,6 +34,10 @@ import {camelLower} from './utilities/toLowerCase'
 import cnico from './assets/cnlogo-long.svg'
 import maskImg from './assets/mask.png'
 
+import {capitalize} from './utilities/toLowerCase'
+
+import browserCompatibility from './data/browserCompatibility'
+
 
 
 const store = new ScorecardStore()
@@ -188,6 +192,9 @@ const SourcesButton = styled(Button)`
 @observer
 export default class ResponsiveScorecard extends React.Component{
 
+    @observable browserBlock = null
+    @action blockUserBrowser = (why) => this.browserBlock = why
+
     @observable init = true
     @action closeSplash = () => {
         this.init = false
@@ -241,6 +248,18 @@ export default class ResponsiveScorecard extends React.Component{
         // window.addEventListener('resize', this.resizeRefresh, false)
         //eventually....
         window.addEventListener('resize', store.resize, false)
+
+        const browserName = store.browser.name
+        const ver = store.browser.version
+        if(!Object.keys(browserCompatibility).includes(browserName)){
+            this.blockUserBrowser('browser')
+        }else{
+            if(ver >= browserCompatibility[browserName]){
+                //it's fine
+            }else{
+                this.blockUserBrowser('version')
+            }
+        }
         
     }
 
@@ -249,7 +268,7 @@ export default class ResponsiveScorecard extends React.Component{
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return store.screen==='mobile'? (<MobileBlocker/>): (
+        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
             <React.Fragment>
             <Styles />
             <App>
@@ -341,6 +360,7 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 <Footer>
+                    <Feedback> Provide feedback </Feedback>
                     <FooterContent>
                         <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
                         <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
@@ -465,6 +485,32 @@ export const MobileBlocker = (props) => {
     )
 }
 
+export const BrowserBlocker = (props) => {
+    const {store} = props
+    return(
+        <BlockUser>
+            <Notif>
+                {props.why === 'version' &&
+                    `Sorry, this application doesn't support your version (${store.browser.version}) of ${store.browser.name === 'ie'? 'Internet Explorer' : capitalize(store.browser.name)}. Please upgrade to version ${browserCompatibility[store.browser.name]} or greater.`
+                }
+                {props.why === 'browser' &&
+                    `Sorry, this application doesn't support ${store.browser.name === 'ie'? 'Internet Explorer' : 'your browser'} - please visit us using a recent version of Google Chrome, Mozilla Firefox, or Safari!`
+                }
+                <MobileBlockActions>
+                    <Button 
+                        style = {{marginLeft: '15px'}} 
+                        label = "Back to Children Now" 
+                        className = 'negative' 
+                        onClick = {()=>{
+                            window.open('https://childrennow.org')
+                        }}
+                    />
+                </MobileBlockActions>
+            </Notif>
+        </BlockUser>
+    )
+}
+
 const MobileBlockActions = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -478,6 +524,8 @@ const BlockUser = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%; 
+    /*background: lightgrey;*/
+    background: #f3f3f5;
     background: var(--offwhitefg);
     padding: 20px;
     top: 0;
@@ -486,7 +534,14 @@ const BlockUser = styled.div`
 `
 const Notif = styled.div`
     background: white;
-    border: 1px solid var(--bordergrey, grey);
+    color: var(--normtext, black);
+    border: 1px solid grey;
+    border: 1px solid var(--bordergrey);
     padding: 25px;
+    max-width: 540px;
 
+`
+
+const Feedback = styled.div`
+    color: var(--fainttext);
 `

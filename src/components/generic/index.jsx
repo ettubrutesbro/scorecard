@@ -313,7 +313,8 @@ const Btn = styled.div`
         border: 1px solid var(--normtext);
     }
     &.negative{
-        background: var(--offwhitebg, black);
+        background: black;
+        background: var(--offwhitebg);
         border: 1px solid var(--offwhitebg);
         color: white;
         &:hover{
