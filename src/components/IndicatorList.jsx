@@ -126,7 +126,7 @@ const indicatorFilterOptions = [
     {label: getMedia()==='optimal'?'All topics':'All', value: 'all'},
     {label: 'Health', value: 'health'},
     {label: 'Education', value: 'education'},
-    {label: 'Welfare', value: 'welfare'},
+    {label: 'Child Welfare', value: 'welfare'},
     {label: 'Early Childhood', value: 'earlyChildhood'},
 ]
 
