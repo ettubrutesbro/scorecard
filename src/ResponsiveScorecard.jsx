@@ -228,6 +228,19 @@ export default class ResponsiveScorecard extends React.Component{
         // window.addEventListener('resize', this.resizeRefresh, false)
         //eventually....
         window.addEventListener('resize', store.resize, false)
+        const bro = store.browser.name
+        const ver = store.browser.version
+        if(bro !== 'chrome' && bro !== 'firefox' && bro !=='safari'){
+            alert('you cant sit with us' )
+        }else{
+            if(bro==='chrome' && ver > 61){ }
+            else if(bro==='safari' && ver > 9){ }
+            else if(bro==='firefox' && ver > 53){ }
+            else{
+                alert('you could sit with us if you upgraded your browser')
+                console.log(store.browser)
+            }
+        }
     }
 
     render(){
