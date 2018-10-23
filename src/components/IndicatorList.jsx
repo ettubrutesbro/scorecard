@@ -342,11 +342,6 @@ export default class IndicatorList extends React.Component{
                             > 
                                 <IndLeft muted = {showSanityCheck && !isolated}>
                                         {semanticTitles[ind].label}
-                                        <Years className = "caption">
-                                            {indicator.years.map((yr)=>{
-                                                return yr
-                                            }).join(',\xa0')}
-                                        </Years>
                                         {noRace &&
                                             <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
                                         }
@@ -560,8 +555,9 @@ const AboutPcts = styled.div`
 `
 const NoRaceBadge = styled.div`
     color: ${props => props.needRace? 'var(--normtext)' : 'var(--fainttext)'};
-    border: 1px solid var(--bordergrey);
-    padding: 1.5px 7px;
+    /*border-bottom: 1px solid var(--bordergrey);*/
+    /*padding: 1.5px 7px;*/
+    margin-left: 7px;
     display: inline-flex;
     align-items: center;
     font-size: 13px;

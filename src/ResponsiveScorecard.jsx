@@ -47,17 +47,18 @@ const App = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     height: 100%;
+    background: var(--offwhitefg);
+    margin: auto;
     @media ${media.optimal}{
-        width: 1550px;
-        height: 740px;
-        margin-top: 95px;
-        justify-content: flex
+        /*width: 100%;*/
+        height: 960px;
+        /*justify-content: flex*/
     }
     @media ${media.compact}{
-        margin-top: 80px;
-        width: 1300px;
-        height: 630px;
+        /*width: 100%;*/
+        height: 740px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -68,39 +69,36 @@ const Row = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-`
-const TopRow = styled(Row)`
-    position: relative;
-    align-items: center;
-    justify-content: space-between;
     @media ${media.optimal}{
-        height: 185px;
-    } 
+        width: 1550px;
+    }
     @media ${media.compact}{
-        height: 150px;
+        width: 1300px;
+        /*width: */
     }
 `
-
-const ShareSources = styled.div`
-    
-
-`
 const DarkBar = styled.div`
-    position: fixed;
+    position: absolute;
     width: 100%;
     left: 0;
     background: var(--offwhitebg);
     @media ${media.optimal}{
-        padding: 0 calc(50% - 775px);
+        /*padding: 0 calc(50% - 775px);*/
     }
     @media ${media.compact}{
-        padding: 0 calc(50% - 650px);
+        /*padding: 0 calc(50% - 650px);*/
     }
 `
-
 const Nav = styled(DarkBar)`
     top: 0;
     height: 90px;
+    width: auto;
+    @media ${media.optimal}{
+        height: 90px;
+    }
+    @media ${media.compact}{
+        height: 75px;
+    }
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -108,8 +106,47 @@ const Nav = styled(DarkBar)`
     z-index: 3;
 `
 
+const TopRow = styled(Row)`
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    @media ${media.optimal}{
+        margin-top: 110px;
+        height: 185px;
+    } 
+    @media ${media.compact}{
+        margin-top: 90px;
+        height: 150px;
+    }
+`
+
+const BottomRow = styled(Row)`
+    height: 100%;
+    /*margin-top: 25px;*/
+    @media ${media.optimal}{
+        margin: 32px 0 100px 0;
+    }
+    @media ${media.compact}{
+        margin: 25px 0 50px 0;
+    }
+`
+
+
+const ShareSources = styled.div`
+    flex-shrink: 0;
+    @media ${media.optimal}{
+        /*top: 90px;*/
+        /*height: 185px;*/
+    } 
+    @media ${media.compact}{
+        /*top: 75px;*/
+        /*height: 150px;*/
+    }
+
+`
+
 const GreyMask = styled.div`
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
@@ -120,17 +157,17 @@ const GreyMask = styled.div`
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
     z-index: 2;
-    &::after{
+/*    &::after{
         content: '';
         position: absolute;
         top: 0;
-        width: 400px;
+        width: 0;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
         right: -400px;
         background-image: url(${maskImg});
-    }
+    }*/
 `
 const SourcesButton = styled(Button)`
     width: 238px;
@@ -301,11 +338,6 @@ export default class ResponsiveScorecard extends React.Component{
 
 
 
-const BottomRow = styled(Row)`
-    height: 100%;
-    margin-top: 25px;
-`
-
 const MapContainer = styled(Quadrant)`
     z-index: 2;
     transform-origin: 0% 100%;
@@ -313,21 +345,22 @@ const MapContainer = styled(Quadrant)`
     position: absolute;
 
     @media ${media.optimal}{
-        left: 675px;
-        width: 525px;
+        left: 666px;
+        width: 530px;
         height: 100%;
         transform: translateX(${props => props.offset? '350px' : 0});
         transform: ${props => props.offset? 'translateX(350px)' : 'translateX(0) scale(1)'};
     }
     @media ${media.compact}{
-        left: 510px;
-        width: 450px; 
+        left: 520px;
+        width: 430px; 
         height: 100%;
         transform: translateX(${props => props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
 `
 const Breakdown = styled(Quadrant)`
+    position: relative;
     top: 0; left: 0;
     height: 100%;
     @media ${media.optimal}{
@@ -345,17 +378,23 @@ const LegendContainer = styled.div`
     bottom: 0;
     right: 0;
     width: 300px; 
-    height: 80px;
+    /*height: 80px;*/
+    @media ${media.optimal}{
+        height: 80px;
+    }
+    @media ${media.compact}{
+        height: 40px;
+    }
 
 `
 
 const Footer = styled(DarkBar)`
     
     @media ${media.optimal}{
-        bottom: 0;
+        top: 960px;
     }
     @media ${media.compact}{
-        bottom: 0;
+        top: 740px;
     }
     z-index: 3;
 `
@@ -394,15 +433,9 @@ export const MobileBlocker = (props) => {
             <Notif>
                 Sorry, this application doesn't support your screen resolution and/or mobile devices yet. Check back soon!
                 <MobileBlockActions>
-
-                    <Button label = "Back" 
-                        onClick = {()=>{
-                            window.history.back()    
-                        } }
-                    />
                     <Button 
                         style = {{marginLeft: '15px'}} 
-                        label = "Children Now >" 
+                        label = "Back to Children Now" 
                         className = 'negative' 
                         onClick = {()=>{
                             window.open('https://childrennow.org')

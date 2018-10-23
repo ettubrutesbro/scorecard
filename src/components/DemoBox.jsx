@@ -29,7 +29,7 @@ const Box = styled.div`
             padding: 35px;
             padding-top: 25px;
             width: 515px;
-            height: 375px;   
+            height: 390px;   
 
         }
         right: 0;

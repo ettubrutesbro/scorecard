@@ -39,11 +39,13 @@ const Nav = styled.div`
     align-items: center;
     position: relative;
     @media ${media.optimal}{
-        width: 100%;
+        /*width: 100%;*/
+        width: 1550px;
 
     }
     @media ${media.compact}{
-        width: 100%;
+        /*width: 100%;*/
+        width: 1300px;
 
     }
 `

@@ -45,15 +45,14 @@ export default class Breakdown extends React.Component{
     render(){
 
         const {store} = this.props
-        const {indicator, county, race, year} = store
-        const screen = getMedia()
+        const {indicator, county, race, year, screen} = store
         //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
 
         let entryCount = 0
         if(indicator){
             const hasRace = indicators[indicator].categories.includes('hasRace')
             if(screen==='optimal'){
-                if(hasRace) entryCount = 13
+                if(hasRace) entryCount = 14
                 else entryCount = 20
             }if(screen==='compact'){
                 if(hasRace) entryCount = 9

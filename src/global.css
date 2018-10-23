@@ -31,10 +31,6 @@ html{
 body{
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-
     font-size: 16px;
     letter-spacing: 0.7px;
     user-select: none;
@@ -43,7 +39,7 @@ body{
 #root{
     width: 100%;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
 }
 
 .text{
