@@ -25,7 +25,7 @@ html{
 
     /*overflow: hidden;*/
 
-    background: var(--offwhitefg);
+    background: var(--offwhitebg);
 }
 
 body{
@@ -35,6 +35,8 @@ body{
     letter-spacing: 0.7px;
     user-select: none;
     margin: 0;
+
+    background: var(--offwhitefg);
 }
 #root{
     width: 100%;
