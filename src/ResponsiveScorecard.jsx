@@ -186,30 +186,22 @@ export default class ResponsiveScorecard extends React.Component{
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
 
-    resizeRefresh = debounce(() => {
-        console.log('at the end of resize, new screen size was: ')
-        console.log(getMedia())
-        if(this.screen !== getMedia()){
-            window.location.reload()
-        }
-    }, 250)
-
     componentDidMount(){
         store.setIndicatorPages()
-        window.addEventListener('resize', this.resizeRefresh, false)
+        // window.addEventListener('resize', this.resizeRefresh, false)
+        //eventually....
+        window.addEventListener('resize', store.resize, false)
     }
 
     render(){
-        const {indicator, year, race} = store
+        const {indicator, year, race, screen} = store
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return(
+        return store.screen==='mobile'? (<MobileBlocker/>): (
             <React.Fragment>
             <Styles />
             <App>
-
-                
                 <Nav> 
                     <NavComponent 
                         init = {this.init}
@@ -237,7 +229,7 @@ export default class ResponsiveScorecard extends React.Component{
                         <Button label = "Download PDF" style = {{marginLeft: '15px'}}
                             onClick = {()=>{
                                 if(pdfmanifest[store.county||'california']){
-                                    window.open(pdfmanifest[store.county||'california'])
+                                    window.location.assign(pdfmanifest[store.county||'california'])
                                 }
                                 else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
                                 
@@ -394,4 +386,56 @@ const FooterLink = styled.a`
     &:hover{
         color: var(--peach);
     }
+`
+
+export const MobileBlocker = (props) => {
+    return(
+        <BlockUser>
+            <Notif>
+                Sorry, this application doesn't support your screen resolution and/or mobile devices yet. Check back soon!
+                <MobileBlockActions>
+
+                    <Button label = "Back" 
+                        onClick = {()=>{
+                            window.history.back()    
+                        } }
+                    />
+                    <Button 
+                        style = {{marginLeft: '15px'}} 
+                        label = "Children Now >" 
+                        className = 'negative' 
+                        onClick = {()=>{
+                            window.open('https://childrennow.org')
+                        }}
+                    />
+                </MobileBlockActions>
+            </Notif>
+        </BlockUser>
+    )
+}
+
+const MobileBlockActions = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+`
+
+const BlockUser = styled.div`
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%; 
+    background: var(--offwhitefg);
+    padding: 20px;
+    top: 0;
+    left: 0;
+    line-height: 160%;
+`
+const Notif = styled.div`
+    background: white;
+    border: 1px solid var(--bordergrey);
+    padding: 25px;
+
 `

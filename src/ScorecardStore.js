@@ -9,10 +9,13 @@ import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
-import {findIndex} from 'lodash'
+import {findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
 export default class AppStore{
+    @observable screen = getMedia()
+    @action resize = debounce(() => { this.screen = getMedia() }, 150)
+
     @observable indicator = null
     @observable county = null
     @observable race = null
@@ -426,7 +429,7 @@ export default class AppStore{
 
     @observable indicatorPageSize = 1
     @action setIndicatorPages = () => {
-        const screen = getMedia()
+        const {screen} = this
         let pages = []
         if(screen==='optimal'){
             this.indicatorPageSize = 8

@@ -84,7 +84,7 @@ export default class Readout extends React.Component{
 
 
     @action computeLineBreaks = (str) => {
-        const {county, indicator, race, year} = this.props.store
+        const {county, indicator, race, year, screen} = this.props.store
 
         const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
@@ -96,7 +96,6 @@ export default class Readout extends React.Component{
 
         const readout = `of ${descriptor||''} ${race!=='other'? raceString : ''} ${who} ${race==='other'?raceString:''} ${what} in ${countyString} in ${actualYear}.`
 
-        const screen = getMedia()
         const firstLineBreakPoint = screen==='optimal'? 85  : screen==='compact'? 60 : 40
         const minCharsInSubsequent = 15
 

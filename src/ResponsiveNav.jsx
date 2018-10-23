@@ -501,7 +501,7 @@ export class PickingWorkflow extends React.Component{
         const {store, close} = this.props
         const which = this.props.open
         const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
-        const screen = getMedia()
+        const screen = store.screen
         return(
             <LargeWorkflow>
                 <X onClick = {this.props.x} />  

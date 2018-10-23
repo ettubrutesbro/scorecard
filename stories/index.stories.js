@@ -35,7 +35,7 @@ import Toggle from '../src/components/Toggle'
 import NeoScorecard from '../src/NeoScorecard'
 import UniversalPicker from '../src/components/UniversalPicker'
 import PickerBar from '../src/components/PickerBar'
-import ResponsiveScorecard from '../src/ResponsiveScorecard'
+import ResponsiveScorecard, {MobileBlocker} from '../src/ResponsiveScorecard'
 import Nav from '../src/Nav'
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -206,3 +206,11 @@ const Void = styled.div`
     padding: 50px;
 
 `
+
+storiesOf('Misc', module)
+.add('MobileBlocker', ()=>{
+    return(
+        <MobileBlocker />
+
+        )
+})

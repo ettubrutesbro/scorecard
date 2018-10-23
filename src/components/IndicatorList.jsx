@@ -403,7 +403,7 @@ class SanityCheck extends React.Component{
     render(){
         const {yPos, store, side} = this.props
         const data = store.sanityCheck
-        const screen = getMedia()
+        const screen = store.screen
         const xPos = screen==='optimal'? 464 : 300
         return(
             <ModTip
@@ -501,12 +501,8 @@ const SanityControls = styled.div`
 `
 
 const Check = styled.div`
-    /*margin-top: 25px;*/
-    /*background: var(--offwhitefg);*/
     width: 480px;
     line-height: 180%;
-    /*padding: 30px;*/
-    /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
         font-size: 16px;
         padding: 30px;
