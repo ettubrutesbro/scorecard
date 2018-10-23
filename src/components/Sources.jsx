@@ -35,9 +35,14 @@ export default class Sources extends React.Component{
 const AllSources = styled.div`
     position: relative;
     height: 100%;
-    width; 100%;
+    width: 100%;
     border: 1px solid var(--bordergrey);
-
+    @media ${media.optimal}{
+        max-height: 605px;
+    }
+    @media ${media.compact}{
+        max-height: 470px;
+    }
 `
 const Contents = styled.div`
     padding: 35px;
