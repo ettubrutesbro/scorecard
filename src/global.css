@@ -79,3 +79,7 @@ body{
     font-size: 13px !important;
     border-radius: 0 !important;
 }
+
+figure{
+    margin: 0px;
+}

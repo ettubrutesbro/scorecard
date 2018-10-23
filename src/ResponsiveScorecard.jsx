@@ -360,7 +360,13 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 <Footer>
-                    <Feedback> Provide feedback </Feedback>
+                    <Feedback
+                        onClick = {()=>{
+                            window.location.href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback";
+                        }}
+                    >
+                        <FeedbackIcon/> Provide feedback 
+                    </Feedback>
                     <FooterContent>
                         <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
                         <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
@@ -426,7 +432,9 @@ const LegendContainer = styled.div`
 `
 
 const Footer = styled(DarkBar)`
-    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     @media ${media.optimal}{
         top: 960px;
     }
@@ -541,7 +549,23 @@ const Notif = styled.div`
     max-width: 540px;
 
 `
-
+const feedbackico = require('./assets/feedback.svg')
+const FeedbackIcon = styled.figure`
+    width: 36px; height: 36px;
+    background-image: url(${feedbackico});
+    background-size: cover;
+    margin-right: 10px;
+`
 const Feedback = styled.div`
-    color: var(--fainttext);
+    display: flex;
+    align-items: center;
+    color: var(--bordergrey);
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover{
+        color: var(--peach);
+        figure{
+            background-position: 100% center;
+        }
+    }
 `

@@ -161,8 +161,13 @@ const StartButton = styled(Button)`
     letter-spacing: 1px;
     padding: 14px 20px 14px 30px;
     @media ${media.compact}{
-            margin-left: 50px;
+        margin-left: 50px;
+    }
+    &:hover{
+        figure{
+            background-position: 100% center;
         }
+    }
 `
 
 const BtnLabel = styled.div`
@@ -170,7 +175,7 @@ const BtnLabel = styled.div`
     align-items: center;
 `
 const arrow = require('../assets/getstarted.svg')
-const Icon = styled.div`
+const Icon = styled.figure`
     width: 30px;
     margin-left: 10px;
     background-size: cover;
