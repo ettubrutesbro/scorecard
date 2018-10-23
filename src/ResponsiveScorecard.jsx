@@ -23,6 +23,7 @@ import DemoBox from './components/DemoBox'
 import {Button} from './components/generic'
 
 import indicators from './data/indicators'
+import browserCompatibility from './data/browserCompatibility'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
@@ -175,6 +176,7 @@ const SourcesButton = styled(Button)`
 
 @observer
 export default class ResponsiveScorecard extends React.Component{
+
     @observable init = true
     @action closeSplash = () => {
         this.init = false
@@ -228,19 +230,7 @@ export default class ResponsiveScorecard extends React.Component{
         // window.addEventListener('resize', this.resizeRefresh, false)
         //eventually....
         window.addEventListener('resize', store.resize, false)
-        const bro = store.browser.name
-        const ver = store.browser.version
-        if(bro !== 'chrome' && bro !== 'firefox' && bro !=='safari'){
-            alert('you cant sit with us' )
-        }else{
-            if(bro==='chrome' && ver > 61){ }
-            else if(bro==='safari' && ver > 9){ }
-            else if(bro==='firefox' && ver > 53){ }
-            else{
-                alert('you could sit with us if you upgraded your browser')
-                console.log(store.browser)
-            }
-        }
+        
     }
 
     render(){
