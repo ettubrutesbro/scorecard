@@ -280,7 +280,7 @@ export default class IndicatorByCounties extends React.Component{
             }
             else{
                 withRace[withRace.length-1] = {
-                    label: <LabelComponent selected label = {countyLabels[county]} right = {truncateNum(demopop[county].population * (demopop[county][race]/100))}/>,
+                    label: <LabelComponent selected label = {countyLabels[county]} />,
                     value: indicators[indicator].counties[county][race][year],
                     fill: 'var(--peach)',
                 }
