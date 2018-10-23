@@ -1,8 +1,8 @@
 
 const media = {
     optimal: '(min-width: 1600px)',
-    compact: '(min-width: 641px) and (max-width: 1599px)', //max 1599?
-    mobile: '(max-width: 640px)'
+    compact: '(min-width: 901px) and (max-width: 1599px)', //max 1599?
+    mobile: '(max-width: 900px)'
 }
 
 export function getMedia(){
