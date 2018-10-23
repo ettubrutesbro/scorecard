@@ -150,7 +150,7 @@ const CompatibilityNote = styled.div`
     font-size: 13px;
     /*margin-right: 15px;*/
     margin-bottom: 18px;
-    color: var(--fainttext);
+    color: var(--fainttext, grey);
             @media ${media.compact}{
             padding-left: 50px;
         }
@@ -191,8 +191,8 @@ const BlockContext = styled.p`
     margin-top: -5px;
         padding: 25px 35px;
     background: var(--faintpeach);
-    border: 1px solid var(--strokepeach);
-    color: var(--normtext);
+    border: 1px solid var(--strokepeach, red);
+    color: var(--normtext, black);
 `
 const BlockAction = styled.div`
     display: flex;

@@ -31,8 +31,6 @@ import indicatorHoveredIco from './assets/indicator-hovered.svg'
 import indicatorSelectedIco from './assets/indicator-selected.svg'
 import resetIco from './assets/reset.svg'
 
-
-
 const Nav = styled.div`
     z-index: 3;
     display: flex;
@@ -448,12 +446,14 @@ const YearToggle = (props) =>{
                 hide = {!years}
                 bigscreen = {props.bigscreen}
             > 
-            {years && <Toggle
-                            size = "big"
-                            options = {years}
-                            onClick = {props.onClick}
-                            selected = {props.selected}
-                        />}
+            {years && 
+                <Toggle
+                    size = "big"
+                    options = {years}
+                    onClick = {props.onClick}
+                    selected = {props.selected}
+                />
+            }
 
     </YrToggle>
         

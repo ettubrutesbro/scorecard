@@ -16,11 +16,7 @@ import SanityCheckTooltip from './generic/SanityCheckTip'
 import media, {getMedia} from '../utilities/media'
 import {isValid} from '../utilities/isValid'
 
-var flat = require('array.prototype.flat')
-var assert = require('assert')
 
-delete Array.prototype.flat
-var shimmedFlat = flat.shim()
 
 const GridList = styled.ul`
 

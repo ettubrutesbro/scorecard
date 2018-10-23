@@ -25,7 +25,7 @@ html{
 
     /*overflow: hidden;*/
 
-    background: var(--offwhitebg);
+    background: var(--offwhitebg, #1e1e1e);
 }
 
 body{

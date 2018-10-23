@@ -23,7 +23,6 @@ import DemoBox from './components/DemoBox'
 import {Button} from './components/generic'
 
 import indicators from './data/indicators'
-import browserCompatibility from './data/browserCompatibility'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
@@ -35,8 +34,20 @@ import {camelLower} from './utilities/toLowerCase'
 import cnico from './assets/cnlogo-long.svg'
 import maskImg from './assets/mask.png'
 
+
+
 const store = new ScorecardStore()
 window.store = store
+
+var flat = require('array.prototype.flat')
+var includes = require('array-includes')
+var assert = require('assert')
+
+delete Array.prototype.flat
+var shimmedFlat = flat.shim()
+delete Array.prototype.includes;
+var shimmedIncludes = includes.shim();
+
 
 const Quadrant = styled.div`
     position: absolute;
@@ -83,7 +94,7 @@ const DarkBar = styled.div`
     position: absolute;
     width: 100%;
     left: 0;
-    background: var(--offwhitebg);
+    background: var(--offwhitebg, black);
     @media ${media.optimal}{
         /*padding: 0 calc(50% - 775px);*/
     }
@@ -430,7 +441,7 @@ const FooterLink = styled.a`
     margin-right: 70px;
     text-decoration: none;
     &:hover{
-        color: var(--peach);
+        color: var(--peach, orange);
     }
 `
 
@@ -475,7 +486,7 @@ const BlockUser = styled.div`
 `
 const Notif = styled.div`
     background: white;
-    border: 1px solid var(--bordergrey);
+    border: 1px solid var(--bordergrey, grey);
     padding: 25px;
 
 `
