@@ -40,9 +40,11 @@ const Nav = styled.div`
     position: relative;
     @media ${media.optimal}{
         width: 100%;
+
     }
     @media ${media.compact}{
         width: 100%;
+
     }
 `
 const Dropdown = styled.div`
