@@ -26,7 +26,7 @@ import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
-import pdfmanifest from './assets/pdfs/pdfmanifest'
+import pdfmanifest from './assets/pdfmanifest'
 
 import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
