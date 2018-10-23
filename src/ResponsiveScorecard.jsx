@@ -149,17 +149,7 @@ const BottomRow = styled(Row)`
 `
 
 
-const ShareSources = styled.div`
-    flex-shrink: 0;
-    @media ${media.optimal}{
-        /*top: 90px;*/
-        /*height: 185px;*/
-    } 
-    @media ${media.compact}{
-        /*top: 75px;*/
-        /*height: 150px;*/
-    }
-`
+
 
 const GreyMask = styled.div`
     position: absolute;
@@ -185,8 +175,75 @@ const GreyMask = styled.div`
         background-image: url(${maskImg});
     }*/
 `
+const ShareSources = styled.div`
+    flex-shrink: 0;
+    @media ${media.optimal}{
+        /*top: 90px;*/
+        /*height: 185px;*/
+    } 
+    @media ${media.compact}{
+        /*top: 75px;*/
+        /*height: 150px;*/
+    }
+`
+const pdfIcon = require('./assets/export.svg')
+const sourcesIcon = require('./assets/sources.svg')
+
+const Icon = styled.figure`
+    position: absolute;
+    right: 10px;
+    /*outline: 1px solid black;*/
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    margin-right: 12px;
+    flex-shrink: 0;
+    background-size: cover;
+`
+const BtnLabel = styled.div`
+    display: flex;
+    align-items: center;
+`
+const SourcesIcon = styled(Icon)`
+    background-image: url(${sourcesIcon});
+`
+const PDFIcon = styled(Icon)`
+    background-image: url(${pdfIcon});
+`
+
+
+const BtnWithRightIco = styled(Button)`
+    padding-right: 60px;
+    position: relative;
+    &:hover{
+        figure{
+            background-position: 100% 50%;
+        }
+    }
+`
 const SourcesButton = styled(Button)`
-    width: 238px;
+    padding-right: 60px;
+    position: relative;
+    ${props => props.dark? `
+        figure{
+            background-position: 66.6666% 50%;
+        }
+        &:hover{
+            figure{
+                background-position: 100% 50%;
+            }
+        }
+    `: `
+        figure{
+            background-position: 0% 50%;
+        }
+        &:hover{
+            figure{
+                background-position: 33.3333% 50%;
+            }
+        }
+    `}
+    
 `
 
 @observer
@@ -291,12 +348,19 @@ export default class ResponsiveScorecard extends React.Component{
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
-                        <SourcesButton 
-                            label = {this.sourcesMode? "Hide sources and notes" : "View sources and notes"}
+                        <SourcesButton
+                            dark = {this.sourcesMode} 
+                            label = {this.sourcesMode? 
+                               <BtnLabel>Hide sources and notes<SourcesIcon /></BtnLabel>
+                                : <BtnLabel>View sources and notes<SourcesIcon /></BtnLabel>
+                            }
                             className = {this.sourcesMode? 'negative' : 'default' }
                             onClick = {()=>{this.setSourcesMode(!this.sourcesMode)}}
                         />
-                        <Button label = "Download PDF" style = {{marginLeft: '15px'}}
+                        <BtnWithRightIco 
+                            label = {<BtnLabel>Download PDF<PDFIcon /></BtnLabel>} 
+                            style = {{marginLeft: '15px'}}
+                            className = {'default'}
                             onClick = {()=>{
                                 if(pdfmanifest[store.county||'california']){
                                     window.location.assign(pdfmanifest[store.county||'california'])
