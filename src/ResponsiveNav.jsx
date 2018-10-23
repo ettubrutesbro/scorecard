@@ -325,7 +325,7 @@ export default class ResponsiveNav extends React.Component{
                         offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
-                        bigscreen = {screen==='optimal'}
+                        bigscreen = {store.screen==='optimal'}
                     />
 
                     
@@ -444,7 +444,10 @@ const YearToggle = (props) =>{
     }): false
 
     return <YrToggle 
-    offset = {props.offset} hide = {!years}> 
+                offset = {props.offset} 
+                hide = {!years}
+                bigscreen = {props.bigscreen}
+            > 
             {years && <Toggle
                             size = "big"
                             options = {years}
@@ -458,9 +461,8 @@ const YearToggle = (props) =>{
 }
 const YrToggle = styled.div`
     margin-left: 15px;
-    /*transition: transform ${props=>props.offset===2? .65 : .25}s;*/
-    transition: transform ${props=>props.bigscreen?.65:.25}s;
-    transform: translateX(${props=>props.offset===2 && props.bigscreen? 470 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
+    transition: transform ${props=>props.bigscreen? .65 :.25}s;
+    transform: translateX(${props=>props.offset===2 && props.bigscreen? 468 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
 `
 
 const LargeWorkflow = styled.div`

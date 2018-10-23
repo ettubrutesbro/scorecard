@@ -12,8 +12,18 @@ import {capitalize} from './utilities/toLowerCase'
 import {findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
+const {detect} = require('detect-browser')
+const browserInfo = detect()
+
 export default class AppStore{
+    browser = {
+        name: browserInfo.name,
+        version: Number(browserInfo.version.slice(0,2)),
+        os: browserInfo.os
+    }
+
     @observable screen = getMedia()
+
     @action resize = debounce(() => { this.screen = getMedia() }, 150)
 
     @observable indicator = null

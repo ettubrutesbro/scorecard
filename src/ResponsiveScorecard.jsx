@@ -286,7 +286,11 @@ export default class ResponsiveScorecard extends React.Component{
                     />
 
                     {this.init &&
-                       <InitBox closeSplash = {this.closeSplash}/>
+                       <InitBox 
+                            store = {store}
+                            closeSplash = {this.closeSplash}
+
+                        />
                     }
                     <Breakdown
                         sources = {this.sourcesMode}

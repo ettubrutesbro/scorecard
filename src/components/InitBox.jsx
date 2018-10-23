@@ -14,8 +14,8 @@ const Box = styled.div`
     /*padding: 35px;*/
     z-index: 12;
     h1{ font-size: 24px;
-        margin-bottom: 40px;
-        font-weight: normal;
+        margin-bottom: 60px;
+        font-weight: medium;
      }
      p{
         margin-bottom: 20px;
@@ -30,26 +30,12 @@ const Box = styled.div`
         padding: 0 50px;
     }
 `
-// const Button = styled.div`
-//     cursor: pointer;
-//     display: inline-flex;
-//     align-items: center;
-//     margin-top: 25px;
-//     /*border: 1px solid var(--strokepeach);*/
-//     background: black;
-//     color: white;
-//     @media ${media.optimal}{
-//         font-size: 24px;
-//         letter-spacing: .6px;
-//         padding: 15px 35px;
-//     }
-//     @media ${media.compact}{
-//         letter-spacing: .4px;
-//         padding: 10px 25px;     
-//     }
-// `
 
 export default class InitBox extends React.Component{
+    componentDidMount(){
+        console.log('init box: ', this.props.store.browser)
+    }
+
     render(){
         return(
             <Box>
@@ -62,17 +48,58 @@ export default class InitBox extends React.Component{
                 <p>
                     Data that has been suppressed due to small sample size or large margin of error, or data that is unavailable is in grey.
                 </p>
-                <StartButton
-                    className = 'negative'
-                    label = 'Get Started >'
-                    onClick = {this.props.closeSplash}
-                />
+
+                <Start>
+                    <CompatibilityNote> 
+                        This tool supports Chrome (65 and newer), Safari (10+), and Firefox (54+).
+                    </CompatibilityNote>
+                    <StartButton
+                        className = 'negative'
+                        label = {
+                            <BtnLabel>
+                                Get started
+                                <Icon />
+                            </BtnLabel>
+                            }
+                        onClick = {this.props.closeSplash}
+                    />
+                </Start>
                 
             </Box>
         )
     }
 }
+const Start = styled.div`
 
+    margin-top: 45px;
+    /*display: flex;*/
+    align-items: center;
+`
+const CompatibilityNote = styled.div`
+    font-size: 13px;
+    /*margin-right: 15px;*/
+    margin-bottom: 18px;
+    color: var(--fainttext);
+`
 const StartButton = styled(Button)`
-    margin-top: 25px;
+    white-space: nowrap;
+    font-size: 18px;
+    letter-spacing: 1px;
+    padding: 14px 20px 14px 30px;
+`
+
+const BtnLabel = styled.div`
+    display: inline-flex;
+    align-items: center;
+`
+const arrow = require('../assets/getstarted.svg')
+const Icon = styled.div`
+    width: 30px;
+    margin-left: 10px;
+    background-size: cover;
+    height: 30px;
+    background-image: url(${arrow});
+    &:hover{
+        background-position: 100% center;
+    }
 `

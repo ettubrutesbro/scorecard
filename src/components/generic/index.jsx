@@ -290,6 +290,7 @@ const Btn = styled.div`
     @media ${media.mobile}{
         padding: 10px 21px;
     }
+    transition: color .2s;
     cursor: pointer;
     &.default{
         background: white;
@@ -309,13 +310,14 @@ const Btn = styled.div`
     &.dark{
         background: var(--normtext);
         color: white;
-        border: none;
+        border: 1px solid var(--normtext);
     }
     &.negative{
         background: var(--offwhitebg);
+        border: 1px solid var(--offwhitebg);
         color: white;
         &:hover{
-            color: var(--faintpeach);
+            color: var(--peach);
         }
     }
     &.negativeOnDark{
