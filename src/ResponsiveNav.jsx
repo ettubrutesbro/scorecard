@@ -23,12 +23,6 @@ import {isValid} from './utilities/isValid'
 import {capitalize} from './utilities/toLowerCase'
 
 import caret from './assets/caret.svg'
-import countyIco from './assets/county.svg'
-import countyHoveredIco from './assets/county-hovered.svg'
-import countySelectedIco from './assets/county-selected.svg'
-import indicatorIco from './assets/indicator.svg'
-import indicatorHoveredIco from './assets/indicator-hovered.svg'
-import indicatorSelectedIco from './assets/indicator-selected.svg'
 import resetIco from './assets/reset.svg'
 
 const Nav = styled.div`
@@ -104,22 +98,28 @@ const IndicatorSelect = styled(DropdownWorkflow)`
 
 `
 const Icon = styled.div`
-    /*position: absolute;*/
-    width: 28px;
-    height: 24px;
+    position: absolute;
+    /*outline: 1px solid black;*/
+    width: 30px;
+    height: 30px;
     background-repeat: no-repeat;
     margin-right: 10px;
     flex-shrink: 0;
+    background-size: cover;
 `
+const indicatorIco = require('./assets/indicator-states.svg')
+const countyIco = require('./assets/county-states.svg')
 const IndicatorIcon = styled(Icon)`
-    background-image: url(${p => p.hasValue&&!p.isOpen? indicatorSelectedIco : p.hovered && !p.isOpen? indicatorHoveredIco : indicatorIco});
+    background-image: url(${indicatorIco});
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
 const CountyIcon = styled(Icon)`
-    background-image: url(${p => p.hasValue&&!p.isOpen? countySelectedIco : p.hovered && !p.isOpen? countyHoveredIco : countyIco});
+    background-image: url(${countyIco});
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
 const SelectionValueContainer = styled.div`
     display: flex;
-    max-width: 128px;
+    max-width: 165px;
     align-items: center;
 `
 const SelectionValue = styled.div`
@@ -127,8 +127,9 @@ const SelectionValue = styled.div`
     position: relative;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-left: 35px;
     padding-left: 7px;
-    margin-left: -7px;
+    /*margin-left: -7px;*/
     &::after{
         content: '${props => props.label}';
         color: rgba(0,0,0,0);
@@ -362,15 +363,18 @@ const BtnLabel = styled.div`
     align-items: center;
     padding-right: 30px;
 `
-const ResetIcon = styled.div`
+const ResetIcon = styled.figure`
     position: absolute;
-       right: 0px;
-       top: 0; bottom: 0; margin: auto;
-    width: 19px;
-    height: 19px;
+    right: -8px;
+    top: 0px; bottom: 0; margin: auto;
+    width: 30px;
+    height: 30px;
+    background-size: cover;
     /*border: 1px solid white;*/
     background-image: url(${resetIco});
     background-repeat: no-repeat;
+    transform-origin: 50% 50%;
+    transition: transform .2s;
 `
 const RaceDropdownToggle = styled(DropdownToggle)`
     transform: translateX(${props=>props.offset?30:3}px);
@@ -385,6 +389,12 @@ const Reset = styled(Button)`
     pointer-events: ${props=>props.visible?'auto':'none'};
     opacity: ${props=>props.visible?1:0};
     transform: translateX(${props => props.visible? 0 : 50}px);
+    &:hover{
+        figure{ 
+            background-position: 100% 0; 
+            transform: rotate(-90deg);
+        }
+    }
 `
 
 const ForcedUnselectTip = styled.div`

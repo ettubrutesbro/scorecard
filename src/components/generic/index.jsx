@@ -290,7 +290,6 @@ const Btn = styled.div`
     @media ${media.mobile}{
         padding: 10px 21px;
     }
-    transition: color .2s;
     cursor: pointer;
     &.default{
         background: white;
