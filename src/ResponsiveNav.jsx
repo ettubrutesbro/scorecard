@@ -39,10 +39,14 @@ const Nav = styled.div`
     align-items: center;
     position: relative;
     @media ${media.optimal}{
-        width: 100%;
+        /*width: 100%;*/
+        width: 1550px;
+
     }
     @media ${media.compact}{
-        width: 100%;
+        /*width: 100%;*/
+        width: 1300px;
+
     }
 `
 const Dropdown = styled.div`
@@ -503,7 +507,7 @@ export class PickingWorkflow extends React.Component{
         const {store, close} = this.props
         const which = this.props.open
         const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
-        const screen = getMedia()
+        const screen = store.screen
         return(
             <LargeWorkflow>
                 <X onClick = {this.props.x} />  

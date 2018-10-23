@@ -54,13 +54,13 @@ export default class InitBox extends React.Component{
         return(
             <Box>
                 <h1>
-                    2018 California Scorecard of Children’s Well-being
+                    2018-19 California County Scorecard of Children’s Well-Being
                 </h1>
                 <p>
                 The 2018-19 California Scorecard of Children’s Well-Being provides a comprehensive snapshot of how children are faring in each of the 58 counties, over time, and by race and ethnicity.
                 </p>
                 <p>
-Data that has been suppressed due to small sample size, large margin of error, or which is otherwise unavailable, is colored grey.
+                    Data that has been suppressed due to small sample size or large margin of error, or data that is unavailable is in grey.
                 </p>
                 <StartButton
                     className = 'negative'

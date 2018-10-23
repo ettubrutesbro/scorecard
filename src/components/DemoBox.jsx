@@ -29,7 +29,7 @@ const Box = styled.div`
             padding: 35px;
             padding-top: 25px;
             width: 515px;
-            height: 375px;   
+            height: 390px;   
 
         }
         right: 0;
@@ -115,15 +115,15 @@ const DataTable = (props) => {
                 */}
                 <DemoRow> 
                     <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.immigrantFamilies)} /> </DemoValue>
-                    live with one or more immigrant parent.
+                    have one or more immigrant parent.
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo.poverty}% </DemoValue>
-                    are living 2X below the Federal Poverty&nbsp;Level.
+                    are living at or below 2X the poverty&nbsp;level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
                     <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.homeless)} /> </DemoValue>
-                    students are experiencing homelessness.
+                    students experience homelessness.
                 </DemoRow>
             </RowTable>
         )

@@ -126,7 +126,7 @@ const indicatorFilterOptions = [
     {label: getMedia()==='optimal'?'All topics':'All', value: 'all'},
     {label: 'Health', value: 'health'},
     {label: 'Education', value: 'education'},
-    {label: 'Welfare', value: 'welfare'},
+    {label: 'Child Welfare', value: 'welfare'},
     {label: 'Early Childhood', value: 'earlyChildhood'},
 ]
 
@@ -342,11 +342,6 @@ export default class IndicatorList extends React.Component{
                             > 
                                 <IndLeft muted = {showSanityCheck && !isolated}>
                                         {semanticTitles[ind].label}
-                                        <Years className = "caption">
-                                            {indicator.years.map((yr)=>{
-                                                return yr
-                                            }).join(',\xa0')}
-                                        </Years>
                                         {noRace &&
                                             <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
                                         }
@@ -403,7 +398,7 @@ class SanityCheck extends React.Component{
     render(){
         const {yPos, store, side} = this.props
         const data = store.sanityCheck
-        const screen = getMedia()
+        const screen = store.screen
         const xPos = screen==='optimal'? 464 : 300
         return(
             <ModTip
@@ -501,12 +496,8 @@ const SanityControls = styled.div`
 `
 
 const Check = styled.div`
-    /*margin-top: 25px;*/
-    /*background: var(--offwhitefg);*/
     width: 480px;
     line-height: 180%;
-    /*padding: 30px;*/
-    /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
         font-size: 16px;
         padding: 30px;
@@ -564,8 +555,9 @@ const AboutPcts = styled.div`
 `
 const NoRaceBadge = styled.div`
     color: ${props => props.needRace? 'var(--normtext)' : 'var(--fainttext)'};
-    border: 1px solid var(--bordergrey);
-    padding: 1.5px 7px;
+    /*border-bottom: 1px solid var(--bordergrey);*/
+    /*padding: 1.5px 7px;*/
+    margin-left: 7px;
     display: inline-flex;
     align-items: center;
     font-size: 13px;

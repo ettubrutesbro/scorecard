@@ -18,12 +18,14 @@ import {floatingCorner, flushHard} from './BoxStyling'
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    max-height: 100%;
     @media ${media.optimal}{
-        ${props => props.fullHeight? 'height: calc(100% - 10px);' : ''}    
+
+        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
+        max-height: 605px; 
     }
     @media ${media.compact}{
         ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
+        max-height: 470px;
     }
     border: 1px solid var(--bordergrey);
 `

@@ -3,7 +3,7 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-import {mapValues, find} from 'lodash'
+import {mapValues, find, debounce} from 'lodash'
 
 
 import ScorecardStore from './ScorecardStore'
@@ -26,9 +26,9 @@ import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
-import pdfmanifest from './assets/pdfs/pdfmanifest'
+import pdfmanifest from './assets/pdfmanifest'
 
-import media from './utilities/media'
+import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
 
 import cnico from './assets/cnlogo-long.svg'
@@ -47,17 +47,18 @@ const App = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
     height: 100%;
+    background: var(--offwhitefg);
+    margin: auto;
     @media ${media.optimal}{
-        width: 1550px;
-        height: 740px;
-        margin-top: 95px;
-        justify-content: center;
+        /*width: 100%;*/
+        height: 960px;
+        /*justify-content: flex*/
     }
     @media ${media.compact}{
-        margin-top: 80px;
-        width: 1300px;
-        height: 630px;
+        /*width: 100%;*/
+        height: 740px;
     }
     @media ${media.mobile}{
         width: 100vw;
@@ -68,39 +69,37 @@ const Row = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-`
-const TopRow = styled(Row)`
-    position: relative;
-    align-items: center;
-    justify-content: space-between;
+
     @media ${media.optimal}{
-        height: 185px;
-    } 
+        width: 1550px;
+    }
     @media ${media.compact}{
-        height: 150px;
+        width: 1300px;
+        /*width: */
     }
 `
-
-const ShareSources = styled.div`
-    
-
-`
 const DarkBar = styled.div`
-    position: fixed;
+    position: absolute;
     width: 100%;
     left: 0;
     background: var(--offwhitebg);
     @media ${media.optimal}{
-        padding: 0 calc(50% - 775px);
+        /*padding: 0 calc(50% - 775px);*/
     }
     @media ${media.compact}{
-        padding: 0 calc(50% - 650px);
+        /*padding: 0 calc(50% - 650px);*/
     }
 `
-
 const Nav = styled(DarkBar)`
     top: 0;
     height: 90px;
+    width: auto;
+    @media ${media.optimal}{
+        height: 90px;
+    }
+    @media ${media.compact}{
+        height: 75px;
+    }
     flex-grow: 0;
     display: flex;
     align-items: center;
@@ -108,8 +107,46 @@ const Nav = styled(DarkBar)`
     z-index: 3;
 `
 
+const TopRow = styled(Row)`
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    @media ${media.optimal}{
+        margin-top: 110px;
+        height: 185px;
+    } 
+    @media ${media.compact}{
+        margin-top: 90px;
+        height: 150px;
+    }
+`
+
+const BottomRow = styled(Row)`
+    height: 100%;
+    /*margin-top: 25px;*/
+    @media ${media.optimal}{
+        margin: 32px 0 100px 0;
+    }
+    @media ${media.compact}{
+        margin: 25px 0 50px 0;
+    }
+`
+
+
+const ShareSources = styled.div`
+    flex-shrink: 0;
+    @media ${media.optimal}{
+        /*top: 90px;*/
+        /*height: 185px;*/
+    } 
+    @media ${media.compact}{
+        /*top: 75px;*/
+        /*height: 150px;*/
+    }
+`
+
 const GreyMask = styled.div`
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
@@ -120,17 +157,17 @@ const GreyMask = styled.div`
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
     z-index: 2;
-    &::after{
+/*    &::after{
         content: '';
         position: absolute;
         top: 0;
-        width: 400px;
+        width: 0;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
         right: -400px;
         background-image: url(${maskImg});
-    }
+    }*/
 `
 const SourcesButton = styled(Button)`
     width: 238px;
@@ -182,25 +219,26 @@ export default class ResponsiveScorecard extends React.Component{
         if(id) this.hoveredCounty = camelLower(id)
         else this.hoveredCounty = null
     }
-
+    @observable screen = getMedia()
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
 
     componentDidMount(){
         store.setIndicatorPages()
+        // window.addEventListener('resize', this.resizeRefresh, false)
+        //eventually....
+        window.addEventListener('resize', store.resize, false)
     }
 
     render(){
-        const {indicator, year, race} = store
+        const {indicator, year, race, screen} = store
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return(
+        return store.screen==='mobile'? (<MobileBlocker/>): (
             <React.Fragment>
             <Styles />
             <App>
-
-                
                 <Nav> 
                     <NavComponent 
                         init = {this.init}
@@ -228,7 +266,7 @@ export default class ResponsiveScorecard extends React.Component{
                         <Button label = "Download PDF" style = {{marginLeft: '15px'}}
                             onClick = {()=>{
                                 if(pdfmanifest[store.county||'california']){
-                                    window.open(pdfmanifest[store.county||'california'])
+                                    window.location.assign(pdfmanifest[store.county||'california'])
                                 }
                                 else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
                                 
@@ -299,12 +337,6 @@ export default class ResponsiveScorecard extends React.Component{
 }
 
 
-
-const BottomRow = styled(Row)`
-    height: 100%;
-    margin-top: 25px;
-`
-
 const MapContainer = styled(Quadrant)`
     z-index: 2;
     transform-origin: 0% 100%;
@@ -312,21 +344,22 @@ const MapContainer = styled(Quadrant)`
     position: absolute;
 
     @media ${media.optimal}{
-        left: 675px;
-        width: 525px;
+        left: 666px;
+        width: 530px;
         height: 100%;
         transform: translateX(${props => props.offset? '350px' : 0});
         transform: ${props => props.offset? 'translateX(350px)' : 'translateX(0) scale(1)'};
     }
     @media ${media.compact}{
-        left: 510px;
-        width: 450px; 
+        left: 520px;
+        width: 430px; 
         height: 100%;
         transform: translateX(${props => props.offset? '280px' : 0});
     }
     @media ${media.mobile}{}
 `
 const Breakdown = styled(Quadrant)`
+    position: relative;
     top: 0; left: 0;
     height: 100%;
     @media ${media.optimal}{
@@ -344,17 +377,24 @@ const LegendContainer = styled.div`
     bottom: 0;
     right: 0;
     width: 300px; 
-    height: 80px;
+    /*height: 80px;*/
+    @media ${media.optimal}{
+        height: 80px;
+    }
+    @media ${media.compact}{
+        height: 40px;
+    }
 
 `
 
 const Footer = styled(DarkBar)`
     
     @media ${media.optimal}{
-        bottom: 0;
+        top: 960px;
     }
     @media ${media.compact}{
-        bottom: 0;
+
+        top: 740px;
     }
     z-index: 3;
 `
@@ -385,4 +425,50 @@ const FooterLink = styled.a`
     &:hover{
         color: var(--peach);
     }
+`
+
+export const MobileBlocker = (props) => {
+    return(
+        <BlockUser>
+            <Notif>
+                Sorry, this application doesn't support your screen resolution and/or mobile devices yet. Check back soon!
+                <MobileBlockActions>
+                    <Button 
+                        style = {{marginLeft: '15px'}} 
+                        label = "Back to Children Now" 
+                        className = 'negative' 
+                        onClick = {()=>{
+                            window.open('https://childrennow.org')
+                        }}
+                    />
+                </MobileBlockActions>
+            </Notif>
+        </BlockUser>
+    )
+}
+
+const MobileBlockActions = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+`
+
+const BlockUser = styled.div`
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%; 
+    background: var(--offwhitefg);
+    padding: 20px;
+    top: 0;
+    left: 0;
+    line-height: 160%;
+`
+const Notif = styled.div`
+    background: white;
+    border: 1px solid var(--bordergrey);
+    padding: 25px;
+
 `

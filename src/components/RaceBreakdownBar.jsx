@@ -20,7 +20,7 @@ const Container = styled.div`
         height: 305px;
     }
     @media ${media.compact}{
-        height: 256px;   
+        height: 275px;   
     }
 `
 

@@ -16,9 +16,6 @@ import {capitalize} from '../../utilities/toLowerCase'
 const ToggleBody = styled.div`
     position: relative;
     display: inline-flex;
-    flex-wrap: wrap;
-    // border: 1px solid var(--fainttext);
-    // padding: 10px;
 `
 const Option = styled.div`
     cursor: pointer;
@@ -288,6 +285,9 @@ const Btn = styled.div`
         padding: 12px 25px;    
     }
     @media ${media.compact}{
+        padding: 10px 21px;
+    }
+    @media ${media.mobile}{
         padding: 10px 21px;
     }
     cursor: pointer;

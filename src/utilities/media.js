@@ -1,7 +1,7 @@
 
 const media = {
-    optimal: '(min-width: 1700px)',
-    compact: '(min-width: 641px) and (max-width: 1699px)', //max 1599?
+    optimal: '(min-width: 1600px)',
+    compact: '(min-width: 641px) and (max-width: 1599px)', //max 1599?
     mobile: '(max-width: 640px)'
 }
 

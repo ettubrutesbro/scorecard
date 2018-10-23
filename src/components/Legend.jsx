@@ -199,6 +199,10 @@ const Label = styled.div`
 const Labels = styled.div`
     width: 100%;
     height: 40px;
+    @media ${media.compact}{
+        height: 0;
+        display: none;
+    }
 `
 const Swatches = styled.div`
     width: 100%;
