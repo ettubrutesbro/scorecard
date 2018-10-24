@@ -424,13 +424,16 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 <Footer>
+                    <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
                     <Feedback
-                        onClick = {()=>{
-                            window.location.href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback";
-                        }}
+                        // onClick = {()=>{
+                        //     window.location.href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback";
+                        // }}
                     >
+
                         <FeedbackIcon/> Provide feedback 
                     </Feedback>
+                    </FeedbackLink>
                     <FooterContent>
                         <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
                         <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
@@ -622,6 +625,7 @@ const FeedbackIcon = styled.figure`
 `
 const Feedback = styled.div`
     display: flex;
+    text-decoration: none;
     align-items: center;
     color: var(--bordergrey);
     white-space: nowrap;
@@ -632,4 +636,7 @@ const Feedback = styled.div`
             background-position: 100% center;
         }
     }
+`
+const FeedbackLink = styled.a`
+    text-decoration: none;
 `
