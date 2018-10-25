@@ -188,8 +188,8 @@ const CountyPath = styled.path`${CountyStyle}`
                                 offset = {this.props.mode === 'offset'}
 
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
-                                onMouseEnter = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty(id) : ''}
-                                onMouseLeave = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty() : ''}
+                                onMouseEnter = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty(id) : ()=>{}}
+                                onMouseLeave = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty() : ()=>{}}
                             />
                         )
                     })}
@@ -236,7 +236,10 @@ let SVGComponents = {
 }
 
 export default class CaliforniaCountyMap extends React.Component{
+
     render(){
+        console.log('props being passed to map:')
+        console.log(this.props)
         return(
             <React.Fragment>
             <InteractiveMap

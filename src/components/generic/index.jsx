@@ -434,6 +434,7 @@ export class DropdownToggle extends React.Component {
                 {options.slice(0,1).map((o)=>{
                     return(
                         <TogOption 
+                            key = {'dtog-first'}
                             defaultWidth = {defaultWidth } 
                             className = 'first'
                             toggleMode = {toggleMode}
@@ -461,8 +462,9 @@ export class DropdownToggle extends React.Component {
                     {this.props.options.slice(1).map((o,i,arr)=>{
                         return(
                             <TogOption
+                                key = {'dtog-'+i}
                                 length = {arr.length}
-                                offset = {i===0? true : false}
+                                offset = {i===0? 1 : 0}
                                 reveal = {toggleMode}
                                 index = {i}
                                 onClick = {()=>{this.props.select(o.value)}}
@@ -483,6 +485,7 @@ export class DropdownToggle extends React.Component {
                     {this.props.options.map((o,i)=>{
                         return(
                         <DropdownOption
+                            key = {'dtog-drop'+i}
                             index = {i}
                             // onClick = {()=>{this.props.select(o.value)}}
                             onClick = {()=>{this.handleSelectionFromDropdown(o.value)}}

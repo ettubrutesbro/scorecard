@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import {mapValues, find, debounce} from 'lodash'
 
+import * as emailjs from 'emailjs-com';
 
 import ScorecardStore from './ScorecardStore'
 import Styles from './components/Styles'
@@ -317,6 +318,8 @@ export default class ResponsiveScorecard extends React.Component{
                 this.blockUserBrowser('version')
             }
         }
+        console.log(emailjs)
+        // emailjs.init('user_ZQE60xANifYTiR2yya9Li')
         
     }
 
@@ -424,7 +427,13 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 <Footer>
-                    <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
+                    <FeedbackLink 
+                        href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback"
+                        onClick = {(e)=>{
+                            console.log('trying to prevent mail action')
+                            e.preventDefault()
+                        }}
+                    >
                     <Feedback
                         // onClick = {()=>{
                         //     window.location.href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback";

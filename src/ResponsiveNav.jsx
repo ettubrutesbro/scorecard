@@ -257,7 +257,7 @@ export default class ResponsiveNav extends React.Component{
                     isOpen = {this.props.open==='county'}
                     onMouseEnter = {()=>{this.onHoverWorkflow('county')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
-                    offset = {open}
+                    offset = {open||0}
                 >
                     <CountyIcon 
                         hovered = {this.hoveredWorkflow === 'county'}

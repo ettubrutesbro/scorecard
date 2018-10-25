@@ -193,7 +193,9 @@ export default class RaceBreakdownBar extends React.Component{
 
 
                     return (
-                        <React.Fragment>
+                        <React.Fragment
+                            key = {'frag'+i}
+                        >
                             {race===o.label && 
                                 <SelectionAccent 
                                     pct = {pct}
