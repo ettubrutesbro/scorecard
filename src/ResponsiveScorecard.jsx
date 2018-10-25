@@ -318,8 +318,8 @@ export default class ResponsiveScorecard extends React.Component{
                 this.blockUserBrowser('version')
             }
         }
-        console.log(emailjs)
-        // emailjs.init('user_ZQE60xANifYTiR2yya9Li')
+        // console.log(emailjs)
+        emailjs.init('user_ZQE60xANifYTiR2yya9Li')
         
     }
 
@@ -429,22 +429,23 @@ export default class ResponsiveScorecard extends React.Component{
                 </BottomRow>
 
                 <Footer>
-                    <FeedbackLink 
-                        href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback"
-                        onClick = {(e)=>{
-                            console.log('trying to prevent mail action')
-                            e.preventDefault()
-                        }}
-                    >
+
                     <Feedback
                         // onClick = {()=>{
                         //     window.location.href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback";
+                                // emailjs.send('gmail','scorecard_feedback', {
+                            //     //key/values from form here
+                            //     user_name : 'yak',
+                            //     user_email: 'yak@yaks.com',
+                            //     message: 'um wat',
+                            //     subject: 'this does not work',
+                            // })
                         // }}
                     >
 
                         <FeedbackIcon/> Provide feedback 
                     </Feedback>
-                    </FeedbackLink>
+                    
                     <FooterContent>
                         <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
                         <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
