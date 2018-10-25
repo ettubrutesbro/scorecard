@@ -328,7 +328,9 @@ export default class ResponsiveScorecard extends React.Component{
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
+        return store.screen==='mobile'? (<MobileBlocker/>)
+        : this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) 
+        : (
             <React.Fragment>
             <Styles />
             <App>
