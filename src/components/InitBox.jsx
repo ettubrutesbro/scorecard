@@ -16,6 +16,7 @@ const Box = styled.div`
         margin-top: -75px;
     }
     position: absolute;
+    left: 15px;
 
  /*   display: flex;
     flex-direction: column;
@@ -39,16 +40,13 @@ const Box = styled.div`
      p{
         margin-bottom: 20px;
         letter-spacing: .4px;
-        @media ${media.compact}{
-            padding-left: 50px;
-        }
      }
     @media ${media.optimal}{
         width: 60%; 
         padding: 0 100px;
     }
     @media ${media.compact}{
-        width: 60%;
+        width: 57%;
         padding-right: 30px;
         /*padding: 0 50px;*/
     }
@@ -151,18 +149,14 @@ const CompatibilityNote = styled.div`
     /*margin-right: 15px;*/
     margin-bottom: 18px;
     color: var(--fainttext, grey);
-            @media ${media.compact}{
-            padding-left: 50px;
-        }
+    
 `
 const StartButton = styled(Button)`
     white-space: nowrap;
     font-size: 18px;
     letter-spacing: 1px;
     padding: 14px 20px 14px 30px;
-    @media ${media.compact}{
-        margin-left: 50px;
-    }
+   
     &:hover{
         figure{
             background-position: 100% center;
@@ -187,9 +181,7 @@ const Icon = styled.figure`
 `
 
 const BlockUser = styled.div`
-            @media ${media.compact}{
-            padding-left: 50px;
-        }
+         
 
 `
 const BlockContext = styled.p`
