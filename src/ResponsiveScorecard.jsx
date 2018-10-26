@@ -465,7 +465,7 @@ const MapContainer = styled(Quadrant)`
         left: 520px;
         width: 430px; 
         height: 100%;
-        transform: translate(${props => props.offset? '320px, -25px' : '0 0'});
+        transform: translateX(${props => props.offset? '320px' : 0});
     }
     @media ${media.mobile}{}
 `
