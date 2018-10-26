@@ -317,7 +317,7 @@ export default class ResponsiveNav extends React.Component{
                         offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
-                        bigscreen = {store.screen==='optimal'}
+                        bigscreen = {screen==='optimal'}
                     />
 
                     
@@ -521,8 +521,8 @@ export class PickingWorkflow extends React.Component{
     render(){
         const {store, close} = this.props
         const which = this.props.open
-        const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
-        const screen = store.screen
+        const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
+
         return(
             <LargeWorkflow>
                 <X onClick = {this.props.x} />  
