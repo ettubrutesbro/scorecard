@@ -26,7 +26,7 @@ const Box = styled.div`
     line-height: 170%;
     /*border: 2px solid var(--bordergrey);*/
     /*padding: 35px;*/
-    z-index: 12;
+    z-index: 2;
     h1{ font-size: 24px;
         @media ${media.optimal}{
             margin-bottom: 60px;   
@@ -184,10 +184,11 @@ const Icon = styled.figure`
     &:hover{
         background-position: 100% center;
     }
+    
 `
 
 const BlockUser = styled.div`
-            @media ${media.compact}{
+        @media ${media.compact}{
             padding-left: 50px;
         }
 
