@@ -18,11 +18,21 @@ const ToggleBody = styled.div`
     display: inline-flex;
 `
 const Option = styled.div`
+
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
     border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--bordergrey)'};
+    
     z-index: ${props => props.selected? 1 : 0}
+    &.negativeNoStroke{
+        height: 43.5px;
+        border: 1px solid transparent;
+        &:not(:first-of-type){
+            border-left: 1px solid var(--offwhitebg);
+        }
+        z-index: 1;
+    }
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
     @media ${media.optimal}{
@@ -95,6 +105,7 @@ export class Toggle extends React.Component {
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
+                    className = {this.props.theme}
                     firstLast = {i===0?'first':i===arr.length-1?'last':''}
                     index = {i}
                     size = {this.props.size}
@@ -528,22 +539,22 @@ const DropdownToggleWrapper = styled.div`
         height: 48px;
     }
     @media ${media.compact}{
-        height: 44px;
+        height: 43.5px;
     }
 `
 
 const DropdownList = styled.ul`
     position: absolute;
     width: 100%;
+    left: -1px;
     @media ${media.optimal}{
         top: 48px;
     }
     @media ${media.compact}{
         top: 44px;
     }
-    border: 1px solid var(--bordergrey);
     padding: 0; margin: 0;
-    opacity: 0; 
+    opacity: 0;     
     transform: translateY(-25px);
     clip-path: polygon(0 -10px, 100% -10px, 100% 0, 0 0);
     transition: opacity .25s, transform .25s, clip-path .25s;
@@ -560,6 +571,7 @@ const DropdownOption = styled.li`
         border-top: 1px solid var(--bordergrey);
         // border-bottom: 1px solid ${p=>p.selected? 'var(--strokepeach)' :'transparent'};
     }
+    border: 1px solid var(--bordergrey);
     ${props => props.selected? `
         outline: 1px solid var(--strokepeach);
         outline-offset: -1px;    
@@ -679,7 +691,8 @@ export const Caret = styled.div`
     // transition-delay: ${props => props.visible? (props.length*.15)+.15 : 0}s;
     right: 0;
     z-index: 5;
-    top: 0; bottom: 0; margin: auto;
+    top: 3px; 
+    bottom: 0; margin: auto;
     height: 13px;
     &::before{
         margin-top: 2px;
@@ -721,7 +734,7 @@ const QuickClear = styled.div`
     z-index: 4; 
     right: 15px;
     width: 15px; height: 15px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     margin-right: -5px;
     margin-left: 8px;
     flex-shrink: 0;

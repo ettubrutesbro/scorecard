@@ -44,7 +44,7 @@ const Nav = styled.div`
 const Dropdown = styled.div`
     position: relative;
     font-weight: ${props => props.hasValue&&!props.isOpen? 500 : 400};
-    // box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--peach)':''};
+    box-shadow: ${props => props.isOpen?'inset 0px 0px 0px 1.5px var(--strokepeach)':''};
     @media ${media.optimal}{
         padding: 12px 45px 12px 20px;
     }
@@ -65,7 +65,7 @@ const DropdownWorkflow = styled(Dropdown)`
     &::before{
         content: '';
         right: 18px;
-        margin-top: 3px;
+        margin-top: 4px;
         width: 0px;
         border: 7px solid transparent;
         border-top-color: ${props => props.hasValue && props.hovered? 'var(--strokepeach)' : props.hasValue&&!props.isOpen? 'var(--peach)' : props.isOpen || props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
@@ -75,7 +75,7 @@ const DropdownWorkflow = styled(Dropdown)`
     &::after{
         content: '';
         right: 18px;
-        margin-top: 3px;
+        margin-top: 4px;
         width: 0px;
         border: 7px solid transparent;
         transform: scale(0.75);
@@ -194,9 +194,15 @@ export default class ResponsiveNav extends React.Component{
         if(this.props.open && this.raceDropdown) this.openRaceDropdown()
         if(this.props.open){
             document.addEventListener('click',this.handleClickOutside)
+            window.onkeyup = (e) => {
+                if(e.key==='Escape'||e.key==='Esc'){
+                    this.props.openNav(false)
+                }
+            }
         }
         else if(!this.props.open){
             document.removeEventListener('click',this.handleClickOutside)
+            window.onkeyup = () => {console.log( 'nokey')}
         }
     }
 
@@ -432,7 +438,7 @@ const X = styled.div`
 `
 const QuickClear = styled.div`
     width: 15px; height: 15px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     margin-right: -5px;
     margin-left: 8px;
     flex-shrink: 0;
@@ -460,6 +466,7 @@ const YearToggle = (props) =>{
             {years && 
                 <Toggle
                     size = "big"
+                    theme = "negativeNoStroke"
                     options = {years}
                     onClick = {props.onClick}
                     selected = {props.selected}
