@@ -162,7 +162,7 @@ const GreyMask = styled.div`
     transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
-    z-index: 2;
+    z-index: 1;
 /*    &::after{
         content: '';
         position: absolute;
@@ -339,11 +339,7 @@ export default class ResponsiveScorecard extends React.Component{
                         reset = {this.reset}
                     /> 
                 </Nav>
-                <GreyMask 
-                    show = {this.navOpen || this.init}
-                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
-                />
                 <TopRow>
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
@@ -422,7 +418,11 @@ export default class ResponsiveScorecard extends React.Component{
                         />
                     </LegendContainer>
                 </BottomRow>
+                                <GreyMask 
+                    show = {this.navOpen || this.init}
+                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
+                />
                 <Footer>
                     <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
                     <Feedback
@@ -480,7 +480,7 @@ const Breakdown = styled(Quadrant)`
         width: 480px;
     }
     @media ${media.mobile}{}
-    z-index: ${props=>props.sources? 20 : 1}; 
+    z-index: 1; 
 `
 const LegendContainer = styled.div`
     position: absolute;

@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     @media ${media.optimal}{
 
         ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
-        max-height: 605px; 
+        max-height: 602px; 
     }
     @media ${media.compact}{
         ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
