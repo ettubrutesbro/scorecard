@@ -457,6 +457,15 @@ export class DropdownToggle extends React.Component {
                         </TogOption>
                     )
                 })}
+                <QuickClear 
+                    className = "x"
+                    reveal = {selected}
+                    onClick = {selected? (e)=>{
+                        this.props.select(null)
+                        e.stopPropagation()
+                        e.nativeEvent.stopImmediatePropagation()
+                    }: ()=>{}}
+                />
 
                     {this.props.options.slice(1).map((o,i,arr)=>{
                         return(
@@ -674,4 +683,22 @@ export const Caret = styled.div`
             transform: scale(0);    
         ` : ''}
     }
+`
+
+
+const peachX = require('../../assets/peach-x.svg')
+const QuickClear = styled.div`
+    position: absolute;
+    width: 15px; height: 15px;
+    margin-bottom: 2px;
+    margin-right: -5px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    background: url(${peachX}) no-repeat;
+    &:hover{
+        opacity: ${props => props.reveal? 1 : 0};
+    }
+    opacity: ${props => props.reveal? 0.5 : 0};
+    transition: opacity .2s;
+    pointer-events: ${props => props.reveal? 'auto' : 'none'};
 `

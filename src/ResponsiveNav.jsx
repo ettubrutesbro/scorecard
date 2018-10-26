@@ -268,11 +268,12 @@ export default class ResponsiveNav extends React.Component{
                     <SelectionValue
                         hasValue = {county}
                         label = {store.county? countyLabels[store.county] : 'California'}
-                        strikethrough = {this.hoveredWorkflow === 'countyStrikeout'}
+                        strikethrough = {county && this.hoveredWorkflow === 'countyStrikeout'}
                     >
                         {store.county? countyLabels[store.county] : 'California' }
                         
                     </SelectionValue>
+                    {county &&
                     <QuickClear 
                         reveal = {county}
                         onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
@@ -280,9 +281,10 @@ export default class ResponsiveNav extends React.Component{
                         onClick = {county? (e)=>{
                             store.completeWorkflow('county',null)
                             e.stopPropagation()
-                            e.nativeEvent.stopImmediatePropagation()
+                            // e.nativeEvent.stopImmediatePropagation()
                         } : ()=>{} }
                     />
+                    }
                 </SelectionValueContainer>
                     {/*store.notifications.unselectCounty &&
                         <Tooltip 
