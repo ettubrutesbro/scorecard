@@ -52,7 +52,7 @@ const Dropdown = styled.div`
         padding: 10px 45px 10px 20px;
     }
     background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
-    color: ${props => (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
+    color: ${props => props.hasValue && props.isOpen? 'var(--fainttext)' : (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
     align-items: center;
     /*outline: 1px solid var(--offwhitebg);*/
@@ -130,6 +130,7 @@ const SelectionValue = styled.div`
     margin-left: 35px;
     padding-left: 7px;
     /*margin-left: -7px;*/
+    ${props => props.muteAnyways? 'color: var(--fainttext);' : ''}
     &::after{
         content: '${props => props.label}';
         color: rgba(0,0,0,0);
@@ -164,24 +165,12 @@ const NoRaceTip = styled.div`
 
 @observer
 export default class ResponsiveNav extends React.Component{
-    @observable raceDropdown = false
-    @action openRaceDropdown = () => {
-        if(this.props.init) return
-        // this.props.closeSplash()
-        this.raceDropdown = !this.raceDropdown
-        if(this.raceDropdown){
-            document.addEventListener('click',this.dropdownHandleClickOutside)
-        }
-        else{
-            document.removeEventListener('click',this.dropdownHandleClickOutside)
-        }
-        // this.props.closeSplash()
-    }
+
     @observable hoveredWorkflow = null
     @action onHoverWorkflow = (which) => this.hoveredWorkflow = which
 
-    // @observable raceSelectIsHovered = false
-    // @action hoveredRaceSelect = (tf) => {this.raceSelectIsHovered = tf}
+    @observable raceDropdown = false
+    @action setRaceDropdown = (tf) => {this.raceDropdown = tf}
 
     constructor(){
         super()
@@ -191,7 +180,7 @@ export default class ResponsiveNav extends React.Component{
     componentDidMount(){
     }
     componentDidUpdate(){
-        if(this.props.open && this.raceDropdown) this.openRaceDropdown()
+        // if(this.props.open && this.raceDropdown) this.openRaceDropdown()
         if(this.props.open){
             document.addEventListener('click',this.handleClickOutside)
             window.onkeyup = (e) => {
@@ -214,12 +203,6 @@ export default class ResponsiveNav extends React.Component{
         }
     }
 
-    dropdownHandleClickOutside = (e) => {
-        if(!this.dropdown.current.contains(e.target)){
-            console.log('clicked outside open race dropdown, closing')
-            this.openRaceDropdown()
-        }
-    }
 
     render(){
         const {openNav, open, store, closeInit, init} = this.props
@@ -243,7 +226,7 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('indicator')}
                     hovered = {this.hoveredWorkflow === 'indicator' && this.props.open!=='indicator'}
                     hasValue = {indicator}
-                    isOpen = {this.props.open==='indicator'}
+                    isOpen = {this.props.open==='indicator' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('indicator')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     // offset = {open==='county'}
@@ -260,7 +243,7 @@ export default class ResponsiveNav extends React.Component{
                     onClick = {()=>openNav('county')}
                     hovered = {this.hoveredWorkflow === 'county' && this.props.open!=='county'}
                     hasValue = {county}
-                    isOpen = {this.props.open==='county'}
+                    isOpen = {this.props.open==='county' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('county')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     offset = {open}
@@ -273,10 +256,11 @@ export default class ResponsiveNav extends React.Component{
                     <SelectionValueContainer>
                     <SelectionValue
                         hasValue = {county}
+                        muteAnyways = {!county && this.props.open==='county'}
                         label = {store.county? countyLabels[store.county] : 'California'}
                         strikethrough = {county && this.hoveredWorkflow === 'countyStrikeout'}
                     >
-                        {store.county? countyLabels[store.county] : 'California' }
+                        { store.county? countyLabels[store.county] : init||this.props.open? 'County' : 'California' }
                         
                     </SelectionValue>
                     {county &&
@@ -306,13 +290,15 @@ export default class ResponsiveNav extends React.Component{
                 
 
                     <RaceDropdownToggle 
+                        // dropdownOpen = {this.raceDropdown}
+                        setDropdownState = {this.setRaceDropdown}
                         offset = {open}
                         selected = {race}
                         defaultWidth = {140}
                         disabled = {noRace}
                         toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
-                            {label: 'All races', value: '', disabled: noall},
+                            {label: init? 'Race':'All races', value: '', disabled: noall},
                             {label: 'Asian', value: 'asian', disabled: noazn},
                             {label: 'Black', value: 'black', disabled: noblk},
                             {label: 'Latinx', value: 'latinx', disabled: noltx},
@@ -348,7 +334,15 @@ export default class ResponsiveNav extends React.Component{
                         to: {opacity: 0, transform: 'translateY(0px)'}
                     }}
                 >
-                {open && <PickingWorkflow x = {()=>openNav(false)} store = {store} open = {open} close = {()=>openNav(false)} />}
+                {open && 
+                    <PickingWorkflow 
+                        muted = {this.raceDropdown}
+                        x = {()=>openNav(false)} 
+                        store = {store}
+                        open = {open}
+                        close = {()=>openNav(false)} 
+                    />
+                }
                 </FlipMove>
                 {/*open && <X onClick = {()=>openNav(false)}/>*/}
                 
@@ -490,6 +484,7 @@ const LargeWorkflow = styled.div`
     border: 1px solid var(--bordergrey);
     z-index: 3;
     transform-origin: 0% 0%;
+    opacity: ${props => props.muted? 0.5 : 1};
     @media ${media.optimal}{
         width: 1000px;
         height: 745px;
@@ -551,18 +546,27 @@ export class PickingWorkflow extends React.Component{
                 >
                     {which === 'indicator' && 
                         <IndicatorList 
+                            muted = {this.props.muted}
                             store = {store} 
                             closeNav = {this.props.close}
                             setNumPages = {this.setNumPages}
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
+                            // muted = {this.props.muted}
                             // animating = {this.animating}
                             // onStartAnim = {()=>{this.setAnimStatus(true)}}
                             // onFinishAnim = {()=>{this.setAnimStatus(false)}}
                         />
                     }
-                    {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
+                    {which === 'county' && 
+                        <CountyList 
+                            muted = {this.props.muted}
+                            store = {store} 
+                            closeNav = {this.props.close}
+                            // muted = {this.props.muted}
+                        />
+                    }
                 </FlipMove>
 
                         <PageNext 

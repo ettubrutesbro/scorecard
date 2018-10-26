@@ -27,6 +27,7 @@ const Option = styled.div`
     z-index: ${props => props.selected? 1 : 0}
     &.negativeNoStroke{
         height: 43.5px;
+        display: flex; align-items: center;
         border: 1px solid transparent;
         &:not(:first-of-type){
             border-left: 1px solid var(--offwhitebg);
@@ -390,6 +391,7 @@ export class DropdownToggle extends React.Component {
         if(tf) document.addEventListener('click', this.handleOutside)
         else document.removeEventListener('click', this.handleOutside)
         this.dropdownOpen = tf
+        if(this.props.setDropdownState) this.props.setDropdownState(tf)
     }
     @observable hovered = false
     @action hover = (tf) => {this.hovered = tf}
@@ -447,6 +449,7 @@ export class DropdownToggle extends React.Component {
                     selected = {toggleMode && !selected}
                     hasValue = {selected && !toggleMode && !this.dropdownOpen}
                     disabled = {disabled}
+                    dropdownOpen = {this.dropdownOpen}
                 />
                 {options.slice(0,1).map((o)=>{
                     return(
@@ -655,8 +658,9 @@ const TogOption = styled.div`
 `
 const FirstOptBorder = styled.div`
     position: absolute;
-    ${props => props.hasValue? `
-        // box-shadow: inset 0px 0px 0px 2px var(--peach);
+
+    ${props => props.dropdownOpen? `
+        box-shadow: inset 0px 0px 0px 1.5px var(--peach);
     `: ''}
     outline: 1px solid var(--offwhitebg);
     // border: ${p => p.selected || p.hasValue? '1px solid var(--strokepeach)' : '1px solid transparent'};

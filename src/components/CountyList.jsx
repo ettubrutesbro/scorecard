@@ -19,7 +19,8 @@ import {isValid} from '../utilities/isValid'
 
 
 const GridList = styled.ul`
-
+    transition: opacity .5s;
+    opacity: ${p => p.muted? 0.4 : 1};
     display: grid;
     @media ${media.optimal}{
         grid-template-columns: repeat(5, 1fr);
@@ -34,6 +35,7 @@ const GridList = styled.ul`
     list-style-type: none;
     margin: 0;
     padding: 0;
+    opacity: ${props => props.raceDropdown? 0.5: 1};
 
 `
 const GridItem = styled.li`
@@ -76,7 +78,7 @@ const GridItem = styled.li`
 `
 
 const Titleblock = styled.div`
-    opacity: ${props => props.muted? 0.2 : 1};
+    opacity: ${props => props.raceDropdown? 0.4 : props.muted? 0.2 : 1};
     transition: opacity .5s;
     h1{
         margin: 0;
@@ -142,8 +144,8 @@ class CountyList extends React.Component{
         const sideChangeThreshold = screen === 'optimal'? 20 : 10
 
         return(
-            <div>
-                <Titleblock muted = {sanityCheck.county}>
+            <Workflow>
+                <Titleblock raceDropdown = {this.props.muted} muted = {sanityCheck.county}>
                     <TitleSide>
                     <h1>Pick a county.</h1>
                    
@@ -159,7 +161,9 @@ class CountyList extends React.Component{
                     </TitleSide>
                 </Titleblock>
 
-                <GridList>
+                <GridList
+                    raceDropdown = {this.props.muted}
+                >
                     {/*
                     <ReactTooltip effect = "solid" 
                         className = 'reactTooltipOverride'
@@ -247,11 +251,14 @@ class CountyList extends React.Component{
                     })
                     }
                 </GridList>
-            </div>
+            </Workflow>
         )
     }
 }
 
+const Workflow = styled.div`
+    
+`
 
 export default CountyList
 
