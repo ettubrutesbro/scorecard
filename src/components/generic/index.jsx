@@ -383,6 +383,9 @@ export class DropdownToggle extends React.Component {
     @observable hovered = false
     @action hover = (tf) => {this.hovered = tf}
 
+    @observable strikethrough = false
+    @action setStrikethrough = (tf) => {this.strikethrough = tf}
+
     constructor(){
         super()
         this.dropdown = React.createRef()
@@ -418,9 +421,12 @@ export class DropdownToggle extends React.Component {
                 visible = {!toggleMode}
                 length = {options.length}
                 disabled = {disabled}
-                hovered = {this.hovered && !this.dropdownOpen}
+                hovered = {this.hovered && !this.dropdownOpen && !this.strikethrough}
                 hasValue = {selected}
                 isOpen = {this.dropdownOpen}
+                onClick = {!disabled? ()=>{
+                    this.setDropdown(!this.dropdownOpen)
+                } : ()=>{}}
             />
 
                 <FirstOptBorder
@@ -434,8 +440,12 @@ export class DropdownToggle extends React.Component {
                 {options.slice(0,1).map((o)=>{
                     return(
                         <TogOption 
-                            defaultWidth = {defaultWidth } 
+                            strikethrough = {this.strikethrough && selected}
+                            defaultWidth = {defaultWidth} 
                             className = 'first'
+                            label = {!toggleMode && selected? find(options, (opt)=>{return opt.value===selected}).label
+                                : toggleMode || !selected? o.label
+                                : 'wat'}
                             toggleMode = {toggleMode}
                             onClick = {toggleMode? ()=>{
                                 this.props.select(o.value)
@@ -453,19 +463,21 @@ export class DropdownToggle extends React.Component {
                                 : toggleMode || !selected? o.label
                                 : 'wat'
                             }
-                            
+                            {selected && !this.dropdownOpen && !toggleMode &&
+                                <QuickClear 
+                                    onMouseEnter = {()=>{this.setStrikethrough(true)}}
+                                    onMouseLeave = {()=>{this.setStrikethrough(false)}}
+                                    onClick = {selected? (e)=>{
+                                        this.props.select(null)
+                                        e.stopPropagation()
+                                        // e.nativeEvent.stopImmediatePropagation()
+                                    }: ()=>{}}
+                                />
+                            }
                         </TogOption>
                     )
                 })}
-                <QuickClear 
-                    className = "x"
-                    reveal = {selected}
-                    onClick = {selected? (e)=>{
-                        this.props.select(null)
-                        e.stopPropagation()
-                        e.nativeEvent.stopImmediatePropagation()
-                    }: ()=>{}}
-                />
+
 
                     {this.props.options.slice(1).map((o,i,arr)=>{
                         return(
@@ -595,7 +607,23 @@ const TogOption = styled.div`
         border-color: transparent;
         color: ${p => p.hovered && p.muted? 'var(--fainttext)' : p.hasValue || p.hovered? 'var(--strokepeach)' : ''};
         font-weight: ${p => p.hasValue? 500 : 400};
+        &::after{
+            content: 'Arace';
+            color: rgba(0,0,0,0);
+            position: absolute;
+            top: calc(50% - 1px);
+            left: 20px;
+            padding: 0 5px;
+            z-index: 4;
+            bottom: 0;
+            margin: auto;
+            border-top: 2px solid var(--strokepeach);
+            transform: scaleX(${props => props.strikethrough? 1 : 0});
+            transition: transform .2s;
+            pointer-events: none;
+            transform-origin: ${p=>p.hasValue? '100% 50%' : '0% 50%'};
 
+        }
     }
     &:not(.first){
         justify-content: center;
@@ -644,6 +672,7 @@ DropdownToggle.defaultProps = {
 
 
 export const Caret = styled.div`
+    cursor: pointer;
     position: absolute;
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .15s;
@@ -688,7 +717,9 @@ export const Caret = styled.div`
 
 const peachX = require('../../assets/peach-x.svg')
 const QuickClear = styled.div`
-    position: absolute;
+    // position: absolute;
+    z-index: 4; 
+    right: 15px;
     width: 15px; height: 15px;
     margin-bottom: 2px;
     margin-right: -5px;
@@ -696,9 +727,8 @@ const QuickClear = styled.div`
     flex-shrink: 0;
     background: url(${peachX}) no-repeat;
     &:hover{
-        opacity: ${props => props.reveal? 1 : 0};
+        opacity: 1;
     }
-    opacity: ${props => props.reveal? 0.5 : 0};
+    opacity: 0.5;
     transition: opacity .2s;
-    pointer-events: ${props => props.reveal? 'auto' : 'none'};
 `

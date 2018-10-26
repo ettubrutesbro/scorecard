@@ -275,7 +275,6 @@ export default class ResponsiveNav extends React.Component{
                     </SelectionValue>
                     {county &&
                     <QuickClear 
-                        reveal = {county}
                         onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
                         onMouseLeave = {()=>{this.onHoverWorkflow('county')} }
                         onClick = {county? (e)=>{
@@ -439,11 +438,11 @@ const QuickClear = styled.div`
     flex-shrink: 0;
     background: url(${peachX}) no-repeat;
     &:hover{
-        opacity: ${props => props.reveal? 1 : 0};
+        opacity: 1;
     }
-    opacity: ${props => props.reveal? 0.5 : 0};
+    opacity: 0.5;
     transition: opacity .2s;
-    pointer-events: ${props => props.reveal? 'auto' : 'none'};
+    
 `
 const YearToggle = (props) =>{
     const {indicator,county,race} = props.store
