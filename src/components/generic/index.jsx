@@ -303,7 +303,7 @@ const Btn = styled.div`
         padding: 10px 21px;
     }
     cursor: pointer;
-    &.default{
+    &.default, &.compact{
         background: white;
         color: var(--normtext);
         border: 1px solid var(--fainttext);
@@ -314,8 +314,6 @@ const Btn = styled.div`
 
     &.compact{
         font-size: 13px;
-        background: white;
-        border: 1px solid var(--fainttext);
         padding: 10px 17px;
     }
     &.dark{

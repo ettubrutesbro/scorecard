@@ -492,9 +492,37 @@ const LargeWorkflow = styled.div`
     }
     @media ${media.compact}{
         width: 780px;
-        height: 585px;
+        height: 570px;
         padding: 20px 35px;
     }
+`
+
+const Triangle = styled.div`
+    transition: transform .3s;
+    @media ${media.optimal}{
+        
+    }
+    @media ${media.compact}{
+        transform: translate(${props => props.active==='indicator'? '40px, -20px' : '445px, -20px'});
+    }
+    &::after, &::before{
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+    }
+    &::after{
+        left: 1px;
+        top: -25px;
+        border: 13px solid transparent;
+        border-bottom: 12.5px white solid;
+    }
+    &::before{
+        left: 0;
+        top: -28px;
+        border: 14px solid transparent;
+        border-bottom: 13.5px var(--bordergrey) solid;
+    }
+
 `
 
 @observer
@@ -525,6 +553,9 @@ export class PickingWorkflow extends React.Component{
 
         return(
             <LargeWorkflow>
+                <Triangle
+                    active = {which}
+                 />
                 <X onClick = {this.props.x} />  
                 <FlipMove
                     // typeName = {null}
