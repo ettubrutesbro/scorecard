@@ -479,7 +479,7 @@ const YrToggle = styled.div`
 
 const LargeWorkflow = styled.div`
     position: absolute;
-    top: 90px;
+
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
     z-index: 3;
@@ -487,10 +487,12 @@ const LargeWorkflow = styled.div`
     opacity: ${props => props.muted? 0.5 : 1};
     @media ${media.optimal}{
         width: 1000px;
-        height: 745px;
+        height: 720px;
         padding: 30px 45px;
+        top: 100px;
     }
     @media ${media.compact}{
+        top: 90px;
         width: 780px;
         height: 570px;
         padding: 20px 35px;
@@ -500,7 +502,7 @@ const LargeWorkflow = styled.div`
 const Triangle = styled.div`
     transition: transform .3s;
     @media ${media.optimal}{
-        
+        transform: translate(${props => props.active==='indicator'? '35px, -30px' : '440px, -30px'});
     }
     @media ${media.compact}{
         transform: translate(${props => props.active==='indicator'? '40px, -20px' : '445px, -20px'});

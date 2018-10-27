@@ -28,16 +28,16 @@ const IndRows = styled.ul`
     height: 100%;
     flex-grow: 1;
     margin: 0;
+    @media ${media.optimal}{
+        margin-top: 10px;
+    }
+    @media ${media.compact}{
+        margin-top: 5px;
+    }
     opacity: ${props => props.raceDropdown? 0.4 : 1};
     transition: opacity .5s;
 `
 const RowItem = styled.li`
-    &:first-of-type{
-        border-radius: 4px 4px 0 0;
-    }
-    &:last-of-type{
-        border-radius: 0 0 4px 4px;
-    }
     /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
