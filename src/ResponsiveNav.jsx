@@ -225,7 +225,7 @@ export default class ResponsiveNav extends React.Component{
                 <IndicatorSelect 
                     onClick = {()=>openNav('indicator')}
                     hovered = {this.hoveredWorkflow === 'indicator' && this.props.open!=='indicator'}
-                    hasValue = {indicator}
+                    hasValue = {!init? indicator : ''}
                     isOpen = {this.props.open==='indicator' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('indicator')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
@@ -233,10 +233,10 @@ export default class ResponsiveNav extends React.Component{
                 >
                     <IndicatorIcon 
                         hovered = {this.hoveredWorkflow === 'indicator'}
-                        hasValue = {indicator} 
+                        hasValue = {!init? indicator : ''} 
                         isOpen = {this.props.open==='indicator'}
                     />
-                    <SelectionValue>{store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
+                    <SelectionValue>{!init && store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}
@@ -313,6 +313,7 @@ export default class ResponsiveNav extends React.Component{
                     />
 
                     <YearToggle 
+                        init = {init}
                         store = {store}
                         offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
@@ -349,7 +350,7 @@ export default class ResponsiveNav extends React.Component{
                 <Reset 
                     className = 'negativeOnDark' 
                     label = {<BtnLabel>Reset<ResetIcon /></BtnLabel>}
-                    visible = {indicator}
+                    visible = {!init && indicator}
                     onClick = {this.props.reset}
                 />
 
@@ -445,8 +446,9 @@ const QuickClear = styled.div`
     
 `
 const YearToggle = (props) =>{
+    const {init} = props
     const {indicator,county,race} = props.store
-    const years = indicator? indicators[indicator].years.map((yr,i)=>{
+    const years = !init && indicator? indicators[indicator].years.map((yr,i)=>{
         const val = indicators[indicator].counties[county||'california'][race||'totals'][i]
         const disabled = val!==0 && (!val || val==='*')
         return {label:yr, value: i, disabled: disabled}
