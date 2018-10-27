@@ -246,6 +246,15 @@ const SourcesButton = styled(Button)`
     
 `
 
+
+const cherrypickedindicators = [
+        'collegeLevelMath',
+        'earlyPrenatalCare',
+        'permanency',
+        'upToDateImmunizations',
+        'FYTimelyDental'
+    ]
+
 @observer
 export default class ResponsiveScorecard extends React.Component{
 
@@ -317,7 +326,18 @@ export default class ResponsiveScorecard extends React.Component{
                 this.blockUserBrowser('version')
             }
         }
+
+        setInterval(this.foistRandomIndicator, 3000)
         
+    }
+
+    @observable randInd = 0
+    @action foistRandomIndicator = () => {
+        if(this.randInd < cherrypickedindicators.length-1) this.randInd++
+        else this.randInd = 0
+        // console.log(randInd)
+        store.completeWorkflow('indicator', cherrypickedindicators[this.randInd])
+
     }
 
     render(){
@@ -406,7 +426,7 @@ export default class ResponsiveScorecard extends React.Component{
                             onSelect = {store.completeWorkflow}
                             selected = {store.county}
                             data = {dataForMap}
-                            mode = {this.navOpen? 'offset' : dataForMap?'heat':''}
+                            mode = {this.init? 'init' : this.navOpen? 'offset' : dataForMap?'heat':''}
                             clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
                             // mode = 'wire'
                         />

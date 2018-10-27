@@ -12,6 +12,7 @@ import {capitalize} from './utilities/toLowerCase'
 import {findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
+
 const {detect} = require('detect-browser')
 const browserInfo = detect()
 
