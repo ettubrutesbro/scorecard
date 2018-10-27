@@ -8,6 +8,7 @@ import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
 import {Toggle, Button} from './components/generic'
+import {Icon} from './components/generic/Icon'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
@@ -97,7 +98,7 @@ const IndicatorSelect = styled(DropdownWorkflow)`
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
 `
-const Icon = styled.div`
+const Ico = styled.div`
     position: absolute;
     /*outline: 1px solid black;*/
     width: 30px;
@@ -109,11 +110,11 @@ const Icon = styled.div`
 `
 const indicatorIco = require('./assets/indicator-states.svg')
 const countyIco = require('./assets/county-states.svg')
-const IndicatorIcon = styled(Icon)`
+const IndicatorIcon = styled(Ico)`
     background-image: url(${indicatorIco});
     background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
-const CountyIcon = styled(Icon)`
+const CountyIcon = styled(Ico)`
     background-image: url(${countyIco});
     background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
@@ -265,6 +266,8 @@ export default class ResponsiveNav extends React.Component{
                     </SelectionValue>
                     {county &&
                     <QuickClear 
+                        img = "x"
+                        color = "strokepeach"
                         onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
                         onMouseLeave = {()=>{this.onHoverWorkflow('county')} }
                         onClick = {county? (e)=>{
@@ -430,13 +433,13 @@ const X = styled.div`
     }
     z-index: 2;
 `
-const QuickClear = styled.div`
+const QuickClear = styled(Icon)`
     width: 15px; height: 15px;
     margin-bottom: 0px;
     margin-right: -5px;
     margin-left: 8px;
     flex-shrink: 0;
-    background: url(${peachX}) no-repeat;
+    /*background: url(${peachX}) no-repeat;*/
     &:hover{
         opacity: 1;
     }

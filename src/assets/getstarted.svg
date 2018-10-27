@@ -3,11 +3,18 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 72 36" style="enable-background:new 0 0 72 36;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:1.5919;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#FCBBA1;stroke-width:1.5919;stroke-miterlimit:10;}
+	.st0{fill:#5D5D5D;}
 </style>
-<polyline class="st0" points="24.2,23.5 30,17 24.2,10.5 "/>
-<line class="st0" x1="6" y1="17" x2="30" y2="17"/>
-<polyline class="st1" points="60.2,23.5 66,17 60.2,10.5 "/>
-<line class="st1" x1="42" y1="17" x2="66" y2="17"/>
+<g>
+	<polygon class="st0" points="24.8,24 23.6,23 28.9,17 23.6,11 24.8,10 31.1,17 	"/>
+</g>
+<g>
+	<rect x="6" y="16.2" class="st0" width="24" height="1.6"/>
+</g>
+<g>
+	<polygon class="st0" points="60.8,24 59.6,23 64.9,17 59.6,11 60.8,10 67.1,17 	"/>
+</g>
+<g>
+	<rect x="42" y="16.2" class="st0" width="24" height="1.6"/>
+</g>
 </svg>
