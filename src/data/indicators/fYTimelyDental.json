@@ -9,6 +9,7 @@
     "welfare",
     "health"
   ],
+  "highlight": "imperial",
   "counties": {
     "california": {
       "ranks": [

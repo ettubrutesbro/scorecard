@@ -4,8 +4,6 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import {mapValues, find, debounce} from 'lodash'
-
-
 import ScorecardStore from './ScorecardStore'
 import Styles from './components/Styles'
 
@@ -22,7 +20,7 @@ import DemoBox from './components/DemoBox'
 
 import {Button} from './components/generic'
 
-import indicators from './data/indicators'
+import indicators, {featuredInds} from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
@@ -246,15 +244,6 @@ const SourcesButton = styled(Button)`
     
 `
 
-
-const cherrypickedindicators = [
-        'collegeLevelMath',
-        'earlyPrenatalCare',
-        'permanency',
-        'upToDateImmunizations',
-        'FYTimelyDental'
-    ]
-
 @observer
 export default class ResponsiveScorecard extends React.Component{
 
@@ -262,8 +251,16 @@ export default class ResponsiveScorecard extends React.Component{
     @action blockUserBrowser = (why) => this.browserBlock = why
 
     @observable init = true
+    @action setInit = (tf) => {
+        if(!tf){ 
+            this.setRandomIndicatorCycle(false)
+        }
+        else if(tf) this.setRandomIndicatorCycle(true)
+        this.init = tf
+
+    }
     @action closeSplash = () => {
-        this.init = false
+        this.setInit(false)
         this.openNav('indicator')
     }
     @observable navOpen = false
@@ -288,10 +285,10 @@ export default class ResponsiveScorecard extends React.Component{
         }
         if(this.init && status){
             console.log('user opened nav while init')
-            this.init = false
+            this.setInit(false)
         }
         if(!store.indicator && this.navOpen === 'indicator' && !status){
-            this.init = true
+            this.setInit(true)
             store.completeWorkflow('county',null)
             store.completeWorkflow('race',null)
             this.navOpen = false
@@ -327,17 +324,41 @@ export default class ResponsiveScorecard extends React.Component{
             }
         }
 
-        setInterval(this.foistRandomIndicator, 3000)
+        this.setRandomIndicatorCycle(true)
         
     }
 
-    @observable randInd = 0
+    // @observable randInd = 0 
+    @observable alreadyDisplayedRandomIndicators = []
     @action foistRandomIndicator = () => {
-        if(this.randInd < cherrypickedindicators.length-1) this.randInd++
-        else this.randInd = 0
-        // console.log(randInd)
-        store.completeWorkflow('indicator', cherrypickedindicators[this.randInd])
+        let availableInds
+        if(this.alreadyDisplayedRandomIndicators.length === featuredInds.length){
+            availableInds = featuredInds
+            this.alreadyDisplayedRandomIndicators = []
+        } 
+        else{
+            availableInds = featuredInds.filter((ind)=>{
+                return !this.alreadyDisplayedRandomIndicators.includes(ind)
+            })
+        }
+        const randomIndex = Math.floor(Math.random() * availableInds.length)
+        console.log(availableInds)
+        const choice= availableInds[randomIndex]
+        console.log(choice)
 
+        store.completeWorkflow('indicator', choice)
+        this.alreadyDisplayedRandomIndicators.push(choice)
+    }
+    setRandomIndicatorCycle = (tf) => {
+        if(tf){
+            //set the first one too
+            this.foistRandomIndicator()
+            this.randomIndicatorInterval = setInterval(this.foistRandomIndicator, 5000)
+        }
+        else{ 
+            store.completeWorkflow('indicator',null)
+            clearInterval(this.randomIndicatorInterval)
+        }
     }
 
     render(){
@@ -425,6 +446,7 @@ export default class ResponsiveScorecard extends React.Component{
                             hoveredCounty = {this.hoveredCounty}
                             onSelect = {store.completeWorkflow}
                             selected = {store.county}
+                            defaultHighlight = {indicator? indicators[indicator].highlight : ''}
                             data = {dataForMap}
                             mode = {this.init? 'init' : this.navOpen? 'offset' : dataForMap?'heat':''}
                             clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
