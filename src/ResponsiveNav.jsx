@@ -295,7 +295,7 @@ export default class ResponsiveNav extends React.Component{
                         offset = {open}
                         selected = {race}
                         defaultWidth = {140}
-                        disabled = {noRace}
+                        disabled = {noRace || init}
                         toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
                             {label: init? 'Race':'All races', value: '', disabled: noall},
