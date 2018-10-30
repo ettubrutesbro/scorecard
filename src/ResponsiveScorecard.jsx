@@ -25,6 +25,7 @@ import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
 import pdfmanifest from './assets/pdfmanifest'
+import semanticTitles from './assets/semanticTitles'
 
 import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
@@ -250,13 +251,12 @@ export default class ResponsiveScorecard extends React.Component{
     @observable browserBlock = null
     @action blockUserBrowser = (why) => this.browserBlock = why
 
-    @observable init = true
     @action setInit = (tf) => {
         if(!tf){ 
             this.setRandomIndicatorCycle(false)
         }
         else if(tf) this.setRandomIndicatorCycle(true)
-        this.init = tf
+        store.init = tf
 
     }
     @action closeSplash = () => {
@@ -283,7 +283,7 @@ export default class ResponsiveScorecard extends React.Component{
         if(this.sourcesMode && status){
             this.setSourcesMode(false)
         }
-        if(this.init && status){
+        if(store.init && status){
             console.log('user opened nav while init')
             this.setInit(false)
         }
@@ -372,7 +372,7 @@ export default class ResponsiveScorecard extends React.Component{
             <App>
                 <Nav> 
                     <NavComponent 
-                        init = {this.init}
+                        init = {store.init}
                         store = {store}
                         open = {this.navOpen}
                         openNav = {this.openNav}
@@ -413,13 +413,13 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        // show = {!this.sourcesMode && !this.init}
-                        show = {!this.init}
+                        // show = {!this.sourcesMode && !store.init}
+                        show = {!store.init}
                         store = {store}
                         sources = {this.sourcesMode}
                     />
 
-                    {this.init &&
+                    {store.init &&
                        <InitBox 
                             store = {store}
                             closeSplash = {this.closeSplash}
@@ -437,8 +437,8 @@ export default class ResponsiveScorecard extends React.Component{
                     </Breakdown>
 
                     <MapContainer 
-                        offset = {this.init || this.navOpen} 
-                        // init = {this.init}
+                        offset = {store.init || this.navOpen} 
+                        // init = {store.init}
                     >
                         <MapComponent 
                             store = {store}
@@ -448,10 +448,17 @@ export default class ResponsiveScorecard extends React.Component{
                             selected = {store.county}
                             defaultHighlight = {indicator? indicators[indicator].highlight : ''}
                             data = {dataForMap}
-                            mode = {this.init? 'init' : this.navOpen? 'offset' : dataForMap?'heat':''}
+                            mode = {store.init? 'init' : this.navOpen? 'offset' : dataForMap?'heat':''}
                             clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
                             // mode = 'wire'
                         />
+                        {store.init &&
+                            <RandomIndicatorLabel>
+                                {indicator&& semanticTitles[indicator].shorthand} 
+                                <SubRandLabel>{race || 'All races'}, {indicator && indicators[indicator].years[year]}</SubRandLabel>
+
+                            </RandomIndicatorLabel>
+                        }
                     </MapContainer>
 
                     <LegendContainer>
@@ -461,7 +468,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </LegendContainer>
                 </BottomRow>
                                 <GreyMask 
-                    show = {this.navOpen || this.init}
+                    show = {this.navOpen || store.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
                 />
@@ -510,6 +517,28 @@ const MapContainer = styled(Quadrant)`
         transform: translateX(${props => props.offset? '320px' : 0});
     }
     @media ${media.mobile}{}
+`
+const RandomIndicatorLabel = styled.div`
+    font-size: 13px;
+    white-space: nowrap;
+    text-align: right;
+
+    position: absolute;
+    @media ${media.optimal}{
+        bottom: 20px; 
+        right: 290px;
+    } 
+    @media ${media.compact}{
+        bottom: 20px; 
+        right: 290px;
+    }
+
+    color: var(--normtext);
+`
+const SubRandLabel = styled.div`
+    margin-top: 3px;
+    color: var(--fainttext);
+    margin-right: -25px;
 `
 const Breakdown = styled(Quadrant)`
     position: relative;

@@ -27,6 +27,8 @@ export default class AppStore{
 
     @action resize = debounce(() => { this.screen = getMedia() }, 150)
 
+    @observable init = true
+
     @observable indicator = null
     @observable county = null
     @observable race = null
@@ -52,7 +54,7 @@ export default class AppStore{
 
         const classes = chroma.limits(allNums, opts.breakAlgorithm, opts.classes)
 
-        return chroma.scale(opts.scheme)
+        return chroma.scale(this.init? ['#f4f4f4','#b0b0b0'] : opts.scheme) 
             .domain([0,100])
             .padding([opts.padLo, opts.padHi])
             .classes(classes)
