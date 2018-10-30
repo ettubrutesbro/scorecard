@@ -167,7 +167,7 @@ const semanticTitles = {
         shortWho: 'children',
         what: 'in the child welfare system exited to permanency within one year',
         label: 'Children in the child welfare system who exited to permanency within one year',
-        shorthand: 'Child welfare permanency'
+        shorthand: 'Child welfare exits to permanency'
     },
     'placementStability': {
         who: 'children',

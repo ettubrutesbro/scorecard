@@ -54,7 +54,7 @@ export default class AppStore{
 
         const classes = chroma.limits(allNums, opts.breakAlgorithm, opts.classes)
 
-        return chroma.scale(this.init? ['#f4f4f4','#b0b0b0'] : opts.scheme) 
+        return chroma.scale(this.init? ['#f4f4f4','#bbbbbb'] : opts.scheme) 
             .domain([0,100])
             .padding([opts.padLo, opts.padHi])
             .classes(classes)

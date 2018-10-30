@@ -17,18 +17,10 @@ const Box = styled.div`
     }
     position: absolute;
     left: 15px;
-
- /*   display: flex;
-    flex-direction: column;
-    align-items: flex-end;*/
-    /*width: 500px;*/
-    /*top: 50px;*/
-    /*left: 500px;*/
     line-height: 170%;
-    /*border: 2px solid var(--bordergrey);*/
-    /*padding: 35px;*/
     z-index: 2;
-    h1{ font-size: 24px;
+    h1{ 
+        font-size: 24px;
         @media ${media.optimal}{
             margin-bottom: 60px;   
         }
@@ -36,6 +28,8 @@ const Box = styled.div`
             margin-bottom: 35px;
         }
         font-weight: medium;
+        opacity: ${props=>props.show?1:0};
+        transition: opacity .35s;
      }
      p{
         margin-bottom: 20px;
@@ -50,6 +44,19 @@ const Box = styled.div`
         padding-right: 30px;
         /*padding: 0 50px;*/
     }
+    transform: translateX(${props=>props.show?0:'20%'});
+    transition: transform .35s;
+`
+
+const FirstPara = styled.p`
+    transform: translateX(${props=>props.show?0:25}px);
+    opacity: ${props=>props.show? 1 : 0};
+    transition: transform .35s, opacity .35s;
+`
+const SecondPara = styled.p`
+    transform: translateX(${props=>props.show?0:50}px);
+    opacity: ${props=>props.show? 1 : 0};
+    transition: transform .35s, opacity .35s;
 `
 
 @observer
@@ -73,27 +80,26 @@ export default class InitBox extends React.Component{
     }
 
     render(){
-        const {store} = this.props
-        console.log(capitalize('chrome'))
-        console.log(capitalize('fux'))
+        const {store, show} = this.props
         return(
-            <Box>
+            <Box show = {show}>
                 <h1>
                     2018-19 California County Scorecard of Children’s Well-Being
                 </h1>
-                <p>
-                The 2018-19 California Scorecard of Children’s Well-Being provides a comprehensive snapshot of how children are faring in each of the 58 counties, over time, and by race and ethnicity.
-                </p>
-                <p>
-                    Data that has been suppressed due to small sample size or large margin of error, or data that is unavailable is in grey.
-                </p>
+                <FirstPara show = {show}>
+                Welcome! This tool aims to provide a comprehensive look at how children are doing in California’s 58 counties, with data viewable by year and race/ethnicity. 
+                </FirstPara>
+                <SecondPara show = {show}>
+                    Some data is unreported, incomplete or unavailable due to small sample size and/or a high margin of error.
+                </SecondPara>
 
                 <Start>
-                    <CompatibilityNote> 
+                    <CompatibilityNote show = {show}> 
                         This tool supports Chrome (65 and newer), Safari (10+), and Firefox (54+).
                     </CompatibilityNote>
                     {!this.browserBlock &&
                     <StartButton
+                        show = {show}
                         className = 'negative'
                         label = {
                             <BtnLabel>
@@ -149,14 +155,16 @@ const CompatibilityNote = styled.div`
     /*margin-right: 15px;*/
     margin-bottom: 18px;
     color: var(--fainttext, grey);
-    
+    transform: translateX(${props=>props.show?0:125}px);
+    transition: transform .35s;
 `
 const StartButton = styled(Button)`
     white-space: nowrap;
     font-size: 18px;
     letter-spacing: 1px;
     padding: 14px 20px 14px 30px;
-   
+    transform: translateX(${props=>props.show?0:250}px);
+    transition: transform .35s;
     &:hover{
         figure{
             background-position: 100% center;

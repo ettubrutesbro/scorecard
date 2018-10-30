@@ -3,6 +3,8 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import FlipMove from 'react-flip-move'
+
 import {mapValues, find, debounce} from 'lodash'
 import ScorecardStore from './ScorecardStore'
 import Styles from './components/Styles'
@@ -418,14 +420,13 @@ export default class ResponsiveScorecard extends React.Component{
                         store = {store}
                         sources = {this.sourcesMode}
                     />
-
-                    {store.init &&
-                       <InitBox 
-                            store = {store}
-                            closeSplash = {this.closeSplash}
-
-                        />
-                    }
+                 
+                   <InitBox 
+                        store = {store}
+                        show = {store.init}
+                        closeSplash = {this.closeSplash}
+                    />
+                    
                     <Breakdown
                         sources = {this.sourcesMode}
                     > 
