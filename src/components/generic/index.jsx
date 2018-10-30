@@ -26,7 +26,12 @@ const Option = styled.div`
     
     z-index: ${props => props.selected? 1 : 0}
     &.negativeNoStroke{
-        height: 43.5px;
+        @media ${media.optimal}{
+            height: 48px;
+        }
+        @media ${media.compact}{
+            height: 43.5px;
+        }
         display: flex; align-items: center;
         border: 1px solid transparent;
         &:not(:first-of-type){
