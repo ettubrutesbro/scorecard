@@ -45,6 +45,7 @@ const Box = styled.div`
         /*padding: 0 50px;*/
     }
     transform: translateX(${props=>props.show?0:'20%'});
+    pointer-events: ${props => props.show? 'auto' : 'none'};
     transition: transform .35s;
 `
 
@@ -93,7 +94,7 @@ export default class InitBox extends React.Component{
                     Some data is unreported, incomplete or unavailable due to small sample size and/or a high margin of error.
                 </SecondPara>
 
-                <Start>
+                <Start show = {show}>
                     <CompatibilityNote show = {show}> 
                         This tool supports Chrome (65 and newer), Safari (10+), and Firefox (54+).
                     </CompatibilityNote>
@@ -145,7 +146,8 @@ export default class InitBox extends React.Component{
 }
 
 const Start = styled.div`
-
+    opacity: ${props => props.show? 1 : 0};
+    transition: opacity .35s;
     margin-top: 45px;
     /*display: flex;*/
     align-items: center;

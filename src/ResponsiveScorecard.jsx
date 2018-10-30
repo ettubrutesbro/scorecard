@@ -453,13 +453,13 @@ export default class ResponsiveScorecard extends React.Component{
                             clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
                             // mode = 'wire'
                         />
-                        {store.init &&
-                            <RandomIndicatorLabel>
-                                {indicator&& semanticTitles[indicator].shorthand} 
-                                <SubRandLabel>{race || 'All races'}, {indicator && indicators[indicator].years[year]}</SubRandLabel>
+                        <RandomIndicatorLabel show = {store.init}>
+                            {indicator&& semanticTitles[indicator].shorthand} 
+                            {!store.init && !indicator&& semanticTitles[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].shorthand} 
+                            <SubRandLabel show = {store.init}>{race || 'All races'}, {indicator && indicators[indicator].years[year]}{!indicator && '2018'}</SubRandLabel>
 
-                            </RandomIndicatorLabel>
-                        }
+                        </RandomIndicatorLabel>
+                        
                     </MapContainer>
 
                     <LegendContainer>
@@ -525,6 +525,12 @@ const RandomIndicatorLabel = styled.div`
     text-align: right;
 
     position: absolute;
+
+    transform: translateX(${props => props.show? '0px' : '50px'});
+    opacity: ${props => props.show? 1: 0};
+    transition: opacity .35s, transform .35s;
+
+
     @media ${media.optimal}{
         bottom: 20px; 
         right: 290px;
@@ -540,6 +546,9 @@ const SubRandLabel = styled.div`
     margin-top: 3px;
     color: var(--fainttext);
     margin-right: -25px;
+
+    transition: transform .35s;
+    transform: translateX(${props => props.show? '0px' : '20px'});
 `
 const Breakdown = styled(Quadrant)`
     position: relative;

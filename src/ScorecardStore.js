@@ -381,13 +381,14 @@ export default class AppStore{
             let adjustHi = 0
 
             if(range < 25){
-                console.log('adjusting colors for small range')
                 //small range
                 if((100 - hi) > lo){
+                    console.log('faint tight range')
                     //small range low end (too light)
                     adjustLo = ((100-hi) / 2)/100
                     adjustHi = -(((100-hi) / 2)/100)
                 }else{
+                    console.log('dark tight range')
                     adjustLo = -(lo/2)/100
                     // adjustHi = 0.1
                     //small range high end (too dark)
@@ -395,6 +396,7 @@ export default class AppStore{
             }
             else{ //if the range is normal, but some items are too faint, make adjustment
                 if(lo<30){
+                    console.log('faint normal range')
                     adjustLo = 0.2
                     adjustHi = -(((100-hi)/3)/100) 
                 }
