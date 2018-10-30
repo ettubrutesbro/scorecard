@@ -112,15 +112,12 @@ const indicatorIco = require('./assets/indicator-states.svg')
 const countyIco = require('./assets/county-states.svg')
 const IndicatorIcon = styled(Ico)`
     background-image: url(${indicatorIco});
-    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered || p.isOpen? '33.333% 50%' : '0% 50%'};
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
 const CountyIcon = styled(Ico)`
     background-image: url(${countyIco});
-    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered || p.isOpen? '33.333% 50%' : '0% 50%'};
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
-
-
-
 const SelectionValueContainer = styled.div`
     display: flex;
     max-width: 165px;
@@ -253,7 +250,6 @@ export default class ResponsiveNav extends React.Component{
                     offset = {open}
                 >
                     <CountyIcon 
-                        im
                         hovered = {this.hoveredWorkflow === 'county'}
                         hasValue = {county} 
                         isOpen = {this.props.open==='county'}
@@ -303,7 +299,10 @@ export default class ResponsiveNav extends React.Component{
                         offset = {open}
                         selected = {race}
                         defaultWidth = {140}
-                        disabled = {noRace}
+                        disabled = {!store.init && noRace}
+                        openOther = {store.init? ()=>{
+                            openNav('indicator')
+                        }: false}
                         toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
                             {label: init && !this.raceDropdown? 'Race':'All races', value: '', disabled: noall},

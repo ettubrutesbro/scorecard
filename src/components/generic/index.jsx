@@ -435,7 +435,7 @@ export class DropdownToggle extends React.Component {
                 hovered = {this.hovered && !this.dropdownOpen && !this.strikethrough}
                 hasValue = {selected}
                 isOpen = {this.dropdownOpen}
-                onClick = {!disabled? ()=>{
+                onClick = {this.props.openOther? this.props.openOther : !disabled? ()=>{
                     this.setDropdown(!this.dropdownOpen)
                 } : ()=>{}}
             />
@@ -459,7 +459,7 @@ export class DropdownToggle extends React.Component {
                                 : toggleMode || !selected? o.label
                                 : 'wat'}
                             toggleMode = {toggleMode}
-                            onClick = {toggleMode? ()=>{
+                            onClick = {this.props.openOther? this.props.openOther : toggleMode? ()=>{
                                 this.props.select(o.value)
                             }:!disabled? ()=>{
                                 this.setDropdown(!this.dropdownOpen)
