@@ -295,10 +295,10 @@ export default class ResponsiveNav extends React.Component{
                         offset = {open}
                         selected = {race}
                         defaultWidth = {140}
-                        disabled = {noRace || init}
+                        disabled = {noRace}
                         toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
-                            {label: init? 'Race':'All races', value: '', disabled: noall},
+                            {label: init && !this.raceDropdown? 'Race':'All races', value: '', disabled: noall},
                             {label: 'Asian', value: 'asian', disabled: noazn},
                             {label: 'Black', value: 'black', disabled: noblk},
                             {label: 'Latinx', value: 'latinx', disabled: noltx},

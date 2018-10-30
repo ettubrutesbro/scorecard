@@ -466,7 +466,7 @@ export class DropdownToggle extends React.Component {
                             } : ()=>{}}
                             hasValue = {selected && !toggleMode && !this.dropdownOpen}
                             selected = {toggleMode && !selected}
-                            disabled = {o.disabled}
+                            disabled = {o.disabled || disabled}
                             muted = {disabled}
                             hovered = {this.hovered && !toggleMode}
                             dropdownOpen = {this.dropdownOpen}
@@ -500,7 +500,7 @@ export class DropdownToggle extends React.Component {
                                 index = {i}
                                 onClick = {()=>{this.props.select(o.value)}}
                                 selected = {!o.value? !selected : o.value===selected}
-                                disabled = {o.disabled}
+                                disabled = {o.disabled || disabled}
                             >
                                 {o.label}
                             </TogOption>
