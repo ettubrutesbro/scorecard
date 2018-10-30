@@ -46,6 +46,7 @@ window.store = store
 
 var flat = require('array.prototype.flat')
 var includes = require('array-includes')
+var values = require('object.values')
 var assert = require('assert')
 
 delete Array.prototype.flat
@@ -53,6 +54,7 @@ var shimmedFlat = flat.shim()
 delete Array.prototype.includes;
 var shimmedIncludes = includes.shim();
 
+if(!Object.values) values.shim()
 
 const Quadrant = styled.div`
     position: absolute;

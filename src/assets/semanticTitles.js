@@ -103,14 +103,14 @@ const semanticTitles = {
         who: 'students',
         what: 'received free or reduced-price meals during the school year',
         label: 'Eligible students who received free or reduced-price meals during the school year',
-        shorthand: 'Free/reduced-price meals in school year'
+        shorthand: 'Free/reduced $ meals, school year'
     },
     'FRPMSummer': {
         descriptor: 'eligible',
         who: 'students',
         what: 'received free or reduced-price meals during the summer',
         label: 'Eligible students who received free or reduced-price meals during the summer',
-        shorthand: 'Free/reduced-price meals in summer'
+        shorthand: 'Free/reduced $ meals, summer'
     },
     'FYTimelyDental': {
         who: 'children',

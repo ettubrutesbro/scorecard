@@ -66,9 +66,8 @@ const CountyPath = styled.path`${CountyStyle}`
                 const svgRect = document.getElementById('svg').getBoundingClientRect()
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
-                const newX = (bbox.x + (bbox.width/2)) - svgRect.x
-                const newY = (bbox.y) - svgRect.y
-
+                const newX = (bbox.left + (bbox.width/2)) - svgRect.left
+                const newY = (bbox.top) - svgRect.top
                 this.updateCoords(newX, newY)
             }
         }
@@ -78,8 +77,8 @@ const CountyPath = styled.path`${CountyStyle}`
                 this.setDefaultTooltip(this.props.defaultHighlight)
                 const svgRect = document.getElementById('svg').getBoundingClientRect()
                 const bbox = document.getElementById(this.props.defaultHighlight).getBoundingClientRect()
-                const newX = (bbox.x + (bbox.width/2)) - svgRect.x
-                const newY = (bbox.y) - svgRect.y
+                const newX = (bbox.left + (bbox.width/2)) - svgRect.left
+                const newY = (bbox.top) - svgRect.top
 
                 this.updateCoords(newX, newY, true)
         }

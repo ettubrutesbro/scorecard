@@ -3,8 +3,7 @@
     box-sizing: border-box;
     /*overscroll-behavior: none;*/
 }
-
-html{
+:root{
     --fainttext: #919191;
     --normtext: #1e1e1e;
     --faintpeach: #FFF6F2;
@@ -22,6 +21,10 @@ html{
 
 
     --black: #1e1e1e;
+}
+
+html{
+
 
     /*overflow: hidden;*/
 

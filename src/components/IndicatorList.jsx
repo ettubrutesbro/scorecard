@@ -389,8 +389,10 @@ class SanityCheck extends React.Component{
     }
     handleClick = (e) => {
         // console.log(this.sanityCheck)
-        if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-            this.props.store.clearSanityCheck('indicator')
+        if(this.props.store.sanityCheck.indicator){
+            if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+                this.props.store.clearSanityCheck('indicator')
+            }
         }
     }
     componentDidMount(){
