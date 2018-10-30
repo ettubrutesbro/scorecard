@@ -8,6 +8,7 @@ import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
 import {Toggle, Button} from './components/generic'
+import Icon from './components/generic/Icon'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
@@ -97,7 +98,7 @@ const IndicatorSelect = styled(DropdownWorkflow)`
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
 `
-const Icon = styled.div`
+const Ico = styled.div`
     position: absolute;
     /*outline: 1px solid black;*/
     width: 30px;
@@ -109,14 +110,17 @@ const Icon = styled.div`
 `
 const indicatorIco = require('./assets/indicator-states.svg')
 const countyIco = require('./assets/county-states.svg')
-const IndicatorIcon = styled(Icon)`
+const IndicatorIcon = styled(Ico)`
     background-image: url(${indicatorIco});
-    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered || p.isOpen? '33.333% 50%' : '0% 50%'};
 `
-const CountyIcon = styled(Icon)`
+const CountyIcon = styled(Ico)`
     background-image: url(${countyIco});
-    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
+    background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered || p.isOpen? '33.333% 50%' : '0% 50%'};
 `
+
+
+
 const SelectionValueContainer = styled.div`
     display: flex;
     max-width: 165px;
@@ -249,6 +253,7 @@ export default class ResponsiveNav extends React.Component{
                     offset = {open}
                 >
                     <CountyIcon 
+                        im
                         hovered = {this.hoveredWorkflow === 'county'}
                         hasValue = {county} 
                         isOpen = {this.props.open==='county'}
@@ -265,6 +270,9 @@ export default class ResponsiveNav extends React.Component{
                     </SelectionValue>
                     {county &&
                     <QuickClear 
+                        img = "x"
+                        color = "peach"
+                        hoverColor = "strokepeach"
                         onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
                         onMouseLeave = {()=>{this.onHoverWorkflow('county')} }
                         onClick = {county? (e)=>{
@@ -416,35 +424,21 @@ const ShareIco = styled.div`
     background-size: contain;
 `
 
-const xIcon = require('./assets/x.svg')
-const peachX = require('./assets/peach-x.svg')
-
-const X = styled.div`
-    position: absolute;
-    right: 30px;
-    width:25px;
-    height: 25px;
-    cursor: pointer;
-    background-image: url(${xIcon});
-    opacity: 0.25;
-    &:hover{
-        opacity: 0.5;
-    }
-    z-index: 2;
+const X = styled(Icon)`
+     position: absolute;
+     right: 30px;
+     width:25px;
+     height: 25px;
+     cursor: pointer;
+     z-index: 2;
 `
-const QuickClear = styled.div`
+const QuickClear = styled(Icon)`
     width: 15px; height: 15px;
     margin-bottom: 0px;
     margin-right: -5px;
     margin-left: 8px;
     flex-shrink: 0;
-    background: url(${peachX}) no-repeat;
-    &:hover{
-        opacity: 1;
-    }
-    opacity: 0.5;
-    transition: opacity .2s;
-    
+
 `
 const YearToggle = (props) =>{
     const {init} = props
@@ -561,7 +555,12 @@ export class PickingWorkflow extends React.Component{
                 <Triangle
                     active = {which}
                  />
-                <X onClick = {this.props.x} />  
+                <X 
+                    img = "x" 
+                    color = "bordergrey"
+                    hoverColor = "strokepeach"
+                    onClick = {this.props.x}
+                />
                 <FlipMove
                     // typeName = {null}
                     style = {{
