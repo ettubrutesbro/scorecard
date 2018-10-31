@@ -17,12 +17,17 @@ import {floatingCorner, flushHard} from './BoxStyling'
 
 const Wrapper = styled.div`
     position: relative;
+    /*height: 150px;*/
+    /*overflow: hidden;*/
     width: 100%;
     @media ${media.optimal}{
+
+        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
         max-height: 602px; 
 
     }
-    @media ${media.compact}{  
+    @media ${media.compact}{
+        ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
         max-height: 470px;
     }
     border: 1px solid var(--bordergrey);
@@ -32,6 +37,7 @@ const Wrapper = styled.div`
 export default class HorizontalBarGraph extends React.Component{
 
     @observable width = 400
+    @observable contentHeight = 300
     @observable hoveredRow = null
     @observable expanded = false
 
@@ -51,11 +57,13 @@ export default class HorizontalBarGraph extends React.Component{
         this.setGraphDimensions()
         window.addEventListener('resize', this.setGraphDimensions)
     }
-
+    @action
     setGraphDimensions = () => {
         if(!this.graph) return
         if(!this.graph.current) return
         this.width = findDOMNode(this.graph.current).offsetWidth 
+        // this.contentHeight = findDOMNode(this.graph.current).offsetHeight 
+        // console.log(this.contentHeight)
     }
 
     render(){
@@ -63,13 +71,14 @@ export default class HorizontalBarGraph extends React.Component{
         // console.log(selectBar)
         return (
             <Wrapper 
-                height = {this.props.fullHeight? 400 : 'auto'}
-                duration = {500}
+                
+                fullHeight = {this.props.fullHeight}
+
             >
             <Header>
                 {this.props.header}
             </Header>
-            {this.props.beefyPadding && <FadeCropper />}
+            {this.props.beefyPadding && <FadeCropper show = {this.props.fullHeight}/>}
             <PerfectScrollBar>
             <GraphTable
                 ref = {this.graph}
@@ -183,23 +192,34 @@ export default class HorizontalBarGraph extends React.Component{
             </GraphTable>
             </PerfectScrollBar>
 
-           {this.props.beefyPadding && <FadeCropperBottom />}
+           {this.props.beefyPadding && <FadeCropperBottom show = {this.props.fullHeight}/>}
             {this.props.footer && 
             <Footer>
                 {this.props.footer}
             </Footer>
             }
+            <ExpandHoverHint />
             </Wrapper>
         )
     }
 }
+
+const ExpandHoverHint = styled.div`
+    position: absolute;
+    width: calc(100% + 2px);
+    height: 35px;
+    left: -1px;
+    bottom: -35px;
+    border: 1px solid red;
+`
 
 const Pct = styled.span`
     margin-left: 1px;
 `
 
 const GraphTable = styled.div`
-    position: relative;
+    /*position: absolute;*/
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     letter-spacing: 0.5px;
@@ -228,6 +248,8 @@ const FadeCropper = styled.div`
     width: 100%;
     height: 40px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    opacity: ${props => props.show? 1 : 0};
+    transition: opacity .25s;
     /*border: 1px solid green;*/
 
 `
