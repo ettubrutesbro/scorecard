@@ -19,12 +19,10 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     @media ${media.optimal}{
-
-        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
         max-height: 602px; 
+
     }
-    @media ${media.compact}{
-        ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
+    @media ${media.compact}{  
         max-height: 470px;
     }
     border: 1px solid var(--bordergrey);
@@ -64,7 +62,10 @@ export default class HorizontalBarGraph extends React.Component{
         const {selectBar} = this.props
         // console.log(selectBar)
         return (
-            <Wrapper fullHeight = {this.props.fullHeight}>
+            <Wrapper 
+                height = {this.props.fullHeight? 400 : 'auto'}
+                duration = {500}
+            >
             <Header>
                 {this.props.header}
             </Header>

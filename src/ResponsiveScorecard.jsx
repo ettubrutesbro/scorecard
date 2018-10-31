@@ -432,11 +432,13 @@ export default class ResponsiveScorecard extends React.Component{
                     <Breakdown
                         sources = {this.sourcesMode}
                     > 
+                        {store.indicator &&
                         <BreakdownComponent 
                             offset = {this.breakdownOffset} 
                             store = {store} 
                             sources = {this.sourcesMode}
                         /> 
+                        }
                     </Breakdown>
 
                     <MapContainer 

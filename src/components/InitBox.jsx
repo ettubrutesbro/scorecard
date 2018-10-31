@@ -9,6 +9,7 @@ import {capitalize} from '../utilities/toLowerCase'
 import browserCompatibility from '../data/browserCompatibility'
 
 const Box = styled.div`
+
     @media ${media.optimal}{
         margin-top: -100px;   
     }

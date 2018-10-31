@@ -68,9 +68,8 @@ export default class Breakdown extends React.Component{
 
 
         return(
-            <Wrapper 
+            <Wrapper >
 
-            >
                 {!this.props.sources && indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
@@ -78,7 +77,7 @@ export default class Breakdown extends React.Component{
                         onExpand = {this.expandCountyList}
                     />  
                 }
-                {!this.allCounties && !this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
+                {!this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
 
                     <IndicatorByRaces
                         store = {store}

@@ -21,6 +21,8 @@ import ordinal from 'ordinal'
 import HorizontalBarGraph from './HorizontalBarGraph'
 import {Button,Toggle} from './generic'
 
+import AnimateHeight from 'react-animate-height'
+
 function indexOfClosest(nums, target) {
   let closest = 1000;
   let index = 0;
@@ -288,6 +290,10 @@ export default class IndicatorByCounties extends React.Component{
         }
 
         return (
+            <AnimateHeight
+                duration = {500}
+                height = {this.fullHeight? '100%' : 'auto'}
+            >
             <HorizontalBarGraph
                 selected = {county}
                 selectable
@@ -308,9 +314,16 @@ export default class IndicatorByCounties extends React.Component{
                 footer = {footerComponent}
                 fullHeight = {this.fullHeight}
             />
+            </AnimateHeight>
         )
     }
 }
+
+const Wrapper = styled(AnimateHeight)`
+    position: absolute;
+    width: 100%;
+    top: 0;
+`
 
 const HeaderComponent = (props) => {
     return(

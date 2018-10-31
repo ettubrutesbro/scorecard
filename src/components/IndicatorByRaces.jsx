@@ -21,6 +21,10 @@ const Label = styled.span`
 `
 const Wrapper = styled.div`
     // margin-top: 45px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
 
 `
 
