@@ -29,13 +29,59 @@ const TestTip = styled.div`
     color: white;
 
 `
+
+const Iono = styled.div`
+    background: var(--offwhitefg);
+    width: 100vw; height: 100vh;
+`
+const MockContent = styled.div`
+    border: 1px solid blue;
+    width: 100%;
+    height: 200px;
+    &.more{
+        height: 500px;
+    }
+
+
+
+`
+
+const Ruler = styled.div`
+    position: absolute; 
+    top: 100px; left: 300px;
+    outline: 3px solid red;
+    width: 20px;
+    height: 500px;
+    &::after{
+        content: '';
+        position: absolute;
+        top: 200px;
+        border: 1px solid blue;
+        width: 100%;
+    }
+`
+
 storiesOf('Experiments', module)
 .add('ExpandBox', ()=>{
-    const show = boolean('show box', false)
+    const moreContent = boolean('more content', false)
+    const expand = boolean('expand box', false)
+
     return(
-        <ExpandBox show = {show}>
-            eoatnuhaoentuht
-        </ExpandBox>
+        <Iono>
+            <Ruler >
+                
+            </Ruler>
+            <ExpandBox 
+                expand = {expand}
+                expandHeight = {500}
+                collapseHeight = {200}
+
+            >
+                <MockContent className = {moreContent? 'more' : ''}>
+                    Lorem ipsum
+                </MockContent>
+            </ExpandBox>
+        </Iono>
     )   
 })
 .add('CountUp',()=>{

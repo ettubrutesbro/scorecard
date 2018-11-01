@@ -2,51 +2,143 @@
 import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 const Box = styled.div`
-	position: absolute;
-	padding: 50px;
-	border: 1px solid var(--bordergrey);
-	transition: transform .5s, opacity .5s;
-	transition-delay: ${props => props.show? '.1s' : '0'};
-	transform: ${props => props.show? 'scaleY(1)' : 'scaleY(0)'};
-	// opacity: ${props => props.show? 1 : 0};
-	transform-origin: 50% 0%;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    box-sizing: content-box;
+    outline: 3px solid red;
+    transform-origin: 50% 0%;
+    height: ${props => props.expandHeight}px;
+    overflow: hidden; 
+    animation-timing-function: step-end;
+    animation-fill-mode: forwards;
+    animation-duration: 1500ms;
+    &.expand{
+        opacity: 0.8;
+        animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight)};
+    }
+    &.collapse{
+        animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, false, true)};
+    }
+
+
+
 `
 const Content = styled.div`
-	opacity: ${props => props.ready? 1 : 0};
-	transition: ${props => props.ready? 'opacity .5s' : 'none'};
+    transform-origin: 50% 0%;
+    animation-timing-function: step-end;
+    animation-fill-mode: forwards;
+    animation-duration: 1500ms;
+    &.expand{
+        opacity: 0.8;
+        animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, true)};
+    }
+
+    &.collapse{
+        animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, true, true)};
+    }
 `
+
+const computeAnim = (expHeight, colHeight, inv, collapse) => {
+        const collapsedSize = colHeight
+        const expandedSize = expHeight
+        console.log(colHeight, expHeight)
+        let y = collapsedSize / expandedSize 
+        let frames = ''
+
+        for(let step = 0; step<101; step++){
+            let easedStep = ease(step/100)
+            let yScale
+            if(!collapse) yScale = y + (1 - y) * easedStep 
+            else if(collapse) yScale = 1 + (y - 1) * easedStep
+            if(inv) yScale = 1/yScale
+
+            frames += `${step}% { 
+                transform: scaleY(${yScale}); 
+            } `
+        }
+
+        return keyframes`${frames}`
+}
+
+let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
 
 @observer
 export default class ExpandBox extends React.Component{
 
-	@observable contentReady = false
-	@action setContentReady = (val) => {
-		console.log(val)
-		this.contentReady = val
-	}
+    @observable frames = ''
+    @observable invFrames = ''
+    @observable collapseFrames = ''
+    @observable invCollapseFrames = ''
 
-	componentDidUpdate(){
-		console.log('update')
-		if(!this.props.show){ 
-			console.log('hiding content')
-			this.setContentReady(false)
-		}
-	}
+    defineKeyframes = () => {
+        const collapsedSize = this.props.collapseHeight
+        const expandedSize = this.props.expandHeight
 
-	render(){
-		return(
-			<Box 
-				style = {this.props.style}
-				show = {this.props.show}
-				onTransitionEnd = {this.props.show? ()=>this.setContentReady(true) : ()=>{console.log('transition ended')}}
-			>
-				<Content ready = {this.props.show && this.contentReady}>
-					{this.props.children}
-				</Content>
-			</Box>
-		)
-	}
+        let y = collapsedSize / expandedSize 
+        let frames = ''
+        let inverseFrames = ''
+
+        let collapseFrames = ''
+        let invCollapseFrames = '' 
+
+        for(let step = 0; step<100; step++){
+            let easedStep = ease(step/100)
+            const yScale = y + (1 - y) * easedStep 
+
+            const yScale2 = 1 + (y - 1) * easedStep
+            frames += `${step}% { 
+                transform: scaleY(${yScale}); 
+            } `
+            collapseFrames += `${step}% { 
+                transform: scaleY(${yScale2}); 
+            } `
+            const invYScale = 1 / yScale
+
+            const invYScale2 = 1 / yScale2
+            inverseFrames += `${step}% {
+                 transform: scaleY(${invYScale});
+            } `
+            invCollapseFrames += `${step}% {
+                 transform: scaleY(${invYScale2});
+            } `
+        }
+
+        // expandAnim = keyframes`${frames}` 
+        // expandContentAnim = keyframes`${inverseFrames}`
+        // collapseAnim = keyframes`${inverseFrames}`
+        // collapseContentAnim = keyframes`${invCollapseFrames}`
+    }
+
+    componentWillMount(){
+        this.defineKeyframes()
+    }
+
+    render(){
+        return(
+            <Box 
+                // expand = {this.props.expand}
+
+                expandHeight = {this.props.expandHeight}
+                collapseHeight = {this.props.collapseHeight}
+                style = {this.props.style}
+                className = {this.props.expand? 'expand' : 'collapse'}
+            >
+                <Content
+                    className = {this.props.expand? 'expand' : 'collapse'}
+                    expandHeight = {this.props.expandHeight}
+                    collapseHeight = {this.props.collapseHeight}
+                >
+                    {this.props.children}
+                </Content>
+            </Box>
+        )
+    }
+}
+
+function ease (v, pow=4) {
+  return 1 - Math.pow(1 - v, pow);
 }
