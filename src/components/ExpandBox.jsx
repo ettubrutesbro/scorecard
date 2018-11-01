@@ -6,16 +6,18 @@ import styled, {keyframes} from 'styled-components'
 
 const Box = styled.div`
     position: absolute;
-    top: 100px;
-    left: 100px;
+    /*top: 100px;*/
+    /*left: 100px;*/
     box-sizing: content-box;
-    outline: 3px solid red;
+    /*outline: 3px solid red;*/
+    border-left: 1px solid var(--bordergrey);
+    border-right: 1px solid var(--bordergrey);
     transform-origin: 50% 0%;
     height: ${props => props.expandHeight}px;
     overflow: hidden; 
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: 1500ms;
+    animation-duration: .5s;
     &.expand{
         opacity: 0.8;
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight)};
@@ -24,14 +26,12 @@ const Box = styled.div`
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, false, true)};
     }
 
-
-
 `
 const Content = styled.div`
     transform-origin: 50% 0%;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: 1500ms;
+    animation-duration: .5s;
     &.expand{
         opacity: 0.8;
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, true)};
@@ -66,79 +66,76 @@ const computeAnim = (expHeight, colHeight, inv, collapse) => {
 
 let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
 
-@observer
-export default class ExpandBox extends React.Component{
-
-    @observable frames = ''
-    @observable invFrames = ''
-    @observable collapseFrames = ''
-    @observable invCollapseFrames = ''
-
-    defineKeyframes = () => {
-        const collapsedSize = this.props.collapseHeight
-        const expandedSize = this.props.expandHeight
-
-        let y = collapsedSize / expandedSize 
-        let frames = ''
-        let inverseFrames = ''
-
-        let collapseFrames = ''
-        let invCollapseFrames = '' 
-
-        for(let step = 0; step<100; step++){
-            let easedStep = ease(step/100)
-            const yScale = y + (1 - y) * easedStep 
-
-            const yScale2 = 1 + (y - 1) * easedStep
-            frames += `${step}% { 
-                transform: scaleY(${yScale}); 
-            } `
-            collapseFrames += `${step}% { 
-                transform: scaleY(${yScale2}); 
-            } `
-            const invYScale = 1 / yScale
-
-            const invYScale2 = 1 / yScale2
-            inverseFrames += `${step}% {
-                 transform: scaleY(${invYScale});
-            } `
-            invCollapseFrames += `${step}% {
-                 transform: scaleY(${invYScale2});
-            } `
-        }
-
-        // expandAnim = keyframes`${frames}` 
-        // expandContentAnim = keyframes`${inverseFrames}`
-        // collapseAnim = keyframes`${inverseFrames}`
-        // collapseContentAnim = keyframes`${invCollapseFrames}`
-    }
-
-    componentWillMount(){
-        this.defineKeyframes()
-    }
-
-    render(){
-        return(
+const ExpandBox = (props) => {
+    return(
+        <Wrapper>
+            <Header>
+                {props.header}
+            </Header>
             <Box 
-                // expand = {this.props.expand}
-
-                expandHeight = {this.props.expandHeight}
-                collapseHeight = {this.props.collapseHeight}
-                style = {this.props.style}
-                className = {this.props.expand? 'expand' : 'collapse'}
+                expandHeight = {props.expandHeight}
+                collapseHeight = {props.collapseHeight}
+                style = {props.style}
+                className = {props.expand? 'expand' : 'collapse'}
             >
                 <Content
-                    className = {this.props.expand? 'expand' : 'collapse'}
-                    expandHeight = {this.props.expandHeight}
-                    collapseHeight = {this.props.collapseHeight}
+                    className = {props.expand? 'expand' : 'collapse'}
+                    expandHeight = {props.expandHeight}
+                    collapseHeight = {props.collapseHeight}
                 >
-                    {this.props.children}
+                    {props.children}
                 </Content>
             </Box>
+            <Footer
+                className = {props.expand? 'expand' : 'collapse'}
+                expandHeight = {props.expandHeight}
+                collapseHeight = {props.collapseHeight}
+            >
+                {props.footer}
+            </Footer>
+        </Wrapper>
         )
-    }
+    
 }
 
-function ease (v, pow=4) {
-  return 1 - Math.pow(1 - v, pow);
+
+const Wrapper = styled.div`
+    position: relative;
+    width: 100px;
+    margin-top: 50px;
+    margin-left: 50px;
+`
+const Header = styled.div`
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 0;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--bordergrey);
+`
+const Footer = styled.div`
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid red;
+    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    &.expand{
+        transform: translateY(${props=>props.expandHeight}px);  
+    }
+    &.collapse{
+        transform: translateY(${props=>props.collapseHeight}px);    
+    }
+`
+
+function ease (k) {
+  // return 1 - Math.pow(1 - v, pow);
+  return --k * k * k + 1;
+
 }
+
+
+export default ExpandBox

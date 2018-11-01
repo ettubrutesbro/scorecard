@@ -31,11 +31,13 @@ const TestTip = styled.div`
 `
 
 const Iono = styled.div`
+    position: absolute;
+    top: 0;
     background: var(--offwhitefg);
     width: 100vw; height: 100vh;
 `
 const MockContent = styled.div`
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
     width: 100%;
     height: 200px;
     &.more{
@@ -75,7 +77,7 @@ storiesOf('Experiments', module)
                 expand = {expand}
                 expandHeight = {500}
                 collapseHeight = {200}
-
+                footer = 'foot'
             >
                 <MockContent className = {moreContent? 'more' : ''}>
                     Lorem ipsum
