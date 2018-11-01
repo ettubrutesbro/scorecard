@@ -4,22 +4,20 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled, {keyframes} from 'styled-components'
 
+import {Scrollbars} from 'react-custom-scrollbars'
+
 const Box = styled.div`
+    width: 100%;
     position: absolute;
-    /*top: 100px;*/
-    /*left: 100px;*/
-    box-sizing: content-box;
-    /*outline: 3px solid red;*/
     border-left: 1px solid var(--bordergrey);
     border-right: 1px solid var(--bordergrey);
     transform-origin: 50% 0%;
     height: ${props => props.expandHeight}px;
-    overflow: hidden; 
+    overflow: hidden;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
     animation-duration: .5s;
     &.expand{
-        opacity: 0.8;
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight)};
     }
     &.collapse{
@@ -33,7 +31,6 @@ const Content = styled.div`
     animation-fill-mode: forwards;
     animation-duration: .5s;
     &.expand{
-        opacity: 0.8;
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, true)};
     }
 
@@ -45,7 +42,6 @@ const Content = styled.div`
 const computeAnim = (expHeight, colHeight, inv, collapse) => {
         const collapsedSize = colHeight
         const expandedSize = expHeight
-        console.log(colHeight, expHeight)
         let y = collapsedSize / expandedSize 
         let frames = ''
 
@@ -66,46 +62,61 @@ const computeAnim = (expHeight, colHeight, inv, collapse) => {
 
 let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
 
-const ExpandBox = (props) => {
+class ExpandBox extends React.Component {
+    constructor(){
+        super()
+    }
+    componentDidMount(){
+
+    }
+    render(){
     return(
         <Wrapper>
             <Header>
-                {props.header}
+                {this.props.header}
             </Header>
+            <FadeCropper show = {this.props.expand}/>
             <Box 
-                expandHeight = {props.expandHeight}
-                collapseHeight = {props.collapseHeight}
-                style = {props.style}
-                className = {props.expand? 'expand' : 'collapse'}
+                expandHeight = {this.props.expandHeight}
+                collapseHeight = {this.props.collapseHeight}
+                style = {this.props.style}
+                className = {this.props.expand? 'expand' : 'collapse'}
             >
+                <Scrollbars style = {{width: '100%', height: 600}}>
                 <Content
-                    className = {props.expand? 'expand' : 'collapse'}
-                    expandHeight = {props.expandHeight}
-                    collapseHeight = {props.collapseHeight}
+                    className = {this.props.expand? 'expand' : 'collapse'}
+                    expandHeight = {this.props.expandHeight}
+                    collapseHeight = {this.props.collapseHeight}
                 >
-                    {props.children}
+                    {this.props.children}
+                   
                 </Content>
+
+            </Scrollbars>
             </Box>
+            <FadeCropperBottom show = {this.props.expand}/>
             <Footer
-                className = {props.expand? 'expand' : 'collapse'}
-                expandHeight = {props.expandHeight}
-                collapseHeight = {props.collapseHeight}
+                className = {this.props.expand? 'expand' : 'collapse'}
+                expandHeight = {this.props.expandHeight}
+                collapseHeight = {this.props.collapseHeight}
             >
-                {props.footer}
+                {this.props.footer}
             </Footer>
         </Wrapper>
         )
+    }
     
 }
 
 
 const Wrapper = styled.div`
     position: relative;
-    width: 100px;
-    margin-top: 50px;
-    margin-left: 50px;
+    /*width: 100px;*/
+    width: 400px;
+    width: 100%;
 `
 const Header = styled.div`
+    z-index: 2;
     position: absolute;
     width: 100%;
     top: 0;
@@ -115,13 +126,14 @@ const Header = styled.div`
     border-top: 1px solid var(--bordergrey);
 `
 const Footer = styled.div`
+    z-index: 2;
     position: absolute;
     width: 100%;
     top: 0;
     height: 0;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid var(--bordergrey);
     transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
     &.expand{
         transform: translateY(${props=>props.expandHeight}px);  
@@ -131,6 +143,25 @@ const Footer = styled.div`
     }
 `
 
+const FadeCropper = styled.div`
+    /*border: 1px solid red;*/
+    z-index: 1;
+    position: absolute;
+    left: 1px;
+    width: calc(100% - 2px);
+    height: 40px;
+    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    opacity: ${props => props.show? 1 : 0};
+    transition: opacity .25s;
+    /*border: 1px solid green;*/
+
+`
+const FadeCropperBottom = styled(FadeCropper)`
+    top: auto;
+    bottom: 0px;
+    height: 30px;
+    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+`
 function ease (k) {
   // return 1 - Math.pow(1 - v, pow);
   return --k * k * k + 1;

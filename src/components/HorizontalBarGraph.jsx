@@ -7,34 +7,49 @@ import {findDOMNode} from 'react-dom'
 
 import media from '../utilities/media'
 
-import PerfectScrollBar from 'react-perfect-scrollbar'
-import 'react-perfect-scrollbar/dist/css/styles.css';
+import ExpandBox from './ExpandBox'
 
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
 
-import {floatingCorner, flushHard} from './BoxStyling'
 
 const Wrapper = styled.div`
     position: relative;
-    /*height: 150px;*/
-    /*overflow: hidden;*/
     width: 100%;
-    @media ${media.optimal}{
-
-        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
-        max-height: 602px; 
-
-    }
-    @media ${media.compact}{
-        ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
-        max-height: 470px;
-    }
     border: 1px solid var(--bordergrey);
 `
 
-@observer
-export default class HorizontalBarGraph extends React.Component{
+const WrappedGraphComponent = (props) => {
+    const {header, footer, fullHeight, ...restOfProps} = props
+    return props.expandable?(
+        <ExpandBox 
+            header = {header}
+            footer = {footer}
+            expand = {fullHeight}
+            collapseHeight = {380}
+            expandHeight = {515}
+        >
+            <HorizontalBarGraph {...restOfProps} />
+        </ExpandBox>
+    ):(
+        <Wrapper>
+            <Header>{props.header}</Header>
+            <HorizontalBarGraph {...restOfProps} />
+        </Wrapper>
+    )
+}
+
+const Header = styled.div`
+    position: absolute;
+    margin: 0 20px;
+    display: inline-flex;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+    z-index: 3;
+    transform: translateY(-50%);
+`
+
+@observer class HorizontalBarGraph extends React.Component{
 
     @observable width = 400
     @observable contentHeight = 300
@@ -70,37 +85,20 @@ export default class HorizontalBarGraph extends React.Component{
         const {selectBar} = this.props
         // console.log(selectBar)
         return (
-            <Wrapper 
-                
-                fullHeight = {this.props.fullHeight}
 
-            >
-            <Header>
-                {this.props.header}
-            </Header>
-            {this.props.beefyPadding && <FadeCropper show = {this.props.fullHeight}/>}
-            <PerfectScrollBar>
             <GraphTable
                 ref = {this.graph}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
             >
-                {/* 
-                <Header expanded = {this.expanded}>
-                    {!this.expanded && this.props.header}
-                    {this.expanded && this.props.expandedHeader}
-                    {this.expanded && this.props.expandedSubHeader && 
-                        <Subheader>{this.props.expandedSubHeader}</Subheader>
-                    }
-                </Header>
-                */}
                 <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
                     duration = {250}
+                    staggerDurationBy = {5}
                     typeName = {null}
-                    enterAnimation = {null}
+                    enterAnimation = 'fade'
                     leaveAnimation = {null}
-                    disableAllAnimations = {this.props.disableAnim || this.expanded}
+                    // disableAllAnimations = {this.props.disableAnim || this.expanded}
                 >
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
@@ -190,28 +188,10 @@ export default class HorizontalBarGraph extends React.Component{
                 </Content>
 
             </GraphTable>
-            </PerfectScrollBar>
 
-           {this.props.beefyPadding && <FadeCropperBottom show = {this.props.fullHeight}/>}
-            {this.props.footer && 
-            <Footer>
-                {this.props.footer}
-            </Footer>
-            }
-            <ExpandHoverHint />
-            </Wrapper>
         )
     }
 }
-
-const ExpandHoverHint = styled.div`
-    position: absolute;
-    width: calc(100% + 2px);
-    height: 35px;
-    left: -1px;
-    bottom: -35px;
-    border: 1px solid red;
-`
 
 const Pct = styled.span`
     margin-left: 1px;
@@ -238,39 +218,6 @@ const CropBox = styled.div`
     z-index: 3;
 `
 
-const Header = styled(CropBox)`
-    transform: translateY(-50%);
-`
-const FadeCropper = styled.div`
-    /*border: 1px solid red;*/
-    z-index: 2;
-    position: absolute;
-    width: 100%;
-    height: 40px;
-    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
-    opacity: ${props => props.show? 1 : 0};
-    transition: opacity .25s;
-    /*border: 1px solid green;*/
-
-`
-const FadeCropperBottom = styled(FadeCropper)`
-    top: auto;
-    bottom: 0px;
-    height: 30px;
-    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
-`
-const Footer = styled(CropBox)`
-    bottom: 0; right: 0;
-    transform: translateY(50%);
-    height: 4px; display: flex; align-items: center;
-`
-
-const Subheader = styled.div`
-    font-size: 13px;
-    color: var(--fainttext);
-    margin-top: 5px;
-
-`
 const Content = styled.div`
     width: 100%;
     height: 100%;
@@ -402,3 +349,6 @@ HorizontalBarGraph.defaultProps = {
     header: 'Needs header',
     alignValue: 'outside' //outside or inside
 }
+
+
+export default WrappedGraphComponent

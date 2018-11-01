@@ -22,10 +22,7 @@ import {getMedia} from '../utilities/media'
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
 `
 
 const BreakdownBox = styled.div`

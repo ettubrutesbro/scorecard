@@ -240,9 +240,8 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
-        const footerComponent = this.distribute?(
-            <Button onClick = {this.toggleDistribute} label = "See all counties" className = 'compact' />) 
-            : <Button onClick = {this.toggleDistribute} label = "Back to overview" className = 'compact' />
+        const footerComponent = <Footer offset = {this.fullHeight}><Button onClick = {this.toggleDistribute} label = "See all counties" className = 'compact' /></Footer> 
+            
 
         let highestValue = 0
         let withRace = !race? '' : Object.keys(demopop)
@@ -289,6 +288,7 @@ export default class IndicatorByCounties extends React.Component{
 
         return (
             <HorizontalBarGraph
+                expandable
                 selected = {county}
                 selectable
                 beefyPadding
@@ -315,28 +315,49 @@ export default class IndicatorByCounties extends React.Component{
 const HeaderComponent = (props) => {
     return(
         <Header>
+            <HeaderTitle hasRace = {props.race}>
             {props.race && props.race === 'other' && 'In counties with the most children of other races'}
             {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
             {!props.race && props.distribute && 'County overview'}
             {!props.race && !props.distribute && 'All counties'}
+            </HeaderTitle>
             {!props.race &&
-        <Toggle
-            style = {{marginLeft: '15px'}}
-            options = {[
-                {label: 'by %', value: 'pct'},
-                {label: 'by Child Population', value: 'pop'}
-            ]}
-            theme = "bw"
-            onClick = {props.setOverviewSort}
-            selected = {props.sortOverviewBy === 'pct'? 0 : 1}
-        />
+                <Toggle
+                    style = {{
+                        marginLeft: '15px',
+                        // transition: 'transform .3s',
+                        // transform: `translateX(${!props.distribute?'-35px':0})`
+                    }}
+                    options = {[
+                        {label: 'by %', value: 'pct'},
+                        {label: 'by Child Population', value: 'pop'}
+                    ]}
+                    theme = "bw"
+                    onClick = {props.setOverviewSort}
+                    selected = {props.sortOverviewBy === 'pct'? 0 : 1}
+                />
         }
         </Header>
     )
 }
-const Header = styled.div`
-    display: flex; align-items: center; 
+const headerfooter = styled.div`
+    display: inline-flex; align-items: center; 
     height: 3px;
+    margin: 0 20px;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+`
+const Header = styled(headerfooter)`
+
+`
+const HeaderTitle = styled.div`
+    /*width: ${props => !props.hasRace? '130px' : 'auto'};*/
+`
+const Footer = styled(headerfooter)`
+    bottom: -1px; right: 0;
+    position: absolute;
+    transition: transform .3s;
+    transform: translateX(${props=>props.offset?25:0}px);
 `
 const Prompt = styled.div`
     position: absolute;

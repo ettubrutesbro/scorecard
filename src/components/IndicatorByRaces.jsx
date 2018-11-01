@@ -7,6 +7,7 @@ import semanticTitles from '../assets/semanticTitles'
 import HorizontalBarGraph from './HorizontalBarGraph'
 
 import {capitalize} from '../utilities/toLowerCase'
+import media from '../utilities/media'
 
 const races = [
     'asian', 'black', 'latinx', 'white', 'other'
@@ -22,6 +23,7 @@ const Label = styled.span`
 const Wrapper = styled.div`
     // margin-top: 45px;
     position: absolute;
+
     width: 100%;
     bottom: 0;
     z-index: 1;
