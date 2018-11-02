@@ -26,8 +26,8 @@ const WrappedGraphComponent = (props) => {
             header = {header}
             footer = {footer}
             expand = {fullHeight}
-            collapseHeight = {380}
-            expandHeight = {515}
+            collapseHeight = {props.collapseHeight}
+            expandHeight = {props.expandHeight}
         >
             <HorizontalBarGraph {...restOfProps} />
         </ExpandBox>

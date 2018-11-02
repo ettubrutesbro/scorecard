@@ -18,7 +18,7 @@ import {truncateNum} from '../utilities/sigFig'
 
 import ordinal from 'ordinal'
 
-import HorizontalBarGraph from './HorizontalBarGraph'
+import Graph from './HorizontalBarGraph'
 import {Button,Toggle} from './generic'
 
 function indexOfClosest(nums, target) {
@@ -189,7 +189,7 @@ export default class IndicatorByCounties extends React.Component{
 
     render(){
 
-        const {county, race, year, indicator, completeWorkflow, colorScale} = this.props.store
+        const {county, race, year, indicator, completeWorkflow, colorScale, screen} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
@@ -287,8 +287,11 @@ export default class IndicatorByCounties extends React.Component{
         }
 
         return (
-            <HorizontalBarGraph
+            <Graph
                 expandable
+                expandHeight = {screen==='optimal'? 515 : 415}
+                collapseHeight = {screen==='optimal'? 380 : 280}
+
                 selected = {county}
                 selectable
                 beefyPadding
@@ -356,8 +359,8 @@ const HeaderTitle = styled.div`
 const Footer = styled(headerfooter)`
     bottom: -1px; right: 0;
     position: absolute;
-    transition: transform .3s;
-    transform: translateX(${props=>props.offset?25:0}px);
+    transition: transform .25s;
+    transform: translateX(${props=>props.offset?50:0}px);
 `
 const Prompt = styled.div`
     position: absolute;

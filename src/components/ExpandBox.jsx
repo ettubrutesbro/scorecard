@@ -16,7 +16,7 @@ const Box = styled.div`
     overflow: hidden;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: .5s;
+    animation-duration: .35s;
     &.expand{
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight)};
     }
@@ -29,7 +29,7 @@ const Content = styled.div`
     transform-origin: 50% 0%;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: .5s;
+    animation-duration: .35s;
     &.expand{
         animation-name: ${p => computeAnim(p.expandHeight, p.collapseHeight, true)};
     }
@@ -134,7 +134,7 @@ const Footer = styled.div`
     display: flex;
     align-items: center;
     border-bottom: 1px solid var(--bordergrey);
-    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     &.expand{
         transform: translateY(${props=>props.expandHeight}px);  
     }

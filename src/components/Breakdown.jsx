@@ -78,6 +78,7 @@ export default class Breakdown extends React.Component{
 
                     <IndicatorByRaces
                         store = {store}
+                        expand = {!this.allCounties}
                     />
                 }
                 {indicator && this.props.sources &&

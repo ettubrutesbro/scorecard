@@ -27,7 +27,8 @@ const Wrapper = styled.div`
     width: 100%;
     bottom: 0;
     z-index: 1;
-
+    transform: translateY(${props => props.offset}px);
+    transition: transform .35s;
 `
 
 export default class IndicatorByRaces extends React.Component{
@@ -63,12 +64,19 @@ export default class IndicatorByRaces extends React.Component{
         })
         // console.log(indicatorPerformanceByRace)
         return(
-            <Wrapper>
+            <Wrapper
+                offset = {this.props.expand? -150 : -50}
+            >
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
+                    expandable
+                    expandHeight = {150}
+                    collapseHeight = {50}
+                    fullHeight = {this.props.expand}
+
                     selectable
                     header = {<Label><span>Indicator breakdown</span> by race</Label>}
-                    bars = {indicatorPerformanceByRace}
+                    bars = {!this.props.allCounties? indicatorPerformanceByRace : []}
                     labelWidth = {150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
