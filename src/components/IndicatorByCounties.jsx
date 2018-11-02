@@ -211,6 +211,7 @@ export default class IndicatorByCounties extends React.Component{
             const distrib = this.distribution
             if(!this.distribute){
                 return {...e, leftLabel: !unstable? e.rank+'.' : ''}
+            
             }
             else if(distrib.includes(i)){ 
                 return {
@@ -326,12 +327,8 @@ const HeaderComponent = (props) => {
             {!props.race && !props.distribute && 'All counties'}
             </HeaderTitle>
             {!props.race &&
-                <Toggle
-                    style = {{
-                        marginLeft: '15px',
-                        // transition: 'transform .3s',
-                        // transform: `translateX(${!props.distribute?'-35px':0})`
-                    }}
+                <HeaderToggle
+                    offset = {!props.distribute}
                     options = {[
                         {label: 'by %', value: 'pct'},
                         {label: 'by Child Population', value: 'pop'}
@@ -348,14 +345,35 @@ const headerfooter = styled.div`
     display: inline-flex; align-items: center; 
     height: 3px;
     margin: 0 20px;
-    padding: 0 15px;
-    background: var(--offwhitefg);
+    /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
 
 `
 const HeaderTitle = styled.div`
-    /*width: ${props => !props.hasRace? '130px' : 'auto'};*/
+    width: ${props => !props.hasRace? '130px' : 'auto'};
+    position: relative;
+    height: 2px;
+    padding: 0 15px;
+    box-sizing: content-box;
+    display: inline-flex;
+    align-items: center;
+    background: var(--offwhitefg);
+`
+const HeaderToggle = styled(Toggle)`
+    /*margin-left: 15px;*/
+    position: relative;
+    &::before{
+        position: absolute;
+        content: '';
+        width: 15px;
+        right: -15px;
+        top: 0; bottom: 0; margin: auto;
+        height: 2px;
+        background-color: var(--offwhitefg);
+    }
+    transform: translateX(${props=>props.offset? -35 : 0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const Footer = styled(headerfooter)`
     bottom: -1px; right: 0;
@@ -371,19 +389,7 @@ const Prompt = styled.div`
     opacity: ${props => props.visible? 1 : 0};
 `
 
-// IndicatorByCounties.defaultProps = {
-//     entries: 12,
-// }
 
-
-// const Faint = styled.span`
-//     color: var(--fainttext);
-//     margin-right: 5px;
-// `
-// const FaintPop = styled.span`
-//     color: var(--fainttext);
-//     margin-left: 4px;
-// `
 
 const SelectedNum = styled.span`
     color: var(--peach);
@@ -391,7 +397,6 @@ const SelectedNum = styled.span`
 `
 const SelectedCounty = styled.span`
     color: var(--strokepeach);
-    // margin-right: 4px;
 `
 
 

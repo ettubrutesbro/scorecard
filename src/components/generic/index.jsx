@@ -18,7 +18,6 @@ const ToggleBody = styled.div`
     display: inline-flex;
 `
 const Option = styled.div`
-
     cursor: pointer;
     box-sizing: border-box;
     height: 100%;
@@ -107,7 +106,7 @@ export class Toggle extends React.Component {
 
      render(){
     return(
-        <ToggleBody style = {this.props.style} size = {this.props.size}>
+        <ToggleBody style = {this.props.style} size = {this.props.size} className = {this.props.className}>
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 

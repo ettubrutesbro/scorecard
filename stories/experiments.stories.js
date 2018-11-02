@@ -9,7 +9,7 @@ import CountUp from 'react-countup'
 
 
 import CountingNumber from '../src/components/CountingNumber'
-import ExpandBox from '../src/components/ExpandBox'
+import ExpandBox, {ExpandWidthBox} from '../src/components/ExpandBox'
 
 addDecorator(withKnobs)
 
@@ -83,6 +83,24 @@ storiesOf('Experiments', module)
                     Lorem ipsum
                 </MockContent>
             </ExpandBox>
+        </Iono>
+    )   
+})
+.add('ExpandWidthBox', ()=>{
+    const moreContent = boolean('more content', false)
+    const expand = boolean('expand box', false)
+
+    return(
+        <Iono>
+            <ExpandWidthBox 
+                expand = {expand}
+                expandWidth = {200}
+                collapseWidth = {130}
+            >
+                <MockContent className = {moreContent? 'more' : ''}>
+                    Lorem ipsum
+                </MockContent>
+            </ExpandWidthBox>
         </Iono>
     )   
 })

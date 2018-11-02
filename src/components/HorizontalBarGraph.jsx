@@ -268,11 +268,11 @@ const RowComponent = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -12px;
+    bottom: 20px;
     left: ${props => props.labelWidth + 20}px;
     width: 1px;
     background-color: var(--fainttext);
-    height: calc(100% + 21px);
+    height: calc(100% - 52px);
     box-shadow: -1.5px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
