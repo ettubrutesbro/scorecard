@@ -28,7 +28,7 @@ const Wrapper = styled.div`
     bottom: 0;
     z-index: 1;
     transform: translateY(${props => props.offset}px);
-    transition: transform .35s;
+    transition: transform .35s  cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 
 export default class IndicatorByRaces extends React.Component{
@@ -74,9 +74,11 @@ export default class IndicatorByRaces extends React.Component{
                     collapseHeight = {50}
                     fullHeight = {this.props.expand}
 
+                    hideGraph = {this.props.expand}
+
                     selectable
-                    header = {<Label><span>Indicator breakdown</span> by race</Label>}
-                    bars = {!this.props.allCounties? indicatorPerformanceByRace : []}
+                    header = {<Header offset = {!this.props.expand}><span>Indicator breakdown</span> by race</Header>}
+                    bars = {this.props.expand? indicatorPerformanceByRace : []}
                     labelWidth = {150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
@@ -84,3 +86,11 @@ export default class IndicatorByRaces extends React.Component{
         )
     }
 } 
+
+const Header = styled.div`
+    margin: 0 20px;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+    transform: translateY(${props=>props.offset?25:0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+`

@@ -6,6 +6,8 @@ import styled, {keyframes} from 'styled-components'
 
 import {Scrollbars} from 'react-custom-scrollbars'
 
+import {getMedia} from '../utilities/media'
+
 const Box = styled.div`
     width: 100%;
     position: absolute;
@@ -62,51 +64,48 @@ const computeAnim = (expHeight, colHeight, inv, collapse) => {
 
 let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
 
-class ExpandBox extends React.Component {
-    constructor(){
-        super()
-    }
-    componentDidMount(){
+const ExpandBox = (props) => {
 
-    }
-    render(){
     return(
         <Wrapper>
             <Header>
-                {this.props.header}
+                {props.header}
             </Header>
-            <FadeCropper show = {this.props.expand}/>
+            <FadeCropper show = {props.expand && props.withScroll}/>
             <Box 
-                expandHeight = {this.props.expandHeight}
-                collapseHeight = {this.props.collapseHeight}
-                style = {this.props.style}
-                className = {this.props.expand? 'expand' : 'collapse'}
+                expandHeight = {props.expandHeight}
+                collapseHeight = {props.collapseHeight}
+                style = {props.style}
+                className = {props.expand? 'expand' : 'collapse'}
             >
-                <Scrollbars style = {{width: '100%', height: 600}}>
-                <Content
-                    className = {this.props.expand? 'expand' : 'collapse'}
-                    expandHeight = {this.props.expandHeight}
-                    collapseHeight = {this.props.collapseHeight}
+                <Scrollbars 
+                	style = {{width: '100%', height: props.expandHeight}}
+                	hideTracksWhenNotNeeded = {props.withScroll || !props.expand}
                 >
-                    {this.props.children}
+                <Content
+                    className = {props.expand? 'expand' : 'collapse'}
+                    expandHeight = {props.expandHeight}
+                    collapseHeight = {props.collapseHeight}
+                >
+                    {props.children}
                    
                 </Content>
 
             </Scrollbars>
             </Box>
-            <FadeCropperBottom show = {this.props.expand}/>
+            <FadeCropperBottom show = {props.expand && props.withScroll}/>
             <Footer
-                className = {this.props.expand? 'expand' : 'collapse'}
-                expandHeight = {this.props.expandHeight}
-                collapseHeight = {this.props.collapseHeight}
+                className = {props.expand? 'expand' : 'collapse'}
+                expandHeight = {props.expandHeight}
+                collapseHeight = {props.collapseHeight}
             >
-                {this.props.footer}
+                {props.footer}
             </Footer>
         </Wrapper>
         )
-    }
     
 }
+
 
 
 const Wrapper = styled.div`

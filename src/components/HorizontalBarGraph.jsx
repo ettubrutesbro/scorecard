@@ -20,12 +20,13 @@ const Wrapper = styled.div`
 `
 
 const WrappedGraphComponent = (props) => {
-    const {header, footer, fullHeight, ...restOfProps} = props
+    const {header, footer, fullHeight, withScroll, ...restOfProps} = props
     return props.expandable?(
         <ExpandBox 
             header = {header}
             footer = {footer}
             expand = {fullHeight}
+            withScroll = {withScroll}
             collapseHeight = {props.collapseHeight}
             expandHeight = {props.expandHeight}
         >
@@ -93,11 +94,11 @@ const Header = styled.div`
             >
                 <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
-                    duration = {250}
-                    staggerDurationBy = {5}
-                    typeName = {null}
+                    duration = {175}
+                    // staggerDurationBy = {5}
+                    // typeName = {null}
                     enterAnimation = 'fade'
-                    leaveAnimation = {null}
+                    leaveAnimation = 'fade'
                     // disableAllAnimations = {this.props.disableAnim || this.expanded}
                 >
                     {this.props.bars.map((item,i,bars)=>{

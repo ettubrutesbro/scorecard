@@ -289,9 +289,10 @@ export default class IndicatorByCounties extends React.Component{
         return (
             <Graph
                 expandable
-                expandHeight = {screen==='optimal'? 515 : 415}
+                expandHeight = {screen==='optimal'? 515 : 390}
                 collapseHeight = {screen==='optimal'? 380 : 280}
-
+                withScroll
+                
                 selected = {county}
                 selectable
                 beefyPadding
