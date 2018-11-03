@@ -64,6 +64,23 @@ const SpriteSvg = styled(IconSvg)`
     }
 `
 
+// const chevUp = keyframes`
+//     from{ transform: translateX(0); }
+//     to{ transform: translateX(-87.5%); }
+// `
+// const chevDown = keyframes`
+//     from{ transform: translateX(-87.5%); }
+//     to{ transform: translateX(0); }
+// `
+//     &.sprite-chevsprite{
+//         &.up{
+//             animation-name: ${chevUp};
+//         }
+//         &.down{
+//             animation-name: ${chevDown};
+//         }
+//     }
+
 const computeAnim = (from, goTo) => {
     let frames = `
         0%{

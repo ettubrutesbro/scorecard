@@ -289,11 +289,33 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
+        let expandHeight, collapseHeight
+        if(this.props.hasRace){
+            if(screen==='optimal'){
+                expandHeight = 515
+                collapseHeight = 390
+            }
+            else if(screen==='compact'){
+                expandHeight = 390
+                collapseHeight = 280
+            }
+        }
+        else{ //no race, full expand
+            if(screen==='optimal'){
+                expandHeight = 575
+                collapseHeight = 575
+            }
+            else if(screen==='compact'){
+                expandHeight = 450
+                collapseHeight = 450
+            }
+        }
+
         return (
             <Graph
                 expandable
-                expandHeight = {screen==='optimal'? 515 : 390}
-                collapseHeight = {screen==='optimal'? 380 : 280}
+                expandHeight = {expandHeight}
+                collapseHeight = {collapseHeight}
                 withScroll
                 
                 selected = {county}
