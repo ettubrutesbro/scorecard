@@ -70,22 +70,25 @@ class ExpandBox extends React.Component {
         this.scrollbar = React.createRef()
     }
 
-    componentDidMount(){
-        window.setTop = () => {
-            console.log('wtf')
-            findDOMNode(this.scrollbar.current).scrollTop = 0
-        }
-    }
 
-    setScrollTop = () => {
-        // console.log(this.scrollbar)
-        console.log(this.scrollbar.current.getValues())
-        findDOMNode(this.scrollbar.current).scrollTop = 0
-        window.setTop = () => {
-            findDOMNode(this.scrollbar.current).scrollTop = 0
+    componentWillUpdate(newProps){
+        if(!newProps.expand && this.props.expand && this.props.withScroll){
+            // console.log(this.scrollbar.current.container)
+
+            console.log(findDOMNode(this.scrollbar.current).firstChild)
+            console.log(findDOMNode(this.scrollbar.current).firstChild.scrollTop)
+           findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
         }
-        // this.scrollbar.current.scrollToTop()
     }
+    // setScrollTop = () => {
+    //     // console.log(this.scrollbar)
+    //     console.log(this.scrollbar.current.getValues())
+    //     findDOMNode(this.scrollbar.current).scrollTop = 0
+    //     window.setTop = () => {
+    //         findDOMNode(this.scrollbar.current).scrollTop = 0
+    //     }
+    //     // this.scrollbar.current.scrollToTop()
+    // }
 
     render(){
         const {props} = this
@@ -105,7 +108,7 @@ class ExpandBox extends React.Component {
                 <Scrollbars 
                     ref = {this.scrollbar}
                     style = {{width: '100%', height: props.expand && props.withScroll? props.expandHeight : 1000}}
-                    onUpdate = {!props.expand? this.setScrollTop: (val)=>{console.log(val)}}
+                    // onUpdate = {!props.expand? this.setScrollTop: (val)=>{console.log(val)}}
                 >
                 <HeightContent
                     className = {props.expand? 'expand' : 'collapse'}

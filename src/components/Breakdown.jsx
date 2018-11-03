@@ -79,6 +79,10 @@ export default class Breakdown extends React.Component{
                     <IndicatorByRaces
                         store = {store}
                         expand = {!this.allCounties}
+                        onClick = {this.allCounties? ()=>{
+                            console.log('trying to collapse counties')
+                            this.expandCountyList(false)
+                        }: ()=>{} }
                     />
                 }
                 {indicator && this.props.sources &&
