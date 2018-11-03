@@ -19,7 +19,10 @@ import {truncateNum} from '../utilities/sigFig'
 import ordinal from 'ordinal'
 
 import Graph from './HorizontalBarGraph'
+import {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
+import {ExpandWidthBox} from './ExpandBox'
+
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -241,7 +244,6 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
-        const footerComponent = <Footer offset = {this.fullHeight}><Button onClick = {this.toggleDistribute} label = "See all counties" className = 'compact' /></Footer> 
             
 
         let highestValue = 0
@@ -310,7 +312,12 @@ export default class IndicatorByCounties extends React.Component{
                 average = {ind.counties.california[race||'totals'][year]}
                 disableAnim = {this.distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
-                footer = {footerComponent}
+                footer = {(
+                    <FooterComponent
+                        offset = {this.fullHeight}
+                        onClick = {this.toggleDistribute}
+                    />
+                )}
                 fullHeight = {this.fullHeight}
             />
         )
@@ -341,6 +348,45 @@ const HeaderComponent = (props) => {
         </Header>
     )
 }
+const FooterComponent = (props) => {
+    return(
+        <Footer >
+            <ExpandWidthBox
+                expand = {!props.offset}
+                expandWidth = {167}
+                collapseWidth = {120}
+            >
+                <ExpandButton 
+                    onClick = {props.onClick} 
+                    label = {(
+                        <React.Fragment>
+                            {!props.offset && 'See all counties'}
+                            {props.offset && 'See less'}
+                            <Sprite 
+                                style = {{
+                                    marginLeft: '10px',
+                                    width: '18px',
+                                    height: '18px'
+                                }}
+                                img = "chevsprite" 
+                                color = "normtext" 
+                                state = {props.offset? 'up' : 'down'} 
+                            />
+                        </React.Fragment>
+                    )}
+                    className = 'compact borderless' 
+                />
+            </ExpandWidthBox>
+        </Footer> 
+    )
+}
+const ExpandButton = styled(Button)`
+    &:hover{
+        .sprite-chevsprite{
+            fill: var(--strokepeach);
+        }
+    }
+`
 const headerfooter = styled.div`
     display: inline-flex; align-items: center; 
     height: 3px;

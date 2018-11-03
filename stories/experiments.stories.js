@@ -10,6 +10,8 @@ import CountUp from 'react-countup'
 
 import CountingNumber from '../src/components/CountingNumber'
 import ExpandBox, {ExpandWidthBox} from '../src/components/ExpandBox'
+import {Sprite} from '../src/components/generic/Icon'
+
 
 addDecorator(withKnobs)
 
@@ -47,6 +49,21 @@ const MockContent = styled.div`
 
 
 `
+const MockExpandButton1 = styled.div`
+
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 17px;
+    font-size: 13px;
+`
+const MockExpandButton2 = styled.div`
+position: absolute;
+right: 0; top: 0;
+    display: inline-flex;
+    padding: 10px 17px;
+    border: 1px solid green;
+`
+
 
 const Ruler = styled.div`
     position: absolute; 
@@ -64,6 +81,18 @@ const Ruler = styled.div`
 `
 
 storiesOf('Experiments', module)
+.add('Sprite',()=>{
+    const tog = boolean('toggle sprite state', false)
+    return(
+        <Iono>
+        <Sprite 
+            img = "chevsprite" 
+            color = "strokepeach"
+            state = {tog?'up':'down'}
+        />
+        </Iono>
+    )
+})
 .add('ExpandBox', ()=>{
     const moreContent = boolean('more content', false)
     const expand = boolean('expand box', false)
@@ -94,12 +123,24 @@ storiesOf('Experiments', module)
         <Iono>
             <ExpandWidthBox 
                 expand = {expand}
-                expandWidth = {200}
-                collapseWidth = {130}
+                expandWidth = {167}
+                collapseWidth = {120}
             >
-                <MockContent className = {moreContent? 'more' : ''}>
-                    Lorem ipsum
-                </MockContent>
+                <MockExpandButton1>
+                    {expand && 'See all counties'}         
+                    {!expand && 'See less'}         
+                    <Sprite 
+                        style = {{
+                            marginLeft: '10px',
+                            width: '20px',
+                            height: '20px'
+                        }}
+                        img = "chevsprite" 
+                        color = "normtext"
+                        state = {expand?'down':'up'}
+                    />
+                </MockExpandButton1>
+               
             </ExpandWidthBox>
         </Iono>
     )   

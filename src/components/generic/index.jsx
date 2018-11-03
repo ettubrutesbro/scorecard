@@ -344,6 +344,9 @@ const Btn = styled.div`
 
         }
     }
+    &.borderless{
+        border-color: transparent;
+    }
 `
 
 export const Button = (props) => {

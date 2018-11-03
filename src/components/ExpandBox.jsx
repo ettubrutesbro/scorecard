@@ -1,5 +1,6 @@
 
 import React from 'react'
+import {findDOMNode} from 'react-dom'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled, {keyframes} from 'styled-components'
@@ -46,8 +47,8 @@ const computeAnim = (xOrY, exp, col, inv, collapse) => {
         let ratio = collapsedSize / expandedSize 
         let frames = ''
 
-        for(let step = 0; step<101; step++){
-            let easedStep = ease(step/100)
+        for(let step = 0; step<101; step++)
+{            let easedStep = ease(step/100)
             let scale
             if(!collapse) scale = ratio + (1 - ratio) * easedStep 
             else if(collapse) scale = 1 + (ratio - 1) * easedStep
@@ -63,9 +64,33 @@ const computeAnim = (xOrY, exp, col, inv, collapse) => {
 
 let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
 
-const ExpandBox = (props) => {
+class ExpandBox extends React.Component {
+    constructor(){
+        super()
+        this.scrollbar = React.createRef()
+    }
 
+    componentDidMount(){
+        window.setTop = () => {
+            console.log('wtf')
+            findDOMNode(this.scrollbar.current).scrollTop = 0
+        }
+    }
+
+    setScrollTop = () => {
+        // console.log(this.scrollbar)
+        console.log(this.scrollbar.current.getValues())
+        findDOMNode(this.scrollbar.current).scrollTop = 0
+        window.setTop = () => {
+            findDOMNode(this.scrollbar.current).scrollTop = 0
+        }
+        // this.scrollbar.current.scrollToTop()
+    }
+
+    render(){
+        const {props} = this
     return(
+
         <Wrapper>
             <Header>
                 {props.header}
@@ -78,7 +103,9 @@ const ExpandBox = (props) => {
                 className = {props.expand? 'expand' : 'collapse'}
             >
                 <Scrollbars 
+                    ref = {this.scrollbar}
                     style = {{width: '100%', height: props.expand && props.withScroll? props.expandHeight : 1000}}
+                    onUpdate = {!props.expand? this.setScrollTop: (val)=>{console.log(val)}}
                 >
                 <HeightContent
                     className = {props.expand? 'expand' : 'collapse'}
@@ -104,6 +131,7 @@ const ExpandBox = (props) => {
             </Footer>
         </Wrapper>
         )
+    }
     
 }
 
@@ -185,6 +213,7 @@ export class ExpandWidthBox extends React.Component{
             <WidthBox
                 expandWidth = {this.props.expandWidth}
                 collapseWidth = {this.props.collapseWidth}
+                height = {this.contentHeight}
                 style = {this.props.style}
                 className = {this.props.expand? 'expand' : 'collapse'}
             >
@@ -212,24 +241,38 @@ export class ExpandWidthBox extends React.Component{
 
 const WidthWrapper = styled.div`
     position: absolute;
+    right: 0;
     width: ${props => props.expandWidth}px;
     /*border: 1px blue solid;*/
     height: ${props => props.height}px;
 `
 const WidthBox = styled(Box)`
-    height: auto;
+    height: ${props => props.height}px;
     width: ${props => props.expandWidth}px;
+    background: white;
     transform-origin: 100% 0%;
+    box-sizing: border-box;
     border-left: none; border-right: none;
-    border-top: 1px solid var(--bordergrey);
-    border-bottom: 1px solid var(--bordergrey);
+    border-top: 1px solid var(--fainttext);
+    border-bottom: 1px solid var(--fainttext);
     &.expand{ animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth)}; }
     &.collapse{ animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, false, true)}; }
+    /*display: flex;*/
+    /*justify-content: flex-end;*/
 `
 const WidthContent = styled(Content)`
 /*border: 1px solid green;*/
-    &.expand{animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true)};}
-    &.collapse{animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true, true)};}
+    /*height: 40px;*/
+    top: -1px;
+    position: absolute; right: 0;
+    &.expand{
+        animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true)};
+        transform-origin: ${props=>props.expandWidth}px 0%;
+    }
+    &.collapse{
+        animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true, true)};
+        transform-origin: ${props=>props.collapseWidth}px 0%;
+    }
 `
 const LeftBound = styled.div`
     top: 0;
@@ -237,14 +280,13 @@ const LeftBound = styled.div`
     right: 0;
     height: 100%;
     width: 0;
-    border-right: 1px solid red;
-    
+    border-right: 1px solid var(--fainttext);
+
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     &.expand{
         transform: translateX(-${props=>props.expandWidth}px);
     }
     &.collapse{
-
         transform: translateX(-${props=>props.collapseWidth}px);
     }
 `
@@ -254,7 +296,7 @@ const RightBound = styled.div`
     top: 0;
     height: 100%;
     width: 0;
-    border-left: 1px solid var(--bordergrey);
+    border-left: 1px solid var(--fainttext);
 `
 
 export default ExpandBox
