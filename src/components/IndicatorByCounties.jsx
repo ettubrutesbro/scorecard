@@ -123,7 +123,7 @@ export default class IndicatorByCounties extends React.Component{
 
         const entries = this.props.entries
         const countyCount = validCounties.length
-        const unit = parseInt((countyCount / entries).toFixed(0))
+        const unit = parseInt(Math.ceil(countyCount / entries))
         const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
             //-1 for california...
         let distribution = []
@@ -159,7 +159,7 @@ export default class IndicatorByCounties extends React.Component{
 
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
-
+;``
             // console.log('adjusted distribution:', distribution)
 
             // this.condensed = distribution.slice(0)
@@ -172,6 +172,9 @@ export default class IndicatorByCounties extends React.Component{
             this.condensed = []
         }
         this.distribution = distribution
+        console.log(indicator, entries)
+        console.log(distribution)
+
     }
 
 
@@ -310,6 +313,8 @@ export default class IndicatorByCounties extends React.Component{
                 collapseHeight = 450
             }
         }
+
+        console.log(performance)
 
         return (
             <Graph
