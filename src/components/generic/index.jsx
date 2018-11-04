@@ -488,6 +488,8 @@ export class DropdownToggle extends React.Component {
                                     onMouseLeave = {()=>{this.setStrikethrough(false)}}
                                     onClick = {selected? (e)=>{
                                         this.props.select(null)
+                                        this.hover(false)
+                                        this.setStrikethrough(false)
                                         e.stopPropagation()
                                         // e.nativeEvent.stopImmediatePropagation()
                                     }: ()=>{}}

@@ -330,8 +330,17 @@ export default class ResponsiveScorecard extends React.Component{
         }
 
         this.setRandomIndicatorCycle(true)
+
+        //query params check
+        const urlParams = new URLSearchParams(window.location.search)
+        if(urlParams.has('ind')){
+
+        }
+        if(urlParams.has('cty')) console.log('has county: ')
+        if(urlParams.has('race')) console.log('has race: ')
         
     }
+
 
     // @observable randInd = 0 
     @observable alreadyDisplayedRandomIndicators = []

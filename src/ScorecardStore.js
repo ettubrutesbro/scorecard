@@ -357,6 +357,15 @@ export default class AppStore{
 
         this[which] = value
 
+        let queryString = []
+        if(this.indicator) queryString.push(`ind=${this.indicator}`)
+        if(this.county) queryString.push(`cty=${this.county}`)
+        if(this.race) queryString.push(`race=${this.race}`)
+        // if(this.year) queryString.push(`yr=${this.race}`)
+        queryString = '?'+ queryString.join('&')
+
+        window.history.replaceState({}, '', window.location.href.split('?')[0]+queryString)
+
         if(which==='indicator'){
             //ensure year validity when changing indicators
             this.setYearIndex()
