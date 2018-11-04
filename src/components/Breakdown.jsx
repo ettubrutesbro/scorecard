@@ -75,6 +75,11 @@ export default class Breakdown extends React.Component{
                         store = {store}
                         onExpand = {this.expandCountyList}
                         hasRace = {hasRace}
+                        expand = {this.allCounties}
+                        toggleDistribute = {()=>{
+                            console.log('toggling distribution...')
+                            this.expandCountyList(!this.allCounties?true:false)
+                        }}
                     />  
                 }
                 {!this.props.sources && indicator && hasRace &&

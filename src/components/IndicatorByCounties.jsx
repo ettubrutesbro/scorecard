@@ -57,6 +57,7 @@ export default class IndicatorByCounties extends React.Component{
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
+
         const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
         //all counties' performance in this indicator 
@@ -123,8 +124,6 @@ export default class IndicatorByCounties extends React.Component{
 
         const entries = this.props.entries
         const countyCount = validCounties.length
-        console.log(entries)
-        console.log(countyCount)
         const unit = (countyCount-1) / entries
         // const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
         // console.log(offset)
@@ -204,22 +203,24 @@ export default class IndicatorByCounties extends React.Component{
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
 
+        const distribute = !this.props.expand
+
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
                 return a.population > b.population? -1 : a.population < b.population? 1 : 0
-            }).slice(0,this.distribute?this.props.entries:performance.length)
+            }).slice(0,distribute?this.props.entries:performance.length)
             .map((e)=>{
 
                 return {
                     ...e,
-                    leftLabel: !this.distribute && !unstable? e.rank + '.' : '',
+                    leftLabel: !distribute && !unstable? e.rank + '.' : '',
                     label: <LabelComponent selected = {e.id===county} label = {e.label} right = {truncateNum(e.population)} />
                 }
             })
         }
         else performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-            if(!this.distribute){
+            if(!distribute){
                 return {...e, leftLabel: !unstable? e.rank+'.' : ''}
             
             }
@@ -242,7 +243,7 @@ export default class IndicatorByCounties extends React.Component{
         })
 
         .filter((e,i)=>{
-            if(!this.distribute) return true
+            if(!distribute) return true
             if(e===null) return false
             else return true
         })
@@ -269,7 +270,7 @@ export default class IndicatorByCounties extends React.Component{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
         if(race){
-            withRace = withRace.slice(0,this.distribute?this.props.entries:withRace.length) 
+            withRace = withRace.slice(0,distribute?this.props.entries:withRace.length) 
             .map((cty)=>{
                 const val = indicators[indicator].counties[cty.id][race][year]
                 const selected = cty.id===county
@@ -283,7 +284,7 @@ export default class IndicatorByCounties extends React.Component{
                 }
             })
         }
-        if(race && county && this.distribute){
+        if(race && county && distribute){
             if(find(withRace, (o)=>{return o.id===county})){
                 console.log('withRace bars already includes selected county, no need to replace last')
             }
@@ -332,7 +333,7 @@ export default class IndicatorByCounties extends React.Component{
                 beefyPadding
                 header = {(<HeaderComponent 
                     race = {race} 
-                    distribute = {this.distribute}
+                    distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
                 />)}
@@ -341,15 +342,15 @@ export default class IndicatorByCounties extends React.Component{
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                disableAnim = {this.distribute}
+                disableAnim = {distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
                 footer = {(
                     <FooterComponent
-                        offset = {this.fullHeight}
-                        onClick = {this.toggleDistribute}
+                        offset = {this.props.expand}
+                        onClick = {this.props.toggleDistribute}
                     />
                 )}
-                fullHeight = {this.fullHeight}
+                fullHeight = {this.props.expand}
             />
         )
     }
