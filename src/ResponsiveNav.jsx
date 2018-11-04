@@ -332,7 +332,7 @@ export default class ResponsiveNav extends React.Component{
 
                 <FlipMove 
                     typeName = {null}
-                    delay = {!store.indicator && !store.init? 100 : 0}
+                    delay = {!store.indicator && !store.init? 100 : open? 200 : 0}
                     duration = {200}
                     enterAnimation = {{
                         from: {opacity: 0, transform: 'translateY(0px)'},

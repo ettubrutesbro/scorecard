@@ -33,7 +33,7 @@ import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
 
 import cnico from './assets/cnlogo-long.svg'
-import maskImg from './assets/mask.png'
+import maskImg from './assets/mask2.png'
 
 import {capitalize} from './utilities/toLowerCase'
 
@@ -70,6 +70,7 @@ const App = styled.div`
     height: 100%;
     background: var(--offwhitefg);
     margin: auto;
+    overflow: hidden;
     @media ${media.optimal}{
         /*width: 100%;*/
         height: 960px;
@@ -161,22 +162,22 @@ const GreyMask = styled.div`
     width: 100%;
     height: 100%;
     transform-origin: 0% 0%;
-    transition: transform .75s;
+    transition: transform .5s linear;
     transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
     z-index: 1;
-/*    &::after{
+    &::after{
         content: '';
         position: absolute;
         top: 0;
-        width: 0;
+        width: 300px;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
-        right: -400px;
+        right: -300px;
         background-image: url(${maskImg});
-    }*/
+    }
 `
 const ShareSources = styled.div`
     flex-shrink: 0;
@@ -476,10 +477,9 @@ export default class ResponsiveScorecard extends React.Component{
                         />
                     </LegendContainer>
                 </BottomRow>
-                                <GreyMask 
+                <GreyMask 
                     show = {this.navOpen || store.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
-
                 />
                 <Footer>
                     <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
