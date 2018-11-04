@@ -355,11 +355,13 @@ export default class ResponsiveScorecard extends React.Component{
     }
     setRandomIndicatorCycle = (tf) => {
         if(tf){
+            console.log('starting interval for rand ')
             //set the first one too
             this.foistRandomIndicator()
             this.randomIndicatorInterval = setInterval(this.foistRandomIndicator, 5000)
         }
         else{ 
+            console.log('clearing rand interval')
             store.completeWorkflow('indicator',null)
             clearInterval(this.randomIndicatorInterval)
         }

@@ -123,12 +123,16 @@ export default class IndicatorByCounties extends React.Component{
 
         const entries = this.props.entries
         const countyCount = validCounties.length
-        const unit = parseInt(Math.ceil(countyCount / entries))
-        const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
+        console.log(entries)
+        console.log(countyCount)
+        const unit = (countyCount-1) / entries
+        // const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
+        // console.log(offset)
+        const offset = 0
             //-1 for california...
         let distribution = []
         for(let i = 1; i<entries-1; i++){
-            distribution.push((i*unit+offset))
+            distribution.push(Math.round(i*unit))
         }
         distribution.unshift(0)
         distribution.push(countyCount-1)
