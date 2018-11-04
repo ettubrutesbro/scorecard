@@ -61,7 +61,7 @@ export default class Breakdown extends React.Component{
                 else entryCount = 22
             }if(screen==='compact'){
                 if(hasRace) entryCount = 9
-                else entryCount = 18    
+                else entryCount = 17    
             }
         }
 
