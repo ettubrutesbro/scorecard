@@ -162,8 +162,8 @@ const GreyMask = styled.div`
     width: 100%;
     height: 100%;
     transform-origin: 0% 0%;
-    transition: transform .5s linear;
-    transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
+    transition: transform ${props=>props.show? .45 : .35}s linear;
+    transform: translateX(${props=>props.show?0 : 'calc(-100% - 300px)'});
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
     z-index: 1;
