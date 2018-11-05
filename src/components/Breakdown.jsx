@@ -69,7 +69,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper >
 
-                {indicator &&  
+                {/*indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
@@ -81,8 +81,8 @@ export default class Breakdown extends React.Component{
                             this.expandCountyList(!this.allCounties?true:false)
                         }}
                     />  
-                }
-                {indicator && hasRace &&
+                */}
+                {/*indicator && hasRace &&
 
                     <IndicatorByRaces
                         store = {store}
@@ -92,10 +92,17 @@ export default class Breakdown extends React.Component{
                             this.expandCountyList(false)
                         }: ()=>{} }
                     />
-                }
+                */}
                 <InfoMask 
-                    on = {this.props.sources}
+                    // on = {this.props.sources}
                 />
+
+                {indicator &&
+                    <Sources 
+                        indicator = {indicator} 
+                        expand = {this.props.sources}
+                    />
+                }
             </Wrapper>
         )
     }
@@ -106,12 +113,12 @@ export default class Breakdown extends React.Component{
 const InfoMask = styled.div`
     position: absolute;
     width: 100%;
-    top: -15px;
+    top: -20px;
     left: 0;
-    height: calc(100% + 30px);
+    height: calc(100% + 40px);
     overflow: hidden;
     z-index: 2;
-    border: 1px solid red;
+    // border: 1px solid red;
     &::after{
         content: '';
         position: absolute;
@@ -119,7 +126,7 @@ const InfoMask = styled.div`
         height: 100%;
         right: -100%;
         background: var(--offwhitefg);
-        background: red;
+        // background: red;
         transform: translateX(${props => props.on? -100: 10}%);
         transition: transform .35s;
     }

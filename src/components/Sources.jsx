@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import {find, findIndex} from 'lodash'
 
 import {Button, Toggle} from './generic/'
+import {ExpandWidthBox} from './ExpandBox'
 
 import sources from '../data/sourcesfinal'
 import indicators from '../data/indicators'
@@ -31,6 +32,11 @@ export default class Sources extends React.Component{
 //         })
 
         return(
+            <ExpandWidthBox
+                expand = {this.props.expand}
+                expandWidth = {500}
+                collapseWidth = {10}
+            >
             <AllSources>
                 <FadeCropper />
                 <Header>
@@ -43,6 +49,7 @@ export default class Sources extends React.Component{
                     </Contents>
                 </PerfectScrollBar>    
             </AllSources>
+            </ExpandWidthBox>
         )
     }
 }
