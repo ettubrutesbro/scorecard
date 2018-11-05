@@ -498,7 +498,7 @@ export default class ResponsiveScorecard extends React.Component{
                         />
                         <RandomIndicatorLabel show = {store.init}>
                             {indicator&& semanticTitles[indicator].shorthand} 
-                            {!store.init && !indicator&& semanticTitles[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].shorthand} 
+                            {!store.init && !indicator&& this.alreadyDisplayedRandomIndicators.length>0&& semanticTitles[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].shorthand} 
                             <SubRandLabel show = {store.init}>
                                 {!race && 'All races'}, {indicator && indicators[indicator].years[year]}{!indicator && '2018'}
                             </SubRandLabel>

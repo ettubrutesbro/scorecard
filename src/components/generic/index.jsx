@@ -549,7 +549,7 @@ const DropdownToggleWrapper = styled.div`
         height: 48px;
     }
     @media ${media.compact}{
-        height: 43.5px;
+        height: 44px;
     }
 `
 
