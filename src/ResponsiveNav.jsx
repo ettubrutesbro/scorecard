@@ -180,7 +180,7 @@ export default class ResponsiveNav extends React.Component{
     }
     componentDidMount(){
     }
-    componentDidUpdate(){
+    componentWillUpdate(){
         // if(this.props.open && this.raceDropdown) this.openRaceDropdown()
         if(this.props.open){
             document.addEventListener('click',this.handleClickOutside)
@@ -197,11 +197,12 @@ export default class ResponsiveNav extends React.Component{
     }
 
     handleClickOutside = (e) => {
-
-        if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
-            console.log('clicked something outside the nav:', e.target)
-            this.props.openNav()
-        }
+        // if(this.props.open && this.nav.current){
+            if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+                console.log('clicked something outside the nav:', e.target)
+                this.props.openNav()
+            }
+        // }
     }
 
 
@@ -224,10 +225,13 @@ export default class ResponsiveNav extends React.Component{
         return(
             <Nav ref = {this.nav}>
                 <IndicatorSelect 
-                    onClick = {()=>openNav('indicator')}
+                    onClick = {open!=='indicator'?()=>openNav('indicator'): (e)=>{
+                            openNav()
+                            // e.stopPropagation()
+                        }}
                     hovered = {this.hoveredWorkflow === 'indicator' && this.props.open!=='indicator'}
                     hasValue = {!init? indicator : ''}
-                    isOpen = {this.props.open==='indicator' && !this.raceDropdown}
+                    isOpen = {open==='indicator' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('indicator')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     // offset = {open==='county'}
@@ -235,16 +239,16 @@ export default class ResponsiveNav extends React.Component{
                     <IndicatorIcon 
                         hovered = {this.hoveredWorkflow === 'indicator'}
                         hasValue = {!init? indicator : ''} 
-                        isOpen = {this.props.open==='indicator'}
+                        isOpen = {open==='indicator'}
                     />
                     <SelectionValue>{!init && store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}
-                    onClick = {()=>openNav('county')}
-                    hovered = {this.hoveredWorkflow === 'county' && this.props.open!=='county'}
+                    onClick = {open!=='county'? ()=>openNav('county') : ()=>{ openNav()}}
+                    hovered = {this.hoveredWorkflow === 'county' && open!=='county'}
                     hasValue = {county}
-                    isOpen = {this.props.open==='county' && !this.raceDropdown}
+                    isOpen = {open==='county' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('county')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     offset = {open}
@@ -252,16 +256,16 @@ export default class ResponsiveNav extends React.Component{
                     <CountyIcon 
                         hovered = {this.hoveredWorkflow === 'county'}
                         hasValue = {county} 
-                        isOpen = {this.props.open==='county'}
+                        isOpen = {open==='county'}
                     />
                     <SelectionValueContainer>
                     <SelectionValue
                         hasValue = {county}
-                        muteAnyways = {!county && this.props.open==='county'}
+                        muteAnyways = {!county && open==='county'}
                         label = {store.county? countyLabels[store.county] : 'California'}
                         strikethrough = {county && this.hoveredWorkflow === 'countyStrikeout'}
                     >
-                        { store.county? countyLabels[store.county] : init||this.props.open? 'County' : 'California' }
+                        { store.county? countyLabels[store.county] : init||open? 'County' : 'California' }
                         
                     </SelectionValue>
                     {county &&
