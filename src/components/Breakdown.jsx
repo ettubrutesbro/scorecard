@@ -69,7 +69,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper >
 
-                {/*indicator &&  
+                {indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
@@ -81,8 +81,8 @@ export default class Breakdown extends React.Component{
                             this.expandCountyList(!this.allCounties?true:false)
                         }}
                     />  
-                */}
-                {/*indicator && hasRace &&
+                }
+                {indicator && hasRace &&
 
                     <IndicatorByRaces
                         store = {store}
@@ -92,13 +92,15 @@ export default class Breakdown extends React.Component{
                             this.expandCountyList(false)
                         }: ()=>{} }
                     />
-                */}
-                <InfoMask 
-                    // on = {this.props.sources}
+                }
+
+                <InfoMask
+                    on = {this.props.sources}
                 />
 
                 {indicator &&
                     <Sources 
+                        screen = {screen}
                         indicator = {indicator} 
                         expand = {this.props.sources}
                     />
@@ -118,6 +120,7 @@ const InfoMask = styled.div`
     height: calc(100% + 40px);
     overflow: hidden;
     z-index: 2;
+    pointer-events: none;
     // border: 1px solid red;
     &::after{
         content: '';
@@ -128,6 +131,6 @@ const InfoMask = styled.div`
         background: var(--offwhitefg);
         // background: red;
         transform: translateX(${props => props.on? -100: 10}%);
-        transition: transform .35s;
+        transition: transform .3s;
     }
 `

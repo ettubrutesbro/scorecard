@@ -73,22 +73,9 @@ class ExpandBox extends React.Component {
 
     componentWillUpdate(newProps){
         if(!newProps.expand && this.props.expand && this.props.withScroll){
-            // console.log(this.scrollbar.current.container)
-
-            console.log(findDOMNode(this.scrollbar.current).firstChild)
-            console.log(findDOMNode(this.scrollbar.current).firstChild.scrollTop)
            findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
         }
     }
-    // setScrollTop = () => {
-    //     // console.log(this.scrollbar)
-    //     console.log(this.scrollbar.current.getValues())
-    //     findDOMNode(this.scrollbar.current).scrollTop = 0
-    //     window.setTop = () => {
-    //         findDOMNode(this.scrollbar.current).scrollTop = 0
-    //     }
-    //     // this.scrollbar.current.scrollToTop()
-    // }
 
     render(){
         const {props} = this
@@ -210,6 +197,7 @@ export class ExpandWidthBox extends React.Component{
     render(){
     return(
         <WidthWrapper
+            className = {this.props.className}
             expandWidth = {this.props.expandWidth}
             height = {this.contentHeight}
         >
@@ -220,15 +208,33 @@ export class ExpandWidthBox extends React.Component{
                 style = {this.props.style}
                 className = {this.props.expand? 'expand' : 'collapse'}
             >
-                <WidthContent
-                    ref = {this.content}
-                    className = {this.props.expand? 'expand' : 'collapse'}
-                    expandWidth = {this.props.expandWidth}
-                    collapseWidth = {this.props.collapseWidth}
-                >
-                    {this.props.children}
-                </WidthContent>
+                {this.props.withScroll && 
+                    <Scrollbars
+                        style = {{width: '100%'}}
+                    >
+                        <WidthContent
+                            ref = {this.content}
+                            className = {this.props.expand? 'expand' : 'collapse'}
+                            expandWidth = {this.props.expandWidth}
+                            collapseWidth = {this.props.collapseWidth}
+                        >
+                            {this.props.children}
+                        </WidthContent>
+                    </Scrollbars>
+                }
+                {!this.props.withScroll && 
+
+                        <WidthContent
+                            ref = {this.content}
+                            className = {this.props.expand? 'expand' : 'collapse'}
+                            expandWidth = {this.props.expandWidth}
+                            collapseWidth = {this.props.collapseWidth}
+                        >
+                            {this.props.children}
+                        </WidthContent>
+                }
             </WidthBox>  
+
             <LeftBound
                 className = {this.props.expand? 'expand' : 'collapse'}
                 expandWidth = {this.props.expandWidth}

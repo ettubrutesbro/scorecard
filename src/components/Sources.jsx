@@ -12,60 +12,53 @@ import sources from '../data/sourcesfinal'
 import indicators from '../data/indicators'
 import media from '../utilities/media'
 
-import PerfectScrollBar from 'react-perfect-scrollbar'
-import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export default class Sources extends React.Component{
 
     render(){
 
-//         console.log('sources')
-//         const allSourceKeys = sources.map((s)=>{return s.indicator})
-//         console.log(allSourceKeys)
-//         Object.keys(indicators).forEach((ind)=>{
-//             if(allSourceKeys.includes(ind)){
-// 
-//             }
-//             else{
-//                 console.log('sources is missing ind', ind)
-//             }
-//         })
-
         return(
-            <ExpandWidthBox
+            <Wrapper
                 expand = {this.props.expand}
-                expandWidth = {500}
-                collapseWidth = {10}
+                expandWidth = {this.props.screen === 'optimal'? 608 : 400}
+                collapseWidth = {0}
+
+                withScroll
             >
             <AllSources>
                 <FadeCropper />
                 <Header>
                     Indicator and demographics sources
                 </Header>
-                <PerfectScrollBar>
                     <Contents>
                     <IndicatorSourceInfo indicator = {this.props.indicator} />    
                     <DemographicSourceInfo />
                     </Contents>
-                </PerfectScrollBar>    
             </AllSources>
-            </ExpandWidthBox>
+            </Wrapper>
         )
     }
 }
+
+const Wrapper = styled(ExpandWidthBox)`
+    z-index: 5;
+    pointer-events: ${props=>props.expand?'auto':'none'};
+    opacity: ${props=>props.expand?1:0};
+    transform: translateX(${props=>props.expand?0:'50px'});
+    transition: opacity .2s, transform .3s;
+`
 
 const AllSources = styled.div`
     position: relative;
     height: 100%;
     width: 100%;
-    border: 1px solid var(--bordergrey);
+    /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
         max-height: 602px;
     }
     @media ${media.compact}{
         max-height: 470px;
     }
-    z-index: 3;
 `
 const Contents = styled.div`
     padding: 35px;
