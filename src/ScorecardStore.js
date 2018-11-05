@@ -358,10 +358,10 @@ export default class AppStore{
         this[which] = value
 
         let queryString = []
-        if(this.indicator) queryString.push(`ind=${this.indicator}`)
+        if(this.indicator && !this.init) queryString.push(`ind=${this.indicator}`)
         if(this.county) queryString.push(`cty=${this.county}`)
         if(this.race) queryString.push(`race=${this.race}`)
-        // if(this.year) queryString.push(`yr=${this.race}`)
+        if((this.year===0 || this.year) && !this.init) queryString.push(`yr=${this.year}`)
         queryString = '?'+ queryString.join('&')
 
         window.history.replaceState({}, '', window.location.href.split('?')[0]+queryString)

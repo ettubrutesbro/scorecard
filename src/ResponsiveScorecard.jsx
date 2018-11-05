@@ -328,16 +328,43 @@ export default class ResponsiveScorecard extends React.Component{
                 this.blockUserBrowser('version')
             }
         }
-
-        this.setRandomIndicatorCycle(true)
-
         //query params check
-        const urlParams = new URLSearchParams(window.location.search)
-        if(urlParams.has('ind')){
 
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlInd = urlParams.get('ind')
+        const urlCty = urlParams.get('cty')
+        const urlRace = urlParams.get('race')
+        const urlYr = urlParams.get('yr')
+        if(urlParams.has('ind') && Object.keys(indicators).includes(urlInd)){
+            console.log('url has valid indicator')
+            this.setInit(false)
+            store.completeWorkflow('indicator', urlInd)
+
+            //we only care if theres cty/race if the url contains ind
+            if(urlParams.has('cty')){
+                if(Object.keys(countyLabels).includes(urlCty)){
+                    store.completeWorkflow('county', urlCty)
+                }
+             }
+            if(urlParams.has('race')){
+                const races = ['asian','black','latinx','white','other']
+                if(races.includes(urlRace)){
+                    store.completeWorkflow('race', urlRace)
+                }
+            } 
+            if(urlParams.has('yr')){
+                if(indicators[store.indicator].years[urlYr]){
+                    store.completeWorkflow('year',urlYr)
+                }
+            }
+        }else{
+            this.setRandomIndicatorCycle(true)   
         }
-        if(urlParams.has('cty')) console.log('has county: ')
-        if(urlParams.has('race')) console.log('has race: ')
+
+        
+
+
+        
         
     }
 
