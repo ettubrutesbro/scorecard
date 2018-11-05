@@ -364,7 +364,7 @@ export default class ResponsiveScorecard extends React.Component{
         
 
 
-        
+
         
     }
 
@@ -517,7 +517,9 @@ export default class ResponsiveScorecard extends React.Component{
                     show = {this.navOpen || store.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
                 />
-                <Footer>
+                
+            </App>
+            <Footer>
                     <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
                     <Feedback
                         // onClick = {()=>{
@@ -535,7 +537,6 @@ export default class ResponsiveScorecard extends React.Component{
                         <a href = "https://www.childrennow.org"><CNLogo /></a>
                     </FooterContent>
                 </Footer>
-            </App>
             </React.Fragment>
         )
     }
@@ -628,10 +629,11 @@ const Footer = styled(DarkBar)`
     align-items: center;
     justify-content: space-between;
     @media ${media.optimal}{
+        padding: 0 calc((100vw - 1550px) / 2);
         top: 960px;
     }
     @media ${media.compact}{
-
+        padding: 0 calc((100vw - 1300px) / 2);
         top: 740px;
     }
     z-index: 3;
