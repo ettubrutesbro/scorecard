@@ -69,7 +69,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper >
 
-                {!this.props.sources && indicator &&  
+                {indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
@@ -82,7 +82,7 @@ export default class Breakdown extends React.Component{
                         }}
                     />  
                 }
-                {!this.props.sources && indicator && hasRace &&
+                {indicator && hasRace &&
 
                     <IndicatorByRaces
                         store = {store}
@@ -93,12 +93,34 @@ export default class Breakdown extends React.Component{
                         }: ()=>{} }
                     />
                 }
-                {indicator && this.props.sources &&
-                    <Sources indicator = {indicator} />
-                }
+                <InfoMask 
+                    on = {this.props.sources}
+                />
             </Wrapper>
         )
     }
 
 }
 
+
+const InfoMask = styled.div`
+    position: absolute;
+    width: 100%;
+    top: -15px;
+    left: 0;
+    height: calc(100% + 30px);
+    overflow: hidden;
+    z-index: 2;
+    border: 1px solid red;
+    &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        right: -100%;
+        background: var(--offwhitefg);
+        background: red;
+        transform: translateX(${props => props.on? -100: 10}%);
+        transition: transform .35s;
+    }
+`

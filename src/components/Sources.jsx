@@ -58,6 +58,7 @@ const AllSources = styled.div`
     @media ${media.compact}{
         max-height: 470px;
     }
+    z-index: 3;
 `
 const Contents = styled.div`
     padding: 35px;
