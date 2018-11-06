@@ -20,21 +20,20 @@ export default class Sources extends React.Component{
         return(
             <Wrapper
                 expand = {this.props.expand}
-                expandWidth = {this.props.screen === 'optimal'? 608 : 400}
+                expandWidth = {this.props.screen === 'optimal'? 608 : 478}
                 collapseWidth = {0}
 
                 withScroll
+                header = {(<Header>
+                        Indicator and demographics sources
+                    </Header>)}
             >
-            <AllSources>
-                <FadeCropper />
-                <Header>
-                    Indicator and demographics sources
-                </Header>
+                <AllSources>
                     <Contents>
                     <IndicatorSourceInfo indicator = {this.props.indicator} />    
                     <DemographicSourceInfo />
                     </Contents>
-            </AllSources>
+                </AllSources>
             </Wrapper>
         )
     }
@@ -69,9 +68,11 @@ const Header = styled.div`
     margin: 0 20px;
     display: inline-flex;
     padding: 0 15px;
+    align-items: center;
     background: var(--offwhitefg);
     z-index: 3;
     transform: translateY(-50%);
+    height: 1px;
 `
 
 const Indicator = styled.div`

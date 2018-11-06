@@ -165,7 +165,7 @@ const FadeCropper = styled.div`
     position: absolute;
     left: 1px;
     width: calc(100% - 2px);
-    height: 20px;
+    height: 25px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
     opacity: ${props => props.show? 1 : 0};
     transition: opacity .25s;
@@ -201,6 +201,14 @@ export class ExpandWidthBox extends React.Component{
             expandWidth = {this.props.expandWidth}
             height = {this.contentHeight}
         >
+            {this.props.header &&
+                <Header>
+                    {this.props.header}
+                </Header>
+            }
+            {this.props.withScroll &&
+                <FadeCropper show = {this.props.expand} />
+            }
             <WidthBox
                 expandWidth = {this.props.expandWidth}
                 collapseWidth = {this.props.collapseWidth}
@@ -223,25 +231,27 @@ export class ExpandWidthBox extends React.Component{
                     </Scrollbars>
                 }
                 {!this.props.withScroll && 
-
-                        <WidthContent
-                            ref = {this.content}
-                            className = {this.props.expand? 'expand' : 'collapse'}
-                            expandWidth = {this.props.expandWidth}
-                            collapseWidth = {this.props.collapseWidth}
-                        >
-                            {this.props.children}
-                        </WidthContent>
+                    <WidthContent
+                        ref = {this.content}
+                        className = {this.props.expand? 'expand' : 'collapse'}
+                        expandWidth = {this.props.expandWidth}
+                        collapseWidth = {this.props.collapseWidth}
+                    >
+                        {this.props.children}
+                    </WidthContent>
                 }
             </WidthBox>  
-
+            {this.props.footer &&
+                <Footer>
+                    {this.props.footer}
+                </Footer>
+            }
             <LeftBound
                 className = {this.props.expand? 'expand' : 'collapse'}
                 expandWidth = {this.props.expandWidth}
                 collapseWidth = {this.props.collapseWidth}
              />
-            <RightBound
-            />
+            <RightBound/>
         </WidthWrapper>
     )
     }

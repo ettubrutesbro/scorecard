@@ -337,12 +337,10 @@ export default class IndicatorByCounties extends React.Component{
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
                 />)}
-                expandedHeader = {expandedHeader}
-                expandedSubHeader = {performance.length + ' counties reported data'}
+
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                disableAnim = {distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
                 footer = {(
                     <FooterComponent
