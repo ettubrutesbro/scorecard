@@ -3,7 +3,6 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 
 import styled, {css} from 'styled-components'
-// import styles from './InteractiveMap.module.css'
 
 import {isEqual, map, debounce} from 'lodash'
 import chroma from 'chroma-js'
@@ -28,8 +27,8 @@ const TheMap = styled.svg`
 
 const CountyStyle = css`
     cursor: pointer;
-    stroke: ${props => props.highlighted?'pink': 'transparent'};
-    stroke-width: ${props => props.selected? 3.5 : 2.25};
+    stroke: ${props => props.highlighted?'var(--peach)': 'transparent'};
+    stroke-width: ${props => props.selected? 3.5 : 3.5};
 `
 
 const FullState = styled.polygon`
@@ -46,9 +45,13 @@ const CountyPath = styled.path`${CountyStyle}`
 @observer class InteractiveMap extends React.Component{
 
     @observable targetCoords = {x: 0, y: 0}
-        @action updateCoords = (x, y) => this.targetCoords = {x: x, y: y}
-    @observable svgRect = null
-
+    @observable defaultCoords = {x: 0, y: 0}
+    @action updateCoords = (x, y, forDefault) => {
+        if(!forDefault) this.targetCoords = {x: x, y: y}
+        else this.defaultCoords = {x: x, y: y}
+    }
+    @observable defaultTooltip = null
+        @action setDefaultTooltip = (val) => this.defaultTooltip = val
 
     componentDidUpdate(prevProps){
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
@@ -63,11 +66,24 @@ const CountyPath = styled.path`${CountyStyle}`
                 const svgRect = document.getElementById('svg').getBoundingClientRect()
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
-                const newX = (bbox.x + (bbox.width/2)) - svgRect.x
-                const newY = (bbox.y) - svgRect.y
-
+                const newX = (bbox.left + (bbox.width/2)) - svgRect.left
+                const newY = (bbox.top) - svgRect.top
                 this.updateCoords(newX, newY)
             }
+        }
+        else if(this.props.defaultHighlight && this.props.defaultHighlight !== prevProps.defaultHighlight){
+                console.log('hello')
+                // this.defaultTooltip = indicators[indicator].highlight
+                this.setDefaultTooltip(this.props.defaultHighlight)
+                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                const bbox = document.getElementById(this.props.defaultHighlight).getBoundingClientRect()
+                const newX = (bbox.left + (bbox.width/2)) - svgRect.left
+                const newY = (bbox.top) - svgRect.top
+
+                this.updateCoords(newX, newY, true)
+        }
+        else if(!this.props.defaultHighlight){
+            this.setDefaultTooltip(null)
         }
     }
 
@@ -94,13 +110,18 @@ const CountyPath = styled.path`${CountyStyle}`
     render(){
         const {store, colorStops, quantile, selected, hoveredCounty, ...domProps} = this.props
         const {indicator, colorScale, race} = store
-        let tipPopulation = hoveredCounty? demopop[hoveredCounty].population :  ''
+
+        const tooltipCty = hoveredCounty? hoveredCounty : this.defaultTooltip? this.defaultTooltip : ''
+
+        let tipPopulation = tooltipCty? demopop[tooltipCty].population :  ''
         if(tipPopulation >= 1000000) tipPopulation = (tipPopulation/1000000).toFixed(1) + ' million'
         else if(tipPopulation >=1000) tipPopulation = (tipPopulation/1000).toFixed(1) + 'k'
-        let tipData = this.props.data && hoveredCounty? this.props.data[hoveredCounty] : 'other'
+        let tipData = this.props.data && tooltipCty? this.props.data[tooltipCty] : 'other'
         let noData = false
 
-        const cty = countyLabels[hoveredCounty]
+        let cty = countyLabels[tooltipCty]
+
+
         if(!tipData && tipData!==0){
             if(race){
                 if(race==='other') `There's no data on ${semanticTitles[indicator].who} of other races in ${cty} for this indicator.`
@@ -123,6 +144,25 @@ const CountyPath = styled.path`${CountyStyle}`
             <Wrapper 
                 onClick = {(e)=>this.handleClick(e, e.target.id)}
             >
+                {this.props.data && this.defaultTooltip && !this.tooltip && !selected && 
+                    <Tooltip 
+                        key = {this.defaultTooltip}
+                        pos = {this.defaultCoords}
+                        style = {{pointerEvents: 'none'}}
+                    >
+                        <Tip>
+                            <div>
+                                <h2>{cty}</h2>
+                                <Subtip>{tipPopulation} children</Subtip>
+                            </div>
+                            {this.props.data &&
+                            <div>
+                                <Tipnum>{tipData}</Tipnum>
+                            </div>
+                            }
+                        </Tip>
+                    </Tooltip>
+                }
                 {this.tooltip && 
                     <Tooltip
                         key = {hoveredCounty}
@@ -171,7 +211,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 },
                                 // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
                                 selected: selected===id,
-                                highlighted: this.highlighted===id || this.props.hoveredCounty===id,
+                                highlighted: this.highlighted===id || this.props.hoveredCounty===id || (!selected && !this.props.hoveredCounty && this.defaultTooltip === id),
                                 // onClick: ()=> this.handleClick(id)
                             } : {}
                         

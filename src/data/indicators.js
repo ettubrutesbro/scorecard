@@ -80,5 +80,14 @@ const indicators = {
     FYTimelyMedical: FYTimelyMedical,
     fosterYouthGraduation: FosterYouthGraduation,
 }
+
+export const featuredInds = [
+    'collegeLevelMath',
+    'earlyPrenatalCare',
+    'permanency',
+    'upToDateImmunizations',
+    'FYTimelyDental'
+]
+
 console.log(indicators)
 export default indicators

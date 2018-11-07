@@ -53,7 +53,7 @@ const AllSources = styled.div`
     width: 100%;
     border: 1px solid var(--bordergrey);
     @media ${media.optimal}{
-        max-height: 605px;
+        max-height: 602px;
     }
     @media ${media.compact}{
         max-height: 470px;

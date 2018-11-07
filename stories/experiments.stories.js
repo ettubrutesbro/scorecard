@@ -9,7 +9,9 @@ import CountUp from 'react-countup'
 
 
 import CountingNumber from '../src/components/CountingNumber'
-import ExpandBox from '../src/components/ExpandBox'
+import ExpandBox, {ExpandWidthBox} from '../src/components/ExpandBox'
+import {Sprite} from '../src/components/generic/Icon'
+
 
 addDecorator(withKnobs)
 
@@ -29,13 +31,118 @@ const TestTip = styled.div`
     color: white;
 
 `
+
+const Iono = styled.div`
+    position: absolute;
+    top: 0;
+    background: var(--offwhitefg);
+    width: 100vw; height: 100vh;
+`
+const MockContent = styled.div`
+    /*border: 1px solid blue;*/
+    width: 100%;
+    height: 200px;
+    &.more{
+        height: 500px;
+    }
+
+
+
+`
+const MockExpandButton1 = styled.div`
+
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 17px;
+    font-size: 13px;
+`
+const MockExpandButton2 = styled.div`
+position: absolute;
+right: 0; top: 0;
+    display: inline-flex;
+    padding: 10px 17px;
+    border: 1px solid green;
+`
+
+
+const Ruler = styled.div`
+    position: absolute; 
+    top: 100px; left: 300px;
+    outline: 3px solid red;
+    width: 20px;
+    height: 500px;
+    &::after{
+        content: '';
+        position: absolute;
+        top: 200px;
+        border: 1px solid blue;
+        width: 100%;
+    }
+`
+
 storiesOf('Experiments', module)
-.add('ExpandBox', ()=>{
-    const show = boolean('show box', false)
+.add('Sprite',()=>{
+    const tog = boolean('toggle sprite state', false)
     return(
-        <ExpandBox show = {show}>
-            eoatnuhaoentuht
-        </ExpandBox>
+        <Iono>
+        <Sprite 
+            img = "chevsprite" 
+            color = "strokepeach"
+            state = {tog?'up':'down'}
+        />
+        </Iono>
+    )
+})
+.add('ExpandBox', ()=>{
+    const moreContent = boolean('more content', false)
+    const expand = boolean('expand box', false)
+
+    return(
+        <Iono>
+            <Ruler >
+                
+            </Ruler>
+            <ExpandBox 
+                expand = {expand}
+                expandHeight = {500}
+                collapseHeight = {200}
+                footer = 'foot'
+            >
+                <MockContent className = {moreContent? 'more' : ''}>
+                    Lorem ipsum
+                </MockContent>
+            </ExpandBox>
+        </Iono>
+    )   
+})
+.add('ExpandWidthBox', ()=>{
+    const moreContent = boolean('more content', false)
+    const expand = boolean('expand box', false)
+
+    return(
+        <Iono>
+            <ExpandWidthBox 
+                expand = {expand}
+                expandWidth = {167}
+                collapseWidth = {120}
+            >
+                <MockExpandButton1>
+                    {expand && 'See all counties'}         
+                    {!expand && 'See less'}         
+                    <Sprite 
+                        style = {{
+                            marginLeft: '10px',
+                            width: '20px',
+                            height: '20px'
+                        }}
+                        img = "chevsprite" 
+                        color = "normtext"
+                        state = {expand?'down':'up'}
+                    />
+                </MockExpandButton1>
+               
+            </ExpandWidthBox>
+        </Iono>
     )   
 })
 .add('CountUp',()=>{

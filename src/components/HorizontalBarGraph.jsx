@@ -7,33 +7,53 @@ import {findDOMNode} from 'react-dom'
 
 import media from '../utilities/media'
 
-import PerfectScrollBar from 'react-perfect-scrollbar'
-import 'react-perfect-scrollbar/dist/css/styles.css';
+import ExpandBox from './ExpandBox'
 
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
 
-import {floatingCorner, flushHard} from './BoxStyling'
 
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    @media ${media.optimal}{
-
-        ${props => props.fullHeight? 'height: calc(100% - 30px);' : ''}   
-        max-height: 605px; 
-    }
-    @media ${media.compact}{
-        ${props => props.fullHeight? 'height: calc(100% - 15px);' : ''}    
-        max-height: 470px;
-    }
     border: 1px solid var(--bordergrey);
 `
 
-@observer
-export default class HorizontalBarGraph extends React.Component{
+const WrappedGraphComponent = (props) => {
+    const {header, footer, fullHeight, withScroll, ...restOfProps} = props
+    return props.expandable?(
+        <ExpandBox 
+            header = {header}
+            footer = {footer}
+            expand = {fullHeight}
+            withScroll = {withScroll}
+            collapseHeight = {props.collapseHeight}
+            expandHeight = {props.expandHeight}
+        >
+            <HorizontalBarGraph {...restOfProps} />
+        </ExpandBox>
+    ):(
+        <Wrapper>
+            <Header>{props.header}</Header>
+            <HorizontalBarGraph {...restOfProps} />
+        </Wrapper>
+    )
+}
+
+const Header = styled.div`
+    position: absolute;
+    margin: 0 20px;
+    display: inline-flex;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+    z-index: 3;
+    transform: translateY(-50%);
+`
+
+@observer class HorizontalBarGraph extends React.Component{
 
     @observable width = 400
+    @observable contentHeight = 300
     @observable hoveredRow = null
     @observable expanded = false
 
@@ -53,44 +73,33 @@ export default class HorizontalBarGraph extends React.Component{
         this.setGraphDimensions()
         window.addEventListener('resize', this.setGraphDimensions)
     }
-
+    @action
     setGraphDimensions = () => {
         if(!this.graph) return
         if(!this.graph.current) return
         this.width = findDOMNode(this.graph.current).offsetWidth 
+        // this.contentHeight = findDOMNode(this.graph.current).offsetHeight 
+        // console.log(this.contentHeight)
     }
 
     render(){
         const {selectBar} = this.props
         // console.log(selectBar)
         return (
-            <Wrapper fullHeight = {this.props.fullHeight}>
-            <Header>
-                {this.props.header}
-            </Header>
-            {this.props.beefyPadding && <FadeCropper />}
-            <PerfectScrollBar>
+
             <GraphTable
                 ref = {this.graph}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
             >
-                {/* 
-                <Header expanded = {this.expanded}>
-                    {!this.expanded && this.props.header}
-                    {this.expanded && this.props.expandedHeader}
-                    {this.expanded && this.props.expandedSubHeader && 
-                        <Subheader>{this.props.expandedSubHeader}</Subheader>
-                    }
-                </Header>
-                */}
                 <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
-                    duration = {250}
-                    typeName = {null}
-                    enterAnimation = {null}
-                    leaveAnimation = {null}
-                    disableAllAnimations = {this.props.disableAnim || this.expanded}
+                    duration = {175}
+                    // staggerDurationBy = {5}
+                    // typeName = {null}
+                    enterAnimation = 'fade'
+                    leaveAnimation = 'fade'
+                    // disableAllAnimations = {this.props.disableAnim || this.expanded}
                 >
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
@@ -180,15 +189,7 @@ export default class HorizontalBarGraph extends React.Component{
                 </Content>
 
             </GraphTable>
-            </PerfectScrollBar>
 
-           {this.props.beefyPadding && <FadeCropperBottom />}
-            {this.props.footer && 
-            <Footer>
-                {this.props.footer}
-            </Footer>
-            }
-            </Wrapper>
         )
     }
 }
@@ -198,7 +199,8 @@ const Pct = styled.span`
 `
 
 const GraphTable = styled.div`
-    position: relative;
+    /*position: absolute;*/
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     letter-spacing: 0.5px;
@@ -217,37 +219,6 @@ const CropBox = styled.div`
     z-index: 3;
 `
 
-const Header = styled(CropBox)`
-    transform: translateY(-50%);
-`
-const FadeCropper = styled.div`
-    /*border: 1px solid red;*/
-    z-index: 2;
-    position: absolute;
-    width: 100%;
-    height: 40px;
-    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
-    /*border: 1px solid green;*/
-
-`
-const FadeCropperBottom = styled(FadeCropper)`
-    top: auto;
-    bottom: 0px;
-    height: 30px;
-    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
-`
-const Footer = styled(CropBox)`
-    bottom: 0; right: 0;
-    transform: translateY(50%);
-    height: 4px; display: flex; align-items: center;
-`
-
-const Subheader = styled.div`
-    font-size: 13px;
-    color: var(--fainttext);
-    margin-top: 5px;
-
-`
 const Content = styled.div`
     width: 100%;
     height: 100%;
@@ -297,11 +268,11 @@ const RowComponent = styled.div`
 `
 const AverageLine = styled.div`
     position: absolute;
-    bottom: -12px;
+    bottom: 20px;
     left: ${props => props.labelWidth + 20}px;
     width: 1px;
     background-color: var(--fainttext);
-    height: calc(100% + 21px);
+    height: calc(100% - 52px);
     box-shadow: -1.5px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
@@ -379,3 +350,6 @@ HorizontalBarGraph.defaultProps = {
     header: 'Needs header',
     alignValue: 'outside' //outside or inside
 }
+
+
+export default WrappedGraphComponent

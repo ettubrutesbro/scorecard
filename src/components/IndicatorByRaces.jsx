@@ -1,5 +1,7 @@
 
 import React from 'react'
+import {observable, action} from 'mobx'
+import {observer} from 'mobx-react'
 import styled from 'styled-components'
 import indicators from '../data/indicators'
 import semanticTitles from '../assets/semanticTitles'
@@ -7,6 +9,7 @@ import semanticTitles from '../assets/semanticTitles'
 import HorizontalBarGraph from './HorizontalBarGraph'
 
 import {capitalize} from '../utilities/toLowerCase'
+import media from '../utilities/media'
 
 const races = [
     'asian', 'black', 'latinx', 'white', 'other'
@@ -21,10 +24,22 @@ const Label = styled.span`
 `
 const Wrapper = styled.div`
     // margin-top: 45px;
+    position: absolute;
 
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+    transform: translateY(${props => props.offset}px);
+    transition: transform .35s  cubic-bezier(0.215, 0.61, 0.355, 1);
+    cursor: ${props=>props.clickable?'pointer':'auto'};
 `
-
+@observer
 export default class IndicatorByRaces extends React.Component{
+    @observable hovered = false
+    @action hover = (tf) => this.hovered = tf
+    componentDidUpdate(){
+        if(this.props.expand) this.hover(false)
+    }
     render(){
         const {indicator, year, county, colorScale} = this.props.store
         const selectedRace = this.props.store.race
@@ -57,12 +72,24 @@ export default class IndicatorByRaces extends React.Component{
         })
         // console.log(indicatorPerformanceByRace)
         return(
-            <Wrapper>
+            <Wrapper
+                offset = {this.props.expand? -150 : -50}
+                clickable = {!this.props.expand}
+                onClick = {!this.props.expand? this.props.onClick: ()=>{}}
+                onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
+                onMouseLeave = {this.props.expand? ()=>{}: ()=>this.hover(false)}
+            >
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
+                    expandable
+                    expandHeight = {150}
+                    collapseHeight = {50}
+                    fullHeight = {this.props.expand}
+
+
                     selectable
-                    header = {<Label><span>Indicator breakdown</span> by race</Label>}
-                    bars = {indicatorPerformanceByRace}
+                    header = {<Header hovered = {!this.props.expand? this.hovered : false} offset = {!this.props.expand}><span>Indicator breakdown</span> by race</Header>}
+                    bars = {this.props.expand? indicatorPerformanceByRace : []}
                     labelWidth = {150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
@@ -70,3 +97,12 @@ export default class IndicatorByRaces extends React.Component{
         )
     }
 } 
+
+const Header = styled.div`
+    margin: 0 20px;
+    padding: 0 15px;
+    background: var(--offwhitefg);
+    transform: translateY(${props=>props.offset?25:0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    color: ${props => props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
+`

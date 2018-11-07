@@ -12,6 +12,7 @@ import {capitalize} from './utilities/toLowerCase'
 import {findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
+
 const {detect} = require('detect-browser')
 const browserInfo = detect()
 
@@ -25,6 +26,8 @@ export default class AppStore{
     @observable screen = getMedia()
 
     @action resize = debounce(() => { this.screen = getMedia() }, 150)
+
+    @observable init = true
 
     @observable indicator = null
     @observable county = null
@@ -51,7 +54,7 @@ export default class AppStore{
 
         const classes = chroma.limits(allNums, opts.breakAlgorithm, opts.classes)
 
-        return chroma.scale(opts.scheme)
+        return chroma.scale(this.init? ['#f4f4f4','#bbbbbb'] : opts.scheme) 
             .domain([0,100])
             .padding([opts.padLo, opts.padHi])
             .classes(classes)
@@ -354,6 +357,15 @@ export default class AppStore{
 
         this[which] = value
 
+        let queryString = []
+        if(this.indicator && !this.init) queryString.push(`ind=${this.indicator}`)
+        if(this.county) queryString.push(`cty=${this.county}`)
+        if(this.race) queryString.push(`race=${this.race}`)
+        if((this.year===0 || this.year) && !this.init) queryString.push(`yr=${this.year}`)
+        queryString = '?'+ queryString.join('&')
+
+        window.history.replaceState({}, '', window.location.href.split('?')[0]+queryString)
+
         if(which==='indicator'){
             //ensure year validity when changing indicators
             this.setYearIndex()
@@ -378,13 +390,14 @@ export default class AppStore{
             let adjustHi = 0
 
             if(range < 25){
-                console.log('adjusting colors for small range')
                 //small range
                 if((100 - hi) > lo){
+                    console.log('faint tight range')
                     //small range low end (too light)
                     adjustLo = ((100-hi) / 2)/100
                     adjustHi = -(((100-hi) / 2)/100)
                 }else{
+                    console.log('dark tight range')
                     adjustLo = -(lo/2)/100
                     // adjustHi = 0.1
                     //small range high end (too dark)
@@ -392,6 +405,7 @@ export default class AppStore{
             }
             else{ //if the range is normal, but some items are too faint, make adjustment
                 if(lo<30){
+                    console.log('faint normal range')
                     adjustLo = 0.2
                     adjustHi = -(((100-hi)/3)/100) 
                 }

@@ -18,8 +18,11 @@ import {truncateNum} from '../utilities/sigFig'
 
 import ordinal from 'ordinal'
 
-import HorizontalBarGraph from './HorizontalBarGraph'
+import Graph from './HorizontalBarGraph'
+import {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
+import {ExpandWidthBox} from './ExpandBox'
+
 
 function indexOfClosest(nums, target) {
   let closest = 1000;
@@ -54,6 +57,7 @@ export default class IndicatorByCounties extends React.Component{
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
+
         const {county, indicator, year, race, colorScale} = this.props.store
         const ind = indicators[indicator]
         //all counties' performance in this indicator 
@@ -120,12 +124,14 @@ export default class IndicatorByCounties extends React.Component{
 
         const entries = this.props.entries
         const countyCount = validCounties.length
-        const unit = parseInt((countyCount / entries).toFixed(0))
-        const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
+        const unit = (countyCount-1) / entries
+        // const offset = parseInt((Math.abs((countyCount - (unit*(entries-2))) - unit) / 2).toFixed(0))
+        // console.log(offset)
+        const offset = 0
             //-1 for california...
         let distribution = []
         for(let i = 1; i<entries-1; i++){
-            distribution.push((i*unit+offset))
+            distribution.push(Math.round(i*unit))
         }
         distribution.unshift(0)
         distribution.push(countyCount-1)
@@ -156,7 +162,7 @@ export default class IndicatorByCounties extends React.Component{
 
             this.selectedIndex = replaceIndex
             distribution[replaceIndex] = mustInclude
-
+;``
             // console.log('adjusted distribution:', distribution)
 
             // this.condensed = distribution.slice(0)
@@ -169,6 +175,9 @@ export default class IndicatorByCounties extends React.Component{
             this.condensed = []
         }
         this.distribution = distribution
+        console.log(indicator, entries)
+        console.log(distribution)
+
     }
 
 
@@ -189,28 +198,31 @@ export default class IndicatorByCounties extends React.Component{
 
     render(){
 
-        const {county, race, year, indicator, completeWorkflow, colorScale} = this.props.store
+        const {county, race, year, indicator, completeWorkflow, colorScale, screen} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
 
+        const distribute = !this.props.expand
+
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
                 return a.population > b.population? -1 : a.population < b.population? 1 : 0
-            }).slice(0,this.distribute?this.props.entries:performance.length)
+            }).slice(0,distribute?this.props.entries:performance.length)
             .map((e)=>{
 
                 return {
                     ...e,
-                    leftLabel: !this.distribute && !unstable? e.rank + '.' : '',
+                    leftLabel: !distribute && !unstable? e.rank + '.' : '',
                     label: <LabelComponent selected = {e.id===county} label = {e.label} right = {truncateNum(e.population)} />
                 }
             })
         }
         else performance = performance.map((e,i,arr)=>{
             const distrib = this.distribution
-            if(!this.distribute){
+            if(!distribute){
                 return {...e, leftLabel: !unstable? e.rank+'.' : ''}
+            
             }
             else if(distrib.includes(i)){ 
                 return {
@@ -231,7 +243,7 @@ export default class IndicatorByCounties extends React.Component{
         })
 
         .filter((e,i)=>{
-            if(!this.distribute) return true
+            if(!distribute) return true
             if(e===null) return false
             else return true
         })
@@ -240,9 +252,7 @@ export default class IndicatorByCounties extends React.Component{
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 
-        const footerComponent = this.distribute?(
-            <Button onClick = {this.toggleDistribute} label = "See all counties" className = 'compact' />) 
-            : <Button onClick = {this.toggleDistribute} label = "Back to overview" className = 'compact' />
+            
 
         let highestValue = 0
         let withRace = !race? '' : Object.keys(demopop)
@@ -260,7 +270,7 @@ export default class IndicatorByCounties extends React.Component{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
         if(race){
-            withRace = withRace.slice(0,this.distribute?this.props.entries:withRace.length) 
+            withRace = withRace.slice(0,distribute?this.props.entries:withRace.length) 
             .map((cty)=>{
                 const val = indicators[indicator].counties[cty.id][race][year]
                 const selected = cty.id===county
@@ -274,7 +284,7 @@ export default class IndicatorByCounties extends React.Component{
                 }
             })
         }
-        if(race && county && this.distribute){
+        if(race && county && distribute){
             if(find(withRace, (o)=>{return o.id===county})){
                 console.log('withRace bars already includes selected county, no need to replace last')
             }
@@ -287,14 +297,43 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
+        let expandHeight, collapseHeight
+        if(this.props.hasRace){
+            if(screen==='optimal'){
+                expandHeight = 515
+                collapseHeight = 390
+            }
+            else if(screen==='compact'){
+                expandHeight = 390
+                collapseHeight = 280
+            }
+        }
+        else{ //no race, full expand
+            if(screen==='optimal'){
+                expandHeight = 575
+                collapseHeight = 575
+            }
+            else if(screen==='compact'){
+                expandHeight = 450
+                collapseHeight = 450
+            }
+        }
+
+        console.log(performance)
+
         return (
-            <HorizontalBarGraph
+            <Graph
+                expandable
+                expandHeight = {expandHeight}
+                collapseHeight = {collapseHeight}
+                withScroll
+                
                 selected = {county}
                 selectable
                 beefyPadding
                 header = {(<HeaderComponent 
                     race = {race} 
-                    distribute = {this.distribute}
+                    distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
                 />)}
@@ -303,10 +342,15 @@ export default class IndicatorByCounties extends React.Component{
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                disableAnim = {this.distribute}
+                disableAnim = {distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
-                footer = {footerComponent}
-                fullHeight = {this.fullHeight}
+                footer = {(
+                    <FooterComponent
+                        offset = {this.props.expand}
+                        onClick = {this.props.toggleDistribute}
+                    />
+                )}
+                fullHeight = {this.props.expand}
             />
         )
     }
@@ -315,28 +359,105 @@ export default class IndicatorByCounties extends React.Component{
 const HeaderComponent = (props) => {
     return(
         <Header>
+            <HeaderTitle hasRace = {props.race}>
             {props.race && props.race === 'other' && 'In counties with the most children of other races'}
             {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
             {!props.race && props.distribute && 'County overview'}
             {!props.race && !props.distribute && 'All counties'}
+            </HeaderTitle>
             {!props.race &&
-        <Toggle
-            style = {{marginLeft: '15px'}}
-            options = {[
-                {label: 'by %', value: 'pct'},
-                {label: 'by Child Population', value: 'pop'}
-            ]}
-            theme = "bw"
-            onClick = {props.setOverviewSort}
-            selected = {props.sortOverviewBy === 'pct'? 0 : 1}
-        />
+                <HeaderToggle
+                    offset = {!props.distribute}
+                    options = {[
+                        {label: 'by %', value: 'pct'},
+                        {label: 'by Child Population', value: 'pop'}
+                    ]}
+                    theme = "bw"
+                    onClick = {props.setOverviewSort}
+                    selected = {props.sortOverviewBy === 'pct'? 0 : 1}
+                />
         }
         </Header>
     )
 }
-const Header = styled.div`
-    display: flex; align-items: center; 
+const FooterComponent = (props) => {
+    return(
+        <Footer >
+            <ExpandWidthBox
+                expand = {!props.offset}
+                expandWidth = {167}
+                collapseWidth = {120}
+            >
+                <ExpandButton 
+                    onClick = {props.onClick} 
+                    label = {(
+                        <React.Fragment>
+                            {!props.offset && 'See all counties'}
+                            {props.offset && 'See less'}
+                            <Sprite 
+                                style = {{
+                                    marginLeft: '10px',
+                                    width: '18px',
+                                    height: '18px'
+                                }}
+                                img = "chevsprite" 
+                                color = "normtext" 
+                                state = {props.offset? 'up' : 'down'} 
+                            />
+                        </React.Fragment>
+                    )}
+                    className = 'compact borderless' 
+                />
+            </ExpandWidthBox>
+        </Footer> 
+    )
+}
+const ExpandButton = styled(Button)`
+    &:hover{
+        .sprite-chevsprite{
+            fill: var(--strokepeach);
+        }
+    }
+`
+const headerfooter = styled.div`
+    display: inline-flex; align-items: center; 
     height: 3px;
+    margin: 0 20px;
+    /*background: var(--offwhitefg);*/
+`
+const Header = styled(headerfooter)`
+
+`
+const HeaderTitle = styled.div`
+    width: ${props => !props.hasRace? '130px' : 'auto'};
+    position: relative;
+    height: 2px;
+    padding: 0 15px;
+    box-sizing: content-box;
+    display: inline-flex;
+    align-items: center;
+    background: var(--offwhitefg);
+`
+const HeaderToggle = styled(Toggle)`
+    /*margin-left: 15px;*/
+    position: relative;
+    &::before{
+        position: absolute;
+        content: '';
+        width: 15px;
+        right: -15px;
+        top: 0; bottom: 0; margin: auto;
+        height: 2px;
+        background-color: var(--offwhitefg);
+    }
+    transform: translateX(${props=>props.offset? -35 : 0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+`
+const Footer = styled(headerfooter)`
+    bottom: -1px; right: 0;
+    position: absolute;
+    transition: transform .25s;
+    transform: translateX(${props=>props.offset?50:0}px);
 `
 const Prompt = styled.div`
     position: absolute;
@@ -346,19 +467,7 @@ const Prompt = styled.div`
     opacity: ${props => props.visible? 1 : 0};
 `
 
-// IndicatorByCounties.defaultProps = {
-//     entries: 12,
-// }
 
-
-// const Faint = styled.span`
-//     color: var(--fainttext);
-//     margin-right: 5px;
-// `
-// const FaintPop = styled.span`
-//     color: var(--fainttext);
-//     margin-left: 4px;
-// `
 
 const SelectedNum = styled.span`
     color: var(--peach);
@@ -366,7 +475,6 @@ const SelectedNum = styled.span`
 `
 const SelectedCounty = styled.span`
     color: var(--strokepeach);
-    // margin-right: 4px;
 `
 
 

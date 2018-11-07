@@ -22,10 +22,7 @@ import {getMedia} from '../utilities/media'
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
 `
 
 const BreakdownBox = styled.div`
@@ -54,34 +51,46 @@ export default class Breakdown extends React.Component{
         const {indicator, county, race, year, screen} = store
         //CALCULATE # ENTRIES FOR FIRST CHART FROM OFFSET + HASRACE
 
+        const hasRace = indicators[indicator].categories.includes('hasRace')
         let entryCount = 0
+
         if(indicator){
-            const hasRace = indicators[indicator].categories.includes('hasRace')
+           
             if(screen==='optimal'){
                 if(hasRace) entryCount = 14
-                else entryCount = 20
+                else entryCount = 22
             }if(screen==='compact'){
                 if(hasRace) entryCount = 9
-                else entryCount = 18    
+                else entryCount = 17    
             }
         }
 
 
         return(
-            <Wrapper 
+            <Wrapper >
 
-            >
                 {!this.props.sources && indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
                         onExpand = {this.expandCountyList}
+                        hasRace = {hasRace}
+                        expand = {this.allCounties}
+                        toggleDistribute = {()=>{
+                            console.log('toggling distribution...')
+                            this.expandCountyList(!this.allCounties?true:false)
+                        }}
                     />  
                 }
-                {!this.allCounties && !this.props.sources && indicator && indicators[indicator].categories.includes('hasRace') &&
+                {!this.props.sources && indicator && hasRace &&
 
                     <IndicatorByRaces
                         store = {store}
+                        expand = {!this.allCounties}
+                        onClick = {this.allCounties? ()=>{
+                            console.log('trying to collapse counties')
+                            this.expandCountyList(false)
+                        }: ()=>{} }
                     />
                 }
                 {indicator && this.props.sources &&

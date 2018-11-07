@@ -8,6 +8,7 @@ import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
 import {Toggle, Button} from './components/generic'
+import Icon from './components/generic/Icon'
 
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
@@ -44,7 +45,7 @@ const Nav = styled.div`
 const Dropdown = styled.div`
     position: relative;
     font-weight: ${props => props.hasValue&&!props.isOpen? 500 : 400};
-    // box-shadow: ${props => props.hasValue&&!props.isOpen?'inset 0px 0px 0px 2px var(--peach)':''};
+    box-shadow: ${props => props.isOpen?'inset 0px 0px 0px 1.5px var(--strokepeach)':''};
     @media ${media.optimal}{
         padding: 12px 45px 12px 20px;
     }
@@ -52,7 +53,7 @@ const Dropdown = styled.div`
         padding: 10px 45px 10px 20px;
     }
     background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
-    color: ${props => (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
+    color: ${props => props.hasValue && props.isOpen? 'var(--fainttext)' : (props.hasValue&&!props.isOpen) || props.hovered? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'black'};
     display: flex;
     align-items: center;
     /*outline: 1px solid var(--offwhitebg);*/
@@ -65,7 +66,7 @@ const DropdownWorkflow = styled(Dropdown)`
     &::before{
         content: '';
         right: 18px;
-        margin-top: 3px;
+        margin-top: 4px;
         width: 0px;
         border: 7px solid transparent;
         border-top-color: ${props => props.hasValue && props.hovered? 'var(--strokepeach)' : props.hasValue&&!props.isOpen? 'var(--peach)' : props.isOpen || props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
@@ -75,7 +76,7 @@ const DropdownWorkflow = styled(Dropdown)`
     &::after{
         content: '';
         right: 18px;
-        margin-top: 3px;
+        margin-top: 4px;
         width: 0px;
         border: 7px solid transparent;
         transform: scale(0.75);
@@ -97,7 +98,7 @@ const IndicatorSelect = styled(DropdownWorkflow)`
     transform: ${props=>props.offset?'translateX(-15px)':''};
 
 `
-const Icon = styled.div`
+const Ico = styled.div`
     position: absolute;
     /*outline: 1px solid black;*/
     width: 30px;
@@ -109,11 +110,11 @@ const Icon = styled.div`
 `
 const indicatorIco = require('./assets/indicator-states.svg')
 const countyIco = require('./assets/county-states.svg')
-const IndicatorIcon = styled(Icon)`
+const IndicatorIcon = styled(Ico)`
     background-image: url(${indicatorIco});
     background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
-const CountyIcon = styled(Icon)`
+const CountyIcon = styled(Ico)`
     background-image: url(${countyIco});
     background-position: ${p => p.hasValue&&p.hovered&&!p.isOpen? '100% 50%' : p.hasValue&&!p.isOpen? '66.666% 50%' : p.hovered && !p.isOpen? '33.333% 50%' : '0% 50%'};
 `
@@ -130,6 +131,7 @@ const SelectionValue = styled.div`
     margin-left: 35px;
     padding-left: 7px;
     /*margin-left: -7px;*/
+    ${props => props.muteAnyways? 'color: var(--fainttext);' : ''}
     &::after{
         content: '${props => props.label}';
         color: rgba(0,0,0,0);
@@ -164,24 +166,12 @@ const NoRaceTip = styled.div`
 
 @observer
 export default class ResponsiveNav extends React.Component{
-    @observable raceDropdown = false
-    @action openRaceDropdown = () => {
-        if(this.props.init) return
-        // this.props.closeSplash()
-        this.raceDropdown = !this.raceDropdown
-        if(this.raceDropdown){
-            document.addEventListener('click',this.dropdownHandleClickOutside)
-        }
-        else{
-            document.removeEventListener('click',this.dropdownHandleClickOutside)
-        }
-        // this.props.closeSplash()
-    }
+
     @observable hoveredWorkflow = null
     @action onHoverWorkflow = (which) => this.hoveredWorkflow = which
 
-    // @observable raceSelectIsHovered = false
-    // @action hoveredRaceSelect = (tf) => {this.raceSelectIsHovered = tf}
+    @observable raceDropdown = false
+    @action setRaceDropdown = (tf) => {this.raceDropdown = tf}
 
     constructor(){
         super()
@@ -190,30 +180,31 @@ export default class ResponsiveNav extends React.Component{
     }
     componentDidMount(){
     }
-    componentDidUpdate(){
-        if(this.props.open && this.raceDropdown) this.openRaceDropdown()
+    componentWillUpdate(){
+        // if(this.props.open && this.raceDropdown) this.openRaceDropdown()
         if(this.props.open){
             document.addEventListener('click',this.handleClickOutside)
+            window.onkeyup = (e) => {
+                if(e.key==='Escape'||e.key==='Esc'){
+                    this.props.openNav(false)
+                }
+            }
         }
         else if(!this.props.open){
             document.removeEventListener('click',this.handleClickOutside)
+            window.onkeyup = () => {console.log( 'nokey')}
         }
     }
 
     handleClickOutside = (e) => {
-
-        if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
-            console.log('clicked something outside the nav:', e.target)
-            this.props.openNav()
-        }
+        // if(this.props.open && this.nav.current){
+            if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
+                console.log('clicked something outside the nav:', e.target)
+                this.props.openNav()
+            }
+        // }
     }
 
-    dropdownHandleClickOutside = (e) => {
-        if(!this.dropdown.current.contains(e.target)){
-            console.log('clicked outside open race dropdown, closing')
-            this.openRaceDropdown()
-        }
-    }
 
     render(){
         const {openNav, open, store, closeInit, init} = this.props
@@ -234,27 +225,30 @@ export default class ResponsiveNav extends React.Component{
         return(
             <Nav ref = {this.nav}>
                 <IndicatorSelect 
-                    onClick = {()=>openNav('indicator')}
+                    onClick = {open!=='indicator'?()=>openNav('indicator'): (e)=>{
+                            openNav()
+                            // e.stopPropagation()
+                        }}
                     hovered = {this.hoveredWorkflow === 'indicator' && this.props.open!=='indicator'}
-                    hasValue = {indicator}
-                    isOpen = {this.props.open==='indicator'}
+                    hasValue = {!init? indicator : ''}
+                    isOpen = {open==='indicator' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('indicator')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     // offset = {open==='county'}
                 >
                     <IndicatorIcon 
                         hovered = {this.hoveredWorkflow === 'indicator'}
-                        hasValue = {indicator} 
-                        isOpen = {this.props.open==='indicator'}
+                        hasValue = {!init? indicator : ''} 
+                        isOpen = {open==='indicator'}
                     />
-                    <SelectionValue>{store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
+                    <SelectionValue>{!init && store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}
-                    onClick = {()=>openNav('county')}
-                    hovered = {this.hoveredWorkflow === 'county' && this.props.open!=='county'}
+                    onClick = {open!=='county'? ()=>openNav('county') : ()=>{ openNav()}}
+                    hovered = {this.hoveredWorkflow === 'county' && open!=='county'}
                     hasValue = {county}
-                    isOpen = {this.props.open==='county'}
+                    isOpen = {open==='county' && !this.raceDropdown}
                     onMouseEnter = {()=>{this.onHoverWorkflow('county')}} 
                     onMouseLeave = {()=>{this.onHoverWorkflow(null)}}
                     offset = {open}
@@ -262,27 +256,32 @@ export default class ResponsiveNav extends React.Component{
                     <CountyIcon 
                         hovered = {this.hoveredWorkflow === 'county'}
                         hasValue = {county} 
-                        isOpen = {this.props.open==='county'}
+                        isOpen = {open==='county'}
                     />
                     <SelectionValueContainer>
                     <SelectionValue
                         hasValue = {county}
+                        muteAnyways = {!county && open==='county'}
                         label = {store.county? countyLabels[store.county] : 'California'}
-                        strikethrough = {this.hoveredWorkflow === 'countyStrikeout'}
+                        strikethrough = {county && this.hoveredWorkflow === 'countyStrikeout'}
                     >
-                        {store.county? countyLabels[store.county] : 'California' }
+                        { store.county? countyLabels[store.county] : init||open? 'County' : 'California' }
                         
                     </SelectionValue>
+                    {county &&
                     <QuickClear 
-                        reveal = {county}
+                        img = "x"
+                        color = "peach"
+                        hoverColor = "strokepeach"
                         onMouseEnter = {()=>{this.onHoverWorkflow('countyStrikeout')} }
                         onMouseLeave = {()=>{this.onHoverWorkflow('county')} }
                         onClick = {county? (e)=>{
                             store.completeWorkflow('county',null)
                             e.stopPropagation()
-                            e.nativeEvent.stopImmediatePropagation()
+                            // e.nativeEvent.stopImmediatePropagation()
                         } : ()=>{} }
                     />
+                    }
                 </SelectionValueContainer>
                     {/*store.notifications.unselectCounty &&
                         <Tooltip 
@@ -299,13 +298,18 @@ export default class ResponsiveNav extends React.Component{
                 
 
                     <RaceDropdownToggle 
+                        // dropdownOpen = {this.raceDropdown}
+                        setDropdownState = {this.setRaceDropdown}
                         offset = {open}
                         selected = {race}
                         defaultWidth = {140}
-                        disabled = {noRace}
+                        disabled = {!store.init && noRace}
+                        openOther = {store.init? ()=>{
+                            openNav('indicator')
+                        }: false}
                         toggleMode = {open && !noRace && screen==='optimal'}
                         options = {[
-                            {label: 'All races', value: '', disabled: noall},
+                            {label: init && !this.raceDropdown? 'Race':'All races', value: '', disabled: noall},
                             {label: 'Asian', value: 'asian', disabled: noazn},
                             {label: 'Black', value: 'black', disabled: noblk},
                             {label: 'Latinx', value: 'latinx', disabled: noltx},
@@ -320,17 +324,19 @@ export default class ResponsiveNav extends React.Component{
                     />
 
                     <YearToggle 
+                        init = {init}
                         store = {store}
                         offset = { open && noRace? 1 : open? 2 : 0 }
                         onClick = {value => store.completeWorkflow('year',value)}
                         selected = {store.year}
-                        bigscreen = {store.screen==='optimal'}
+                        bigscreen = {screen==='optimal'}
                     />
 
                     
 
                 <FlipMove 
                     typeName = {null}
+                    delay = {!store.indicator && !store.init? 100 : open? 150 : 0}
                     duration = {200}
                     enterAnimation = {{
                         from: {opacity: 0, transform: 'translateY(0px)'},
@@ -341,14 +347,22 @@ export default class ResponsiveNav extends React.Component{
                         to: {opacity: 0, transform: 'translateY(0px)'}
                     }}
                 >
-                {open && <PickingWorkflow x = {()=>openNav(false)} store = {store} open = {open} close = {()=>openNav(false)} />}
+                {open && 
+                    <PickingWorkflow 
+                        muted = {this.raceDropdown}
+                        x = {()=>openNav(false)} 
+                        store = {store}
+                        open = {open}
+                        close = {()=>openNav(false)} 
+                    />
+                }
                 </FlipMove>
                 {/*open && <X onClick = {()=>openNav(false)}/>*/}
                 
                 <Reset 
                     className = 'negativeOnDark' 
                     label = {<BtnLabel>Reset<ResetIcon /></BtnLabel>}
-                    visible = {indicator}
+                    visible = {!init && indicator}
                     onClick = {this.props.reset}
                 />
 
@@ -413,39 +427,26 @@ const ShareIco = styled.div`
     background-size: contain;
 `
 
-const xIcon = require('./assets/x.svg')
-const peachX = require('./assets/peach-x.svg')
-
-const X = styled.div`
-    position: absolute;
-    right: 30px;
-    width:25px;
-    height: 25px;
-    cursor: pointer;
-    background-image: url(${xIcon});
-    opacity: 0.25;
-    &:hover{
-        opacity: 0.5;
-    }
-    z-index: 2;
+const X = styled(Icon)`
+     position: absolute;
+     right: 30px;
+     width:25px;
+     height: 25px;
+     cursor: pointer;
+     z-index: 2;
 `
-const QuickClear = styled.div`
+const QuickClear = styled(Icon)`
     width: 15px; height: 15px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     margin-right: -5px;
     margin-left: 8px;
     flex-shrink: 0;
-    background: url(${peachX}) no-repeat;
-    &:hover{
-        opacity: ${props => props.reveal? 1 : 0};
-    }
-    opacity: ${props => props.reveal? 0.5 : 0};
-    transition: opacity .2s;
-    pointer-events: ${props => props.reveal? 'auto' : 'none'};
+
 `
 const YearToggle = (props) =>{
+    const {init} = props
     const {indicator,county,race} = props.store
-    const years = indicator? indicators[indicator].years.map((yr,i)=>{
+    const years = !init && indicator? indicators[indicator].years.map((yr,i)=>{
         const val = indicators[indicator].counties[county||'california'][race||'totals'][i]
         const disabled = val!==0 && (!val || val==='*')
         return {label:yr, value: i, disabled: disabled}
@@ -459,6 +460,7 @@ const YearToggle = (props) =>{
             {years && 
                 <Toggle
                     size = "big"
+                    theme = "negativeNoStroke"
                     options = {years}
                     onClick = {props.onClick}
                     selected = {props.selected}
@@ -477,21 +479,52 @@ const YrToggle = styled.div`
 
 const LargeWorkflow = styled.div`
     position: absolute;
-    top: 90px;
+
     background: var(--offwhitefg);
     border: 1px solid var(--bordergrey);
     z-index: 3;
     transform-origin: 0% 0%;
+    opacity: ${props => props.muted? 0.5 : 1};
     @media ${media.optimal}{
         width: 1000px;
-        height: 745px;
+        height: 720px;
         padding: 30px 45px;
+        top: 100px;
     }
     @media ${media.compact}{
+        top: 90px;
         width: 780px;
-        height: 585px;
+        height: 570px;
         padding: 20px 35px;
     }
+`
+
+const Triangle = styled.div`
+    transition: transform .3s;
+    @media ${media.optimal}{
+        transform: translate(${props => props.active==='indicator'? '35px, -30px' : '440px, -30px'});
+    }
+    @media ${media.compact}{
+        transform: translate(${props => props.active==='indicator'? '40px, -20px' : '445px, -20px'});
+    }
+    &::after, &::before{
+        position: absolute;
+        content: '';
+        width: 0; height: 0;
+    }
+    &::after{
+        left: 1px;
+        top: -25px;
+        border: 13px solid transparent;
+        border-bottom: 12.5px white solid;
+    }
+    &::before{
+        left: 0;
+        top: -28px;
+        border: 14px solid transparent;
+        border-bottom: 13.5px var(--bordergrey) solid;
+    }
+
 `
 
 @observer
@@ -518,11 +551,19 @@ export class PickingWorkflow extends React.Component{
     render(){
         const {store, close} = this.props
         const which = this.props.open
-        const {indicatorListPage, setIndicatorListPage, indicatorPages} = store
-        const screen = store.screen
+        const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
+
         return(
             <LargeWorkflow>
-                <X onClick = {this.props.x} />  
+                <Triangle
+                    active = {which}
+                 />
+                <X 
+                    img = "x" 
+                    color = "bordergrey"
+                    hoverColor = "strokepeach"
+                    onClick = {this.props.x}
+                />
                 <FlipMove
                     // typeName = {null}
                     style = {{
@@ -543,18 +584,27 @@ export class PickingWorkflow extends React.Component{
                 >
                     {which === 'indicator' && 
                         <IndicatorList 
+                            muted = {this.props.muted}
                             store = {store} 
                             closeNav = {this.props.close}
                             setNumPages = {this.setNumPages}
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
+                            // muted = {this.props.muted}
                             // animating = {this.animating}
                             // onStartAnim = {()=>{this.setAnimStatus(true)}}
                             // onFinishAnim = {()=>{this.setAnimStatus(false)}}
                         />
                     }
-                    {which === 'county' && <CountyList store = {store} closeNav = {this.props.close}/>}
+                    {which === 'county' && 
+                        <CountyList 
+                            muted = {this.props.muted}
+                            store = {store} 
+                            closeNav = {this.props.close}
+                            // muted = {this.props.muted}
+                        />
+                    }
                 </FlipMove>
 
                         <PageNext 

@@ -28,15 +28,16 @@ const IndRows = styled.ul`
     height: 100%;
     flex-grow: 1;
     margin: 0;
-
+    @media ${media.optimal}{
+        margin-top: 10px;
+    }
+    @media ${media.compact}{
+        margin-top: 5px;
+    }
+    opacity: ${props => props.raceDropdown? 0.4 : 1};
+    transition: opacity .5s;
 `
 const RowItem = styled.li`
-    &:first-of-type{
-        border-radius: 4px 4px 0 0;
-    }
-    &:last-of-type{
-        border-radius: 0 0 4px 4px;
-    }
     /*flex-grow: ${props => props.lastPage||props.isolated? 0 : 1};*/
     position: relative;
     // width: 50%;
@@ -148,7 +149,7 @@ const Caption = styled.div`
 `
 const Title = styled.h1`
     margin: 0 20px 0 0;
-        opacity: ${props=>props.muted?0.2:1};
+        opacity: ${props=>props.raceDropdown? 0.4 : props.muted?0.2:1};
     transition: opacity .5s;
     font-weight: 400;
     @media ${media.optimal}{
@@ -238,6 +239,7 @@ export default class IndicatorList extends React.Component{
 
             <Title
                 muted = {showSanityCheck}
+                raceDropdown = {this.props.muted}
             > Choose an indicator. </Title>
                 {/* 
                 <Search 
@@ -247,6 +249,7 @@ export default class IndicatorList extends React.Component{
 
             <ListStatus 
                 muted = {showSanityCheck}
+                raceDropdown = {this.props.muted}
                 className = "caption"
 
             >
@@ -267,7 +270,10 @@ export default class IndicatorList extends React.Component{
 
                 </Readout>
             </ListStatus>
-            <IndRows ref = {this.list}>
+            <IndRows 
+                raceDropdown = {this.props.muted}
+                ref = {this.list}
+            >
                 <FlipMove
                     typeName = {null}
                     duration = {300}
@@ -383,8 +389,10 @@ class SanityCheck extends React.Component{
     }
     handleClick = (e) => {
         // console.log(this.sanityCheck)
-        if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-            this.props.store.clearSanityCheck('indicator')
+        if(this.props.store.sanityCheck.indicator){
+            if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+                this.props.store.clearSanityCheck('indicator')
+            }
         }
     }
     componentDidMount(){
@@ -526,7 +534,7 @@ const ListStatus = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    opacity: ${props=>props.muted?0.2:1};
+    opacity: ${props=>props.raceDropdown? 0.4 : props.muted?0.2:1};
     transition: opacity .5s;
     font-size: 13px;
     @media ${media.optimal}{

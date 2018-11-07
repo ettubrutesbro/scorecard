@@ -8,6 +8,7 @@ const browserCompatibility = {
     chrome: '62',
     firefox: '53',
     safari: '11',
+    edge: '18'
 }
 
 export default browserCompatibility

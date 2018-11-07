@@ -22,10 +22,12 @@ export default class SanityCheckTip extends React.Component{
         // console.log(this.sanityCheck)
         console.log(e)
         console.log(e.nativeEvent)
-        if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
-            // e.nativeEvent.stopImmediatePropagation()
-            this.props.store.clearSanityCheck(this.props.checkType)
+        if(this.props.store.sanityCheck[this.props.checkType]){
+            if(!findDOMNode(this.sanityCheck.current).contains(e.target)){
+                // e.nativeEvent.stopImmediatePropagation()
+                this.props.store.clearSanityCheck(this.props.checkType)
 
+            }
         }
     }
 

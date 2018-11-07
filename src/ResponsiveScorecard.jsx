@@ -3,9 +3,9 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import FlipMove from 'react-flip-move'
+
 import {mapValues, find, debounce} from 'lodash'
-
-
 import ScorecardStore from './ScorecardStore'
 import Styles from './components/Styles'
 
@@ -22,17 +22,18 @@ import DemoBox from './components/DemoBox'
 
 import {Button} from './components/generic'
 
-import indicators from './data/indicators'
+import indicators, {featuredInds} from './data/indicators'
 import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
 import pdfmanifest from './assets/pdfmanifest'
+import semanticTitles from './assets/semanticTitles'
 
 import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
 
 import cnico from './assets/cnlogo-long.svg'
-import maskImg from './assets/mask.png'
+import maskImg from './assets/mask2.png'
 
 import {capitalize} from './utilities/toLowerCase'
 
@@ -45,6 +46,7 @@ window.store = store
 
 var flat = require('array.prototype.flat')
 var includes = require('array-includes')
+var values = require('object.values')
 var assert = require('assert')
 
 delete Array.prototype.flat
@@ -52,6 +54,7 @@ var shimmedFlat = flat.shim()
 delete Array.prototype.includes;
 var shimmedIncludes = includes.shim();
 
+if(!Object.values) values.shim()
 
 const Quadrant = styled.div`
     position: absolute;
@@ -67,6 +70,7 @@ const App = styled.div`
     height: 100%;
     background: var(--offwhitefg);
     margin: auto;
+    overflow: hidden;
     @media ${media.optimal}{
         /*width: 100%;*/
         height: 960px;
@@ -158,22 +162,22 @@ const GreyMask = styled.div`
     width: 100%;
     height: 100%;
     transform-origin: 0% 0%;
-    transition: transform .75s;
-    transform: translateX(${props=>props.show?0 : 'calc(-100% - 400px)'});
+    transition: transform ${props=>props.show? .45 : .35}s linear;
+    transform: translateX(${props=>props.show?0 : 'calc(-100% - 300px)'});
     // transform: scaleX(${props=>props.show?1 : 0});
     background: var(--offwhitefg);
-    z-index: 2;
-/*    &::after{
+    z-index: 1;
+    &::after{
         content: '';
         position: absolute;
         top: 0;
-        width: 0;
+        width: 300px;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
-        right: -400px;
+        right: -300px;
         background-image: url(${maskImg});
-    }*/
+    }
 `
 const ShareSources = styled.div`
     flex-shrink: 0;
@@ -252,9 +256,16 @@ export default class ResponsiveScorecard extends React.Component{
     @observable browserBlock = null
     @action blockUserBrowser = (why) => this.browserBlock = why
 
-    @observable init = true
+    @action setInit = (tf) => {
+        if(!tf){ 
+            this.setRandomIndicatorCycle(false)
+        }
+        else if(tf) this.setRandomIndicatorCycle(true)
+        store.init = tf
+
+    }
     @action closeSplash = () => {
-        this.init = false
+        this.setInit(false)
         this.openNav('indicator')
     }
     @observable navOpen = false
@@ -277,12 +288,12 @@ export default class ResponsiveScorecard extends React.Component{
         if(this.sourcesMode && status){
             this.setSourcesMode(false)
         }
-        if(this.init && status){
+        if(store.init && status){
             console.log('user opened nav while init')
-            this.init = false
+            this.setInit(false)
         }
         if(!store.indicator && this.navOpen === 'indicator' && !status){
-            this.init = true
+            this.setInit(true)
             store.completeWorkflow('county',null)
             store.completeWorkflow('race',null)
             this.navOpen = false
@@ -317,7 +328,80 @@ export default class ResponsiveScorecard extends React.Component{
                 this.blockUserBrowser('version')
             }
         }
+        //query params check
+
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlInd = urlParams.get('ind')
+        const urlCty = urlParams.get('cty')
+        const urlRace = urlParams.get('race')
+        const urlYr = urlParams.get('yr')
+        if(urlParams.has('ind') && Object.keys(indicators).includes(urlInd)){
+            console.log('url has valid indicator')
+            this.setInit(false)
+            store.completeWorkflow('indicator', urlInd)
+
+            //we only care if theres cty/race if the url contains ind
+            if(urlParams.has('cty')){
+                if(Object.keys(countyLabels).includes(urlCty)){
+                    store.completeWorkflow('county', urlCty)
+                }
+             }
+            if(urlParams.has('race')){
+                const races = ['asian','black','latinx','white','other']
+                if(races.includes(urlRace)){
+                    store.completeWorkflow('race', urlRace)
+                }
+            } 
+            if(urlParams.has('yr')){
+                if(indicators[store.indicator].years[urlYr]){
+                    store.completeWorkflow('year',urlYr)
+                }
+            }
+        }else{
+            this.setRandomIndicatorCycle(true)   
+        }
+
         
+
+
+
+        
+    }
+
+
+    // @observable randInd = 0 
+    @observable alreadyDisplayedRandomIndicators = []
+    @action foistRandomIndicator = () => {
+        let availableInds
+        if(this.alreadyDisplayedRandomIndicators.length === featuredInds.length){
+            availableInds = featuredInds
+            this.alreadyDisplayedRandomIndicators = []
+        } 
+        else{
+            availableInds = featuredInds.filter((ind)=>{
+                return !this.alreadyDisplayedRandomIndicators.includes(ind)
+            })
+        }
+        const randomIndex = Math.floor(Math.random() * availableInds.length)
+        console.log(availableInds)
+        const choice= availableInds[randomIndex]
+        console.log(choice)
+
+        store.completeWorkflow('indicator', choice)
+        this.alreadyDisplayedRandomIndicators.push(choice)
+    }
+    setRandomIndicatorCycle = (tf) => {
+        if(tf){
+            console.log('starting interval for rand ')
+            //set the first one too
+            this.foistRandomIndicator()
+            this.randomIndicatorInterval = setInterval(this.foistRandomIndicator, 5000)
+        }
+        else{ 
+            console.log('clearing rand interval')
+            store.completeWorkflow('indicator',null)
+            clearInterval(this.randomIndicatorInterval)
+        }
     }
 
     render(){
@@ -331,7 +415,7 @@ export default class ResponsiveScorecard extends React.Component{
             <App>
                 <Nav> 
                     <NavComponent 
-                        init = {this.init}
+                        init = {store.init}
                         store = {store}
                         open = {this.navOpen}
                         openNav = {this.openNav}
@@ -339,11 +423,7 @@ export default class ResponsiveScorecard extends React.Component{
                         reset = {this.reset}
                     /> 
                 </Nav>
-                <GreyMask 
-                    show = {this.navOpen || this.init}
-                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
 
-                />
                 <TopRow>
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
@@ -376,32 +456,33 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        // show = {!this.sourcesMode && !this.init}
-                        show = {!this.init}
+                        // show = {!this.sourcesMode && !store.init}
+                        show = {!store.init}
                         store = {store}
                         sources = {this.sourcesMode}
                     />
-
-                    {this.init &&
-                       <InitBox 
-                            store = {store}
-                            closeSplash = {this.closeSplash}
-
-                        />
-                    }
+                 
+                   <InitBox 
+                        store = {store}
+                        show = {store.init}
+                        closeSplash = {this.closeSplash}
+                    />
+                    
                     <Breakdown
                         sources = {this.sourcesMode}
                     > 
+                        {store.indicator &&
                         <BreakdownComponent 
                             offset = {this.breakdownOffset} 
                             store = {store} 
                             sources = {this.sourcesMode}
                         /> 
+                        }
                     </Breakdown>
 
                     <MapContainer 
-                        offset = {this.init || this.navOpen} 
-                        // init = {this.init}
+                        offset = {store.init || this.navOpen} 
+                        // init = {store.init}
                     >
                         <MapComponent 
                             store = {store}
@@ -409,11 +490,21 @@ export default class ResponsiveScorecard extends React.Component{
                             hoveredCounty = {this.hoveredCounty}
                             onSelect = {store.completeWorkflow}
                             selected = {store.county}
+                            defaultHighlight = {indicator? indicators[indicator].highlight : ''}
                             data = {dataForMap}
-                            mode = {this.navOpen? 'offset' : dataForMap?'heat':''}
+                            mode = {store.init? 'init' : this.navOpen? 'offset' : dataForMap?'heat':''}
                             clickedOutside = {this.navOpen? ()=>this.openNav(false): ()=>{}}
                             // mode = 'wire'
                         />
+                        <RandomIndicatorLabel show = {store.init}>
+                            {indicator&& semanticTitles[indicator].shorthand} 
+                            {!store.init && !indicator&& this.alreadyDisplayedRandomIndicators.length>0&& semanticTitles[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].shorthand} 
+                            <SubRandLabel show = {store.init}>
+                                {!race && 'All races'}, {indicator && indicators[indicator].years[year]}{!indicator && '2018'}
+                            </SubRandLabel>
+
+                        </RandomIndicatorLabel>
+                        
                     </MapContainer>
 
                     <LegendContainer>
@@ -422,8 +513,13 @@ export default class ResponsiveScorecard extends React.Component{
                         />
                     </LegendContainer>
                 </BottomRow>
-
-                <Footer>
+                <GreyMask 
+                    show = {this.navOpen || store.init}
+                    onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
+                />
+                
+            </App>
+            <Footer>
                     <FeedbackLink href = "mailto:research@childrennow.org?subject=Scorecard%20Feedback">
                     <Feedback
                         // onClick = {()=>{
@@ -441,7 +537,6 @@ export default class ResponsiveScorecard extends React.Component{
                         <a href = "https://www.childrennow.org"><CNLogo /></a>
                     </FooterContent>
                 </Footer>
-            </App>
             </React.Fragment>
         )
     }
@@ -465,9 +560,40 @@ const MapContainer = styled(Quadrant)`
         left: 520px;
         width: 430px; 
         height: 100%;
-        transform: translateX(${props => props.offset? '280px' : 0});
+        transform: translateX(${props => props.offset? '320px' : 0});
     }
     @media ${media.mobile}{}
+`
+const RandomIndicatorLabel = styled.div`
+    font-size: 13px;
+    white-space: nowrap;
+    text-align: right;
+
+    position: absolute;
+
+    transform: translateX(${props => props.show? '0px' : '50px'});
+    opacity: ${props => props.show? 1: 0};
+    transition: opacity .35s, transform .35s;
+
+
+    @media ${media.optimal}{
+        bottom: 20px; 
+        right: 290px;
+    } 
+    @media ${media.compact}{
+        bottom: 20px; 
+        right: 290px;
+    }
+
+    color: var(--normtext);
+`
+const SubRandLabel = styled.div`
+    margin-top: 3px;
+    color: var(--fainttext);
+    margin-right: -25px;
+
+    transition: transform .35s;
+    transform: translateX(${props => props.show? '0px' : '20px'});
 `
 const Breakdown = styled(Quadrant)`
     position: relative;
@@ -480,7 +606,7 @@ const Breakdown = styled(Quadrant)`
         width: 480px;
     }
     @media ${media.mobile}{}
-    z-index: ${props=>props.sources? 20 : 1}; 
+    z-index: 1; 
 `
 const LegendContainer = styled.div`
     position: absolute;
@@ -503,10 +629,11 @@ const Footer = styled(DarkBar)`
     align-items: center;
     justify-content: space-between;
     @media ${media.optimal}{
+        padding: 0 calc((100vw - 1550px) / 2);
         top: 960px;
     }
     @media ${media.compact}{
-
+        padding: 0 calc((100vw - 1300px) / 2);
         top: 740px;
     }
     z-index: 3;

@@ -22,7 +22,22 @@ const Option = styled.div`
     box-sizing: border-box;
     height: 100%;
     border: 1px solid ${props => props.selected? 'var(--strokepeach)':'var(--bordergrey)'};
+    
     z-index: ${props => props.selected? 1 : 0}
+    &.negativeNoStroke{
+        @media ${media.optimal}{
+            height: 48px;
+        }
+        @media ${media.compact}{
+            height: 43.5px;
+        }
+        display: flex; align-items: center;
+        border: 1px solid transparent;
+        &:not(:first-of-type){
+            border-left: 1px solid var(--offwhitebg);
+        }
+        z-index: 1;
+    }
     font-size: ${props=> props.size === 'big'? '16px' : '13px'};
     letter-spacing: 0.5px;
     @media ${media.optimal}{
@@ -91,10 +106,11 @@ export class Toggle extends React.Component {
 
      render(){
     return(
-        <ToggleBody style = {this.props.style} size = {this.props.size}>
+        <ToggleBody style = {this.props.style} size = {this.props.size} className = {this.props.className}>
             {this.props.options.map((option, i,arr)=>{
                 
                 return <Option 
+                    className = {this.props.theme}
                     firstLast = {i===0?'first':i===arr.length-1?'last':''}
                     index = {i}
                     size = {this.props.size}
@@ -291,7 +307,7 @@ const Btn = styled.div`
         padding: 10px 21px;
     }
     cursor: pointer;
-    &.default{
+    &.default, &.compact{
         background: white;
         color: var(--normtext);
         border: 1px solid var(--fainttext);
@@ -302,8 +318,6 @@ const Btn = styled.div`
 
     &.compact{
         font-size: 13px;
-        background: white;
-        border: 1px solid var(--fainttext);
         padding: 10px 17px;
     }
     &.dark{
@@ -329,6 +343,9 @@ const Btn = styled.div`
             border-color: var(--peach);
 
         }
+    }
+    &.borderless{
+        border-color: transparent;
     }
 `
 
@@ -379,9 +396,13 @@ export class DropdownToggle extends React.Component {
         if(tf) document.addEventListener('click', this.handleOutside)
         else document.removeEventListener('click', this.handleOutside)
         this.dropdownOpen = tf
+        if(this.props.setDropdownState) this.props.setDropdownState(tf)
     }
     @observable hovered = false
     @action hover = (tf) => {this.hovered = tf}
+
+    @observable strikethrough = false
+    @action setStrikethrough = (tf) => {this.strikethrough = tf}
 
     constructor(){
         super()
@@ -418,9 +439,12 @@ export class DropdownToggle extends React.Component {
                 visible = {!toggleMode}
                 length = {options.length}
                 disabled = {disabled}
-                hovered = {this.hovered && !this.dropdownOpen}
+                hovered = {this.hovered && !this.dropdownOpen && !this.strikethrough}
                 hasValue = {selected}
                 isOpen = {this.dropdownOpen}
+                onClick = {this.props.openOther? this.props.openOther : !disabled? ()=>{
+                    this.setDropdown(!this.dropdownOpen)
+                } : ()=>{}}
             />
 
                 <FirstOptBorder
@@ -430,21 +454,26 @@ export class DropdownToggle extends React.Component {
                     selected = {toggleMode && !selected}
                     hasValue = {selected && !toggleMode && !this.dropdownOpen}
                     disabled = {disabled}
+                    dropdownOpen = {this.dropdownOpen}
                 />
                 {options.slice(0,1).map((o)=>{
                     return(
                         <TogOption 
-                            defaultWidth = {defaultWidth } 
+                            strikethrough = {this.strikethrough && selected}
+                            defaultWidth = {defaultWidth} 
                             className = 'first'
+                            label = {!toggleMode && selected? find(options, (opt)=>{return opt.value===selected}).label
+                                : toggleMode || !selected? o.label
+                                : 'wat'}
                             toggleMode = {toggleMode}
-                            onClick = {toggleMode? ()=>{
+                            onClick = {this.props.openOther? this.props.openOther : toggleMode? ()=>{
                                 this.props.select(o.value)
                             }:!disabled? ()=>{
                                 this.setDropdown(!this.dropdownOpen)
                             } : ()=>{}}
                             hasValue = {selected && !toggleMode && !this.dropdownOpen}
                             selected = {toggleMode && !selected}
-                            disabled = {o.disabled}
+                            disabled = {o.disabled || disabled}
                             muted = {disabled}
                             hovered = {this.hovered && !toggleMode}
                             dropdownOpen = {this.dropdownOpen}
@@ -453,10 +482,23 @@ export class DropdownToggle extends React.Component {
                                 : toggleMode || !selected? o.label
                                 : 'wat'
                             }
-                            
+                            {selected && !this.dropdownOpen && !toggleMode &&
+                                <QuickClear 
+                                    onMouseEnter = {()=>{this.setStrikethrough(true)}}
+                                    onMouseLeave = {()=>{this.setStrikethrough(false)}}
+                                    onClick = {selected? (e)=>{
+                                        this.props.select(null)
+                                        this.hover(false)
+                                        this.setStrikethrough(false)
+                                        e.stopPropagation()
+                                        // e.nativeEvent.stopImmediatePropagation()
+                                    }: ()=>{}}
+                                />
+                            }
                         </TogOption>
                     )
                 })}
+
 
                     {this.props.options.slice(1).map((o,i,arr)=>{
                         return(
@@ -467,7 +509,7 @@ export class DropdownToggle extends React.Component {
                                 index = {i}
                                 onClick = {()=>{this.props.select(o.value)}}
                                 selected = {!o.value? !selected : o.value===selected}
-                                disabled = {o.disabled}
+                                disabled = {o.disabled || disabled}
                             >
                                 {o.label}
                             </TogOption>
@@ -514,15 +556,15 @@ const DropdownToggleWrapper = styled.div`
 const DropdownList = styled.ul`
     position: absolute;
     width: 100%;
+    left: -1px;
     @media ${media.optimal}{
         top: 48px;
     }
     @media ${media.compact}{
         top: 44px;
     }
-    border: 1px solid var(--bordergrey);
     padding: 0; margin: 0;
-    opacity: 0; 
+    opacity: 0;     
     transform: translateY(-25px);
     clip-path: polygon(0 -10px, 100% -10px, 100% 0, 0 0);
     transition: opacity .25s, transform .25s, clip-path .25s;
@@ -539,6 +581,7 @@ const DropdownOption = styled.li`
         border-top: 1px solid var(--bordergrey);
         // border-bottom: 1px solid ${p=>p.selected? 'var(--strokepeach)' :'transparent'};
     }
+    border: 1px solid var(--bordergrey);
     ${props => props.selected? `
         outline: 1px solid var(--strokepeach);
         outline-offset: -1px;    
@@ -586,7 +629,23 @@ const TogOption = styled.div`
         border-color: transparent;
         color: ${p => p.hovered && p.muted? 'var(--fainttext)' : p.hasValue || p.hovered? 'var(--strokepeach)' : ''};
         font-weight: ${p => p.hasValue? 500 : 400};
+        &::after{
+            content: 'Arace';
+            color: rgba(0,0,0,0);
+            position: absolute;
+            top: calc(50% - 1px);
+            left: 20px;
+            padding: 0 5px;
+            z-index: 4;
+            bottom: 0;
+            margin: auto;
+            border-top: 2px solid var(--strokepeach);
+            transform: scaleX(${props => props.strikethrough? 1 : 0});
+            transition: transform .2s;
+            pointer-events: none;
+            transform-origin: ${p=>p.hasValue? '100% 50%' : '0% 50%'};
 
+        }
     }
     &:not(.first){
         justify-content: center;
@@ -606,8 +665,9 @@ const TogOption = styled.div`
 `
 const FirstOptBorder = styled.div`
     position: absolute;
-    ${props => props.hasValue? `
-        // box-shadow: inset 0px 0px 0px 2px var(--peach);
+
+    ${props => props.dropdownOpen? `
+        box-shadow: inset 0px 0px 0px 1.5px var(--peach);
     `: ''}
     outline: 1px solid var(--offwhitebg);
     // border: ${p => p.selected || p.hasValue? '1px solid var(--strokepeach)' : '1px solid transparent'};
@@ -635,13 +695,15 @@ DropdownToggle.defaultProps = {
 
 
 export const Caret = styled.div`
+    cursor: pointer;
     position: absolute;
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .15s;
     // transition-delay: ${props => props.visible? (props.length*.15)+.15 : 0}s;
     right: 0;
     z-index: 5;
-    top: 0; bottom: 0; margin: auto;
+    top: 3px; 
+    bottom: 0; margin: auto;
     height: 13px;
     &::before{
         margin-top: 2px;
@@ -674,4 +736,23 @@ export const Caret = styled.div`
             transform: scale(0);    
         ` : ''}
     }
+`
+
+
+const peachX = require('../../assets/peach-x.svg')
+const QuickClear = styled.div`
+    // position: absolute;
+    z-index: 4; 
+    right: 15px;
+    width: 15px; height: 15px;
+    margin-bottom: 0px;
+    margin-right: -5px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    background: url(${peachX}) no-repeat;
+    &:hover{
+        opacity: 1;
+    }
+    opacity: 0.5;
+    transition: opacity .2s;
 `

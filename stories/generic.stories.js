@@ -7,6 +7,7 @@ import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-
 
 import {Toggle, DropdownToggle, Tooltip, Button} from '../src/components/generic/index'
 
+import {Icon} from '../src/components/generic/Icon'
 
 storiesOf('Generic components', module)
 .add('visual comparison (all)', ()=>{
@@ -78,6 +79,11 @@ storiesOf('Generic components', module)
             ]}
         />
         </Cont>
+    )
+})
+.add('Icon', ()=>{
+    return(
+        <Icon img = "x" color = "strokepeach" />
     )
 })
 

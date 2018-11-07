@@ -21,6 +21,7 @@ import indicators from '../src/data/indicators'
 import demopop from '../src/data/demographicsAndPopulation'
 
 const Void = styled.div`
+    position: relative;
     width: 100vw;
     max-width: 640px;
     height: 100vh;
@@ -85,8 +86,7 @@ storiesOf('Breakdowns', module)
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county',[null, 'sanLuisObispo', 'alameda'], null)
     return(
-        <div>
-            <Note></Note>
+        <Void>
             <IndicatorByRaces 
                 store = {{
                     year: 0,
@@ -94,15 +94,7 @@ storiesOf('Breakdowns', module)
                     county: county
                 }}    
             />
-            <Note>sometimes an indicator at county level doesnt have race data</Note>
-            <IndicatorByRaces 
-                store = {{
-                    year: 0,
-                    indicator: 'earlyPrenatalCare',
-                    county: 'mono'
-                }}    
-            />
-        </div>
+        </Void>
     )
 })
 .add('CountiesByRace',()=>{
