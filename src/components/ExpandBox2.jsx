@@ -28,7 +28,9 @@ const Content = styled.div`
     animation-duration: .35s;
 
     animation-name: ${props => props.animFrames};
-
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 `
 
 const computeAnim = (goTo, startFrom, invert) => {

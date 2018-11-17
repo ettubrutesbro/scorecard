@@ -21,7 +21,7 @@ import ordinal from 'ordinal'
 import Graph from './HorizontalBarGraph'
 import {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
-import {ExpandWidthBox} from './ExpandBox'
+import ExpandBox from './ExpandBox2'
 
 
 function indexOfClosest(nums, target) {
@@ -384,11 +384,15 @@ const HeaderComponent = (props) => {
 }
 const FooterComponent = (props) => {
     return(
-        <Footer >
-            <ExpandWidthBox
-                expand = {!props.offset}
-                expandWidth = {167}
-                collapseWidth = {120}
+        <Footer 
+            offset = {props.offset}
+        >
+            <ExpandBox
+                currentMode = {!props.offset? 'expanded' : 'collapsed'}
+                modes = {{
+                    expanded: {width: 160, height: 33},
+                    collapsed: {width: 112, height: 33}
+                }}
             >
                 <ExpandButton 
                     onClick = {props.onClick} 
@@ -398,7 +402,7 @@ const FooterComponent = (props) => {
                             {props.offset && 'See less'}
                             <Sprite 
                                 style = {{
-                                    marginLeft: '10px',
+                                    marginLeft: '9px',
                                     width: '18px',
                                     height: '18px'
                                 }}
@@ -410,11 +414,12 @@ const FooterComponent = (props) => {
                     )}
                     className = 'compact borderless' 
                 />
-            </ExpandWidthBox>
+            </ExpandBox>
         </Footer> 
     )
 }
 const ExpandButton = styled(Button)`
+    margin-top: 1px;
     &:hover{
         .sprite-chevsprite{
             fill: var(--strokepeach);
@@ -456,10 +461,24 @@ const HeaderToggle = styled(Toggle)`
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const Footer = styled(headerfooter)`
-    bottom: -1px; right: 0;
+    /*bottom: -1px; right: 182px;*/
     position: absolute;
-    transition: transform .25s;
-    transform: translateX(${props=>props.offset?50:0}px);
+    width: 192px;
+    right: 0px;
+    padding: 0 15px;
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateX(${props=>props.offset?48:0}px);
+    &::before{
+        position: absolute;
+        content: '';
+        width: 100%;
+        left: 0;
+        height: 3px;
+        background: var(--offwhitefg);
+        transform: scaleX(${props=>props.offset?0.75 : 1});
+        transform-origin: 0 0;
+        transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
 `
 const Prompt = styled.div`
     position: absolute;
