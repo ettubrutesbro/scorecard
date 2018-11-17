@@ -157,13 +157,18 @@ const GreyMask = styled.div`
     width: 100%;
     height: 100%;
     z-index: 1;
-    transition: transform ${props=>props.show? .45 : .35}s linear;
-    transform: translateX(${props=>props.show?'calc(100% + 300px)' : 0});
+    overflow: hidden;
     &::before, &::after{
         content: '';
         position: absolute;
         top: 0;
-
+        transition: transform ${props=>props.show? .45 : .35}s linear;
+        @media ${media.optimal}{
+            transform: translateX(${props=>props.show?'calc(1550px + 300px)' : 0});
+        }
+        @media ${media.compact} {
+            transform: translateX(${props=>props.show?'calc(1300px + 300px)' : 0});
+        }
     }
     &::before{
         right: calc(100% + 300px);
