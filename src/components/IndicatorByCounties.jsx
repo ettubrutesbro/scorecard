@@ -322,10 +322,15 @@ export default class IndicatorByCounties extends React.Component{
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
-            sources: {width: 50, height: 95}
+            sources: {width: 50, height: 75}
         }
         console.log(modes)
         return (
+            <Wrapper offset = {this.props.sources}>
+            <BackButton 
+                visible = {this.props.sources}
+                onClick = {()=>console.log('unset sources')}
+            />
             <Graph
                 expandable
                 withScroll = {!this.props.sources && this.props.expand? true : false}
@@ -335,32 +340,58 @@ export default class IndicatorByCounties extends React.Component{
                 selected = {county}
                 selectable
                 beefyPadding
-                header = {!this.props.sources?(<HeaderComponent 
+                header = {(<HeaderComponent 
+                    hide = {this.props.sources}
                     race = {race} 
                     distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
-                />):''}
+                />)}
 
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
-                footer = {!this.props.sources?(
+                footer = {(
                     <FooterComponent
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
+                        hide = {this.props.sources}
                     />
-                ):''}
+                )}
                 fullHeight = {this.props.expand}
             />
+            </Wrapper>
         )
     }
 }
 
+const Wrapper = styled.div`
+    position: relative;
+    transform: translate(${props=>props.offset?'-25px, -25px':'0,0'});
+    transition: transform .35s;
+    z-index: 10;
+    //this needs z-index adjustment to sit atop demo when it's in btn mode
+`
+const BackButton = styled.div`
+    /*border: 1px solid var(--fainttext);*/
+    background: white;
+    opacity: ${props => props.visible? 1 : 0};
+    transition: opacity .35s;
+    position: absolute;
+    top: 0; left: 0;
+    width: 50px;
+    height: 75px;
+    pointer-events: ${props=>props.visible?'auto' : 'none'};
+    cursor: pointer;
+
+`
+
 const HeaderComponent = (props) => {
     return(
-        <Header>
+        <Header
+            hide = {props.hide}
+        >
             <HeaderTitle hasRace = {props.race}>
             {props.race && props.race === 'other' && 'In counties with the most children of other races'}
             {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
@@ -369,6 +400,7 @@ const HeaderComponent = (props) => {
             </HeaderTitle>
             {!props.race &&
                 <HeaderToggle
+                    coverTitle = {props.hide}
                     offset = {!props.distribute}
                     options = {[
                         {label: 'by %', value: 'pct'},
@@ -386,12 +418,14 @@ const FooterComponent = (props) => {
     return(
         <Footer 
             offset = {props.offset}
+            hide = {props.hide}
         >
             <ExpandBox
-                currentMode = {!props.offset? 'expanded' : 'collapsed'}
+                currentMode = {props.hide? 'sources' : !props.offset? 'expanded' : 'collapsed'}
                 modes = {{
                     expanded: {width: 160, height: 33},
-                    collapsed: {width: 112, height: 33}
+                    collapsed: {width: 112, height: 33},
+                    sources: {width: 0, height: 33}
                 }}
             >
                 <ExpandButton 
@@ -433,7 +467,8 @@ const headerfooter = styled.div`
     /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
-
+    opacity: ${props => props.hide? 0 : 1};
+    transition: opacity .2s;
 `
 const HeaderTitle = styled.div`
     width: ${props => !props.hasRace? '130px' : 'auto'};
@@ -457,7 +492,7 @@ const HeaderToggle = styled(Toggle)`
         height: 2px;
         background-color: var(--offwhitefg);
     }
-    transform: translateX(${props=>props.offset? -35 : 0}px);
+    transform: translateX(${props=>props.coverTitle? -75 : props.offset? -35 : 0}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const Footer = styled(headerfooter)`
@@ -466,8 +501,9 @@ const Footer = styled(headerfooter)`
     width: 192px;
     right: 0px;
     padding: 0 15px;
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translateX(${props=>props.offset?48:0}px);
+    opacity: ${props => props.hide? 0 : 1};
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .25s;
+    transform: translateX(${props=>props.hide?'-100%': props.offset?'48px':0});
     &::before{
         position: absolute;
         content: '';

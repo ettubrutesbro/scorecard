@@ -73,7 +73,7 @@ export default class IndicatorByRaces extends React.Component{
         // console.log(indicatorPerformanceByRace)
         return(
             <Wrapper
-                offset = {this.props.expand? -150 : -50}
+                offset = {this.props.hideForSources? 0: this.props.expand? -150 : -50}
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
@@ -85,7 +85,7 @@ export default class IndicatorByRaces extends React.Component{
                     modes = {{
                         expanded: {width: screen==='optimal'?610:480, height: 150},
                         collapsed: {width: screen==='optimal'?610:480, height: 50},
-                        sources: {width: 0, height: 50}
+                        sources: {width: 0, height: 0}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
 
