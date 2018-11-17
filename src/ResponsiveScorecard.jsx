@@ -152,6 +152,7 @@ const BottomRow = styled(Row)`
 
 const GreyMask = styled.div`
     position: absolute;
+    pointer-events: none;
     left: 0;
     top: 0;
     width: 100%;

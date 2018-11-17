@@ -28,7 +28,7 @@ export default class Sources extends React.Component{
                         Indicator and demographics sources
                         <X />
                     </Header>)}
-                delay = '.25s'
+                delay = '5s'
             >
                 <AllSources>
                     <Contents>
@@ -45,10 +45,10 @@ const Wrapper = styled(ExpandWidthBox)`
     z-index: 5;
     pointer-events: ${props=>props.expand?'auto':'none'};
     opacity: ${props=>props.expand?1:0};
-    transform: translateX(${props=>props.expand?0:'50px'});
+    transform: translateX(${props=>props.expand?0:'125px'});
 
-    transition: transform .35s, opacity .2s;
-    transition-delay: .15s;
+    transition: transform .45s, opacity .2s;
+    // transition-delay: .15s;
 `
 
 const X = styled.div`
