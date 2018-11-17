@@ -70,14 +70,10 @@ const App = styled.div`
     height: 100%;
     background: var(--offwhitefg);
     margin: auto;
-    overflow: hidden;
     @media ${media.optimal}{
-        /*width: 100%;*/
         height: 960px;
-        /*justify-content: flex*/
     }
     @media ${media.compact}{
-        /*width: 100%;*/
         height: 740px;
     }
     @media ${media.mobile}{
@@ -95,7 +91,6 @@ const Row = styled.div`
     }
     @media ${media.compact}{
         width: 1300px;
-        /*width: */
     }
 `
 const DarkBar = styled.div`
@@ -161,22 +156,29 @@ const GreyMask = styled.div`
     top: 0;
     width: 100%;
     height: 100%;
-    transform-origin: 0% 0%;
-    transition: transform ${props=>props.show? .45 : .35}s linear;
-    transform: translateX(${props=>props.show?0 : 'calc(-100% - 300px)'});
-    // transform: scaleX(${props=>props.show?1 : 0});
-    background: var(--offwhitefg);
     z-index: 1;
-    &::after{
+    transition: transform ${props=>props.show? .45 : .35}s linear;
+    transform: translateX(${props=>props.show?'calc(100% + 300px)' : 0});
+    &::before, &::after{
         content: '';
         position: absolute;
         top: 0;
+
+    }
+    &::before{
+        right: calc(100% + 300px);
+        width: 100%;
+        height: 100%;
+        background: var(--offwhitefg);
+    }
+    &::after{
         width: 300px;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
-        right: -300px;
+        left: -300px;
         background-image: url(${maskImg});
+
     }
 `
 const ShareSources = styled.div`
@@ -514,6 +516,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </LegendContainer>
                 </BottomRow>
                 <GreyMask 
+                    className = 'greymask'
                     show = {this.navOpen || store.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
                 />

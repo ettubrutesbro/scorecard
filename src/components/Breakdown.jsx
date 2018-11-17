@@ -121,7 +121,6 @@ const InfoMask = styled.div`
     overflow: hidden;
     z-index: 2;
     pointer-events: none;
-    // border: 1px solid red;
     &::after{
         content: '';
         position: absolute;
@@ -129,7 +128,6 @@ const InfoMask = styled.div`
         height: 100%;
         right: -100%;
         background: var(--offwhitefg);
-        // background: red;
         transform: translateX(${props => props.on? -100: 10}%);
         transition: transform .3s;
     }

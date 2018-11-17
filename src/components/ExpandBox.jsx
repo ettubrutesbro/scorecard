@@ -16,6 +16,7 @@ const Box = styled.div`
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
     animation-duration: .35s;
+    animation-delay: ${props => props.delay || 0}; 
 `
 const HeightBox = styled(Box)`
     width: 100%;
@@ -33,6 +34,7 @@ const Content = styled.div`
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
     animation-duration: .35s;
+    animation-delay: ${props => props.delay || 0}; 
     
 `
 const HeightContent = styled(Content)`
@@ -215,6 +217,7 @@ export class ExpandWidthBox extends React.Component{
                 height = {this.contentHeight}
                 style = {this.props.style}
                 className = {this.props.expand? 'expand' : 'collapse'}
+                delay = {this.props.delay}
             >
                 {this.props.withScroll && 
                     <Scrollbars
@@ -225,6 +228,7 @@ export class ExpandWidthBox extends React.Component{
                             className = {this.props.expand? 'expand' : 'collapse'}
                             expandWidth = {this.props.expandWidth}
                             collapseWidth = {this.props.collapseWidth}
+                            delay = {this.props.delay}
                         >
                             {this.props.children}
                         </WidthContent>

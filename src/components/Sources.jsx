@@ -26,7 +26,9 @@ export default class Sources extends React.Component{
                 withScroll
                 header = {(<Header>
                         Indicator and demographics sources
+                        <X />
                     </Header>)}
+                delay = '.25s'
             >
                 <AllSources>
                     <Contents>
@@ -44,7 +46,17 @@ const Wrapper = styled(ExpandWidthBox)`
     pointer-events: ${props=>props.expand?'auto':'none'};
     opacity: ${props=>props.expand?1:0};
     transform: translateX(${props=>props.expand?0:'50px'});
-    transition: opacity .2s, transform .3s;
+
+    transition: transform .35s, opacity .2s;
+    transition-delay: .15s;
+`
+
+const X = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 1px solid red; 
+    width: 20px; height: 20px;
 `
 
 const AllSources = styled.div`
@@ -254,10 +266,6 @@ export class DemographicSourceInfo extends React.Component{
                         </Indicator>
                     )
                 })}
-
-            
-        
-
 
             </DemoSources>
         )
