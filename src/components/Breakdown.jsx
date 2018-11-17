@@ -104,7 +104,7 @@ export default class Breakdown extends React.Component{
                     <Sources 
                         screen = {screen}
                         indicator = {indicator} 
-                        // expand = {this.props.sources}
+                        expand = {this.props.sources}
                     />
                 }
             </Wrapper>

@@ -328,7 +328,7 @@ export default class IndicatorByCounties extends React.Component{
         return (
             <Graph
                 expandable
-                withScroll = {this.props.sources? false : true}
+                withScroll = {!this.props.sources && this.props.expand? true : false}
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
                 

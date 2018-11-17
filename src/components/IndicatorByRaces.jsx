@@ -93,9 +93,16 @@ export default class IndicatorByRaces extends React.Component{
                     // collapseHeight = {50}
                     fullHeight = {this.props.expand}
 
-
                     selectable
-                    header = {<Header hovered = {!this.props.expand? this.hovered : false} offset = {!this.props.expand}><span>Indicator breakdown</span> by race</Header>}
+                    header = {
+                        <Header 
+                            hovered = {!this.props.expand? this.hovered : false} 
+                            offset = {!this.props.expand}
+                            hide = {this.props.hideForSources}
+                        >
+                            <span>Indicator breakdown</span> by race
+                        </Header>
+                    }
                     bars = {this.props.expand? indicatorPerformanceByRace : []}
                     labelWidth = {150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
@@ -109,7 +116,9 @@ const Header = styled.div`
     margin: 0 20px;
     padding: 0 15px;
     background: var(--offwhitefg);
-    transform: translateY(${props=>props.offset?25:0}px);
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate(${props=>props.hide? '-35px, 0' : props.offset?'0, 25px':'0,0'});
+    transition: transform ${props=>props.hide? .2 : .35}s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s;
     color: ${props => props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
+
+    opacity: ${props=>props.hide?0:1};
 `

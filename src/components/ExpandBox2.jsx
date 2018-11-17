@@ -81,16 +81,16 @@ export default class ExpandTest extends React.Component{
 
     constructor(props){
         super(props)
-        if(props.withScroll) this.scrollbar = React.createRef()
+        // if(props.withScroll) this.scrollbar = React.createRef()
     }
 
     componentWillUpdate(newProps){
         if(newProps.currentMode !== this.props.currentMode){
             console.log('setting mode to', newProps.currentMode, {...this.props.modes[newProps.currentMode]})
             this.setDims('goTo', this.props.modes[newProps.currentMode])
-            if(this.props.withScroll){
-                findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
-            }
+            // if(this.props.withScroll){
+                // findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
+            // }
         }
     }
 
@@ -118,7 +118,14 @@ export default class ExpandTest extends React.Component{
                 >
                     <ScrollbarWrap
                         withScroll = {this.props.withScroll}
-                        wrap = {children => <Scrollbars ref = {this.scrollbar} style = {{width: '100%'}}> {children}</Scrollbars>}
+                        wrap = {children => 
+                            <Scrollbars 
+                                // ref = {this.scrollbar} 
+                                style = {{width: '100%'}}
+                            > 
+                                {children}
+                            </Scrollbars>
+                        }
                     >
                         <Content
                             animFrames = {computeAnim(this.current, this.goTo, true)}
