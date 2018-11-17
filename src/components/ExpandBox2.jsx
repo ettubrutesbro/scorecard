@@ -164,6 +164,7 @@ const Bound = styled.div`
     border-color: var(--bordergrey);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform-origin: 0% 0%;
+    z-index: 2;
 `
 
 const Top = styled(Bound)`
@@ -192,7 +193,7 @@ const Right = styled(Bound)`
 `
 
 const Header = styled.div`
-    z-index: 2;
+    z-index: 3;
     position: absolute;
     width: 100%;
     top: 0;
@@ -201,7 +202,7 @@ const Header = styled.div`
     align-items: center;
 `
 const Footer = styled.div`
-    z-index: 2;
+    z-index: 3;
     position: absolute;
     width: 100%;
     top: 0;
@@ -219,15 +220,15 @@ const FadeCropper = styled.div`
     position: absolute;
     left: 1px;
     width: calc(100% - 2px);
-    height: 25px;
-    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    height: 45px;
+    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
     opacity: ${props => props.show? 1 : 0};
     transition: opacity .25s;
     /*border: 1px solid green;*/
 
 `
 const FadeCropperBottom = styled(FadeCropper)`
-    top: ${props => props.offset - 25}px;
-    height: 25px;
-    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    top: ${props => props.offset - 45}px;
+    height: 45px;
+    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
 `
