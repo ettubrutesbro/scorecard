@@ -336,6 +336,8 @@ export default class IndicatorByCounties extends React.Component{
                 withScroll = {!this.props.sources && this.props.expand? true : false}
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
+
+                borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
                 selected = {county}
                 selectable
@@ -427,6 +429,7 @@ const FooterComponent = (props) => {
                     collapsed: {width: 112, height: 33},
                     sources: {width: 0, height: 33}
                 }}
+                borderColor = 'var(--fainttext)'
             >
                 <ExpandButton 
                     onClick = {props.onClick} 

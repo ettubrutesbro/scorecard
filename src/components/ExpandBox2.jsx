@@ -140,10 +140,10 @@ export default class ExpandTest extends React.Component{
                         offset = {this.goTo.height}
                     />
                 }
-                <Top scale = {scaleX} current = {this.goTo}/>
-                <Bottom scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
-                <Left scale = {scaleY} current = {this.goTo}/>
-                <Right scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                <Top borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                <Bottom borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
+                <Left borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                <Right borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
                 
                 {this.props.footer &&
                     <Footer
@@ -168,32 +168,31 @@ const Wrapper = styled.div`
 
 const Bound = styled.div`
     position: absolute;
-    border-color: var(--bordergrey);
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), border-color .25s;
     transform-origin: 0% 0%;
     z-index: 2;
 `
 
 const Top = styled(Bound)`
     width: 100%;
-    border-top: 1px solid var(--bordergrey);
+    border-top: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
     top: 0;
     transform: scaleX(${props=>props.scale});
 `
 const Bottom = styled(Bound)`
-    border-bottom: 1px solid var(--bordergrey);
+    border-bottom: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
     width: 100%;
     top: 0;
     transform: translateY(${props=>props.offset}px) scaleX(${props=>props.scale});
 `
 const Left = styled(Bound)`
-    border-left: 1px solid var(--bordergrey);
+    border-left: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
     height: 100%;
     left: 0;
     transform: scaleY(${props=>props.scale});
 `
 const Right = styled(Bound)`
-    border-right: 1px solid var(--bordergrey);
+    border-right: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
     height: 100%;
     left: 0;
     transform: translateX(${props=>props.offset}px) scaleY(${props=>props.scale});
