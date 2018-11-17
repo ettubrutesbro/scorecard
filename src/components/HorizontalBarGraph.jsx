@@ -211,8 +211,15 @@ const GraphTable = styled.div`
     letter-spacing: 0.5px;
     font-size: 13px;
     transition: border-color .25s, background-color .25s, box-shadow .25s;
-   
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    @media ${media.optimal}{
+        width: 610px;
+    }
+    @media ${media.compact}{
+        width: 480px;
+    }
 `
 
 const CropBox = styled.div`

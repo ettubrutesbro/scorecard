@@ -87,7 +87,7 @@ export default class IndicatorByRaces extends React.Component{
                         collapsed: {width: screen==='optimal'?610:480, height: 50},
                         sources: {width: 0, height: 50}
                     }}
-                    currentMode = {this.props.expand? 'expanded' : 'collapsed'}
+                    currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
 
                     // expandHeight = {150}
                     // collapseHeight = {50}

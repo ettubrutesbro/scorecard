@@ -80,6 +80,7 @@ export default class Breakdown extends React.Component{
                             console.log('toggling distribution...')
                             this.expandCountyList(!this.allCounties?true:false)
                         }}
+                        sources = {this.props.sources}
                     />  
                 }
                 {indicator && hasRace &&
@@ -91,18 +92,19 @@ export default class Breakdown extends React.Component{
                             console.log('trying to collapse counties')
                             this.expandCountyList(false)
                         }: ()=>{} }
+                        hideForSources = {this.props.sources}
                     />
                 }
 
                 <InfoMask
-                    on = {this.props.sources}
+                    // on = {this.props.sources}
                 />
 
                 {indicator &&
                     <Sources 
                         screen = {screen}
                         indicator = {indicator} 
-                        expand = {this.props.sources}
+                        // expand = {this.props.sources}
                     />
                 }
             </Wrapper>

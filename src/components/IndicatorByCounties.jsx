@@ -328,30 +328,30 @@ export default class IndicatorByCounties extends React.Component{
         return (
             <Graph
                 expandable
-                withScroll
-                currentMode = {this.props.expand? 'expanded' : 'collapsed'}
+                withScroll = {this.props.sources? false : true}
+                currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
                 
                 selected = {county}
                 selectable
                 beefyPadding
-                header = {(<HeaderComponent 
+                header = {!this.props.sources?(<HeaderComponent 
                     race = {race} 
                     distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
-                />)}
+                />):''}
 
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
-                footer = {(
+                footer = {!this.props.sources?(
                     <FooterComponent
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
                     />
-                )}
+                ):''}
                 fullHeight = {this.props.expand}
             />
         )
