@@ -297,36 +297,40 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandHeight, collapseHeight
+        let expandDims, collapseDims
         if(this.props.hasRace){
             if(screen==='optimal'){
-                expandHeight = 515
-                collapseHeight = 390
+                expandDims = {width: 610, height: 515}
+                collapseDims = {width: 610, height: 390}
             }
             else if(screen==='compact'){
-                expandHeight = 390
-                collapseHeight = 280
+                expandDims = {width: 480, height: 390}
+                collapseDims = {width: 480, height: 280}
             }
         }
-        else{ //no race, full expand
+        else{ //no race, take up entirety of breakdown space
             if(screen==='optimal'){
-                expandHeight = 575
-                collapseHeight = 575
+                expandDims = {width: 610, height: 575}
+                collapseDims = {width: 610, height: 575}
             }
             else if(screen==='compact'){
-                expandHeight = 450
-                collapseHeight = 450
+                expandDims = {width: 480, height: 450}
+                collapseDims = {width: 480, height: 450}
             }
         }
 
-        console.log(performance)
-
+        const modes = {
+            collapsed: collapseDims,
+            expanded: expandDims,
+            sources: {width: 50, height: 95}
+        }
+        console.log(modes)
         return (
             <Graph
                 expandable
-                expandHeight = {expandHeight}
-                collapseHeight = {collapseHeight}
                 withScroll
+                currentMode = {this.props.expand? 'expanded' : 'collapsed'}
+                modes = {modes}
                 
                 selected = {county}
                 selectable

@@ -41,7 +41,7 @@ export default class IndicatorByRaces extends React.Component{
         if(this.props.expand) this.hover(false)
     }
     render(){
-        const {indicator, year, county, colorScale} = this.props.store
+        const {indicator, year, county, colorScale, screen} = this.props.store
         const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
 
@@ -82,8 +82,15 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
                     expandable
-                    expandHeight = {150}
-                    collapseHeight = {50}
+                    modes = {{
+                        expanded: {width: screen==='optimal'?610:480, height: 150},
+                        collapsed: {width: screen==='optimal'?610:480, height: 50},
+                        sources: {width: 0, height: 50}
+                    }}
+                    currentMode = {this.props.expand? 'expanded' : 'collapsed'}
+
+                    // expandHeight = {150}
+                    // collapseHeight = {50}
                     fullHeight = {this.props.expand}
 
 

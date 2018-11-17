@@ -7,7 +7,7 @@ import {findDOMNode} from 'react-dom'
 
 import media from '../utilities/media'
 
-import ExpandBox from './ExpandBox'
+import ExpandBox from './ExpandBox2'
 
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
@@ -20,9 +20,14 @@ const Wrapper = styled.div`
 `
 
 const WrappedGraphComponent = (props) => {
-    const {header, footer, fullHeight, withScroll, ...restOfProps} = props
+    const {header, footer, modes, currentMode, fullHeight, withScroll, ...restOfProps} = props
+    console.log(modes)
     return props.expandable?(
         <ExpandBox 
+
+            currentMode = {currentMode}
+            modes = {modes}
+
             header = {header}
             footer = {footer}
             expand = {fullHeight}
