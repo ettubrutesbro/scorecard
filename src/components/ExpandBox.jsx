@@ -83,7 +83,7 @@ class ExpandBox extends React.Component {
         const {props} = this
     return(
 
-        <Wrapper>
+        <React.Fragment>
             <Header>
                 {props.header}
             </Header>
@@ -121,7 +121,7 @@ class ExpandBox extends React.Component {
             >
                 {props.footer}
             </Footer>
-        </Wrapper>
+        </React.Fragment>
         )
     }
     
@@ -129,9 +129,9 @@ class ExpandBox extends React.Component {
 
 
 
-const Wrapper = styled.div`
-    position: relative;
-`
+// const Wrapper = styled.div`
+//     position: relative;
+// `
 const Header = styled.div`
     z-index: 2;
     position: absolute;
