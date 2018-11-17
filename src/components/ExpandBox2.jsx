@@ -106,6 +106,9 @@ export default class ExpandTest extends React.Component{
                         {this.props.header}
                     </Header>
                 }
+                {this.props.withScroll &&
+                    <FadeCropper show = {this.props.currentMode === 'expanded'} />
+                }
                 <Box
                     current = {this.goTo}
                     animFrames = {computeAnim(this.current, this.goTo)}
@@ -124,6 +127,12 @@ export default class ExpandTest extends React.Component{
                         </Content>
                     </ScrollbarWrap>
                 </Box>
+                {this.props.withScroll && 
+                    <FadeCropperBottom
+                        show = {this.props.currentMode === 'expanded'}
+                        offset = {this.goTo.height}
+                    />
+                }
                 <Top scale = {scaleX} current = {this.goTo}/>
                 <Bottom scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
                 <Left scale = {scaleY} current = {this.goTo}/>
@@ -202,4 +211,23 @@ const Footer = styled.div`
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translateY(${props=>props.offset}px);
 
+`
+
+const FadeCropper = styled.div`
+    /*border: 1px solid red;*/
+    z-index: 1;
+    position: absolute;
+    left: 1px;
+    width: calc(100% - 2px);
+    height: 25px;
+    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    opacity: ${props => props.show? 1 : 0};
+    transition: opacity .25s;
+    /*border: 1px solid green;*/
+
+`
+const FadeCropperBottom = styled(FadeCropper)`
+    top: ${props => props.offset - 25}px;
+    height: 25px;
+    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
 `
