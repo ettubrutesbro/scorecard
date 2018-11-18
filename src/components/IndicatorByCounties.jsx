@@ -336,6 +336,7 @@ export default class IndicatorByCounties extends React.Component{
                 withScroll = {!this.props.sources && this.props.expand? true : false}
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
+                duration = {this.props.sources? .5 : .35}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
@@ -370,7 +371,7 @@ export default class IndicatorByCounties extends React.Component{
 
 const Wrapper = styled.div`
     position: relative;
-    transform: translate(${props=>props.offset?'-25px, -25px':'0,0'});
+    transform: translate(${props=>props.offset?'-65px, 0':'0,0'});
     transition: transform .35s;
     z-index: 10;
     //this needs z-index adjustment to sit atop demo when it's in btn mode
@@ -471,7 +472,7 @@ const headerfooter = styled.div`
 `
 const Header = styled(headerfooter)`
     opacity: ${props => props.hide? 0 : 1};
-    transition: opacity .2s;
+    transition: opacity .3s;
 `
 const HeaderTitle = styled.div`
     width: ${props => !props.hasRace? '130px' : 'auto'};
@@ -495,7 +496,7 @@ const HeaderToggle = styled(Toggle)`
         height: 2px;
         background-color: var(--offwhitefg);
     }
-    transform: translateX(${props=>props.coverTitle? -75 : props.offset? -35 : 0}px);
+    transform: translateX(${props=>props.coverTitle? -125 : props.offset? -35 : 0}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const Footer = styled(headerfooter)`
@@ -505,7 +506,7 @@ const Footer = styled(headerfooter)`
     right: 0px;
     padding: 0 15px;
     opacity: ${props => props.hide? 0 : 1};
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .25s;
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3  5s;
     transform: translateX(${props=>props.hide?'-100%': props.offset?'48px':0});
     &::before{
         position: absolute;

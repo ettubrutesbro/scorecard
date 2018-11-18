@@ -29,8 +29,9 @@ const Wrapper = styled.div`
     width: 100%;
     bottom: 0;
     z-index: 1;
-    transform: translateY(${props => props.offset}px);
-    transition: transform .35s  cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate(${props => props.offset});
+    transition: transform .35s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity .35s;
+    opacity: ${props => props.hide? 0 : 1};
     cursor: ${props=>props.clickable?'pointer':'auto'};
 `
 @observer
@@ -73,11 +74,12 @@ export default class IndicatorByRaces extends React.Component{
         // console.log(indicatorPerformanceByRace)
         return(
             <Wrapper
-                offset = {this.props.hideForSources? 0: this.props.expand? -150 : -50}
+                offset = {this.props.hideForSources? '-35px, -150px' : this.props.expand? '0, -150px' : '0, -50px'}
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
                 onMouseLeave = {this.props.expand? ()=>{}: ()=>this.hover(false)}
+                hide = {this.props.hideForSources}
             >
                 <HorizontalBarGraph
                     // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
@@ -85,9 +87,10 @@ export default class IndicatorByRaces extends React.Component{
                     modes = {{
                         expanded: {width: screen==='optimal'?610:480, height: 150},
                         collapsed: {width: screen==='optimal'?610:480, height: 50},
-                        sources: {width: 0, height: 0}
+                        sources: {width: 0, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
+                    duration = {this.props.hideForSources? 3 : .35}
 
                     // expandHeight = {150}
                     // collapseHeight = {50}

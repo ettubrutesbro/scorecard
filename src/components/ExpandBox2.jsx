@@ -11,7 +11,7 @@ const Box = styled.div`
     overflow: hidden;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: .35s;
+    animation-duration: ${props=>props.duration}s;
     transform-origin: 0% 0%;
     /*border: 3px solid green;*/
     width: ${props => props.current.width}px;
@@ -25,7 +25,7 @@ const Content = styled.div`
     transform-origin: 0% 0%;
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
-    animation-duration: .35s;
+    animation-duration: ${props=>props.duration}s;
 
     animation-name: ${props => props.animFrames};
     display: flex;
@@ -115,6 +115,7 @@ export default class ExpandTest extends React.Component{
                     onAnimationEnd = {()=>{
                         this.setDims('current', this.goTo)    
                     }}
+                    duration = {this.props.duration}
                 >
                     <ScrollbarWrap
                         withScroll = {this.props.withScroll}
@@ -129,6 +130,7 @@ export default class ExpandTest extends React.Component{
                     >
                         <Content
                             animFrames = {computeAnim(this.current, this.goTo, true)}
+                            duration = {this.props.duration}
                         >
                             {this.props.children}
                         </Content>
@@ -140,14 +142,15 @@ export default class ExpandTest extends React.Component{
                         offset = {this.goTo.height}
                     />
                 }
-                <Top borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
-                <Bottom borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
-                <Left borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
-                <Right borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                <Top duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                <Bottom duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
+                <Left duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                <Right duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
                 
                 {this.props.footer &&
                     <Footer
                         offset = {this.goTo.height}
+                        duration = {this.props.duration}
                     >
                         {this.props.footer}
                     </Footer>
@@ -156,6 +159,10 @@ export default class ExpandTest extends React.Component{
         )
 
     }
+}
+
+ExpandTest.defaultProps = {
+    duration: .35
 }
 
 const Wrapper = styled.div`
@@ -168,7 +175,7 @@ const Wrapper = styled.div`
 
 const Bound = styled.div`
     position: absolute;
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), border-color .25s;
+    transition: transform ${props=>props.duration}s cubic-bezier(0.215, 0.61, 0.355, 1), border-color .25s;
     transform-origin: 0% 0%;
     z-index: 2;
 `
@@ -215,7 +222,7 @@ const Footer = styled.div`
     height: 0;
     display: flex;
     align-items: center;
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform ${props=>props.duration}s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translateY(${props=>props.offset}px);
 
 `
