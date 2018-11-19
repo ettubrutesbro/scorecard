@@ -99,6 +99,7 @@ export default class ExpandTest extends React.Component{
         const scaleY = this.goTo.height / this.default.height
         return(
             <Wrapper
+                className = {this.props.className}
                 default = {this.default}
             >
                 {this.props.header &&

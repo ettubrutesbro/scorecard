@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {find, findIndex} from 'lodash'
 
 import {Button, Toggle} from './generic/'
-import {ExpandWidthBox} from './ExpandBox'
+import ExpandBox from './ExpandBox2'
 
 import sources from '../data/sourcesfinal'
 import indicators from '../data/indicators'
@@ -15,22 +15,24 @@ import media from '../utilities/media'
 
 export default class Sources extends React.Component{
 
-    render(){
 
+    render(){
+        const expandWidth = this.props.screen === 'optimal'? 608 : 478
         return(
             <Wrapper
-                expand = {this.props.expand}
-                expandWidth = {this.props.screen === 'optimal'? 608 : 478}
-                collapseWidth = {0}
+                currentMode = {this.props.expand?'expanded':'collapsed'}
+                modes = {{
+                    collapsed: {width: 100, height: 478},
+                    expanded: {width: expandWidth, height: 478}
+                }}
+
+                expand = {this.props.expand} //keeping vestigial prop for wrapper transitions
 
                 withScroll
-                header = {(<Header>
-                        Indicator and demographics sources
-                        <X />
-                    </Header>)}
+                header = {(<Header>Indicator and demographics sources </Header>)}
                 delay = '5s'
             >
-                <AllSources>
+                <AllSources width = {expandWidth}>
                     <Contents>
                     <IndicatorSourceInfo indicator = {this.props.indicator} />    
                     <DemographicSourceInfo />
@@ -41,8 +43,10 @@ export default class Sources extends React.Component{
     }
 }
 
-const Wrapper = styled(ExpandWidthBox)`
-    z-index: 5;
+const Wrapper = styled(ExpandBox)`
+    position: absolute;
+    top: 0;
+    z-index: ${props=>props.expand? 30 : 5};
     pointer-events: ${props=>props.expand?'auto':'none'};
     opacity: ${props=>props.expand?1:0};
     transform: translateX(${props=>props.expand?0:'125px'});
@@ -70,6 +74,8 @@ const AllSources = styled.div`
     @media ${media.compact}{
         max-height: 470px;
     }
+
+    white-space: normal;
 `
 const Contents = styled.div`
     padding: 35px;
@@ -85,6 +91,7 @@ const Header = styled.div`
     z-index: 3;
     transform: translateY(-50%);
     height: 1px;
+    white-space: nowrap;
 `
 
 const Indicator = styled.div`

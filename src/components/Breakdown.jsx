@@ -8,10 +8,8 @@ import commaNumber from 'comma-number'
 
 import IndicatorByRaces from './IndicatorByRaces'
 import IndicatorByCounties from './IndicatorByCounties'
-import CountiesByRacePopulation from './CountiesByRacePopulation'
 
 
-import DemoDataTable from './DemoDataTable'
 import Sources from './Sources'
 
 import indicators from '../data/indicators'
@@ -96,15 +94,11 @@ export default class Breakdown extends React.Component{
                     />
                 }
 
-                <InfoMask
-                    // on = {this.props.sources}
-                />
-
                 {indicator &&
                     <Sources 
                         screen = {screen}
                         indicator = {indicator} 
-                        // expand = {this.props.sources}
+                        expand = {this.props.sources}
                     />
                 }
             </Wrapper>

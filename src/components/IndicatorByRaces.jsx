@@ -25,7 +25,7 @@ const Label = styled.span`
 const Wrapper = styled.div`
     // margin-top: 45px;
     position: absolute;
-
+    
     width: 100%;
     bottom: 0;
     z-index: 1;
@@ -90,7 +90,7 @@ export default class IndicatorByRaces extends React.Component{
                         sources: {width: 0, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
-                    duration = {this.props.hideForSources? 3 : .35}
+                    // duration = {this.props.hideForSources? 3 : .35}
 
                     // expandHeight = {150}
                     // collapseHeight = {50}
