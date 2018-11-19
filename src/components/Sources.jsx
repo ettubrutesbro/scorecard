@@ -30,7 +30,7 @@ export default class Sources extends React.Component{
 
                 withScroll
                 header = {(<Header>Indicator and demographics sources </Header>)}
-                delay = '5s'
+                delay = '1s'
             >
                 <AllSources width = {expandWidth}>
                     <Contents>
@@ -48,11 +48,10 @@ const Wrapper = styled(ExpandBox)`
     top: 0;
     z-index: ${props=>props.expand? 30 : 5};
     pointer-events: ${props=>props.expand?'auto':'none'};
-    opacity: ${props=>props.expand?1:0};
-    transform: translateX(${props=>props.expand?0:'125px'});
-
-    transition: transform .45s, opacity .2s;
-    // transition-delay: .15s;
+    // opacity: ${props=>props.expand?1:0};
+    transform: translateX(${props=>props.expand?0:'480px'});
+    transition: transform .45s, opacity ${props=>props.expand?.2:.45}s;
+    transition-delay: ${props=>props.expand?.15:0}s;
 `
 
 const X = styled.div`
@@ -66,7 +65,7 @@ const X = styled.div`
 const AllSources = styled.div`
     position: relative;
     height: 100%;
-    width: 100%;
+    width: ${props=>props.width}px;
     /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
         max-height: 602px;

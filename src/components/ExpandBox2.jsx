@@ -10,13 +10,15 @@ const Box = styled.div`
     position: absolute;
     overflow: hidden;
     animation-timing-function: step-end;
-    animation-fill-mode: forwards;
+    animation-fill-mode: both;
     animation-duration: ${props=>props.duration}s;
     transform-origin: 0% 0%;
     /*border: 3px solid green;*/
     width: ${props => props.current.width}px;
     height: ${props => props.current.height}px;
     animation-name: ${props => props.animFrames};
+
+    animation-delay: ${props=>props.delay};
     top: 0;
     left: 0;
 `
@@ -24,10 +26,11 @@ const Box = styled.div`
 const Content = styled.div`
     transform-origin: 0% 0%;
     animation-timing-function: step-end;
-    animation-fill-mode: forwards;
+    animation-fill-mode: both;
     animation-duration: ${props=>props.duration}s;
 
     animation-name: ${props => props.animFrames};
+    animation-delay: ${props=>props.delay};
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -117,6 +120,7 @@ export default class ExpandTest extends React.Component{
                         this.setDims('current', this.goTo)    
                     }}
                     duration = {this.props.duration}
+                    delay = {this.props.delay}
                 >
                     <ScrollbarWrap
                         withScroll = {this.props.withScroll}
@@ -132,6 +136,7 @@ export default class ExpandTest extends React.Component{
                         <Content
                             animFrames = {computeAnim(this.current, this.goTo, true)}
                             duration = {this.props.duration}
+                            delay = {this.props.delay}
                         >
                             {this.props.children}
                         </Content>
@@ -143,10 +148,10 @@ export default class ExpandTest extends React.Component{
                         offset = {this.goTo.height}
                     />
                 }
-                <Top duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
-                <Bottom duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
-                <Left duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
-                <Right duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                <Bottom delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
+                <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
                 
                 {this.props.footer &&
                     <Footer
@@ -163,7 +168,8 @@ export default class ExpandTest extends React.Component{
 }
 
 ExpandTest.defaultProps = {
-    duration: .35
+    duration: .35,
+    delay: 0,
 }
 
 const Wrapper = styled.div`
@@ -177,6 +183,7 @@ const Wrapper = styled.div`
 const Bound = styled.div`
     position: absolute;
     transition: transform ${props=>props.duration}s cubic-bezier(0.215, 0.61, 0.355, 1), border-color .25s;
+    transition-delay: ${props=>props.delay};
     transform-origin: 0% 0%;
     z-index: 2;
 `
