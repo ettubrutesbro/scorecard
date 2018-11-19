@@ -74,7 +74,7 @@ export default class IndicatorByRaces extends React.Component{
         // console.log(indicatorPerformanceByRace)
         return(
             <Wrapper
-                offset = {this.props.hideForSources? '-35px, -150px' : this.props.expand? '0, -150px' : '0, -50px'}
+                offset = {this.props.hideForSources || !this.props.expand? '0, -50px' : '0, -150px'}
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
@@ -87,10 +87,8 @@ export default class IndicatorByRaces extends React.Component{
                     modes = {{
                         expanded: {width: screen==='optimal'?610:480, height: 150},
                         collapsed: {width: screen==='optimal'?610:480, height: 50},
-                        sources: {width: 0, height: 150}
                     }}
-                    currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
-                    delay = {!this.props.hideForSources? '.25s' : 0}
+                    currentMode = {this.props.hideForSources || !this.props.expand? 'collapsed' : 'expanded'}
                     // duration = {this.props.hideForSources? 3 : .35}
 
                     // expandHeight = {150}
@@ -101,8 +99,7 @@ export default class IndicatorByRaces extends React.Component{
                     header = {
                         <Header 
                             hovered = {!this.props.expand? this.hovered : false} 
-                            offset = {!this.props.expand}
-                            hide = {this.props.hideForSources}
+                            offset = {!this.props.expand || this.props.hideForSources}
                         >
                             <span>Indicator breakdown</span> by race
                         </Header>
@@ -124,5 +121,4 @@ const Header = styled.div`
     transition: transform ${props=>props.hide? .2 : .35}s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s;
     color: ${props => props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
 
-    opacity: ${props=>props.hide?0:1};
 `

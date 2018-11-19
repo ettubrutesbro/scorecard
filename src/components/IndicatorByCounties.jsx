@@ -19,7 +19,7 @@ import {truncateNum} from '../utilities/sigFig'
 import ordinal from 'ordinal'
 
 import Graph from './HorizontalBarGraph'
-import {Sprite} from './generic/Icon'
+import Icon, {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
 import ExpandBox from './ExpandBox2'
 
@@ -302,42 +302,43 @@ export default class IndicatorByCounties extends React.Component{
             if(screen==='optimal'){
                 expandDims = {width: 610, height: 515}
                 collapseDims = {width: 610, height: 390}
+                
             }
             else if(screen==='compact'){
                 expandDims = {width: 480, height: 390}
                 collapseDims = {width: 480, height: 280}
+                
             }
         }
         else{ //no race, take up entirety of breakdown space
             if(screen==='optimal'){
                 expandDims = {width: 610, height: 575}
                 collapseDims = {width: 610, height: 575}
+                
             }
             else if(screen==='compact'){
                 expandDims = {width: 480, height: 450}
                 collapseDims = {width: 480, height: 450}
+                
             }
         }
 
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
-            sources: {width: 50, height: 75}
+            sources: {width: 270, height: 50}
         }
         console.log(modes)
         return (
             <Wrapper offset = {this.props.sources}>
-            <BackButton 
-                visible = {this.props.sources}
-                onClick = {()=>console.log('unset sources')}
-            />
+
             <Graph
                 expandable
-                withScroll = {!this.props.sources && this.props.expand? true : false}
+                // withScroll = {!this.props.sources && this.props.expand? true : false}
+                withScroll
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
-                duration = {this.props.sources? .5 : .35}
-                delay = {this.props.sources? 0 : '.25s'}
+                duration = {this.props.sources? .35 : .35}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
@@ -345,7 +346,7 @@ export default class IndicatorByCounties extends React.Component{
                 selectable
                 beefyPadding
                 header = {(<HeaderComponent 
-                    hide = {this.props.sources}
+                    sources = {this.props.sources}
                     race = {race} 
                     distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
@@ -372,39 +373,32 @@ export default class IndicatorByCounties extends React.Component{
 
 const Wrapper = styled.div`
     position: relative;
-    transform: translate(${props=>props.offset?'-65px, 0':'0,0'});
-    transition: transform .35s;
     z-index: 10;
+    transform: translateY(${props=>props.offset? '-25px' : 0});
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     //this needs z-index adjustment to sit atop demo when it's in btn mode
-`
-const BackButton = styled.div`
-    /*border: 1px solid var(--fainttext);*/
-    background: white;
-    opacity: ${props => props.visible? 1 : 0};
-    transition: opacity .35s;
-    position: absolute;
-    top: 0; left: 0;
-    width: 50px;
-    height: 75px;
-    pointer-events: ${props=>props.visible?'auto' : 'none'};
-    cursor: pointer;
-
 `
 
 const HeaderComponent = (props) => {
     return(
         <Header
-            hide = {props.hide}
+            offset = {props.sources}
         >
-            <HeaderTitle hasRace = {props.race}>
-            {props.race && props.race === 'other' && 'In counties with the most children of other races'}
-            {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
-            {!props.race && props.distribute && 'County overview'}
-            {!props.race && !props.distribute && 'All counties'}
+            <BackArrow 
+                img = 'chevleft' 
+                sources = {props.sources} 
+                color = 'normtext'
+            />
+            <HeaderTitle hasRace = {props.race} sources = {props.sources}>
+            {!props.sources && props.race && props.race === 'other' && 'In counties with the most children of other races'}
+            {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+            {!props.sources && !props.race && props.distribute && 'County overview'}
+            {!props.sources && !props.race && !props.distribute && 'All counties'}
+            {props.sources && 'County overview'}
             </HeaderTitle>
             {!props.race &&
                 <HeaderToggle
-                    coverTitle = {props.hide}
+                    hide = {props.sources}
                     offset = {!props.distribute}
                     options = {[
                         {label: 'by %', value: 'pct'},
@@ -472,11 +466,26 @@ const headerfooter = styled.div`
     /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
-    opacity: ${props => props.hide? 0 : 1};
-    transition: opacity .3s;
+&::before{
+    /*content: '';*/
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    /*border: 1px solid red;*/
+    background: white;
+}
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(${props=>props.offset?'25px':0});
+`
+const BackArrow = styled(Icon)`
+    display: ${props => props.sources? 'block' : 'none'};
+    width: 18px; height: 18px;
+    /*border: 1px solid red;*/
+    position: absolute;
+    z-index: 5;
 `
 const HeaderTitle = styled.div`
-    width: ${props => !props.hasRace? '130px' : 'auto'};
+    width: ${props => !props.sources && !props.hasRace? '130px' : 'auto'};
     position: relative;
     height: 2px;
     padding: 0 15px;
@@ -484,6 +493,8 @@ const HeaderTitle = styled.div`
     display: inline-flex;
     align-items: center;
     background: var(--offwhitefg);
+    transition: transform .35s;
+    transform: translateX(${props=>props.sources? '10px':0});
 `
 const HeaderToggle = styled(Toggle)`
     /*margin-left: 15px;*/
@@ -498,7 +509,8 @@ const HeaderToggle = styled(Toggle)`
         background-color: var(--offwhitefg);
     }
     transform: translateX(${props=>props.coverTitle? -125 : props.offset? -35 : 0}px);
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity: ${props =>props.hide? 0 : 1};
 `
 const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
@@ -507,7 +519,7 @@ const Footer = styled(headerfooter)`
     right: 0px;
     padding: 0 15px;
     opacity: ${props => props.hide? 0 : 1};
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .3  5s;
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .35s;
     transform: translateX(${props=>props.hide?'-100%': props.offset?'48px':0});
     &::before{
         position: absolute;

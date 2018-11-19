@@ -22,8 +22,8 @@ export default class Sources extends React.Component{
             <Wrapper
                 currentMode = {this.props.expand?'expanded':'collapsed'}
                 modes = {{
-                    collapsed: {width: expandWidth/2, height: 478},
-                    expanded: {width: expandWidth, height: 478}
+                    collapsed: {width: expandWidth/2, height: this.props.screen==='optimal'?530:410},
+                    expanded: {width: expandWidth, height: this.props.screen==='optimal'?530:410}
                 }}
 
                 expand = {this.props.expand} //keeping vestigial prop for wrapper transitions
@@ -46,13 +46,13 @@ export default class Sources extends React.Component{
 
 const Wrapper = styled(ExpandBox)`
     position: absolute;
-    top: 0;
+    top: 70px;
     z-index: ${props=>props.expand? 30 : 5};
     pointer-events: ${props=>props.expand?'auto':'none'};
     opacity: ${props=>props.expand?1:0};
     transform: translateX(${props=>props.expand?0:props.expandWidth/2+'px'});
-    transition: transform .35s, opacity ${props=>props.expand?.2:.35}s;
-    transition-delay: ${props=>props.expand?.1:0}s;
+    transition: transform .35s, opacity ${props=>props.expand? .2 : .35}s;
+    transition-delay: ${props=>props.expand? .1:0}s;
 `
 
 const X = styled.div`
