@@ -337,6 +337,7 @@ export default class IndicatorByCounties extends React.Component{
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
                 duration = {this.props.sources? .5 : .35}
+                delay = {this.props.sources? 0 : '.25s'}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 

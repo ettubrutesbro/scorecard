@@ -20,13 +20,14 @@ const Wrapper = styled.div`
 `
 
 const WrappedGraphComponent = (props) => {
-    const {header, footer, modes, duration, currentMode, fullHeight, withScroll, borderColor, ...restOfProps} = props
+    const {header, footer, modes, duration, delay, currentMode, fullHeight, withScroll, borderColor, ...restOfProps} = props
     return props.expandable?(
         <ExpandBox 
 
             currentMode = {currentMode}
             modes = {modes}
             duration = {duration}
+            delay = {delay}
 
             borderColor = {borderColor}
 

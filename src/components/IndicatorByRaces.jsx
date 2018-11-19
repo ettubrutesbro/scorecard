@@ -90,6 +90,7 @@ export default class IndicatorByRaces extends React.Component{
                         sources: {width: 0, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' :  this.props.expand? 'expanded' : 'collapsed'}
+                    delay = {!this.props.hideForSources? '.25s' : 0}
                     // duration = {this.props.hideForSources? 3 : .35}
 
                     // expandHeight = {150}

@@ -22,15 +22,16 @@ export default class Sources extends React.Component{
             <Wrapper
                 currentMode = {this.props.expand?'expanded':'collapsed'}
                 modes = {{
-                    collapsed: {width: 100, height: 478},
+                    collapsed: {width: expandWidth/2, height: 478},
                     expanded: {width: expandWidth, height: 478}
                 }}
 
                 expand = {this.props.expand} //keeping vestigial prop for wrapper transitions
+                expandWidth = {expandWidth}
 
                 withScroll
                 header = {(<Header>Indicator and demographics sources </Header>)}
-                delay = '1s'
+                delay = {this.props.expand? '.1s' : 0}
             >
                 <AllSources width = {expandWidth}>
                     <Contents>
@@ -48,10 +49,10 @@ const Wrapper = styled(ExpandBox)`
     top: 0;
     z-index: ${props=>props.expand? 30 : 5};
     pointer-events: ${props=>props.expand?'auto':'none'};
-    // opacity: ${props=>props.expand?1:0};
-    transform: translateX(${props=>props.expand?0:'480px'});
-    transition: transform .45s, opacity ${props=>props.expand?.2:.45}s;
-    transition-delay: ${props=>props.expand?.15:0}s;
+    opacity: ${props=>props.expand?1:0};
+    transform: translateX(${props=>props.expand?0:props.expandWidth/2+'px'});
+    transition: transform .35s, opacity ${props=>props.expand?.2:.35}s;
+    transition-delay: ${props=>props.expand?.1:0}s;
 `
 
 const X = styled.div`
