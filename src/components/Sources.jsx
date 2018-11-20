@@ -31,7 +31,8 @@ export default class Sources extends React.Component{
 
                 withScroll
                 header = {(<Header>Indicator and demographics sources </Header>)}
-                delay = {this.props.expand? '.1s' : 0}
+                duration = {.4}
+                delay = {this.props.expand? '.15s' : 0}
             >
                 <AllSources width = {expandWidth}>
                     <Contents>
@@ -51,8 +52,8 @@ const Wrapper = styled(ExpandBox)`
     pointer-events: ${props=>props.expand?'auto':'none'};
     opacity: ${props=>props.expand?1:0};
     transform: translateX(${props=>props.expand?0:props.expandWidth/2+'px'});
-    transition: transform .35s, opacity ${props=>props.expand? .2 : .35}s;
-    transition-delay: ${props=>props.expand? .1:0}s;
+    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity ${props=>props.expand? .2 : .35}s;
+    transition-delay: ${props=>props.expand? .15:0}s;
 `
 
 const X = styled.div`
@@ -64,14 +65,16 @@ const X = styled.div`
 `
 
 const AllSources = styled.div`
-    position: relative;
+    position: absolute;
     height: 100%;
     width: ${props=>props.width}px;
     /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
+        width: 610px;
         max-height: 602px;
     }
     @media ${media.compact}{
+        width: 480px;
         max-height: 470px;
     }
 
@@ -89,8 +92,7 @@ const Header = styled.div`
     align-items: center;
     background: var(--offwhitefg);
     z-index: 3;
-    transform: translateY(-50%);
-    height: 1px;
+    height: 10px;
     white-space: nowrap;
 `
 

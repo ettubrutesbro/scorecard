@@ -326,7 +326,7 @@ export default class IndicatorByCounties extends React.Component{
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
-            sources: {width: 270, height: 50}
+            sources: {width: 400, height: 50}
         }
         console.log(modes)
         return (
@@ -338,7 +338,7 @@ export default class IndicatorByCounties extends React.Component{
                 withScroll
                 currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
                 modes = {modes}
-                duration = {this.props.sources? .35 : .35}
+                duration = {this.props.sources? .5 : .35}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
@@ -351,7 +351,10 @@ export default class IndicatorByCounties extends React.Component{
                     distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
+                    setSourcesMode = {this.props.store.setSourcesMode}
                 />)}
+
+                hideGraph = {this.props.sources}
 
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
@@ -383,18 +386,24 @@ const HeaderComponent = (props) => {
     return(
         <Header
             offset = {props.sources}
+            buttonMode = {props.sources}
+            onClick = {props.sources? ()=>{
+                props.setSourcesMode(false)
+            }:()=>{}}
         >
+
             <BackArrow 
                 img = 'chevleft' 
                 sources = {props.sources} 
-                color = 'normtext'
+                // color = 'normtext'
             />
+            <ReturnPrefix show = {props.sources}>Return to</ReturnPrefix>
             <HeaderTitle hasRace = {props.race} sources = {props.sources}>
             {!props.sources && props.race && props.race === 'other' && 'In counties with the most children of other races'}
             {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
-            {!props.sources && !props.race && props.distribute && 'County overview'}
+            {props.sources || !props.race && props.distribute && 'County overview'}
             {!props.sources && !props.race && !props.distribute && 'All counties'}
-            {props.sources && 'County overview'}
+            {props.sources && '/ race breakdown'}
             </HeaderTitle>
             {!props.race &&
                 <HeaderToggle
@@ -412,6 +421,9 @@ const HeaderComponent = (props) => {
         </Header>
     )
 }
+const ReturnPrefix = styled.div`
+    position: absolute;
+`
 const FooterComponent = (props) => {
     return(
         <Footer 
@@ -419,11 +431,10 @@ const FooterComponent = (props) => {
             hide = {props.hide}
         >
             <ExpandBox
-                currentMode = {props.hide? 'sources' : !props.offset? 'expanded' : 'collapsed'}
+                currentMode = {!props.offset? 'expanded' : 'collapsed'}
                 modes = {{
                     expanded: {width: 160, height: 33},
                     collapsed: {width: 112, height: 33},
-                    sources: {width: 0, height: 33}
                 }}
                 borderColor = 'var(--fainttext)'
             >
@@ -467,27 +478,43 @@ const headerfooter = styled.div`
 `
 const Header = styled(headerfooter)`
 &::before{
-    /*content: '';*/
+    content: '';
     position: absolute;
-    width: 100%;
-    height: 50px;
-    /*border: 1px solid red;*/
+    width: 199px;
+    height: 48px; margin-top: 1px;
+    left: -19px;
+    pointer-events: ${props=>props.buttonMode? 'auto' : 'none'};
     background: white;
+    opacity: ${props=>props.buttonMode? 1 : 0};
+    transition: opacity .25s ${props =>props.buttonMode? '.25s' : 0};
 }
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translateY(${props=>props.offset?'25px':0});
+    cursor: ${props => props.buttonMode? 'pointer' : 'auto'};
+    fill: var(--normtext);
+    ${props=>props.buttonMode?
+        `
+            &:hover{
+                color: var(--strokepeach);
+                fill: var(--strokepeach);
+            }
+        ` 
+        : ''
+    }
 `
 const BackArrow = styled(Icon)`
-    display: ${props => props.sources? 'block' : 'none'};
     width: 18px; height: 18px;
+    opacity: ${props=>props.sources?1:0};
+    transition: opacity .35s, transform .35s;
+    transform: translateX(${props=>props.sources? 0 : 10}px);
     /*border: 1px solid red;*/
     position: absolute;
     z-index: 5;
 `
 const HeaderTitle = styled.div`
-    width: ${props => !props.sources && !props.hasRace? '130px' : 'auto'};
+    width: ${props => !props.hasRace? '130px' : 'auto'};
     position: relative;
-    height: 2px;
+    height: 10px;
     padding: 0 15px;
     box-sizing: content-box;
     display: inline-flex;
@@ -508,9 +535,10 @@ const HeaderToggle = styled(Toggle)`
         height: 2px;
         background-color: var(--offwhitefg);
     }
-    transform: translateX(${props=>props.coverTitle? -125 : props.offset? -35 : 0}px);
+    transform: translateX(${props=> props.offset? -35 : 0}px);
     transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     opacity: ${props =>props.hide? 0 : 1};
+    pointer-events: ${props=>props.hide?'none':'auto'};
 `
 const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
@@ -519,8 +547,9 @@ const Footer = styled(headerfooter)`
     right: 0px;
     padding: 0 15px;
     opacity: ${props => props.hide? 0 : 1};
+    pointer-events: ${props => props.hide? 'none' : 'auto'};
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .35s;
-    transform: translateX(${props=>props.hide?'-100%': props.offset?'48px':0});
+    transform: translateX(${props=>props.hide? '-75%' : props.offset?'48px':0});
     &::before{
         position: absolute;
         content: '';

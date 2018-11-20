@@ -30,7 +30,7 @@ const Wrapper = styled.div`
     bottom: 0;
     z-index: 1;
     transform: translate(${props => props.offset});
-    transition: transform .35s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity .35s;
+    transition: transform ${props=>props.hide? .5 : .35}s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s .15s;
     opacity: ${props => props.hide? 0 : 1};
     cursor: ${props=>props.clickable?'pointer':'auto'};
 `
@@ -74,7 +74,7 @@ export default class IndicatorByRaces extends React.Component{
         // console.log(indicatorPerformanceByRace)
         return(
             <Wrapper
-                offset = {this.props.hideForSources || !this.props.expand? '0, -50px' : '0, -150px'}
+                offset = {this.props.hideForSources? '0, -150px' : !this.props.expand? '0, -50px' : '0, -150px'}
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
@@ -87,19 +87,23 @@ export default class IndicatorByRaces extends React.Component{
                     modes = {{
                         expanded: {width: screen==='optimal'?610:480, height: 150},
                         collapsed: {width: screen==='optimal'?610:480, height: 50},
+                        sources: {width: 100, height: 150}
                     }}
-                    currentMode = {this.props.hideForSources || !this.props.expand? 'collapsed' : 'expanded'}
+                    currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}
                     // duration = {this.props.hideForSources? 3 : .35}
 
                     // expandHeight = {150}
                     // collapseHeight = {50}
                     fullHeight = {this.props.expand}
 
+                    hideGraph = {!this.props.expand || this.props.hideForSources}
+
                     selectable
                     header = {
                         <Header 
                             hovered = {!this.props.expand? this.hovered : false} 
-                            offset = {!this.props.expand || this.props.hideForSources}
+                            offset = {!this.props.expand}
+                            buttonMode = {!this.props.expand}
                         >
                             <span>Indicator breakdown</span> by race
                         </Header>
@@ -117,7 +121,7 @@ const Header = styled.div`
     margin: 0 20px;
     padding: 0 15px;
     background: var(--offwhitefg);
-    transform: translate(${props=>props.hide? '-35px, 0' : props.offset?'0, 25px':'0,0'});
+    transform: translate(${props=>props.offset?'0, 25px':'0,0'});
     transition: transform ${props=>props.hide? .2 : .35}s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s;
     color: ${props => props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
 

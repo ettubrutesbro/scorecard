@@ -293,8 +293,8 @@ export default class ResponsiveScorecard extends React.Component{
 
     @action openNav = (status) => {
         console.log('nav', status)
-        if(this.sourcesMode && status){
-            this.setSourcesMode(false)
+        if(store.sourcesMode && status){
+            store.setSourcesMode(false)
         }
         if(store.init && status){
             console.log('user opened nav while init')
@@ -316,8 +316,6 @@ export default class ResponsiveScorecard extends React.Component{
         else this.hoveredCounty = null
     }
     @observable screen = getMedia()
-    @observable sourcesMode = false
-    @action setSourcesMode = (tf) => this.sourcesMode = tf
 
     componentDidMount(){
         store.setIndicatorPages()
@@ -362,6 +360,7 @@ export default class ResponsiveScorecard extends React.Component{
             } 
             if(urlParams.has('yr')){
                 if(indicators[store.indicator].years[urlYr]){
+                    console.log(urlYr)
                     store.completeWorkflow('year',urlYr)
                 }
             }
@@ -437,13 +436,13 @@ export default class ResponsiveScorecard extends React.Component{
                     {store.indicator &&
                     <ShareSources>
                         <SourcesButton
-                            dark = {this.sourcesMode} 
-                            label = {this.sourcesMode? 
+                            dark = {store.sourcesMode} 
+                            label = {store.sourcesMode? 
                                <BtnLabel>Hide sources and notes<SourcesIcon /></BtnLabel>
                                 : <BtnLabel>View sources and notes<SourcesIcon /></BtnLabel>
                             }
-                            className = {this.sourcesMode? 'negative' : 'default' }
-                            onClick = {()=>{this.setSourcesMode(!this.sourcesMode)}}
+                            className = {['default', store.sourcesMode? 'negative' : ''].join(' ')}
+                            onClick = {()=>{store.setSourcesMode(!store.sourcesMode)}}
                         />
                         <BtnWithRightIco 
                             label = {<BtnLabel>Download PDF<PDFIcon /></BtnLabel>} 
@@ -464,10 +463,10 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        // show = {!this.sourcesMode && !store.init}
+                        // show = {!store.sourcesMode && !store.init}
                         show = {!store.init}
                         store = {store}
-                        sources = {this.sourcesMode}
+                        sources = {store.sourcesMode}
                     />
                  
                    <InitBox 
@@ -477,13 +476,13 @@ export default class ResponsiveScorecard extends React.Component{
                     />
                     
                     <Breakdown
-                        sources = {this.sourcesMode}
+                        sources = {store.sourcesMode}
                     > 
                         {store.indicator &&
                         <BreakdownComponent 
                             offset = {this.breakdownOffset} 
                             store = {store} 
-                            sources = {this.sourcesMode}
+                            sources = {store.sourcesMode}
                         /> 
                         }
                     </Breakdown>

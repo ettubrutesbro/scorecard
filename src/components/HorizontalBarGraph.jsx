@@ -99,6 +99,7 @@ const Header = styled.div`
                 ref = {this.graph}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
+                hideGraph = {this.props.hideGraph}
             >
                 <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
@@ -213,7 +214,7 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     letter-spacing: 0.5px;
     font-size: 13px;
-    transition: border-color .25s, background-color .25s, box-shadow .25s;
+    transition: border-color .25s, background-color .25s, box-shadow .25s, opacity .45s;
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -223,6 +224,8 @@ const GraphTable = styled.div`
     @media ${media.compact}{
         width: 480px;
     }
+    opacity: ${props => props.hideGraph? 0 : 1};
+    pointer-events: ${props => props.hideGraph? 'none' : 'auto'};
 `
 
 const CropBox = styled.div`

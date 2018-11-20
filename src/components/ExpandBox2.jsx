@@ -51,9 +51,6 @@ const computeAnim = (goTo, startFrom, invert) => {
             if(invert){
                 scaleX = 1/scaleX
                 scaleY = 1/scaleY
-                if(step===3){
-                    console.log(frames)
-                }
              }
 
             frames += `${step}% { 
@@ -111,7 +108,10 @@ export default class ExpandTest extends React.Component{
                     </Header>
                 }
                 {this.props.withScroll &&
-                    <FadeCropper show = {this.props.currentMode === 'expanded'} />
+                    <FadeCropper 
+                        show = {this.props.currentMode === 'expanded'} 
+                        width = {this.props.modes.expanded.width}
+                    />
                 }
                 <Box
                     current = {this.goTo}
@@ -131,6 +131,7 @@ export default class ExpandTest extends React.Component{
                                     width: '100%',
                                     height: this.props.currentMode !== 'expanded' && this.props.withScroll? 3000 : this.props.modes.expanded.height
                                 }}
+                                renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
                             > 
                                 {children}
                             </Scrollbars>
@@ -147,6 +148,7 @@ export default class ExpandTest extends React.Component{
                 </Box>
                 {this.props.withScroll && 
                     <FadeCropperBottom
+                        width = {this.props.modes.expanded.width}
                         show = {this.props.currentMode === 'expanded'}
                         offset = {this.goTo.height}
                     />
@@ -243,7 +245,7 @@ const FadeCropper = styled.div`
     z-index: 1;
     position: absolute;
     left: 1px;
-    width: calc(100% - 2px);
+    width: ${props=>props.width}px;
     height: 45px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
     opacity: ${props => props.show? 1 : 0};
