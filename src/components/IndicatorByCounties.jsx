@@ -326,7 +326,7 @@ export default class IndicatorByCounties extends React.Component{
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
-            sources: {width: 400, height: 50}
+            sources: {width: 370, height: 50}
         }
         console.log(modes)
         return (
@@ -397,14 +397,22 @@ const HeaderComponent = (props) => {
                 sources = {props.sources} 
                 // color = 'normtext'
             />
-            <ReturnPrefix show = {props.sources}>Return to</ReturnPrefix>
             <HeaderTitle hasRace = {props.race} sources = {props.sources}>
-            {!props.sources && props.race && props.race === 'other' && 'In counties with the most children of other races'}
-            {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
-            {props.sources || !props.race && props.distribute && 'County overview'}
-            {!props.sources && !props.race && !props.distribute && 'All counties'}
-            {props.sources && '/ race breakdown'}
+                <FadeTitle show = {((props.sources && props.distribute) || (!props.race && props.distribute))}>
+                    County overview
+                </FadeTitle>
+                <FadeTitle show = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}>
+                    All counties
+                </FadeTitle>
+                <FadeTitle show = {!props.sources && props.race}>
+                    {props.race === 'other' && 'In counties with the most children of other races'}
+                    {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+                </FadeTitle> 
             </HeaderTitle>
+            <SourceString show = {props.sources}>
+                / race breakdown
+                <Minigraph img = "minigraph"  />
+            </SourceString>
             {!props.race &&
                 <HeaderToggle
                     hide = {props.sources}
@@ -421,8 +429,20 @@ const HeaderComponent = (props) => {
         </Header>
     )
 }
-const ReturnPrefix = styled.div`
+const SourceString = styled.div`
     position: absolute;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    left: 158px;
+    z-index: 10;
+    opacity: ${props=>props.show? 1 : 0};
+    transition: opacity .2s;
+    transition-delay: ${props=>props.show? '.15s' : '0s'};
+`
+const Minigraph = styled(Icon)`
+    width: 30px; height: 30px;
+    margin-left: 10px;
 `
 const FooterComponent = (props) => {
     return(
@@ -480,7 +500,7 @@ const Header = styled(headerfooter)`
 &::before{
     content: '';
     position: absolute;
-    width: 199px;
+    width: 369px;
     height: 48px; margin-top: 1px;
     left: -19px;
     pointer-events: ${props=>props.buttonMode? 'auto' : 'none'};
@@ -523,6 +543,14 @@ const HeaderTitle = styled.div`
     transition: transform .35s;
     transform: translateX(${props=>props.sources? '10px':0});
 `
+const FadeTitle = styled.span`
+    position: absolute;
+    left: 15px;
+    opacity: ${props=>props.show? 1 : 0};
+    transition: opacity .15s;
+    transition-delay: ${props=>props.show?'.15s':'0s'};
+`
+
 const HeaderToggle = styled(Toggle)`
     /*margin-left: 15px;*/
     position: relative;
@@ -538,6 +566,7 @@ const HeaderToggle = styled(Toggle)`
     transform: translateX(${props=> props.offset? -35 : 0}px);
     transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     opacity: ${props =>props.hide? 0 : 1};
+    transition-delay: ${props => props.hide? '0s' : '0.15s'};
     pointer-events: ${props=>props.hide?'none':'auto'};
 `
 const Footer = styled(headerfooter)`
