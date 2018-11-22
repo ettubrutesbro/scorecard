@@ -19,9 +19,9 @@ import {truncateNum} from '../utilities/sigFig'
 import ordinal from 'ordinal'
 
 import Graph from './HorizontalBarGraph'
-import {Sprite} from './generic/Icon'
+import Icon, {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
-import {ExpandWidthBox} from './ExpandBox'
+import ExpandBox from './ExpandBox2'
 
 
 function indexOfClosest(nums, target) {
@@ -297,76 +297,125 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandHeight, collapseHeight
+        let expandDims, collapseDims
         if(this.props.hasRace){
             if(screen==='optimal'){
-                expandHeight = 515
-                collapseHeight = 390
+                expandDims = {width: 610, height: 515}
+                collapseDims = {width: 610, height: 390}
+                
             }
             else if(screen==='compact'){
-                expandHeight = 390
-                collapseHeight = 280
+                expandDims = {width: 480, height: 390}
+                collapseDims = {width: 480, height: 280}
+                
             }
         }
-        else{ //no race, full expand
+        else{ //no race, take up entirety of breakdown space
             if(screen==='optimal'){
-                expandHeight = 575
-                collapseHeight = 575
+                expandDims = {width: 610, height: 575}
+                collapseDims = {width: 610, height: 575}
+                
             }
             else if(screen==='compact'){
-                expandHeight = 450
-                collapseHeight = 450
+                expandDims = {width: 480, height: 450}
+                collapseDims = {width: 480, height: 450}
+                
             }
         }
 
-        console.log(performance)
-
+        const modes = {
+            collapsed: collapseDims,
+            expanded: expandDims,
+            sources: {width: 370, height: 50}
+        }
+        console.log(modes)
         return (
+            <Wrapper offset = {this.props.sources}>
+
             <Graph
                 expandable
-                expandHeight = {expandHeight}
-                collapseHeight = {collapseHeight}
+                // withScroll = {!this.props.sources && this.props.expand? true : false}
                 withScroll
+                currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
+                modes = {modes}
+                duration = {this.props.sources? .5 : .35}
+
+                borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
                 selected = {county}
                 selectable
                 beefyPadding
                 header = {(<HeaderComponent 
+                    sources = {this.props.sources}
                     race = {race} 
                     distribute = {distribute}
                     setOverviewSort = {this.setOverviewSort}
                     sortOverviewBy = {this.sortOverviewBy}
+                    setSourcesMode = {this.props.store.setSourcesMode}
                 />)}
-                expandedHeader = {expandedHeader}
-                expandedSubHeader = {performance.length + ' counties reported data'}
+
+                hideGraph = {this.props.sources}
+
                 labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                disableAnim = {distribute}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
                 footer = {(
                     <FooterComponent
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
+                        hide = {this.props.sources}
                     />
                 )}
                 fullHeight = {this.props.expand}
             />
+            </Wrapper>
         )
     }
 }
 
+const Wrapper = styled.div`
+    position: relative;
+    z-index: 10;
+    transform: translateY(${props=>props.offset? '-25px' : 0});
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    //this needs z-index adjustment to sit atop demo when it's in btn mode
+`
+
 const HeaderComponent = (props) => {
     return(
-        <Header>
-            <HeaderTitle hasRace = {props.race}>
-            {props.race && props.race === 'other' && 'In counties with the most children of other races'}
-            {props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
-            {!props.race && props.distribute && 'County overview'}
-            {!props.race && !props.distribute && 'All counties'}
+        <Header
+            offset = {props.sources}
+            buttonMode = {props.sources}
+            onClick = {props.sources? ()=>{
+                props.setSourcesMode(false)
+            }:()=>{}}
+        >
+
+            <BackArrow 
+                img = 'chevleft' 
+                sources = {props.sources} 
+                // color = 'normtext'
+            />
+            <HeaderTitle hasRace = {props.race} sources = {props.sources}>
+                <FadeTitle show = {((props.sources && props.distribute) || (!props.race && props.distribute))}>
+                    County overview
+                </FadeTitle>
+                <FadeTitle show = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}>
+                    All counties
+                </FadeTitle>
+                <FadeTitle show = {!props.sources && props.race}>
+                    {props.race === 'other' && 'In counties with the most children of other races'}
+                    {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+                </FadeTitle> 
             </HeaderTitle>
+            <SourceString show = {props.sources}>
+                / race breakdown
+                <Minigraph img = "minigraph"  />
+            </SourceString>
             {!props.race &&
                 <HeaderToggle
+                    hide = {props.sources}
                     offset = {!props.distribute}
                     options = {[
                         {label: 'by %', value: 'pct'},
@@ -380,13 +429,34 @@ const HeaderComponent = (props) => {
         </Header>
     )
 }
+const SourceString = styled.div`
+    position: absolute;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    left: 158px;
+    z-index: 10;
+    opacity: ${props=>props.show? 1 : 0};
+    transition: opacity .2s;
+    transition-delay: ${props=>props.show? '.15s' : '0s'};
+`
+const Minigraph = styled(Icon)`
+    width: 30px; height: 30px;
+    margin-left: 10px;
+`
 const FooterComponent = (props) => {
     return(
-        <Footer >
-            <ExpandWidthBox
-                expand = {!props.offset}
-                expandWidth = {167}
-                collapseWidth = {120}
+        <Footer 
+            offset = {props.offset}
+            hide = {props.hide}
+        >
+            <ExpandBox
+                currentMode = {!props.offset? 'expanded' : 'collapsed'}
+                modes = {{
+                    expanded: {width: 160, height: 33},
+                    collapsed: {width: 112, height: 33},
+                }}
+                borderColor = 'var(--fainttext)'
             >
                 <ExpandButton 
                     onClick = {props.onClick} 
@@ -396,7 +466,7 @@ const FooterComponent = (props) => {
                             {props.offset && 'See less'}
                             <Sprite 
                                 style = {{
-                                    marginLeft: '10px',
+                                    marginLeft: '9px',
                                     width: '18px',
                                     height: '18px'
                                 }}
@@ -408,11 +478,12 @@ const FooterComponent = (props) => {
                     )}
                     className = 'compact borderless' 
                 />
-            </ExpandWidthBox>
+            </ExpandBox>
         </Footer> 
     )
 }
 const ExpandButton = styled(Button)`
+    margin-top: 1px;
     &:hover{
         .sprite-chevsprite{
             fill: var(--strokepeach);
@@ -426,18 +497,60 @@ const headerfooter = styled.div`
     /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
-
+&::before{
+    content: '';
+    position: absolute;
+    width: 369px;
+    height: 48px; margin-top: 1px;
+    left: -19px;
+    pointer-events: ${props=>props.buttonMode? 'auto' : 'none'};
+    background: white;
+    opacity: ${props=>props.buttonMode? 1 : 0};
+    transition: opacity .25s ${props =>props.buttonMode? '.25s' : 0};
+}
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(${props=>props.offset?'25px':0});
+    cursor: ${props => props.buttonMode? 'pointer' : 'auto'};
+    fill: var(--normtext);
+    ${props=>props.buttonMode?
+        `
+            &:hover{
+                color: var(--strokepeach);
+                fill: var(--strokepeach);
+            }
+        ` 
+        : ''
+    }
+`
+const BackArrow = styled(Icon)`
+    width: 18px; height: 18px;
+    opacity: ${props=>props.sources?1:0};
+    transition: opacity .35s, transform .35s;
+    transform: translateX(${props=>props.sources? 0 : 10}px);
+    /*border: 1px solid red;*/
+    position: absolute;
+    z-index: 5;
 `
 const HeaderTitle = styled.div`
     width: ${props => !props.hasRace? '130px' : 'auto'};
     position: relative;
-    height: 2px;
+    height: 10px;
     padding: 0 15px;
     box-sizing: content-box;
     display: inline-flex;
     align-items: center;
     background: var(--offwhitefg);
+    transition: transform .35s;
+    transform: translateX(${props=>props.sources? '10px':0});
 `
+const FadeTitle = styled.span`
+    position: absolute;
+    left: 15px;
+    opacity: ${props=>props.show? 1 : 0};
+    transition: opacity .15s;
+    transition-delay: ${props=>props.show?'.15s':'0s'};
+`
+
 const HeaderToggle = styled(Toggle)`
     /*margin-left: 15px;*/
     position: relative;
@@ -450,14 +563,33 @@ const HeaderToggle = styled(Toggle)`
         height: 2px;
         background-color: var(--offwhitefg);
     }
-    transform: translateX(${props=>props.offset? -35 : 0}px);
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateX(${props=> props.offset? -35 : 0}px);
+    transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity: ${props =>props.hide? 0 : 1};
+    transition-delay: ${props => props.hide? '0s' : '0.15s'};
+    pointer-events: ${props=>props.hide?'none':'auto'};
 `
 const Footer = styled(headerfooter)`
-    bottom: -1px; right: 0;
+    /*bottom: -1px; right: 182px;*/
     position: absolute;
-    transition: transform .25s;
-    transform: translateX(${props=>props.offset?50:0}px);
+    width: 192px;
+    right: 0px;
+    padding: 0 15px;
+    opacity: ${props => props.hide? 0 : 1};
+    pointer-events: ${props => props.hide? 'none' : 'auto'};
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .35s;
+    transform: translateX(${props=>props.hide? '-75%' : props.offset?'48px':0});
+    &::before{
+        position: absolute;
+        content: '';
+        width: 100%;
+        left: 0;
+        height: 3px;
+        background: var(--offwhitefg);
+        transform: scaleX(${props=>props.offset?0.75 : 1});
+        transform-origin: 0 0;
+        transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
 `
 const Prompt = styled.div`
     position: absolute;

@@ -8,10 +8,8 @@ import commaNumber from 'comma-number'
 
 import IndicatorByRaces from './IndicatorByRaces'
 import IndicatorByCounties from './IndicatorByCounties'
-import CountiesByRacePopulation from './CountiesByRacePopulation'
 
 
-import DemoDataTable from './DemoDataTable'
 import Sources from './Sources'
 
 import indicators from '../data/indicators'
@@ -69,7 +67,7 @@ export default class Breakdown extends React.Component{
         return(
             <Wrapper >
 
-                {!this.props.sources && indicator &&  
+                {indicator &&  
                     <IndicatorByCounties 
                         entries = {entryCount}
                         store = {store}
@@ -80,9 +78,10 @@ export default class Breakdown extends React.Component{
                             console.log('toggling distribution...')
                             this.expandCountyList(!this.allCounties?true:false)
                         }}
+                        sources = {this.props.sources}
                     />  
                 }
-                {!this.props.sources && indicator && hasRace &&
+                {indicator && hasRace &&
 
                     <IndicatorByRaces
                         store = {store}
@@ -91,10 +90,16 @@ export default class Breakdown extends React.Component{
                             console.log('trying to collapse counties')
                             this.expandCountyList(false)
                         }: ()=>{} }
+                        hideForSources = {this.props.sources}
                     />
                 }
-                {indicator && this.props.sources &&
-                    <Sources indicator = {indicator} />
+
+                {indicator &&
+                    <Sources 
+                        screen = {screen}
+                        indicator = {indicator} 
+                        expand = {this.props.sources}
+                    />
                 }
             </Wrapper>
         )
@@ -102,3 +107,24 @@ export default class Breakdown extends React.Component{
 
 }
 
+
+const InfoMask = styled.div`
+    position: absolute;
+    width: 100%;
+    top: -20px;
+    left: 0;
+    height: calc(100% + 40px);
+    overflow: hidden;
+    z-index: 2;
+    pointer-events: none;
+    &::after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        right: -100%;
+        background: var(--offwhitefg);
+        transform: translateX(${props => props.on? -100: 10}%);
+        transition: transform .3s;
+    }
+`

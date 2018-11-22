@@ -93,7 +93,7 @@ export default class AppStore{
     @action completeWorkflow = (which, value) => {
 
         const {county, race, year} = this
-
+        console.log('set',which,'to',value)
         //INDICATOR SELECTION CHECKS
         if(which==='indicator'){
             if(!value){ //clearing value for reset
@@ -508,4 +508,7 @@ export default class AppStore{
         console.log('clearing sanity check for', which)
         this.sanityCheck[which] = null
     }
+
+    @observable sourcesMode = false
+    @action setSourcesMode = (tf) => this.sourcesMode = tf
 }

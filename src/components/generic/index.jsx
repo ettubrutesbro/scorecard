@@ -318,7 +318,8 @@ const Btn = styled.div`
 
     &.compact{
         font-size: 13px;
-        padding: 10px 17px;
+        padding: 10px 15px;
+        height: 33px;
     }
     &.dark{
         background: var(--normtext);

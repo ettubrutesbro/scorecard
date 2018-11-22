@@ -14,7 +14,7 @@ import ReadoutComponent from './components/Readout'
 import BreakdownComponent from './components/Breakdown'
 import LegendComponent from './components/Legend'
 import MapComponent from './components/InteractiveMap'
-import DemoDataTable from './components/DemoDataTable'
+// import DemoDataTable from './components/DemoDataTable'
 import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
 import {DemoSources} from './components/Sources'
@@ -70,14 +70,10 @@ const App = styled.div`
     height: 100%;
     background: var(--offwhitefg);
     margin: auto;
-    overflow: hidden;
     @media ${media.optimal}{
-        /*width: 100%;*/
         height: 960px;
-        /*justify-content: flex*/
     }
     @media ${media.compact}{
-        /*width: 100%;*/
         height: 740px;
     }
     @media ${media.mobile}{
@@ -95,7 +91,6 @@ const Row = styled.div`
     }
     @media ${media.compact}{
         width: 1300px;
-        /*width: */
     }
 `
 const DarkBar = styled.div`
@@ -157,26 +152,39 @@ const BottomRow = styled(Row)`
 
 const GreyMask = styled.div`
     position: absolute;
+    pointer-events: none;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    transform-origin: 0% 0%;
-    transition: transform ${props=>props.show? .45 : .35}s linear;
-    transform: translateX(${props=>props.show?0 : 'calc(-100% - 300px)'});
-    // transform: scaleX(${props=>props.show?1 : 0});
-    background: var(--offwhitefg);
     z-index: 1;
-    &::after{
+    overflow: hidden;
+    &::before, &::after{
         content: '';
         position: absolute;
         top: 0;
+        transition: transform ${props=>props.show? .45 : .35}s linear;
+        @media ${media.optimal}{
+            transform: translateX(${props=>props.show?'calc(1550px + 300px)' : 0});
+        }
+        @media ${media.compact} {
+            transform: translateX(${props=>props.show?'calc(1300px + 300px)' : 0});
+        }
+    }
+    &::before{
+        right: calc(100% + 300px);
+        width: 100%;
+        height: 100%;
+        background: var(--offwhitefg);
+    }
+    &::after{
         width: 300px;
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
-        right: -300px;
+        left: -300px;
         background-image: url(${maskImg});
+
     }
 `
 const ShareSources = styled.div`
@@ -285,8 +293,8 @@ export default class ResponsiveScorecard extends React.Component{
 
     @action openNav = (status) => {
         console.log('nav', status)
-        if(this.sourcesMode && status){
-            this.setSourcesMode(false)
+        if(store.sourcesMode && status){
+            store.setSourcesMode(false)
         }
         if(store.init && status){
             console.log('user opened nav while init')
@@ -308,8 +316,6 @@ export default class ResponsiveScorecard extends React.Component{
         else this.hoveredCounty = null
     }
     @observable screen = getMedia()
-    @observable sourcesMode = false
-    @action setSourcesMode = (tf) => this.sourcesMode = tf
 
     componentDidMount(){
         store.setIndicatorPages()
@@ -354,6 +360,7 @@ export default class ResponsiveScorecard extends React.Component{
             } 
             if(urlParams.has('yr')){
                 if(indicators[store.indicator].years[urlYr]){
+                    console.log(urlYr)
                     store.completeWorkflow('year',urlYr)
                 }
             }
@@ -429,13 +436,13 @@ export default class ResponsiveScorecard extends React.Component{
                     {store.indicator &&
                     <ShareSources>
                         <SourcesButton
-                            dark = {this.sourcesMode} 
-                            label = {this.sourcesMode? 
+                            dark = {store.sourcesMode} 
+                            label = {store.sourcesMode? 
                                <BtnLabel>Hide sources and notes<SourcesIcon /></BtnLabel>
                                 : <BtnLabel>View sources and notes<SourcesIcon /></BtnLabel>
                             }
-                            className = {this.sourcesMode? 'negative' : 'default' }
-                            onClick = {()=>{this.setSourcesMode(!this.sourcesMode)}}
+                            className = {['default', store.sourcesMode? 'negative' : ''].join(' ')}
+                            onClick = {()=>{store.setSourcesMode(!store.sourcesMode)}}
                         />
                         <BtnWithRightIco 
                             label = {<BtnLabel>Download PDF<PDFIcon /></BtnLabel>} 
@@ -456,10 +463,10 @@ export default class ResponsiveScorecard extends React.Component{
                 <BottomRow>
                     <DemoBox
                         id = "demobox"
-                        // show = {!this.sourcesMode && !store.init}
+                        // show = {!store.sourcesMode && !store.init}
                         show = {!store.init}
                         store = {store}
-                        sources = {this.sourcesMode}
+                        sources = {store.sourcesMode}
                     />
                  
                    <InitBox 
@@ -469,13 +476,13 @@ export default class ResponsiveScorecard extends React.Component{
                     />
                     
                     <Breakdown
-                        sources = {this.sourcesMode}
+                        sources = {store.sourcesMode}
                     > 
                         {store.indicator &&
                         <BreakdownComponent 
                             offset = {this.breakdownOffset} 
                             store = {store} 
-                            sources = {this.sourcesMode}
+                            sources = {store.sourcesMode}
                         /> 
                         }
                     </Breakdown>
@@ -514,6 +521,7 @@ export default class ResponsiveScorecard extends React.Component{
                     </LegendContainer>
                 </BottomRow>
                 <GreyMask 
+                    className = 'greymask'
                     show = {this.navOpen || store.init}
                     onClick = {()=>this.navOpen? ()=>this.openNav(false): ()=>{console.log('clicked grey mask')}}
                 />

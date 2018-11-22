@@ -5,6 +5,15 @@ import sprites from './spritemanifest'
 
 const icons = {
     x: (<polygon points="33.1,6.1 29.8,2.8 17.9,14.5 6,2.8 2.7,6.1 14.4,18 2.7,29.9 6,33.2 17.9,21.5 29.8,33.2 33.1,29.9 21.4,18 "/>),
+    chevright: <polygon points="22.8,18.4 10.6,30.6 11,30.6 13.2,30.6 25.4,18.4 13.1,5.4 10.6,5.4 "/>,
+    chevleft: <polygon points="25.4,5.4 22.9,5.4 10.6,18.4 22.8,30.6 25,30.6 25.4,30.6 13.2,18.4 "/>,
+    minigraph: <g>
+        <rect x="5.2" y="7.1" width="2" height="21.7"/>
+        <rect x="10.8" y="8.6" width="14.4" height="2"/>
+        <rect x="10.8" y="25.5" width="9.5" height="2"/>
+        <rect x="10.8" y="17" width="19" height="2.1"/>
+    </g>,
+    
 }
 
 const IconWrapper = styled.div`
