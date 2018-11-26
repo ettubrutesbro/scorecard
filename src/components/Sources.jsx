@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {find, findIndex} from 'lodash'
 
 import {Button, Toggle} from './generic/'
-import ExpandBox from './ExpandBox2'
+import ExpandBox from './ExpandBox'
 
 import sources from '../data/sourcesfinal'
 import indicators from '../data/indicators'

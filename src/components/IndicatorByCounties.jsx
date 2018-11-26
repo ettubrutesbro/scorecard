@@ -21,7 +21,7 @@ import ordinal from 'ordinal'
 import Graph from './HorizontalBarGraph'
 import Icon, {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
-import ExpandBox from './ExpandBox2'
+import ExpandBox from './ExpandBox'
 
 
 function indexOfClosest(nums, target) {

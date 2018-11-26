@@ -7,7 +7,7 @@ import {findDOMNode} from 'react-dom'
 
 import media from '../utilities/media'
 
-import ExpandBox from './ExpandBox2'
+import ExpandBox from './ExpandBox'
 
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
