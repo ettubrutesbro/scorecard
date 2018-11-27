@@ -7,7 +7,7 @@ import {findDOMNode} from 'react-dom'
 
 import media from '../utilities/media'
 
-import ExpandBox from './ExpandBox'
+import ExpandBox from './ExpandBox2'
 
 import {find, findIndex} from 'lodash'
 import FlipMove from 'react-flip-move'
@@ -20,9 +20,17 @@ const Wrapper = styled.div`
 `
 
 const WrappedGraphComponent = (props) => {
-    const {header, footer, fullHeight, withScroll, ...restOfProps} = props
+    const {header, footer, modes, duration, delay, currentMode, fullHeight, withScroll, borderColor, ...restOfProps} = props
     return props.expandable?(
         <ExpandBox 
+
+            currentMode = {currentMode}
+            modes = {modes}
+            duration = {duration}
+            delay = {delay}
+
+            borderColor = {borderColor}
+
             header = {header}
             footer = {footer}
             expand = {fullHeight}
@@ -91,6 +99,7 @@ const Header = styled.div`
                 ref = {this.graph}
                 onClick = {this.props.expandable? this.expandGraph : ()=>{}}
                 expanded = {this.expanded}
+                hideGraph = {this.props.hideGraph}
             >
                 <Content beefyPadding = {this.props.beefyPadding}>
                 <FlipMove
@@ -205,9 +214,18 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     letter-spacing: 0.5px;
     font-size: 13px;
-    transition: border-color .25s, background-color .25s, box-shadow .25s;
-   
+    transition: border-color .25s, background-color .25s, box-shadow .25s, opacity .45s;
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    @media ${media.optimal}{
+        width: 610px;
+    }
+    @media ${media.compact}{
+        width: 480px;
+    }
+    opacity: ${props => props.hideGraph? 0 : 1};
+    pointer-events: ${props => props.hideGraph? 'none' : 'auto'};
 `
 
 const CropBox = styled.div`

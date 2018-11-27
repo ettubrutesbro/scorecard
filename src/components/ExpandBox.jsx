@@ -16,6 +16,7 @@ const Box = styled.div`
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
     animation-duration: .35s;
+    animation-delay: ${props => props.delay || 0}; 
 `
 const HeightBox = styled(Box)`
     width: 100%;
@@ -33,6 +34,7 @@ const Content = styled.div`
     animation-timing-function: step-end;
     animation-fill-mode: forwards;
     animation-duration: .35s;
+    animation-delay: ${props => props.delay || 0}; 
     
 `
 const HeightContent = styled(Content)`
@@ -73,28 +75,15 @@ class ExpandBox extends React.Component {
 
     componentWillUpdate(newProps){
         if(!newProps.expand && this.props.expand && this.props.withScroll){
-            // console.log(this.scrollbar.current.container)
-
-            console.log(findDOMNode(this.scrollbar.current).firstChild)
-            console.log(findDOMNode(this.scrollbar.current).firstChild.scrollTop)
            findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
         }
     }
-    // setScrollTop = () => {
-    //     // console.log(this.scrollbar)
-    //     console.log(this.scrollbar.current.getValues())
-    //     findDOMNode(this.scrollbar.current).scrollTop = 0
-    //     window.setTop = () => {
-    //         findDOMNode(this.scrollbar.current).scrollTop = 0
-    //     }
-    //     // this.scrollbar.current.scrollToTop()
-    // }
 
     render(){
         const {props} = this
     return(
 
-        <Wrapper>
+        <React.Fragment>
             <Header>
                 {props.header}
             </Header>
@@ -132,7 +121,7 @@ class ExpandBox extends React.Component {
             >
                 {props.footer}
             </Footer>
-        </Wrapper>
+        </React.Fragment>
         )
     }
     
@@ -140,9 +129,9 @@ class ExpandBox extends React.Component {
 
 
 
-const Wrapper = styled.div`
-    position: relative;
-`
+// const Wrapper = styled.div`
+//     position: relative;
+// `
 const Header = styled.div`
     z-index: 2;
     position: absolute;
@@ -178,7 +167,7 @@ const FadeCropper = styled.div`
     position: absolute;
     left: 1px;
     width: calc(100% - 2px);
-    height: 20px;
+    height: 25px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
     opacity: ${props => props.show? 1 : 0};
     transition: opacity .25s;
@@ -210,32 +199,63 @@ export class ExpandWidthBox extends React.Component{
     render(){
     return(
         <WidthWrapper
+            className = {this.props.className}
             expandWidth = {this.props.expandWidth}
             height = {this.contentHeight}
         >
+            {this.props.header &&
+                <Header>
+                    {this.props.header}
+                </Header>
+            }
+            {this.props.withScroll &&
+                <FadeCropper show = {this.props.expand} />
+            }
             <WidthBox
                 expandWidth = {this.props.expandWidth}
                 collapseWidth = {this.props.collapseWidth}
                 height = {this.contentHeight}
                 style = {this.props.style}
                 className = {this.props.expand? 'expand' : 'collapse'}
+                delay = {this.props.delay}
             >
-                <WidthContent
-                    ref = {this.content}
-                    className = {this.props.expand? 'expand' : 'collapse'}
-                    expandWidth = {this.props.expandWidth}
-                    collapseWidth = {this.props.collapseWidth}
-                >
-                    {this.props.children}
-                </WidthContent>
+                {this.props.withScroll && 
+                    <Scrollbars
+                        style = {{width: '100%'}}
+                    >
+                        <WidthContent
+                            ref = {this.content}
+                            className = {this.props.expand? 'expand' : 'collapse'}
+                            expandWidth = {this.props.expandWidth}
+                            collapseWidth = {this.props.collapseWidth}
+                            delay = {this.props.delay}
+                        >
+                            {this.props.children}
+                        </WidthContent>
+                    </Scrollbars>
+                }
+                {!this.props.withScroll && 
+                    <WidthContent
+                        ref = {this.content}
+                        className = {this.props.expand? 'expand' : 'collapse'}
+                        expandWidth = {this.props.expandWidth}
+                        collapseWidth = {this.props.collapseWidth}
+                    >
+                        {this.props.children}
+                    </WidthContent>
+                }
             </WidthBox>  
+            {this.props.footer &&
+                <Footer>
+                    {this.props.footer}
+                </Footer>
+            }
             <LeftBound
                 className = {this.props.expand? 'expand' : 'collapse'}
                 expandWidth = {this.props.expandWidth}
                 collapseWidth = {this.props.collapseWidth}
              />
-            <RightBound
-            />
+            <RightBound/>
         </WidthWrapper>
     )
     }

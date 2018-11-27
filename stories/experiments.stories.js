@@ -10,6 +10,7 @@ import CountUp from 'react-countup'
 
 import CountingNumber from '../src/components/CountingNumber'
 import ExpandBox, {ExpandWidthBox} from '../src/components/ExpandBox'
+import ExpandTest from '../src/components/ExpandTest'
 import {Sprite} from '../src/components/generic/Icon'
 
 
@@ -144,6 +145,19 @@ storiesOf('Experiments', module)
             </ExpandWidthBox>
         </Iono>
     )   
+})
+.add('ExpandAllBox (adapted from GHW)', ()=>{
+    const mode = select('mode',['idle','expanded','backButton'], 'idle')
+    return(
+        <ExpandTest
+            currentMode = {mode}
+            modes = {{
+                idle: {width: 100, height: 100},
+                expanded: {width: 100, height: 200},
+                backButton: {width: 40, height: 100}
+            }}
+        />    
+    )
 })
 .add('CountUp',()=>{
     const opts = {

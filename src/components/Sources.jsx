@@ -6,58 +6,79 @@ import styled from 'styled-components'
 import {find, findIndex} from 'lodash'
 
 import {Button, Toggle} from './generic/'
+import ExpandBox from './ExpandBox2'
 
 import sources from '../data/sourcesfinal'
 import indicators from '../data/indicators'
 import media from '../utilities/media'
 
-import PerfectScrollBar from 'react-perfect-scrollbar'
-import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export default class Sources extends React.Component{
 
+
     render(){
-
-//         console.log('sources')
-//         const allSourceKeys = sources.map((s)=>{return s.indicator})
-//         console.log(allSourceKeys)
-//         Object.keys(indicators).forEach((ind)=>{
-//             if(allSourceKeys.includes(ind)){
-// 
-//             }
-//             else{
-//                 console.log('sources is missing ind', ind)
-//             }
-//         })
-
+        const expandWidth = this.props.screen === 'optimal'? 608 : 478
         return(
-            <AllSources>
-                <FadeCropper />
-                <Header>
-                    Indicator and demographics sources
-                </Header>
-                <PerfectScrollBar>
+            <Wrapper
+                currentMode = {this.props.expand?'expanded':'collapsed'}
+                modes = {{
+                    collapsed: {width: expandWidth/2, height: this.props.screen==='optimal'?530:410},
+                    expanded: {width: expandWidth, height: this.props.screen==='optimal'?530:410}
+                }}
+
+                expand = {this.props.expand} //keeping vestigial prop for wrapper transitions
+                expandWidth = {expandWidth}
+
+                withScroll
+                header = {(<Header>Indicator and demographics sources </Header>)}
+                duration = {.4}
+                delay = {this.props.expand? '.15s' : 0}
+            >
+                <AllSources width = {expandWidth}>
                     <Contents>
                     <IndicatorSourceInfo indicator = {this.props.indicator} />    
                     <DemographicSourceInfo />
                     </Contents>
-                </PerfectScrollBar>    
-            </AllSources>
+                </AllSources>
+            </Wrapper>
         )
     }
 }
 
+const Wrapper = styled(ExpandBox)`
+    position: absolute;
+    top: 70px;
+    z-index: ${props=>props.expand? 30 : 5};
+    pointer-events: ${props=>props.expand?'auto':'none'};
+    opacity: ${props=>props.expand?1:0};
+    transform: translateX(${props=>props.expand?0:props.expandWidth/2+'px'});
+    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity ${props=>props.expand? .2 : .35}s;
+    transition-delay: ${props=>props.expand? .15:0}s;
+`
+
+const X = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 1px solid red; 
+    width: 20px; height: 20px;
+`
+
 const AllSources = styled.div`
-    position: relative;
+    position: absolute;
     height: 100%;
-    width: 100%;
-    border: 1px solid var(--bordergrey);
+    width: ${props=>props.width}px;
+    /*border: 1px solid var(--bordergrey);*/
     @media ${media.optimal}{
+        width: 610px;
         max-height: 602px;
     }
     @media ${media.compact}{
+        width: 480px;
         max-height: 470px;
     }
+
+    white-space: normal;
 `
 const Contents = styled.div`
     padding: 35px;
@@ -68,9 +89,11 @@ const Header = styled.div`
     margin: 0 20px;
     display: inline-flex;
     padding: 0 15px;
+    align-items: center;
     background: var(--offwhitefg);
     z-index: 3;
-    transform: translateY(-50%);
+    height: 10px;
+    white-space: nowrap;
 `
 
 const Indicator = styled.div`
@@ -252,10 +275,6 @@ export class DemographicSourceInfo extends React.Component{
                         </Indicator>
                     )
                 })}
-
-            
-        
-
 
             </DemoSources>
         )
