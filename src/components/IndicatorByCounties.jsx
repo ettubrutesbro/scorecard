@@ -207,7 +207,7 @@ export default class IndicatorByCounties extends React.Component{
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
-                return a.population > b.population? -1 : a.population < b.population? 1 : 0
+                return Number(a.population) > Number(b.population)? -1 : Number(a.population) < Number(b.population)? 1 : 0
             }).slice(0,distribute?this.props.entries:performance.length)
             .map((e)=>{
 
@@ -568,6 +568,7 @@ const HeaderToggle = styled(Toggle)`
     opacity: ${props =>props.hide? 0 : 1};
     transition-delay: ${props => props.hide? '0s' : '0.15s'};
     pointer-events: ${props=>props.hide?'none':'auto'};
+    z-index: 15;
 `
 const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
