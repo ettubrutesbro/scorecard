@@ -207,10 +207,12 @@ export default class IndicatorByCounties extends React.Component{
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
-                return a.population > b.population? -1 : a.population < b.population? 1 : 0
+                if(Number(a.population) > Number(b.population)) return -1 
+                else if(Number(b.population) > Number(a.population)) return 1
+                else return 0
             }).slice(0,distribute?this.props.entries:performance.length)
             .map((e)=>{
-
+                console.log(e)
                 return {
                     ...e,
                     leftLabel: !distribute && !unstable? e.rank + '.' : '',
@@ -240,9 +242,7 @@ export default class IndicatorByCounties extends React.Component{
 
             }
             else return null
-        })
-
-        .filter((e,i)=>{
+        }).filter((e,i)=>{
             if(!distribute) return true
             if(e===null) return false
             else return true
