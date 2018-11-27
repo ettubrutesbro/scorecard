@@ -13,30 +13,15 @@ import {map} from 'lodash'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withViewport} from '@storybook/addon-viewport'
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
-// import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
-
-
-// import App2 from '../src/App2'
-// import Scorecard from '../src/Scorecard'
-// import Map from '../src/Map'
 
 
 import counties from '../src/data/counties'
 import indicators from '../src/data/indicators'
 
-// import Picker from '../src/components/core/Picker'
-// import Readout2 from '../src/components/core/Readout2'
-import Info from '../src/components/Info'
 
 import CAMap from '../src/components/InteractiveMap'
-import Toggle from '../src/components/Toggle'
 
-import NeoScorecard from '../src/NeoScorecard'
-import UniversalPicker from '../src/components/UniversalPicker'
-import PickerBar from '../src/components/PickerBar'
-import ResponsiveScorecard, {MobileBlocker} from '../src/ResponsiveScorecard'
-import Nav from '../src/Nav'
 
 import { Button, Welcome } from '@storybook/react/demo';
 

@@ -70,7 +70,7 @@ const ScrollbarWrap = ({withScroll, wrap, children}) => withScroll? wrap(childre
 export default class ExpandTest extends React.Component{
     //from prop obj modes, turn each set of width/height into an animation...
     //calc the animations on the fly when prop 'mode' changes?
-    @observable default = this.props.modes[Object.keys(this.props.modes)[0]]
+    @observable default = this.props.defaultAsString? this.props.modes[this.props.defaultAsString] : this.props.modes[Object.keys(this.props.modes)[0]]
     @observable current = this.props.modes[Object.keys(this.props.modes)[0]]
     @observable goTo = this.props.modes[Object.keys(this.props.modes)[0]]
     
@@ -97,7 +97,7 @@ export default class ExpandTest extends React.Component{
     render(){
         const scaleX = this.goTo.width / this.default.width 
         const scaleY = this.goTo.height / this.default.height
-        return(
+        return( 
             <Wrapper
                 className = {this.props.className}
                 default = {this.default}

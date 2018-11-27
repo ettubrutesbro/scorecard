@@ -8,11 +8,9 @@ import chroma from 'chroma-js'
 
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
-import CountiesByRacePopulation from '../src/components/CountiesByRacePopulation'
 
 import HorizontalBarGraph from '../src/components/HorizontalBarGraph'
 import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
-import DemoDataTable from '../src/components/DemoDataTable'
 
 
 

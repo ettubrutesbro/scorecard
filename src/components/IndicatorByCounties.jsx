@@ -568,6 +568,7 @@ const HeaderToggle = styled(Toggle)`
     opacity: ${props =>props.hide? 0 : 1};
     transition-delay: ${props => props.hide? '0s' : '0.15s'};
     pointer-events: ${props=>props.hide?'none':'auto'};
+    z-index: 15;
 `
 const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
