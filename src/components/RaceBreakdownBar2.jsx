@@ -11,12 +11,12 @@ const RaceBreakdownBar = (props) =>{
     const {height, store} = props
     const {county} = store
 
-    let numOfCompressedLabels
+    let numOfCompressedLabels = 0
 
     const racePercentages = races.map((race)=>{
-   		console.log(race, demopop, county)
+        console.log(race, demopop, county)
         const pct = demopop[county][race]
-        if(pct < clt && pct > 0) numOfCompressedLabels++
+        if(pct <= clt && pct > 0) numOfCompressedLabels++
         return {label:race, percentage: pct}
     }).sort((a,b)=>{
         return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
@@ -56,9 +56,9 @@ const RaceBreakdownBar = (props) =>{
                     zero = {pct == 0}
                 />
                 <EndNotch 
-                	key = {'hatch'+i} 
-                	offset = {(offset/100) * height} 
-                	infinitesimal = {pct < 3}
+                    key = {'hatch'+i} 
+                    offset = {(offset/100) * height} 
+                    infinitesimal = {pct < 3}
                 />
                 </React.Fragment>
             )
@@ -66,42 +66,52 @@ const RaceBreakdownBar = (props) =>{
         }
         </RaceBar>
         <LabelBar>
-        	{racePercentages.map((race,i,arr)=>{
-	            const previousSegs = arr.slice(0,i)
-	            const offset = previousSegs.map((seg)=>{
-	                return (seg.percentage * 100) / totalOfPcts
-	            }).reduce((a,b)=>a+b,0)
-	            const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
+            {racePercentages.map((race,i,arr)=>{
+                const previousSegs = arr.slice(0,i)
+                const offset = previousSegs.map((seg)=>{
+                    return (seg.percentage * 100) / totalOfPcts
+                }).reduce((a,b)=>a+b,0)
+                const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
 
 
-        		return pct > clt ? (
-        			<LabelSection
-        				key = {'label'+i} 
-	                    offset = {((offset+(race.percentage/2))/100) * height} 
-        			>
-		                <LabelNotch />
-	                	<Label> {race.label} </Label>
-	                	<Percentage> {race.percentage} </Percentage>
-	                </LabelSection>
-        		): (<React.Fragment />)
-        	})}
-        	{racePercentages[racePercentages.length-1].percentage <= clt && 
-        		<LabelSection offset = {height} >
-        		<LabelNotch 
-        			offset = {height}
-        		/>
-        		</LabelSection>
-        	}
-        	<CompressedLabels>
-        		{compressedLabels.map((r,i)=>{
-        			return (
-        				<Compressed key = {'compressedlabel'+i}>
-	        				<Label> {r.label} </Label>
-	        				<Percentage> {r.percentage} </Percentage>
-	    				</Compressed>
-    				)
-        		})}
-        	</CompressedLabels>
+                return race.percentage > clt ? (
+                    <LabelSection
+                        key = {'label'+i} 
+                        offset = {((offset+(race.percentage/2))/100) * height}
+                        specialOffset = {
+                            i===1 && race.percentage < 22 && 
+                            numOfCompressedLabels === 3} 
+                    >
+                        <LabelNotch />
+                        <Label> {race.label} </Label>
+                        <Percentage> {race.percentage} </Percentage>
+                    </LabelSection>
+                ): (<React.Fragment />)
+            })}
+            {racePercentages[racePercentages.length-1].percentage < clt && 
+                <LabelSection offset = {height} >
+                <LabelNotch 
+                    offset = {height}
+                />
+                </LabelSection>
+            }
+            <CompressedLabels>
+                {compressedLabels.map((r,i)=>{
+                    return (
+                        <Compressed 
+                            num = {numOfCompressedLabels}
+                            key = {'compressedlabel'+i}
+                            specialOffset = {
+                                numOfCompressedLabels===3 && 
+                                racePercentages[1].percentage < 22
+                            }
+                        >
+                            <Label> {r.label} </Label>
+                            <Percentage> {r.percentage} </Percentage>
+                        </Compressed>
+                    )
+                })}
+            </CompressedLabels>
         </LabelBar>
         </RaceBreakdown>
     )
@@ -123,6 +133,7 @@ const RaceBar = styled(Bar)`
     width: 50px;
     border-left: 1px solid var(--bordergrey); 
     border-right: 1px solid var(--bordergrey); 
+    border-bottom: 1px solid var(--bordergrey); 
     overflow: hidden;
 `
 const LabelBar = styled(Bar)``
@@ -151,7 +162,7 @@ const EndNotch = styled(Positioned)`
     border-bottom: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
 `
 const RaceSegment = styled(Positioned)`
-    outline: 2px solid var(--bordergrey);
+    /*outline: 2px solid var(--bordergrey);*/
     mask-repeat: repeat;
     background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
     mask-size: 30px;
@@ -174,12 +185,13 @@ const RaceSegment = styled(Positioned)`
     }
 `
 const LabelSection = styled(Positioned)`
-	@media ${media.optimal}{ font-size: 16px; }
+    @media ${media.optimal}{ font-size: 16px; }
     @media ${media.compact}{ font-size: 13px; }
     display: flex;
     align-items: center;
     white-space: nowrap;
     height: 0;
+    margin-top: ${props=>props.specialOffset? -.5 : 0}rem;
 `
 const LabelNotch = styled.div`
     width: 12px; 
@@ -187,18 +199,18 @@ const LabelNotch = styled.div`
     margin-right: 5px;
 `
 const Compressed = styled.div`
-	@media ${media.optimal}{ font-size: 16px; }
+    @media ${media.optimal}{ font-size: 16px; }
     @media ${media.compact}{ font-size: 13px; }
     display: flex;
     align-items: center;
     white-space: nowrap;
-    height: .825rem;
+    height: ${props=> props.specialOffset? .825 : 1}rem;
 `
 const CompressedLabels = styled.div`
-	position: absolute;
-	bottom: -.625rem;
-	display: flex; flex-direction: column;
-	padding-left: 18px;
+    position: absolute;
+    bottom: -.625rem;
+    display: flex; flex-direction: column;
+    padding-left: 18px;
 `
 
 const Label = styled.div`
