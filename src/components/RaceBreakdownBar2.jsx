@@ -6,13 +6,18 @@ import media from '../utilities/media'
 import {capitalize} from '../utilities/toLowerCase'
 import demopop from '../data/demographicsAndPopulation'
 
-const clt = 9 //compressed label threshold (% below which label becomes compressed)
+
 const races = ['asian','black','latinx','white','other']
 
 const RaceBreakdownBar = (props) =>{
 
     const {height, store} = props
-    const {county} = store
+    const {county, screen} = store
+
+    const clt = screen === 'compact'? 9 : 8//compressed label threshold (% below which label becomes compressed)
+    const est = screen === 'compact'? 22: 24//exception segment threshold (% below which the last non-compressed seg has its label offset)
+
+
 
     let numOfCompressedLabels = 0
 
@@ -84,8 +89,9 @@ const RaceBreakdownBar = (props) =>{
                         key = {'label'+i} 
                         offset = {((offset+(race.percentage/2))/100) * height}
                         specialOffset = {
-                            i===1 && race.percentage < 22 && 
-                            numOfCompressedLabels === 3} 
+                            (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
+                            || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
+                        } 
                     >
                         <LabelNotch />
                         <Label> {capitalize(race.label)} </Label>
@@ -105,8 +111,8 @@ const RaceBreakdownBar = (props) =>{
                             num = {numOfCompressedLabels}
                             key = {'compressedlabel'+i}
                             specialOffset = {
-                                numOfCompressedLabels===3 && 
-                                racePercentages[1].percentage < 22
+                                (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
+                                || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                             }
                         >
                             <Label> {capitalize(r.label)} </Label>
@@ -167,13 +173,19 @@ const Segment = styled(Positioned)`
 `
 
 const LabelSection = styled(Positioned)`
-    @media ${media.optimal}{ font-size: 16px; }
-    @media ${media.compact}{ font-size: 13px; }
+    @media ${media.optimal}{ 
+        font-size: 16px; 
+        margin-top: ${props=>props.specialOffset? -.6 : 0}rem;
+    }
+    @media ${media.compact}{ 
+        font-size: 13px; 
+        margin-top: ${props=>props.specialOffset? -.5 : 0}rem;
+    }
     display: flex;
     align-items: center;
     white-space: nowrap;
     height: 0;
-    margin-top: ${props=>props.specialOffset? -.5 : 0}rem;
+
 `
 const LabelNotch = styled.div`
     width: 12px; 
@@ -184,7 +196,7 @@ const LabelNotch = styled.div`
 const Compressed = styled.div`
     @media ${media.optimal}{ 
         font-size: 16px; 
-        height: ${props=> props.specialOffset? 1 : 1.25}rem;
+        height: ${props=> props.specialOffset? 1.15 : 1.25}rem;
     }
     @media ${media.compact}{ 
         font-size: 13px; 
@@ -197,7 +209,12 @@ const Compressed = styled.div`
 `
 const CompressedLabels = styled.div`
     position: absolute;
-    bottom: -.625rem;
+    @media ${media.optimal}{
+        bottom: -1rem;
+    }
+    @media ${media.compact}{
+        bottom: -.625rem;
+    }
     display: flex; flex-direction: column;
     padding-left: 22px;
 `
