@@ -63,6 +63,7 @@ const RaceBreakdownBar = (props) =>{
                     key = {'hatch'+i} 
                     offset = {(offset/100) * height} 
                     infinitesimal = {pct < 3}
+                    hide = {i===0}
                 />
                 </React.Fragment>
             )
@@ -93,7 +94,7 @@ const RaceBreakdownBar = (props) =>{
                 ): (<React.Fragment />)
             })}
             {racePercentages[racePercentages.length-1].percentage < clt && 
-                <LabelSection offset = {height-1} >
+                <LabelSection offset = {height+1} >
                 <LabelNotch />
                 </LabelSection>
             }
@@ -133,18 +134,15 @@ const Bar = styled.div`
 `
 const RaceBar = styled(Bar)`
     width: 50px;
-    border-left: 2px solid var(--bordergrey); 
-    border-right: 2px solid var(--bordergrey); 
-    border-bottom: 2px solid var(--bordergrey); 
+    outline: 2px solid var(--bordergrey);
+    /*border-left: 2px solid var(--bordergrey); */
+    /*border-right: 2px solid var(--bordergrey); */
+    /*border-bottom: 2px solid var(--bordergrey); */
     overflow: hidden;
 `
 const LabelBar = styled(Bar)`
     width: 100px;
-
 `
-
-
-
 const Positioned = styled.div`
     position: absolute;
     top: 0; left: 0;
@@ -159,8 +157,9 @@ const Backing = styled(Positioned)`
 const EndNotch = styled(Positioned)`
     height: 0;
     width: 100%;
-    border-top: 1px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
-    border-bottom: 1px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-top: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-bottom: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    display: ${props=>props.hide?'none':'block'};
 `
 const Segment = styled(Positioned)`
     /*outline: 2px solid var(--bordergrey);*/
@@ -178,8 +177,8 @@ const LabelSection = styled(Positioned)`
 `
 const LabelNotch = styled.div`
     width: 12px; 
-    border-top: .5px solid var(--bordergrey);
-    border-bottom: .5px solid var(--bordergrey);
+    border-top: .75px solid var(--bordergrey);
+    border-bottom: .75px solid var(--bordergrey);
     margin-right: 10px;
 `
 const Compressed = styled.div`
