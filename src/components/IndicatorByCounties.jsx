@@ -530,7 +530,7 @@ const BackArrow = styled(Icon)`
     z-index: 5;
 `
 const HeaderTitle = styled.div`
-    width: ${props => !props.hasRace? '130px' : '315px'};
+    width: ${props => props.sources || !props.hasRace? '130px' : '315px'};
     position: relative;
     height: 10px;
     padding: 0 15px;

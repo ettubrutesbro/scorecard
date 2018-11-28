@@ -30,7 +30,7 @@ const Wrapper = styled.div`
     bottom: 0;
     z-index: 1;
     transform: translate(${props => props.offset});
-    transition: transform ${props=>props.hide? .5 : .35}s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s .15s;
+    transition: transform ${props=>props.hide? .5 : .35}s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity ${props=>props.hide? '.2s .15s' : '.1s'};
     opacity: ${props => props.hide? 0 : 1};
     cursor: ${props=>props.clickable?'pointer':'auto'};
 `
