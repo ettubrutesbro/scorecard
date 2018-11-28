@@ -532,7 +532,7 @@ const BackArrow = styled(Icon)`
     z-index: 5;
 `
 const HeaderTitle = styled.div`
-    width: ${props => !props.hasRace? '130px' : 'auto'};
+    width: ${props => !props.hasRace? '130px' : '315px'};
     position: relative;
     height: 10px;
     padding: 0 15px;
@@ -549,6 +549,7 @@ const FadeTitle = styled.span`
     opacity: ${props=>props.show? 1 : 0};
     transition: opacity .15s;
     transition-delay: ${props=>props.show?'.15s':'0s'};
+    white-space: nowrap;
 `
 
 const HeaderToggle = styled(Toggle)`
