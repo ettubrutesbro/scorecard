@@ -139,7 +139,7 @@ const Bar = styled.div`
 
 `
 const RaceBar = styled(Bar)`
-    width: 50px;
+    width: 44px;
     outline: 2px solid var(--bordergrey);
     /*border-left: 2px solid var(--bordergrey); */
     /*border-right: 2px solid var(--bordergrey); */
@@ -290,13 +290,13 @@ const animateOut = keyframes`
 const Hatches = styled.div`
     position: absolute;
     width: 100%; height: 100%;
-    mask-repeat: repeat;
+    /*mask-repeat: repeat;*/
     background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
-    mask-size: 30px;
+    mask-size: 32px;
     ${props => props.zero? 'display: none;' : ''}
     &.asian{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
-        mask-position-y: -7px;
+        mask-position: 2px -7px;
     }
     &.black{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch4})` : 'none'};
@@ -308,7 +308,8 @@ const Hatches = styled.div`
         mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
     }
     &.other{
-        mask-size: 25px;
+        mask-size: 33px;
+        mask-position-x: -1px
         mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
     }
     animation-duration: .25s;
@@ -319,7 +320,7 @@ const Hatches = styled.div`
 `
 
 const NewHatches = styled(Hatches)`
-    transform: translateX(50px);
+    transform: translateX(100%);
     &.animating{
         animation-name: ${animateIn}
     }
