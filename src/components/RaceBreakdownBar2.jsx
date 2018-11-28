@@ -1,6 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
+import {observable, action} from 'mobx'
+import {observer} from 'mobx-react'
+import styled, {keyframes} from 'styled-components'
 import media from '../utilities/media'
+import {capitalize} from '../utilities/toLowerCase'
 import demopop from '../data/demographicsAndPopulation'
 
 const clt = 9 //compressed label threshold (% below which label becomes compressed)
@@ -46,7 +49,7 @@ const RaceBreakdownBar = (props) =>{
                 <RaceSegment
                     key = {i}
                     offset = {(offset/100) * height}
-                    className = {race.label}
+                    // className = {race.label}
                     style = {{
                         position: 'absolute',
                         height: '500px',
@@ -54,6 +57,7 @@ const RaceBreakdownBar = (props) =>{
                     }}
                     infinitesimal = {pct < 3}
                     zero = {pct == 0}
+                    race = {race.label}
                 />
                 <EndNotch 
                     key = {'hatch'+i} 
@@ -83,8 +87,8 @@ const RaceBreakdownBar = (props) =>{
                             numOfCompressedLabels === 3} 
                     >
                         <LabelNotch />
-                        <Label> {race.label} </Label>
-                        <Percentage> {race.percentage} </Percentage>
+                        <Label> {capitalize(race.label)} </Label>
+                        <Percentage> {race.percentage}%</Percentage>
                     </LabelSection>
                 ): (<React.Fragment />)
             })}
@@ -106,8 +110,8 @@ const RaceBreakdownBar = (props) =>{
                                 racePercentages[1].percentage < 22
                             }
                         >
-                            <Label> {r.label} </Label>
-                            <Percentage> {r.percentage} </Percentage>
+                            <Label> {capitalize(r.label)} </Label>
+                            <Percentage> {r.percentage}%</Percentage>
                         </Compressed>
                     )
                 })}
@@ -138,11 +142,7 @@ const RaceBar = styled(Bar)`
 `
 const LabelBar = styled(Bar)``
 
-const hatch1 = require('../assets/hatch1-2.svg')
-const hatch2 = require('../assets/hatch2-4.svg')
-const hatch3 = require('../assets/hatch3-2.svg')
-const hatch4 = require('../assets/hatch4-2.svg')
-const hatch5 = require('../assets/hatch5-2.svg')
+
 
 const Positioned = styled.div`
     position: absolute;
@@ -161,29 +161,11 @@ const EndNotch = styled(Positioned)`
     border-top: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
     border-bottom: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
 `
-const RaceSegment = styled(Positioned)`
+const Segment = styled(Positioned)`
     /*outline: 2px solid var(--bordergrey);*/
-    mask-repeat: repeat;
-    background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
-    mask-size: 30px;
-    ${props => props.zero? 'display: none;' : ''}
-    &.asian{
-        mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
-        mask-position-y: -7px;
-    }
-    &.black{
-        mask-image: ${props=>!props.infinitesimal? `url(${hatch4})` : 'none'};
-    }
-    &.latinx{ 
-        mask-image: ${props=>!props.infinitesimal? `url(${hatch1})` : 'none'};
-    }
-    &.white{
-        mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
-    }
-    &.other{
-        mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
-    }
+
 `
+
 const LabelSection = styled(Positioned)`
     @media ${media.optimal}{ font-size: 16px; }
     @media ${media.compact}{ font-size: 13px; }
@@ -222,6 +204,98 @@ const Percentage = styled.div`
     font-weight: bold;
      ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
+
+@observer class RaceSegment extends React.Component{
+    @observable oldHatches = this.props.race
+    @observable newHatches = this.props.race //same at outset
+    @action setHatches = (which, val) => {this[which+'Hatches'] = val}
+    /*
+        segments are keyed by index, not race, so that they animate
+        organically; so they need to keep track via lifecycle methods
+        of when the assigned race changes, and play an animation
+        showing the pattern changing
+    */
+    componentDidUpdate(oldProps){
+        if(oldProps.race !== this.props.race){
+            this.setHatches('new',this.props.race)
+        }
+    }
+    render(){
+        const {race, ...restOfProps} = this.props
+        return(
+            <Segment
+                {...restOfProps}
+            >
+                <Hatches 
+                    className = {[
+                        this.oldHatches,
+                        this.oldHatches!==this.newHatches?'animating' : ''
+                    ].join(' ')} 
+                    // onAnimationEnd = {()=}
+
+                />
+                <NewHatches 
+                    className = {[
+                        this.newHatches,
+                        this.oldHatches!==this.newHatches?'animating' : ''
+                    ].join(' ')} 
+                    onAnimationEnd = {()=>{ this.setHatches('old',this.props.race) }}
+                />
+            </Segment>
+        )
+    }
+}
+
+const hatch1 = require('../assets/hatch1-2.svg')
+const hatch2 = require('../assets/hatch2-4.svg')
+const hatch3 = require('../assets/hatch3-2.svg')
+const hatch4 = require('../assets/hatch4-2.svg')
+const hatch5 = require('../assets/hatch5-2.svg')
+const animateIn = keyframes`
+    from{ transform: translateX(100%);}
+    to{ transform: translateX(0%);}
+`
+const animateOut = keyframes`
+    from{ transform: translateX(0%);}
+    to{ transform: translateX(-100%);}
+`
+const Hatches = styled.div`
+    position: absolute;
+    width: 100%; height: 100%;
+    mask-repeat: repeat;
+    background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
+    mask-size: 30px;
+    ${props => props.zero? 'display: none;' : ''}
+    &.asian{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
+        mask-position-y: -7px;
+    }
+    &.black{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch4})` : 'none'};
+    }
+    &.latinx{ 
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch1})` : 'none'};
+    }
+    &.white{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
+    }
+    &.other{
+        mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
+    }
+    animation-duration: .25s;
+    animation-fill-mode: forwards;
+    &.animating{
+        animation-name: ${animateOut}
+    }
+`
+
+const NewHatches = styled(Hatches)`
+    transform: translateX(50px);
+    &.animating{
+        animation-name: ${animateIn}
+    }
+`
+
 
 
 
