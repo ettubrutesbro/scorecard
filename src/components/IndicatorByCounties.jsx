@@ -297,35 +297,27 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandDims, collapseDims
-        if(this.props.hasRace){
-            if(screen==='optimal'){
-                expandDims = {width: 610, height: 515}
-                collapseDims = {width: 610, height: 390}
-                
-            }
-            else if(screen==='compact'){
-                expandDims = {width: 480, height: 390}
-                collapseDims = {width: 480, height: 280}
-                
-            }
+        let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        if(screen==='optimal'){
+            expandDims = {width: 610, height: 515}
+            collapseDims = {width: 610, height: 390}
+            noRaceExpandDims = {width: 610, height: 575}
+            noRaceCollapseDims = {width: 610, height: 575}
+            
         }
-        else{ //no race, take up entirety of breakdown space
-            if(screen==='optimal'){
-                expandDims = {width: 610, height: 575}
-                collapseDims = {width: 610, height: 575}
-                
-            }
-            else if(screen==='compact'){
-                expandDims = {width: 480, height: 450}
-                collapseDims = {width: 480, height: 450}
-                
-            }
+        else if(screen==='compact'){
+            expandDims = {width: 480, height: 390}
+            collapseDims = {width: 480, height: 280}
+            noRaceExpandDims = {width: 480, height: 450}
+            noRaceCollapseDims = {width: 480, height: 450}
+            
         }
 
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
+            noraceexpanded: noRaceExpandDims,
+            noracecollapsed: noRaceCollapseDims,
             sources: {width: 370, height: 50}
         }
         console.log(modes)
@@ -336,7 +328,13 @@ export default class IndicatorByCounties extends React.Component{
                 expandable
                 // withScroll = {!this.props.sources && this.props.expand? true : false}
                 withScroll
-                currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
+                currentMode = {
+                    this.props.sources? 'sources' : 
+                    !this.props.hasRace && this.props.expand? 'noraceexpanded' :
+                    !this.props.hasRace && !this.props.expand? 'noracecollapsed' :
+                    this.props.expand? 'expanded' : 
+                    'collapsed'
+                }
                 modes = {modes}
                 duration = {this.props.sources? .5 : .35}
 

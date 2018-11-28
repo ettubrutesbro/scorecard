@@ -72,7 +72,7 @@ export default class ExpandTest extends React.Component{
     //calc the animations on the fly when prop 'mode' changes?
     @observable default = this.props.defaultAsString? this.props.modes[this.props.defaultAsString] : this.props.modes[Object.keys(this.props.modes)[0]]
     @observable current = this.props.modes[Object.keys(this.props.modes)[0]]
-    @observable goTo = this.props.modes[Object.keys(this.props.modes)[0]]
+    @observable goTo = this.props.modes[this.props.currentMode]
     
     @action setDims = (which, dims) => {
         this[which].width = dims.width
@@ -83,7 +83,13 @@ export default class ExpandTest extends React.Component{
         super(props)
         if(props.withScroll) this.scrollbar = React.createRef()
     }
-
+    componentDidMount(){
+        // const default = this.default
+        // const current = this.props.modes[this.props.currentMode]
+        // if(default.height !== current.height || default.width !== current.width){
+        //     
+        // }
+    }
     componentWillUpdate(newProps){
         if(newProps.currentMode !== this.props.currentMode){
             console.log('setting mode to', newProps.currentMode, {...this.props.modes[newProps.currentMode]})
@@ -109,7 +115,8 @@ export default class ExpandTest extends React.Component{
                 }
                 {this.props.withScroll &&
                     <FadeCropper 
-                        show = {this.props.currentMode === 'expanded'} 
+                        // a hack...
+                        show = {this.props.currentMode.includes('expanded')} 
                         width = {this.props.modes.expanded.width}
                     />
                 }
@@ -129,7 +136,9 @@ export default class ExpandTest extends React.Component{
                                 ref = {this.scrollbar} 
                                 style = {{
                                     width: '100%',
-                                    height: this.props.currentMode !== 'expanded' && this.props.withScroll? 3000 : this.props.modes.expanded.height
+                                    //expanded exception hack II
+                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? 3000 
+                                    : '100%'
                                 }}
                                 renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
                             > 
@@ -149,7 +158,8 @@ export default class ExpandTest extends React.Component{
                 {this.props.withScroll && 
                     <FadeCropperBottom
                         width = {this.props.modes.expanded.width}
-                        show = {this.props.currentMode === 'expanded'}
+                        // expanded exception hack.III
+                        show = {this.props.currentMode.includes('expanded')}
                         offset = {this.goTo.height}
                     />
                 }
