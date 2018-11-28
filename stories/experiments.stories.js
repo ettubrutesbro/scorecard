@@ -7,11 +7,15 @@ import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-
 import ReactTooltip from 'react-tooltip'
 import CountUp from 'react-countup'
 
+import demopop from '../src/data/demographicsAndPopulation'
+import countyLabels from '../src/assets/countyLabels'
 
 import CountingNumber from '../src/components/CountingNumber'
-import ExpandBox, {ExpandWidthBox} from '../src/components/ExpandBox'
-import ExpandTest from '../src/components/ExpandTest'
+import ExpandBox from '../src/components/ExpandBox'
 import {Sprite} from '../src/components/generic/Icon'
+import RaceBreakdownBar2 from '../src/components/RaceBreakdownBar2'
+
+import media from '../src/utilities/media'
 
 
 addDecorator(withKnobs)
@@ -94,71 +98,23 @@ storiesOf('Experiments', module)
         </Iono>
     )
 })
-.add('ExpandBox', ()=>{
-    const moreContent = boolean('more content', false)
-    const expand = boolean('expand box', false)
+
+
+.add('New Race Breakdown Bar', ()=>{
+    const county = select('county' ,Object.keys(countyLabels), 'alameda')
+
+    const totalHeight = number('total rbb height', 250)
 
     return(
-        <Iono>
-            <Ruler >
-                
-            </Ruler>
-            <ExpandBox 
-                expand = {expand}
-                expandHeight = {500}
-                collapseHeight = {200}
-                footer = 'foot'
-            >
-                <MockContent className = {moreContent? 'more' : ''}>
-                    Lorem ipsum
-                </MockContent>
-            </ExpandBox>
-        </Iono>
-    )   
-})
-.add('ExpandWidthBox', ()=>{
-    const moreContent = boolean('more content', false)
-    const expand = boolean('expand box', false)
-
-    return(
-        <Iono>
-            <ExpandWidthBox 
-                expand = {expand}
-                expandWidth = {167}
-                collapseWidth = {120}
-            >
-                <MockExpandButton1>
-                    {expand && 'See all counties'}         
-                    {!expand && 'See less'}         
-                    <Sprite 
-                        style = {{
-                            marginLeft: '10px',
-                            width: '20px',
-                            height: '20px'
-                        }}
-                        img = "chevsprite" 
-                        color = "normtext"
-                        state = {expand?'down':'up'}
-                    />
-                </MockExpandButton1>
-               
-            </ExpandWidthBox>
-        </Iono>
-    )   
-})
-.add('ExpandAllBox (adapted from GHW)', ()=>{
-    const mode = select('mode',['idle','expanded','backButton'], 'idle')
-    return(
-        <ExpandTest
-            currentMode = {mode}
-            modes = {{
-                idle: {width: 100, height: 100},
-                expanded: {width: 100, height: 200},
-                backButton: {width: 40, height: 100}
+        <RaceBreakdownBar2
+            height = {totalHeight}
+            store = {{
+                county: county
             }}
-        />    
+        />
     )
 })
+
 .add('CountUp',()=>{
     const opts = {
         first: [0,100],

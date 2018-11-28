@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {findDOMNode} from 'react-dom'
 import {observable, action} from 'mobx'
@@ -7,319 +6,265 @@ import styled, {keyframes} from 'styled-components'
 
 import {Scrollbars} from 'react-custom-scrollbars'
 
-import {getMedia} from '../utilities/media'
-import {capitalize} from '../utilities/toLowerCase'
-
 const Box = styled.div`
     position: absolute;
     overflow: hidden;
     animation-timing-function: step-end;
-    animation-fill-mode: forwards;
-    animation-duration: .35s;
-    animation-delay: ${props => props.delay || 0}; 
-`
-const HeightBox = styled(Box)`
-    width: 100%;
-    height: ${props => props.expandHeight}px;
-    transform-origin: 50% 0%;
-    border-left: 1px solid var(--bordergrey);
-    border-right: 1px solid var(--bordergrey);
-    &.expand{ animation-name: ${p => computeAnim('y', p.expandHeight, p.collapseHeight)}; }
-    &.collapse{ animation-name: ${p => computeAnim('y', p.expandHeight, p.collapseHeight, false, true)}; }
-`
+    animation-fill-mode: both;
+    animation-duration: ${props=>props.duration}s;
+    transform-origin: 0% 0%;
+    /*border: 3px solid green;*/
+    width: ${props => props.current.width}px;
+    height: ${props => props.current.height}px;
+    animation-name: ${props => props.animFrames};
 
+    animation-delay: ${props=>props.delay};
+    top: 0;
+    left: 0;
+`
 
 const Content = styled.div`
-    transform-origin: 50% 0%;
+    transform-origin: 0% 0%;
     animation-timing-function: step-end;
-    animation-fill-mode: forwards;
-    animation-duration: .35s;
-    animation-delay: ${props => props.delay || 0}; 
-    
-`
-const HeightContent = styled(Content)`
-    &.expand{animation-name: ${p => computeAnim('y', p.expandHeight, p.collapseHeight, true)};}
-    &.collapse{animation-name: ${p => computeAnim('y', p.expandHeight, p.collapseHeight, true, true)};}
+    animation-fill-mode: both;
+    animation-duration: ${props=>props.duration}s;
+
+    animation-name: ${props => props.animFrames};
+    animation-delay: ${props=>props.delay};
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 `
 
-
-const computeAnim = (xOrY, exp, col, inv, collapse) => {
-        const collapsedSize = col
-        const expandedSize = exp
-        let ratio = collapsedSize / expandedSize 
+const computeAnim = (goTo, startFrom, invert) => {
+        const ratioX =  goTo.width / startFrom.width
+        const ratioY = goTo.height / startFrom.height 
         let frames = ''
 
-        for(let step = 0; step<101; step++)
-{            let easedStep = ease(step/100)
-            let scale
-            if(!collapse) scale = ratio + (1 - ratio) * easedStep 
-            else if(collapse) scale = 1 + (ratio - 1) * easedStep
-            if(inv) scale = 1/scale
+        for(let step = 0; step<101; step++){
+            let easedStep = ease(step/100)
+            let scaleX, scaleY
+
+            scaleX = (ratioX + (1 - ratioX) * easedStep )
+            scaleY = (ratioY + (1 - ratioY) * easedStep )
+
+            if(invert){
+                scaleX = 1/scaleX
+                scaleY = 1/scaleY
+             }
 
             frames += `${step}% { 
-                transform: scale${capitalize(xOrY)}(${scale}); 
+                transform: scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)}); 
             } `
         }
-
         return keyframes`${frames}`
 }
 
-let expandAnim, expandContentAnim, collapseAnim, collapseContentAnim
+function ease (k) {
+  return --k * k * k + 1;
+}
 
-class ExpandBox extends React.Component {
-    constructor(){
-        super()
-        this.scrollbar = React.createRef()
+const ScrollbarWrap = ({withScroll, wrap, children}) => withScroll? wrap(children) : children
+
+@observer
+export default class ExpandTest extends React.Component{
+    //from prop obj modes, turn each set of width/height into an animation...
+    //calc the animations on the fly when prop 'mode' changes?
+    @observable default = this.props.defaultAsString? this.props.modes[this.props.defaultAsString] : this.props.modes[Object.keys(this.props.modes)[0]]
+    @observable current = this.props.modes[Object.keys(this.props.modes)[0]]
+    @observable goTo = this.props.modes[this.props.currentMode]
+    
+    @action setDims = (which, dims) => {
+        this[which].width = dims.width
+        this[which].height = dims.height
     }
 
-
+    constructor(props){
+        super(props)
+        if(props.withScroll) this.scrollbar = React.createRef()
+    }
+    componentDidMount(){
+        // const default = this.default
+        // const current = this.props.modes[this.props.currentMode]
+        // if(default.height !== current.height || default.width !== current.width){
+        //     
+        // }
+    }
     componentWillUpdate(newProps){
-        if(!newProps.expand && this.props.expand && this.props.withScroll){
-           findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
+        if(newProps.currentMode !== this.props.currentMode){
+            console.log('setting mode to', newProps.currentMode, {...this.props.modes[newProps.currentMode]})
+            this.setDims('goTo', this.props.modes[newProps.currentMode])
+            if(this.props.withScroll){
+                findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
+            }
         }
     }
 
     render(){
-        const {props} = this
-    return(
-
-        <React.Fragment>
-            <Header>
-                {props.header}
-            </Header>
-            <FadeCropper show = {props.expand && props.withScroll}/>
-            <HeightBox 
-                expandHeight = {props.expandHeight}
-                collapseHeight = {props.collapseHeight}
-                style = {props.style}
-                className = {props.expand? 'expand' : 'collapse'}
+        const scaleX = this.goTo.width / this.default.width 
+        const scaleY = this.goTo.height / this.default.height
+        return( 
+            <Wrapper
+                className = {this.props.className}
+                default = {this.default}
             >
-                <Scrollbars 
-                    ref = {this.scrollbar}
-                    style = {{width: '100%', height: props.expand && props.withScroll? props.expandHeight : 1000}}
-                    // onUpdate = {!props.expand? this.setScrollTop: (val)=>{console.log(val)}}
+                {this.props.header &&
+                    <Header>
+                        {this.props.header}
+                    </Header>
+                }
+                {this.props.withScroll &&
+                    <FadeCropper 
+                        // a hack...
+                        show = {this.props.currentMode.includes('expanded')} 
+                        width = {this.props.modes.expanded.width}
+                    />
+                }
+                <Box
+                    current = {this.goTo}
+                    animFrames = {computeAnim(this.current, this.goTo)}
+                    onAnimationEnd = {()=>{
+                        this.setDims('current', this.goTo)    
+                    }}
+                    duration = {this.props.duration}
+                    delay = {this.props.delay}
                 >
-                <HeightContent
-                    className = {props.expand? 'expand' : 'collapse'}
-                    expandHeight = {props.expandHeight}
-                    collapseHeight = {props.collapseHeight}
-                >
-                    {props.children}
-                   
-                </HeightContent>
-
-            </Scrollbars>
-            </HeightBox>
-            <FadeCropperBottom 
-                show = {props.expand && props.withScroll}
-                offset = {props.expandHeight}
-            />
-            <Footer
-                className = {props.expand? 'expand' : 'collapse'}
-                expandHeight = {props.expandHeight}
-                collapseHeight = {props.collapseHeight}
-            >
-                {props.footer}
-            </Footer>
-        </React.Fragment>
+                    <ScrollbarWrap
+                        withScroll = {this.props.withScroll}
+                        wrap = {children => 
+                            <Scrollbars 
+                                ref = {this.scrollbar} 
+                                style = {{
+                                    width: '100%',
+                                    //expanded exception hack II
+                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? 3000 
+                                    : '100%'
+                                }}
+                                renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
+                            > 
+                                {children}
+                            </Scrollbars>
+                        }
+                    >
+                        <Content
+                            animFrames = {computeAnim(this.current, this.goTo, true)}
+                            duration = {this.props.duration}
+                            delay = {this.props.delay}
+                        >
+                            {this.props.children}
+                        </Content>
+                    </ScrollbarWrap>
+                </Box>
+                {this.props.withScroll && 
+                    <FadeCropperBottom
+                        width = {this.props.modes.expanded.width}
+                        // expanded exception hack.III
+                        show = {this.props.currentMode.includes('expanded')}
+                        offset = {this.goTo.height}
+                    />
+                }
+                <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                <Bottom delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
+                <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                
+                {this.props.footer &&
+                    <Footer
+                        offset = {this.goTo.height}
+                        duration = {this.props.duration}
+                    >
+                        {this.props.footer}
+                    </Footer>
+                }
+            </Wrapper>
         )
+
     }
-    
 }
 
+ExpandTest.defaultProps = {
+    duration: .35,
+    delay: 0,
+}
 
+const Wrapper = styled.div`
+    /*position: relative; */
+    position: absolute;
+    width: ${props => props.default.width + 2}px;
+    height: ${props => props.default.height + 2}px;
+    border: 1px solid transparent;
+`
 
-// const Wrapper = styled.div`
-//     position: relative;
-// `
-const Header = styled.div`
+const Bound = styled.div`
+    position: absolute;
+    transition: transform ${props=>props.duration}s cubic-bezier(0.215, 0.61, 0.355, 1), border-color .25s;
+    transition-delay: ${props=>props.delay};
+    transform-origin: 0% 0%;
     z-index: 2;
+`
+
+const Top = styled(Bound)`
+    width: 100%;
+    border-top: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
+    top: 0;
+    transform: scaleX(${props=>props.scale});
+`
+const Bottom = styled(Bound)`
+    border-bottom: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
+    width: 100%;
+    top: 0;
+    transform: translateY(${props=>props.offset}px) scaleX(${props=>props.scale});
+`
+const Left = styled(Bound)`
+    border-left: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
+    height: 100%;
+    left: 0;
+    transform: scaleY(${props=>props.scale});
+`
+const Right = styled(Bound)`
+    border-right: 1px solid ${props=>props.borderColor || 'var(--bordergrey)'};
+    height: 100%;
+    left: 0;
+    transform: translateX(${props=>props.offset}px) scaleY(${props=>props.scale});
+`
+
+const Header = styled.div`
+    z-index: 3;
     position: absolute;
     width: 100%;
     top: 0;
     height: 0;
     display: flex;
     align-items: center;
-    border-top: 1px solid var(--bordergrey);
 `
 const Footer = styled.div`
-    z-index: 2;
+    z-index: 3;
     position: absolute;
     width: 100%;
     top: 0;
     height: 0;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid var(--bordergrey);
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
-    &.expand{
-        transform: translateY(${props=>props.expandHeight}px);  
-    }
-    &.collapse{
-        transform: translateY(${props=>props.collapseHeight}px);    
-    }
-`
+    transition: transform ${props=>props.duration}s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(${props=>props.offset}px);
 
+`
 
 const FadeCropper = styled.div`
     /*border: 1px solid red;*/
     z-index: 1;
     position: absolute;
     left: 1px;
-    width: calc(100% - 2px);
-    height: 25px;
-    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    width: ${props=>props.width}px;
+    height: 45px;
+    background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
     opacity: ${props => props.show? 1 : 0};
     transition: opacity .25s;
     /*border: 1px solid green;*/
 
 `
 const FadeCropperBottom = styled(FadeCropper)`
-    top: ${props => props.offset - 25}px;
-    height: 25px;
-    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 100%);
+    top: ${props => props.offset - 45}px;
+    height: 45px;
+    background: linear-gradient(to top, var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
 `
-function ease (k) {
-  // return 1 - Math.pow(1 - v, pow);
-  return --k * k * k + 1;
-
-}
-
-@observer
-export class ExpandWidthBox extends React.Component{
-    @observable contentHeight = 0
-    @action setContentHeight = (val) => this.contentHeight = val
-    constructor(){
-        super()
-        this.content = React.createRef()
-    }
-    componentDidMount(){
-        this.setContentHeight(this.content.current.offsetHeight)
-    }
-    render(){
-    return(
-        <WidthWrapper
-            className = {this.props.className}
-            expandWidth = {this.props.expandWidth}
-            height = {this.contentHeight}
-        >
-            {this.props.header &&
-                <Header>
-                    {this.props.header}
-                </Header>
-            }
-            {this.props.withScroll &&
-                <FadeCropper show = {this.props.expand} />
-            }
-            <WidthBox
-                expandWidth = {this.props.expandWidth}
-                collapseWidth = {this.props.collapseWidth}
-                height = {this.contentHeight}
-                style = {this.props.style}
-                className = {this.props.expand? 'expand' : 'collapse'}
-                delay = {this.props.delay}
-            >
-                {this.props.withScroll && 
-                    <Scrollbars
-                        style = {{width: '100%'}}
-                    >
-                        <WidthContent
-                            ref = {this.content}
-                            className = {this.props.expand? 'expand' : 'collapse'}
-                            expandWidth = {this.props.expandWidth}
-                            collapseWidth = {this.props.collapseWidth}
-                            delay = {this.props.delay}
-                        >
-                            {this.props.children}
-                        </WidthContent>
-                    </Scrollbars>
-                }
-                {!this.props.withScroll && 
-                    <WidthContent
-                        ref = {this.content}
-                        className = {this.props.expand? 'expand' : 'collapse'}
-                        expandWidth = {this.props.expandWidth}
-                        collapseWidth = {this.props.collapseWidth}
-                    >
-                        {this.props.children}
-                    </WidthContent>
-                }
-            </WidthBox>  
-            {this.props.footer &&
-                <Footer>
-                    {this.props.footer}
-                </Footer>
-            }
-            <LeftBound
-                className = {this.props.expand? 'expand' : 'collapse'}
-                expandWidth = {this.props.expandWidth}
-                collapseWidth = {this.props.collapseWidth}
-             />
-            <RightBound/>
-        </WidthWrapper>
-    )
-    }
-}
-
-
-const WidthWrapper = styled.div`
-    position: absolute;
-    right: 0;
-    width: ${props => props.expandWidth}px;
-    /*border: 1px blue solid;*/
-    height: ${props => props.height}px;
-`
-const WidthBox = styled(Box)`
-    height: ${props => props.height}px;
-    width: ${props => props.expandWidth}px;
-    background: white;
-    transform-origin: 100% 0%;
-    box-sizing: border-box;
-    border-left: none; border-right: none;
-    border-top: 1px solid var(--fainttext);
-    border-bottom: 1px solid var(--fainttext);
-    &.expand{ animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth)}; }
-    &.collapse{ animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, false, true)}; }
-    /*display: flex;*/
-    /*justify-content: flex-end;*/
-`
-const WidthContent = styled(Content)`
-/*border: 1px solid green;*/
-    /*height: 40px;*/
-    top: -1px;
-    position: absolute; right: 0;
-    &.expand{
-        animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true)};
-        transform-origin: ${props=>props.expandWidth}px 0%;
-    }
-    &.collapse{
-        animation-name: ${p => computeAnim('x', p.expandWidth, p.collapseWidth, true, true)};
-        transform-origin: ${props=>props.collapseWidth}px 0%;
-    }
-`
-const LeftBound = styled.div`
-    top: 0;
-    position: absolute;
-    right: 0;
-    height: 100%;
-    width: 0;
-    border-right: 1px solid var(--fainttext);
-
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
-    &.expand{
-        transform: translateX(-${props=>props.expandWidth}px);
-    }
-    &.collapse{
-        transform: translateX(-${props=>props.collapseWidth}px);
-    }
-`
-const RightBound = styled.div`
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 0;
-    border-left: 1px solid var(--fainttext);
-`
-
-export default ExpandBox

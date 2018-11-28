@@ -21,7 +21,7 @@ import ordinal from 'ordinal'
 import Graph from './HorizontalBarGraph'
 import Icon, {Sprite} from './generic/Icon'
 import {Button,Toggle} from './generic'
-import ExpandBox from './ExpandBox2'
+import ExpandBox from './ExpandBox'
 
 
 function indexOfClosest(nums, target) {
@@ -207,10 +207,12 @@ export default class IndicatorByCounties extends React.Component{
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
-                return Number(a.population) > Number(b.population)? -1 : Number(a.population) < Number(b.population)? 1 : 0
+                if(Number(a.population) > Number(b.population)) return -1 
+                else if(Number(b.population) > Number(a.population)) return 1
+                else return 0
             }).slice(0,distribute?this.props.entries:performance.length)
             .map((e)=>{
-
+                console.log(e)
                 return {
                     ...e,
                     leftLabel: !distribute && !unstable? e.rank + '.' : '',
@@ -240,9 +242,7 @@ export default class IndicatorByCounties extends React.Component{
 
             }
             else return null
-        })
-
-        .filter((e,i)=>{
+        }).filter((e,i)=>{
             if(!distribute) return true
             if(e===null) return false
             else return true
@@ -297,35 +297,27 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandDims, collapseDims
-        if(this.props.hasRace){
-            if(screen==='optimal'){
-                expandDims = {width: 610, height: 515}
-                collapseDims = {width: 610, height: 390}
-                
-            }
-            else if(screen==='compact'){
-                expandDims = {width: 480, height: 390}
-                collapseDims = {width: 480, height: 280}
-                
-            }
+        let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        if(screen==='optimal'){
+            expandDims = {width: 610, height: 515}
+            collapseDims = {width: 610, height: 390}
+            noRaceExpandDims = {width: 610, height: 575}
+            noRaceCollapseDims = {width: 610, height: 575}
+            
         }
-        else{ //no race, take up entirety of breakdown space
-            if(screen==='optimal'){
-                expandDims = {width: 610, height: 575}
-                collapseDims = {width: 610, height: 575}
-                
-            }
-            else if(screen==='compact'){
-                expandDims = {width: 480, height: 450}
-                collapseDims = {width: 480, height: 450}
-                
-            }
+        else if(screen==='compact'){
+            expandDims = {width: 480, height: 390}
+            collapseDims = {width: 480, height: 280}
+            noRaceExpandDims = {width: 480, height: 450}
+            noRaceCollapseDims = {width: 480, height: 450}
+            
         }
 
         const modes = {
             collapsed: collapseDims,
             expanded: expandDims,
+            noraceexpanded: noRaceExpandDims,
+            noracecollapsed: noRaceCollapseDims,
             sources: {width: 370, height: 50}
         }
         console.log(modes)
@@ -336,7 +328,13 @@ export default class IndicatorByCounties extends React.Component{
                 expandable
                 // withScroll = {!this.props.sources && this.props.expand? true : false}
                 withScroll
-                currentMode = {this.props.sources? 'sources' : this.props.expand? 'expanded' : 'collapsed'}
+                currentMode = {
+                    this.props.sources? 'sources' : 
+                    !this.props.hasRace && this.props.expand? 'noraceexpanded' :
+                    !this.props.hasRace && !this.props.expand? 'noracecollapsed' :
+                    this.props.expand? 'expanded' : 
+                    'collapsed'
+                }
                 modes = {modes}
                 duration = {this.props.sources? .5 : .35}
 
@@ -532,7 +530,7 @@ const BackArrow = styled(Icon)`
     z-index: 5;
 `
 const HeaderTitle = styled.div`
-    width: ${props => !props.hasRace? '130px' : '315px'};
+    width: ${props => props.sources || !props.hasRace? '130px' : '315px'};
     position: relative;
     height: 10px;
     padding: 0 15px;

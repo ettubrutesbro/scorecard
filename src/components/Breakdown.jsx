@@ -41,6 +41,9 @@ export default class Breakdown extends React.Component{
         if(this.props.sources !== oldProps.sources){
             this.expandCountyList(false)
         }
+        if(this.props.store.indicator !== oldProps.store.indicator){
+            this.expandCountyList(false)
+        }
     }
 
     render(){
