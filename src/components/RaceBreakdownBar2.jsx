@@ -18,7 +18,7 @@ const RaceBreakdownBar = (props) =>{
 
     const racePercentages = races.map((race)=>{
         console.log(race, demopop, county)
-        const pct = demopop[county][race]
+        const pct = demopop[county||'california'][race]
         if(pct <= clt && pct > 0) numOfCompressedLabels++
         return {label:race, percentage: pct}
     }).sort((a,b)=>{
@@ -93,10 +93,8 @@ const RaceBreakdownBar = (props) =>{
                 ): (<React.Fragment />)
             })}
             {racePercentages[racePercentages.length-1].percentage < clt && 
-                <LabelSection offset = {height} >
-                <LabelNotch 
-                    offset = {height}
-                />
+                <LabelSection offset = {height-1} >
+                <LabelNotch />
                 </LabelSection>
             }
             <CompressedLabels>
@@ -125,7 +123,8 @@ const RaceBreakdown = styled.div`
     height: ${props=>props.height}px;
     position: relative;
     display: flex;
-
+    width: 175px;
+    flex-shrink: 0;
 `
 const Bar = styled.div`
     position: relative;
@@ -133,14 +132,16 @@ const Bar = styled.div`
 
 `
 const RaceBar = styled(Bar)`
-    margin: 1px 0 0 1px;
     width: 50px;
-    border-left: 1px solid var(--bordergrey); 
-    border-right: 1px solid var(--bordergrey); 
-    border-bottom: 1px solid var(--bordergrey); 
+    border-left: 2px solid var(--bordergrey); 
+    border-right: 2px solid var(--bordergrey); 
+    border-bottom: 2px solid var(--bordergrey); 
     overflow: hidden;
 `
-const LabelBar = styled(Bar)``
+const LabelBar = styled(Bar)`
+    width: 100px;
+
+`
 
 
 
@@ -158,8 +159,8 @@ const Backing = styled(Positioned)`
 const EndNotch = styled(Positioned)`
     height: 0;
     width: 100%;
-    border-top: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
-    border-bottom: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-top: 1px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-bottom: 1px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
 `
 const Segment = styled(Positioned)`
     /*outline: 2px solid var(--bordergrey);*/
@@ -177,22 +178,29 @@ const LabelSection = styled(Positioned)`
 `
 const LabelNotch = styled.div`
     width: 12px; 
-    border-top: 1px solid var(--bordergrey);
-    margin-right: 5px;
+    border-top: .5px solid var(--bordergrey);
+    border-bottom: .5px solid var(--bordergrey);
+    margin-right: 10px;
 `
 const Compressed = styled.div`
-    @media ${media.optimal}{ font-size: 16px; }
-    @media ${media.compact}{ font-size: 13px; }
+    @media ${media.optimal}{ 
+        font-size: 16px; 
+        height: ${props=> props.specialOffset? 1 : 1.25}rem;
+    }
+    @media ${media.compact}{ 
+        font-size: 13px; 
+        height: ${props=> props.specialOffset? .825 : 1}rem;
+    }
     display: flex;
     align-items: center;
     white-space: nowrap;
-    height: ${props=> props.specialOffset? .825 : 1}rem;
+    
 `
 const CompressedLabels = styled.div`
     position: absolute;
     bottom: -.625rem;
     display: flex; flex-direction: column;
-    padding-left: 18px;
+    padding-left: 22px;
 `
 
 const Label = styled.div`
@@ -221,7 +229,7 @@ const Percentage = styled.div`
         }
     }
     render(){
-        const {race, ...restOfProps} = this.props
+        const {race, infinitesimal, zero, ...restOfProps} = this.props
         return(
             <Segment
                 {...restOfProps}
@@ -231,6 +239,8 @@ const Percentage = styled.div`
                         this.oldHatches,
                         this.oldHatches!==this.newHatches?'animating' : ''
                     ].join(' ')} 
+                    infinitesimal = {infinitesimal}
+                    zero = {zero}
                     // onAnimationEnd = {()=}
 
                 />
@@ -240,6 +250,8 @@ const Percentage = styled.div`
                         this.oldHatches!==this.newHatches?'animating' : ''
                     ].join(' ')} 
                     onAnimationEnd = {()=>{ this.setHatches('old',this.props.race) }}
+                    infinitesimal = {infinitesimal}
+                    zero = {zero}
                 />
             </Segment>
         )
@@ -280,6 +292,7 @@ const Hatches = styled.div`
         mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
     }
     &.other{
+        mask-size: 25px;
         mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
     }
     animation-duration: .25s;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import commaNumber from 'comma-number'
 
-import RaceBreakdownBar from './RaceBreakdownBar'
+import RaceBreakdownBar from './RaceBreakdownBar2'
 import CountingNumber from './CountingNumber'
 
 import {DemographicSourceInfo} from './Sources'
@@ -58,7 +58,10 @@ const DemoBox = (props) => {
                     <Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
                     <Content>
                         <DataTable store = {store} />
-                        <RaceBreakdownBar store = {store} />
+                        <RaceBreakdownBar 
+                            store = {store} 
+                            height = {315}
+                        />
                     </Content>
             
 
