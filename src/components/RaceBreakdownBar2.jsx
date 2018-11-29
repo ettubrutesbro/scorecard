@@ -34,9 +34,12 @@ const RaceBreakdownBar = (props) =>{
     
     const compressedLabels = racePercentages.filter((r)=>{return r.percentage <= clt && r.percentage > 0})
 
+
     return(
-        <RaceBreakdown height = {height}>
-        <RaceBar>
+        <RaceBreakdown height = {height} >
+        <RaceBar
+            lastSegSelected = {racePercentages[racePercentages.length-1].label === store.race}
+        >
         {racePercentages.map((race,i,arr)=>{
             const previousSegs = arr.slice(0,i)
             const offset = previousSegs.map((seg)=>{
@@ -50,6 +53,7 @@ const RaceBreakdownBar = (props) =>{
                 <Backing 
                     key = {'backing'+i}
                     offset = {(offset/100) * height}
+                    selected = {race.label === store.race}
                 />
                 <RaceSegment
                     key = {i}
@@ -63,12 +67,15 @@ const RaceBreakdownBar = (props) =>{
                     infinitesimal = {pct < 3}
                     zero = {pct == 0}
                     race = {race.label}
+                    selected = {race.label === store.race}
                 />
                 <EndNotch 
                     key = {'hatch'+i} 
                     offset = {(offset/100) * height} 
                     infinitesimal = {pct < 3}
                     hide = {i===0}
+                    selected = {race.label === store.race || (i>0 && arr[i-1].label === store.race) }
+
                 />
                 </React.Fragment>
             )
@@ -93,13 +100,13 @@ const RaceBreakdownBar = (props) =>{
                             || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                         } 
                     >
-                        <LabelNotch />
-                        <Label> {capitalize(race.label)} </Label>
-                        <Percentage> {race.percentage}%</Percentage>
+                        <LabelNotch  selected = {race.label === store.race}/>
+                        <Label selected = {race.label === store.race}> {capitalize(race.label)} </Label>
+                        <Percentage selected = {race.label === store.race}> {race.percentage}%</Percentage>
                     </LabelSection>
                 ): (<React.Fragment />)
             })}
-            {racePercentages[racePercentages.length-1].percentage < clt && 
+            {racePercentages[racePercentages.length-1].percentage < clt && racePercentages[racePercentages.length-1].percentage > 0 &&
                 <LabelSection offset = {height+1} >
                 <LabelNotch />
                 </LabelSection>
@@ -130,7 +137,12 @@ const RaceBreakdown = styled.div`
     height: ${props=>props.height}px;
     position: relative;
     display: flex;
-    width: 175px;
+    @media ${media.optimal}{
+        width: 175px;
+    }
+    @media ${media.screen}{
+        width: 150px;
+    }
     flex-shrink: 0;
 `
 const Bar = styled.div`
@@ -140,10 +152,11 @@ const Bar = styled.div`
 `
 const RaceBar = styled(Bar)`
     width: 44px;
-    outline: 2px solid var(--bordergrey);
+    /*outline: 2px solid var(--bordergrey);*/
     /*border-left: 2px solid var(--bordergrey); */
     /*border-right: 2px solid var(--bordergrey); */
     /*border-bottom: 2px solid var(--bordergrey); */
+    box-shadow: 0 2px 0 var(${props=>props.lastSegSelected?'--peach':'--bordergrey'});
     overflow: hidden;
 `
 const LabelBar = styled(Bar)`
@@ -159,12 +172,15 @@ const Backing = styled(Positioned)`
     background: white;
     width: 100%;
     height: 500px;
+    border: 1.5px solid var(${props=>props.selected?'--peach': '--bordergrey'});
+
 `
 const EndNotch = styled(Positioned)`
     height: 0;
-    width: 100%;
-    border-top: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
-    border-bottom: .5px solid var(${props => props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    left: 2px;
+    width: calc(100% - 4px);
+    border-top: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-bottom: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
     display: ${props=>props.hide?'none':'block'};
 `
 const Segment = styled(Positioned)`
@@ -189,8 +205,8 @@ const LabelSection = styled(Positioned)`
 `
 const LabelNotch = styled.div`
     width: 12px; 
-    border-top: .75px solid var(--bordergrey);
-    border-bottom: .75px solid var(--bordergrey);
+    border-top: .75px solid var(${props=>props.selected?'--peach' : '--bordergrey'});
+    border-bottom: .75px solid var(${props=>props.selected?'--peach' : '--bordergrey'});
     margin-right: 10px;
 `
 const Compressed = styled.div`
@@ -213,7 +229,7 @@ const CompressedLabels = styled.div`
         bottom: -1rem;
     }
     @media ${media.compact}{
-        bottom: -.625rem;
+        bottom: -.25rem;
     }
     display: flex; flex-direction: column;
     padding-left: 22px;
@@ -245,9 +261,10 @@ const Percentage = styled.div`
         }
     }
     render(){
-        const {race, infinitesimal, zero, ...restOfProps} = this.props
+        const {race, infinitesimal, zero, selected, ...restOfProps} = this.props
         return(
             <Segment
+                selected = {selected}
                 {...restOfProps}
             >
                 <Hatches 
@@ -257,6 +274,7 @@ const Percentage = styled.div`
                     ].join(' ')} 
                     infinitesimal = {infinitesimal}
                     zero = {zero}
+                    selected = {selected}
                     // onAnimationEnd = {()=}
 
                 />
@@ -268,6 +286,7 @@ const Percentage = styled.div`
                     onAnimationEnd = {()=>{ this.setHatches('old',this.props.race) }}
                     infinitesimal = {infinitesimal}
                     zero = {zero}
+                    selected = {selected}
                 />
             </Segment>
         )

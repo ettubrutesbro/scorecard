@@ -41,10 +41,9 @@ const Box = styled.div`
 
 const DemoBox = (props) => {
     const store = props.store
-    const {county} = store
+    const {county, screen} = store
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
-    const screen = getMedia()
     if(countyLabel.length < 9) countyLabel+= ' county'
     pop = sigFig(pop)
     return(
@@ -60,7 +59,7 @@ const DemoBox = (props) => {
                         <DataTable store = {store} />
                         <RaceBreakdownBar 
                             store = {store} 
-                            height = {315}
+                            height = {screen === 'optimal'? 315 : 275}
                         />
                     </Content>
             
@@ -170,7 +169,7 @@ const DemoRow = styled.div`
         padding: 0 20px;
         line-height: 150%;
         &.last{
-            width: 190px;
+            width: 210px;
         }
     }
 
