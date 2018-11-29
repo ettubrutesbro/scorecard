@@ -135,6 +135,7 @@ const Header = styled.div`
                                         {item.leftLabel && 
                                             <LeftLabel
                                                 hovered = {item.id === this.hoveredRow}
+                                                selected = {item.id === this.props.selected}
                                             >
                                                 {!condensed && item.leftLabel}
 
@@ -147,6 +148,7 @@ const Header = styled.div`
                                     <React.Fragment>
                                         <Bar
                                             condensed = {condensed}
+                                            hovered = {item.id === this.hoveredRow}
                                             selected = {item.id === this.props.selected}
                                             percentage = {item.value}
                                             height = {100/bars.length} 
@@ -160,6 +162,7 @@ const Header = styled.div`
                                             percentage = {item.value}
                                             muted = {i!==0}
                                             hovered = {item.id === this.hoveredRow}
+                                            selected = {item.id === this.props.selected}
                                             alignValue = {this.props.alignValue}
                                             offset = {this.props.labelWidth + (((this.width-75) - this.props.labelWidth) * (item.value/100) ) }
                                         >
@@ -346,15 +349,16 @@ const Bar = styled.div`
     width: 100%;
     height: ${props => props.condensed? '6px' : '13px'};
     transform-origin: 0% 0%;
-    transition: transform .25s, background-color .25s;
+    transition: transform .25s, background-color ${props=>props.selected? 0 : .25}s;
     transform: scaleX(${props=> props.percentage/100});
 
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
     border-right-color: transparent;
+    border-bottom: 1px solid ${props=>props.hovered? 'var(--peach)' : 'transparent'};
 `
 
 const Value = styled.div`
-    color: ${props => props.hovered?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
+    color: ${props => props.hovered||props.selected?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
     letter-spacing: 0.5px;
     position: absolute;
     // right: 0;
