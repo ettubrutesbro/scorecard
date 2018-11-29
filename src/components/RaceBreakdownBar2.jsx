@@ -141,7 +141,7 @@ const RaceBreakdown = styled.div`
         width: 175px;
     }
     @media ${media.screen}{
-        width: 150px;
+        width: 175px;
     }
     flex-shrink: 0;
 `
@@ -151,7 +151,7 @@ const Bar = styled.div`
 
 `
 const RaceBar = styled(Bar)`
-    width: 44px;
+    width: 50px;
     /*outline: 2px solid var(--bordergrey);*/
     /*border-left: 2px solid var(--bordergrey); */
     /*border-right: 2px solid var(--bordergrey); */
@@ -327,7 +327,7 @@ const Hatches = styled.div`
         mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
     }
     &.other{
-        mask-size: 33px;
+        mask-size: 25px;
         mask-position-x: -1px
         mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
     }
