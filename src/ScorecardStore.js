@@ -27,7 +27,7 @@ export default class AppStore{
 
     @action resize = debounce(() => { 
         const size = getMedia()
-        if(!this.screen!==size){
+        if(this.screen!==size){
             this.screen = size 
             window.location.reload()
         }
@@ -519,4 +519,19 @@ export default class AppStore{
 
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
+
+    @observable hoveredCounty = ''
+    @observable hoveredRace = ''
+    @action setHover = (which , value, check) => {
+        //dont complete race hover action if the race has no data
+        if(which==='race' && value){
+            const ind = indicators[this.indicator]
+            const cty = this.county? this.county : 'california'
+            if(!ind.categories.includes('hasRace')) return false
+            if(ind.counties[cty][value][this.year] === '' || ind.counties[cty][value][this.year]==='*') return false
+        }
+        if(check) return true
+        this['hovered'+capitalize(which)] = value
+        console.log('hovered', which, ':', this['hovered'+capitalize(which)])
+    }
 }

@@ -493,8 +493,8 @@ export default class ResponsiveScorecard extends React.Component{
                     >
                         <MapComponent 
                             store = {store}
-                            onHoverCounty = {this.onHoverCounty}
-                            hoveredCounty = {this.hoveredCounty}
+                            onHoverCounty = {(val) => store.setHover('county', val)}
+                            hoveredCounty = {store.hoveredCounty}
                             onSelect = {store.completeWorkflow}
                             selected = {store.county}
                             defaultHighlight = {indicator? indicators[indicator].highlight : ''}

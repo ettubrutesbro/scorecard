@@ -67,11 +67,8 @@ const GridItem = styled.li`
     white-space: nowrap;
     opacity: ${props => props.muted? 0.2 : 1};
     transition: opacity .5s, color .25s;
-    background: ${props => props.selected? 'var(--faintpeach)' : 'transparent'};
+    background: ${props => props.hovered&&!props.invalid&&!props.sanityHighlight? '#f3f3f5' : props.selected? 'var(--faintpeach)' : 'transparent'};
     border: 1px solid ${props => props.sanityHighlight? 'var(--bordergrey)' : props.selected? 'var(--strokepeach)' : 'transparent'};
-    &:hover{
-        background: ${props => !props.invalid && !props.sanityHighlight? '#f3f3f5' : 'transparent'};
-    }
     &.allctys{
         color: var(--strokepeach);
     }
@@ -228,6 +225,10 @@ class CountyList extends React.Component{
                                 key = {"countylist"+cty.id}
                                 onClick = {!sanityChecking?()=>{this.handleSelection(cty.id, colNum, rowNum)}
                                 : ()=>{}}
+
+                                onMouseEnter = {()=>this.props.store.setHover('county',cty.id)}
+                                onMouseLeave = {()=>this.props.store.setHover('county',null)}
+                                hovered = {this.props.store.hoveredCounty === cty.id}
                                 // data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
                             > 
                                 {sanityChecking && 
