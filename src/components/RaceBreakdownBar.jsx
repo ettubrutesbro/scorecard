@@ -9,10 +9,11 @@ import demopop from '../data/demographicsAndPopulation'
 
 const races = ['asian','black','latinx','white','other']
 
-const RaceBreakdownBar = (props) =>{
-
+@observer class RaceBreakdownBar extends React.Component{
+    render(){
+    const {props} = this
     const {height, store} = props
-    const {county, screen} = store
+    const {county, screen, hoveredRace} = store
 
     const clt = screen === 'compact'? 9 : 8//compressed label threshold (% below which label becomes compressed)
     const est = screen === 'compact'? 22: 24//exception segment threshold (% below which the last non-compressed seg has its label offset)
@@ -43,7 +44,7 @@ const RaceBreakdownBar = (props) =>{
             }).reduce((a,b)=>a+b,0)
 
             const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
-
+            console.log(race.label, race.label===hoveredRace)
             return (
                 <React.Fragment>
                 <Backing 
@@ -64,6 +65,10 @@ const RaceBreakdownBar = (props) =>{
                     zero = {pct == 0}
                     race = {race.label}
                     selected = {race.label === store.race}
+                    hovered = {race.label === hoveredRace}
+
+                    onMouseEnter = {()=>store.setHover('race',race.label)}
+                    onMouseLeave = {()=>store.setHover('race',null)} 
                 />
                 <EndNotch 
                     key = {'hatch'+i} 
@@ -94,7 +99,10 @@ const RaceBreakdownBar = (props) =>{
                         specialOffset = {
                             (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
                             || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
-                        } 
+                        }
+
+                        onMouseEnter = {()=>store.setHover('race',race.label)} 
+                        onMouseLeave = {()=>store.setHover('race',null)} 
                     >
                         <LabelNotch  selected = {race.label === store.race}/>
                         <Label selected = {race.label === store.race}> {capitalize(race.label)} </Label>
@@ -117,6 +125,8 @@ const RaceBreakdownBar = (props) =>{
                                 (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
                                 || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                             }
+                            onMouseEnter = {()=>store.setHover('race',r.label)} 
+                            onMouseLeave = {()=>store.setHover('race',null)} 
                         >
                             <Label> {capitalize(r.label)} </Label>
                             <Percentage> {r.percentage}%</Percentage>
@@ -127,6 +137,7 @@ const RaceBreakdownBar = (props) =>{
         </LabelBar>
         </RaceBreakdown>
     )
+}
 }
 
 const RaceBreakdown = styled.div`
@@ -181,7 +192,6 @@ const EndNotch = styled(Positioned)`
 `
 const Segment = styled(Positioned)`
     /*outline: 2px solid var(--bordergrey);*/
-
 `
 
 const LabelSection = styled(Positioned)`
@@ -257,7 +267,7 @@ const Percentage = styled.div`
         }
     }
     render(){
-        const {race, infinitesimal, zero, selected, ...restOfProps} = this.props
+        const {race, infinitesimal, zero, selected, hovered, ...restOfProps} = this.props
         return(
             <Segment
                 selected = {selected}
@@ -271,6 +281,7 @@ const Percentage = styled.div`
                     infinitesimal = {infinitesimal}
                     zero = {zero}
                     selected = {selected}
+                    hovered = {hovered}
                     // onAnimationEnd = {()=}
 
                 />
@@ -283,6 +294,7 @@ const Percentage = styled.div`
                     infinitesimal = {infinitesimal}
                     zero = {zero}
                     selected = {selected}
+                    hovered = {hovered}
                 />
             </Segment>
         )
@@ -306,8 +318,9 @@ const Hatches = styled.div`
     position: absolute;
     width: 100%; height: 100%;
     /*mask-repeat: repeat;*/
-    background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
+    background-color: ${props => props.hovered||props.selected? 'var(--peach)' :  'var(--bordergrey)'};
     mask-size: 32px;
+    
     ${props => props.zero? 'display: none;' : ''}
     &.asian{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
