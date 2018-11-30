@@ -53,7 +53,7 @@ export default class Legend extends React.Component{
             >
                 <Labels>
                 <NumCountiesLabel show = {this.hovered}> 
-                    Number of counties in each range 
+                    # of counties in each range 
                 </NumCountiesLabel>
                 <ColorGuideLabel hide = {this.hovered}>
                     Color guide
@@ -118,7 +118,7 @@ const Lgd = styled.div`
     position: relative;
     width: 100%;
     overflow: hidden;
-    /*cursor: pointer;*/
+    cursor: pointer;
     /*width: 450px;*/
     width: 100%;
 `
@@ -199,9 +199,14 @@ const Label = styled.div`
 const Labels = styled.div`
     width: 100%;
     height: 40px;
+    @media ${media.optimal}{
+        font-size: 16px;
+        color: var(--normtext);
+    }
     @media ${media.compact}{
-        height: 0;
-        display: none;
+        height: 30px;
+        color: var(--fainttext);
+        font-size: 13px;
     }
 `
 const Swatches = styled.div`
@@ -212,9 +217,8 @@ const Swatches = styled.div`
 
 const Titles = styled.div`
     position: absolute;
-    top: 0; font-size: 16px;
+    top: 0;
     right: 0;
-    color: var(--normtext);
 `
 const ColorGuideLabel = styled(Titles)`
     opacity: ${props => props.hide?
