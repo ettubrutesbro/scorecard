@@ -141,7 +141,16 @@ const Header = styled.div`
 
                                             </LeftLabel>
                                         }
-                                        {!condensed && item.label}
+                                        {!condensed && 
+                                            React.cloneElement(
+                                                item.label,
+                                                Object.assign(
+                                                    {hovered: item.id===this.hoveredRow},
+                                                    item.label.props
+                                                )
+                                            )
+                                        }
+                                        
                                     </Label>
                                 
                                 {!invalidValue &&
@@ -157,6 +166,7 @@ const Header = styled.div`
                                             onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                         >
                                         </Bar>
+                                        
                                         {!condensed && 
                                         <Value
                                             percentage = {item.value}
@@ -250,6 +260,7 @@ const Content = styled.div`
 `
 
 const Label = styled.div`
+    position: relative;
     display: inline-flex;
     width: ${props => props.labelWidth}px;
     align-items: center;
@@ -353,10 +364,12 @@ const Bar = styled.div`
     transform: scaleX(${props=> props.percentage/100});
 
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
-    border-right-color: transparent;
-    border-bottom: 1px solid ${props=>props.hovered? 'var(--peach)' : 'transparent'};
-`
+    /*border-right-color: transparent;*/
+    border: 1.5px solid ${props=>props.hovered? 'var(--peach)' : 'transparent'};
+    border-left-width: ${props=> (150/props.percentage).toFixed(3)}px;
+    border-right-width: ${props=> (150/props.percentage).toFixed(3)}px;
 
+`
 const Value = styled.div`
     color: ${props => props.hovered||props.selected?'var(--strokepeach)': props.muted? 'var(--fainttext)' : 'var(--normtext)'};
     letter-spacing: 0.5px;
