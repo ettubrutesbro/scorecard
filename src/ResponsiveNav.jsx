@@ -50,6 +50,7 @@ const Dropdown = styled.div`
         padding: 12px 45px 12px 20px;
     }
     @media ${media.compact}{
+        height: 44px;
         padding: 10px 45px 10px 20px;
     }
     background: ${props => props.hasValue&&!props.isOpen? 'var(--faintpeach)' : props.disabled? 'var(--offwhitefg)' : 'white'};
