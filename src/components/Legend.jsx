@@ -48,8 +48,8 @@ export default class Legend extends React.Component{
 
         return(
             <Lgd
-                // onMouseEnter = {()=>this.handleHover(true)}
-                // onMouseLeave = {()=>this.handleHover(false)}
+                onMouseEnter = {()=>this.handleHover(true)}
+                onMouseLeave = {()=>this.handleHover(false)}
             >
                 <Labels>
                 <NumCountiesLabel show = {this.hovered}> 

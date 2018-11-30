@@ -25,7 +25,15 @@ export default class AppStore{
 
     @observable screen = getMedia()
 
-    @action resize = debounce(() => { this.screen = getMedia() }, 150)
+    @action resize = debounce(() => { 
+        const size = getMedia()
+        if(!this.screen!==size){
+            this.screen = size 
+            window.location.reload()
+        }
+        else return
+
+    }, 150)
 
     @observable init = true
 

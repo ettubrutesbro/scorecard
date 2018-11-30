@@ -463,7 +463,7 @@ const YearToggle = (props) =>{
                     theme = "negativeNoStroke"
                     options = {years}
                     onClick = {props.onClick}
-                    selected = {props.selected}
+                    selected = {Number(props.selected)}
                 />
             }
 

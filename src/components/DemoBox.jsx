@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import commaNumber from 'comma-number'
 
-import RaceBreakdownBar from './RaceBreakdownBar'
+import RaceBreakdownBar from './RaceBreakdownBar2'
 import CountingNumber from './CountingNumber'
 
 import {DemographicSourceInfo} from './Sources'
@@ -41,10 +41,9 @@ const Box = styled.div`
 
 const DemoBox = (props) => {
     const store = props.store
-    const {county} = store
+    const {county, screen} = store
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
-    const screen = getMedia()
     if(countyLabel.length < 9) countyLabel+= ' county'
     pop = sigFig(pop)
     return(
@@ -58,7 +57,10 @@ const DemoBox = (props) => {
                     <Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
                     <Content>
                         <DataTable store = {store} />
-                        <RaceBreakdownBar store = {store} />
+                        <RaceBreakdownBar 
+                            store = {store} 
+                            height = {screen === 'optimal'? 315 : 275}
+                        />
                     </Content>
             
 
@@ -167,7 +169,7 @@ const DemoRow = styled.div`
         padding: 0 20px;
         line-height: 150%;
         &.last{
-            width: 190px;
+            width: 210px;
         }
     }
 

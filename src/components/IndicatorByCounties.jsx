@@ -612,22 +612,22 @@ const SelectedCounty = styled.span`
 
 const LabelComponent = (props) => {
     return(
-        <RowLabel selected = {props.selected}>
-            <FaintLeft selected = {props.selected}>
+        <RowLabel {...props}>
+            <FaintLeft {...props}>
                 {props.left}
             </FaintLeft>
             {props.label}
-            <FaintRight selected = {props.selected}>
+            <FaintRight {...props}>
                 {props.right}
             </FaintRight>
         </RowLabel>    
     )
 }
 const RowLabel = styled.span`
-    color: ${props => props.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+    color: ${props => props.selected||props.hovered? 'var(--strokepeach)' : 'var(--normtext)'};
 `
 const Faint = styled.span`
-    color: ${props => props.selected? 'var(--peach)' : 'var(--fainttext)'};
+    color: ${props => props.selected||props.hovered? 'var(--peach)' : 'var(--fainttext)'};
 `
 const FaintLeft = styled(Faint)`
     margin-right: 5px;

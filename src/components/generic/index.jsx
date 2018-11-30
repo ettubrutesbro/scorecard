@@ -29,7 +29,7 @@ const Option = styled.div`
             height: 48px;
         }
         @media ${media.compact}{
-            height: 43.5px;
+            height: 44px;
         }
         display: flex; align-items: center;
         border: 1px solid transparent;
@@ -550,7 +550,7 @@ const DropdownToggleWrapper = styled.div`
         height: 48px;
     }
     @media ${media.compact}{
-        height: 43.5px;
+        height: 44px;
     }
 `
 
