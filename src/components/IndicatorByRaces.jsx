@@ -42,7 +42,7 @@ export default class IndicatorByRaces extends React.Component{
         if(this.props.expand) this.hover(false)
     }
     render(){
-        const {indicator, year, county, colorScale, screen} = this.props.store
+        const {indicator, year, county, colorScale, screen, setHover, hoveredRace} = this.props.store
         const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
 
@@ -67,11 +67,9 @@ export default class IndicatorByRaces extends React.Component{
                 label: <Label selected = {selected}>{capitalize(race)}<span> {who}</span></Label>,
                 value: val,
                 trueValue: isSomeBullshit || false,
-                // value: ind[race][year],
                 fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
         })
-        // console.log(indicatorPerformanceByRace)
         return(
             <Wrapper
                 offset = {this.props.hideForSources? '0, -150px' : !this.props.expand? '0, -50px' : '0, -150px'}
@@ -82,7 +80,6 @@ export default class IndicatorByRaces extends React.Component{
                 hide = {this.props.hideForSources}
             >
                 <HorizontalBarGraph
-                    // header = {`${semanticTitles[indicator].label} in ${county || 'california'}, by race:`}
                     expandable
                     modes = {{
                         expanded: {width: screen==='optimal'?610:480, height: 150},
@@ -90,13 +87,12 @@ export default class IndicatorByRaces extends React.Component{
                         sources: {width: 100, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}
-                    // duration = {this.props.hideForSources? 3 : .35}
-
-                    // expandHeight = {150}
-                    // collapseHeight = {50}
-                    fullHeight = {this.props.expand}
+                    fullHeight = {this.props.expand} //kinda redundant for the above but in place for vestige styledcomponents changes
 
                     hideGraph = {!this.props.expand || this.props.hideForSources}
+
+                    onHoverRow = {(val)=>{setHover('race',val)}}
+                    hovered = {hoveredRace}
 
                     selectable
                     header = {

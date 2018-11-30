@@ -198,7 +198,7 @@ export default class IndicatorByCounties extends React.Component{
 
     render(){
 
-        const {county, race, year, indicator, completeWorkflow, colorScale, screen} = this.props.store
+        const {county, race, year, indicator, completeWorkflow, colorScale, screen, setHover, hoveredCounty} = this.props.store
         let {performance} = this 
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
@@ -326,7 +326,6 @@ export default class IndicatorByCounties extends React.Component{
 
             <Graph
                 expandable
-                // withScroll = {!this.props.sources && this.props.expand? true : false}
                 withScroll
                 currentMode = {
                     this.props.sources? 'sources' : 
@@ -337,6 +336,9 @@ export default class IndicatorByCounties extends React.Component{
                 }
                 modes = {modes}
                 duration = {this.props.sources? .5 : .35}
+
+                onHoverRow = {(val)=>{setHover('county',val)}}
+                hovered = {hoveredCounty}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 

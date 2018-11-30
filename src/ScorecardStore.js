@@ -519,4 +519,12 @@ export default class AppStore{
 
     @observable sourcesMode = false
     @action setSourcesMode = (tf) => this.sourcesMode = tf
+
+    @observable hoveredCounty = ''
+    @observable hoveredRace = ''
+    @action setHover = (which , value) => {
+    
+        this['hovered'+capitalize(which)] = value
+        console.log('hovered', which, ':', this['hovered'+capitalize(which)])
+    }
 }

@@ -62,10 +62,13 @@ const Header = styled.div`
 
     @observable width = 400
     @observable contentHeight = 300
-    @observable hoveredRow = null
+    // @observable hoveredRow = null
     @observable expanded = false
 
-    @action handleHoverRow = (row) => {if(this.props.selectable) this.hoveredRow = row}
+    @action handleHoverRow = (row) => {
+        // if(this.props.selectable) this.hoveredRow = row
+        if(this.props.onHoverRow) this.props.onHoverRow(row)
+    }
 
     @action expandGraph = () => {
         this.expanded = !this.expanded
@@ -120,21 +123,21 @@ const Header = styled.div`
                                 onClick = {selectBar?()=>{selectBar(item.id)}: ()=>{} }
                                 onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                 onMouseLeave = {()=>{this.handleHoverRow(null)}}
-                                hovered = {item.id === this.hoveredRow}
+                                hovered = {item.id === this.props.hovered}
                             >
                                 
                                     <Label 
                                         selected = {item.id === this.props.selected}
                                         labelWidth = {this.props.labelWidth} 
                                         invalid = {invalidValue}
-                                        hovered = {item.id === this.hoveredRow}
+                                        hovered = {item.id === this.props.hovered}
                                         onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                         onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                         hasLeftLabel = {item.leftLabel}
                                     >
                                         {item.leftLabel && 
                                             <LeftLabel
-                                                hovered = {item.id === this.hoveredRow}
+                                                hovered = {item.id === this.props.hovered}
                                                 selected = {item.id === this.props.selected}
                                             >
                                                 {!condensed && item.leftLabel}
@@ -147,7 +150,7 @@ const Header = styled.div`
                                         {!condensed && item.label && typeof item.label !== 'string' &&                                            React.cloneElement(
                                                 item.label, 
                                                 Object.assign(
-                                                    {hovered: item.id===this.hoveredRow},
+                                                    {hovered: item.id===this.props.hovered},
                                                     item.label.props
                                                 )
                                             )
@@ -159,7 +162,7 @@ const Header = styled.div`
                                     <React.Fragment>
                                         <Bar
                                             condensed = {condensed}
-                                            hovered = {item.id === this.hoveredRow}
+                                            hovered = {item.id === this.props.hovered}
                                             selected = {item.id === this.props.selected}
                                             percentage = {item.value}
                                             height = {100/bars.length} 
@@ -173,7 +176,7 @@ const Header = styled.div`
                                         <Value
                                             percentage = {item.value}
                                             muted = {i!==0}
-                                            hovered = {item.id === this.hoveredRow}
+                                            hovered = {item.id === this.props.hovered}
                                             selected = {item.id === this.props.selected}
                                             alignValue = {this.props.alignValue}
                                             offset = {this.props.labelWidth + (((this.width-75) - this.props.labelWidth) * (item.value/100) ) }
@@ -201,7 +204,7 @@ const Header = styled.div`
                             labelWidth = {this.props.labelWidth}
                             // offset = {0}
                             side = {this.props.average>65?'left':'right'}
-                            muted = {this.hoveredRow}
+                            muted = {this.props.hovered}
                             offset = {(this.props.average/100)*(this.width-this.props.labelWidth-75)}
                         >
                             <AverageLabel side = {this.props.average>65?'left':'right'}>
