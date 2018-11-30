@@ -523,7 +523,13 @@ export default class AppStore{
     @observable hoveredCounty = ''
     @observable hoveredRace = ''
     @action setHover = (which , value) => {
-    
+        //dont complete race hover action if the race has no data
+        if(which==='race' && value){
+            const ind = indicators[this.indicator]
+            const cty = this.county? this.county : 'california'
+            if(!ind.categories.includes('hasRace')) return
+            if(ind.counties[cty][value][this.year] === '' || ind.counties[cty][value][this.year]==='*') return
+        }
         this['hovered'+capitalize(which)] = value
         console.log('hovered', which, ':', this['hovered'+capitalize(which)])
     }

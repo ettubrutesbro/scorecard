@@ -345,6 +345,7 @@ const Hatches = styled.div`
     &.animating{
         animation-name: ${animateOut}
     }
+    cursor: pointer;
 `
 
 const NewHatches = styled(Hatches)`
