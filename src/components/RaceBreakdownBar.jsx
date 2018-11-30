@@ -69,6 +69,7 @@ const races = ['asian','black','latinx','white','other']
 
                     onMouseEnter = {()=>store.setHover('race',race.label)}
                     onMouseLeave = {()=>store.setHover('race',null)} 
+                    hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 />
                 <EndNotch 
                     key = {'hatch'+i} 
@@ -103,6 +104,8 @@ const races = ['asian','black','latinx','white','other']
 
                         onMouseEnter = {()=>store.setHover('race',race.label)} 
                         onMouseLeave = {()=>store.setHover('race',null)} 
+                        hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
+                
                     >
                         <LabelNotch  selected = {race.label === store.race}/>
                         <Label selected = {race.label === store.race}> {capitalize(race.label)} </Label>
@@ -127,6 +130,8 @@ const races = ['asian','black','latinx','white','other']
                             }
                             onMouseEnter = {()=>store.setHover('race',r.label)} 
                             onMouseLeave = {()=>store.setHover('race',null)} 
+                            hoverable = {store.indicator? store.setHover('race',r.label,true) : ()=>{}}
+                
                         >
                             <Label> {capitalize(r.label)} </Label>
                             <Percentage> {r.percentage}%</Percentage>
@@ -208,6 +213,8 @@ const LabelSection = styled(Positioned)`
     white-space: nowrap;
     height: 0;
 
+    cursor: ${props=> props.hoverable?'pointer':'auto'};
+
 `
 const LabelNotch = styled.div`
     width: 12px; 
@@ -267,7 +274,7 @@ const Percentage = styled.div`
         }
     }
     render(){
-        const {race, infinitesimal, zero, selected, hovered, ...restOfProps} = this.props
+        const {race, infinitesimal, zero, selected, hovered, hoverable, ...restOfProps} = this.props
         return(
             <Segment
                 selected = {selected}
@@ -282,6 +289,7 @@ const Percentage = styled.div`
                     zero = {zero}
                     selected = {selected}
                     hovered = {hovered}
+                    hoverable = {hoverable}
                     // onAnimationEnd = {()=}
 
                 />
@@ -295,6 +303,7 @@ const Percentage = styled.div`
                     zero = {zero}
                     selected = {selected}
                     hovered = {hovered}
+                    hoverable = {hoverable}
                 />
             </Segment>
         )
@@ -337,7 +346,7 @@ const Hatches = styled.div`
     }
     &.other{
         mask-size: 25px;
-        mask-position-x: -1px
+        mask-position-x: -1px;
         mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
     }
     animation-duration: .25s;
@@ -345,7 +354,7 @@ const Hatches = styled.div`
     &.animating{
         animation-name: ${animateOut}
     }
-    cursor: pointer;
+    cursor: ${props => props.hoverable? 'pointer' : 'auto'};
 `
 
 const NewHatches = styled(Hatches)`

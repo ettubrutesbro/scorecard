@@ -66,6 +66,7 @@ export default class IndicatorByRaces extends React.Component{
                 id: race,
                 label: <Label selected = {selected}>{capitalize(race)}<span> {who}</span></Label>,
                 value: val,
+                hoverable: isSomeBullshit? false : true,
                 trueValue: isSomeBullshit || false,
                 fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
@@ -91,7 +92,9 @@ export default class IndicatorByRaces extends React.Component{
 
                     hideGraph = {!this.props.expand || this.props.hideForSources}
 
-                    onHoverRow = {(val)=>{setHover('race',val)}}
+                    onHoverRow = {(val)=>{
+                        setHover('race',val)}
+                    }
                     hovered = {hoveredRace}
 
                     selectable

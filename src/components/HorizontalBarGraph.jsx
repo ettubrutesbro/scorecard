@@ -23,7 +23,6 @@ const WrappedGraphComponent = (props) => {
     const {header, footer, modes, duration, delay, currentMode, fullHeight, withScroll, borderColor, ...restOfProps} = props
     return props.expandable?(
         <ExpandBox 
-
             currentMode = {currentMode}
             modes = {modes}
             duration = {duration}
@@ -124,6 +123,7 @@ const Header = styled.div`
                                 onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
                                 onMouseLeave = {()=>{this.handleHoverRow(null)}}
                                 hovered = {item.id === this.props.hovered}
+                                hoverable = {item.hoverable}
                             >
                                 
                                     <Label 
@@ -131,8 +131,8 @@ const Header = styled.div`
                                         labelWidth = {this.props.labelWidth} 
                                         invalid = {invalidValue}
                                         hovered = {item.id === this.props.hovered}
-                                        onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
-                                        onMouseLeave = {()=>{this.handleHoverRow(null)}}
+                                        onMouseEnter = {item.hoverable? ()=>{this.handleHoverRow(item.id)}: ()=>{}}
+                                        onMouseLeave = {item.hoverable? ()=>{this.handleHoverRow(null)}: ()=>{}}
                                         hasLeftLabel = {item.leftLabel}
                                     >
                                         {item.leftLabel && 
@@ -296,7 +296,7 @@ class Row extends React.Component{
     }
 }
 const RowComponent = styled.div`
-    cursor: pointer;
+    cursor: ${props=>props.hoverable? 'pointer' : 'auto'};
     position: relative;
     width: calc(100% - 20px);
     display: flex;
