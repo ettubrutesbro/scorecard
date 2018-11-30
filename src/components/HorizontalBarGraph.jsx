@@ -141,9 +141,11 @@ const Header = styled.div`
 
                                             </LeftLabel>
                                         }
-                                        {!condensed && 
-                                            React.cloneElement(
-                                                item.label,
+                                        {!condensed && item.label && typeof item.label === 'string' &&
+                                            item.label
+                                        }
+                                        {!condensed && item.label && typeof item.label !== 'string' &&                                            React.cloneElement(
+                                                item.label, 
                                                 Object.assign(
                                                     {hovered: item.id===this.hoveredRow},
                                                     item.label.props
