@@ -17,9 +17,9 @@ const races = [
 
 
 const Label = styled.span`
-    color: ${props => props.invalid? 'var(--fainttext)' : props.selected?  'var(--strokepeach)' : 'var(--normtext)'};
+    color: ${props => props.invalid? 'var(--fainttext)' : props.hovered || props.selected?  'var(--strokepeach)' : 'var(--normtext)'};
     span{
-        color: ${props => props.selected? 'var(--peach)' : 'var(--fainttext)'};
+        color: ${props => props.hovered || props.selected? 'var(--peach)' : 'var(--fainttext)'};
     }
 `
 const Wrapper = styled.div`
