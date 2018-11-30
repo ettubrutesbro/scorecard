@@ -69,6 +69,7 @@ const races = ['asian','black','latinx','white','other']
 
                     onMouseEnter = {()=>store.setHover('race',race.label)}
                     onMouseLeave = {()=>store.setHover('race',null)} 
+                    onClick = {()=>store.completeWorkflow('race',race.label)}
                     hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 />
                 <EndNotch 
@@ -104,6 +105,7 @@ const races = ['asian','black','latinx','white','other']
 
                         onMouseEnter = {()=>store.setHover('race',race.label)} 
                         onMouseLeave = {()=>store.setHover('race',null)} 
+                        onClick = {()=>store.completeWorkflow('race',race.label)}
                         hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 
                     >
@@ -129,6 +131,7 @@ const races = ['asian','black','latinx','white','other']
                                 || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                             }
                             onMouseEnter = {()=>store.setHover('race',r.label)} 
+                            onClick = {()=>store.completeWorkflow('race',r.label)}
                             onMouseLeave = {()=>store.setHover('race',null)} 
                             hoverable = {store.indicator? store.setHover('race',r.label,true) : ()=>{}}
                 
@@ -234,6 +237,8 @@ const Compressed = styled.div`
     display: flex;
     align-items: center;
     white-space: nowrap;
+    
+    cursor: ${props=> props.hoverable?'pointer':'auto'};
     
 `
 const CompressedLabels = styled.div`
