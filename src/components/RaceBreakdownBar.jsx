@@ -1,295 +1,347 @@
-
 import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
-import styled, {css} from 'styled-components'
-import {findDOMNode} from 'react-dom'
-
-import {find, findIndex} from 'lodash'
-
-import demopop from '../data/demographicsAndPopulation'
-import FlipMove from 'react-flip-move'
-
-
+import styled, {keyframes} from 'styled-components'
 import media from '../utilities/media'
+import {capitalize} from '../utilities/toLowerCase'
+import demopop from '../data/demographicsAndPopulation'
 
-const Container = styled.div`
+
+const races = ['asian','black','latinx','white','other']
+
+const RaceBreakdownBar = (props) =>{
+
+    const {height, store} = props
+    const {county, screen} = store
+
+    const clt = screen === 'compact'? 9 : 8//compressed label threshold (% below which label becomes compressed)
+    const est = screen === 'compact'? 22: 24//exception segment threshold (% below which the last non-compressed seg has its label offset)
+
+    let numOfCompressedLabels = 0
+
+    const racePercentages = races.map((race)=>{
+        const pct = demopop[county||'california'][race]
+        if(pct <= clt && pct > 0) numOfCompressedLabels++
+        return {label:race, percentage: pct}
+    }).sort((a,b)=>{
+        return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
+    })
+
+    const totalOfPcts = racePercentages.map((o)=>{return o.percentage}).reduce((a,b)=>{return a+b})
+    
+    const compressedLabels = racePercentages.filter((r)=>{return r.percentage <= clt && r.percentage > 0})
+
+    return(
+        <RaceBreakdown height = {height} >
+        <RaceBar
+            lastSegSelected = {racePercentages[racePercentages.length-1].label === store.race}
+        >
+        {racePercentages.map((race,i,arr)=>{
+            const previousSegs = arr.slice(0,i)
+            const offset = previousSegs.map((seg)=>{
+                return (seg.percentage * 100) / totalOfPcts
+            }).reduce((a,b)=>a+b,0)
+
+            const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
+
+            return (
+                <React.Fragment>
+                <Backing 
+                    key = {'backing'+i}
+                    offset = {(offset/100) * height}
+                    selected = {race.label === store.race}
+                />
+                <RaceSegment
+                    key = {i}
+                    offset = {(offset/100) * height}
+                    // className = {race.label}
+                    style = {{
+                        position: 'absolute',
+                        height: '500px',
+                        width: '100%'
+                    }}
+                    infinitesimal = {pct < 3}
+                    zero = {pct == 0}
+                    race = {race.label}
+                    selected = {race.label === store.race}
+                />
+                <EndNotch 
+                    key = {'hatch'+i} 
+                    offset = {(offset/100) * height} 
+                    infinitesimal = {pct < 3}
+                    hide = {i===0}
+                    selected = {race.label === store.race || (i>0 && arr[i-1].label === store.race) }
+
+                />
+                </React.Fragment>
+            )
+        })
+        }
+        </RaceBar>
+        <LabelBar>
+            {racePercentages.map((race,i,arr)=>{
+                const previousSegs = arr.slice(0,i)
+                const offset = previousSegs.map((seg)=>{
+                    return (seg.percentage * 100) / totalOfPcts
+                }).reduce((a,b)=>a+b,0)
+                const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
+
+
+                return race.percentage > clt ? (
+                    <LabelSection
+                        key = {'label'+i} 
+                        offset = {((offset+(race.percentage/2))/100) * height}
+                        specialOffset = {
+                            (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
+                            || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
+                        } 
+                    >
+                        <LabelNotch  selected = {race.label === store.race}/>
+                        <Label selected = {race.label === store.race}> {capitalize(race.label)} </Label>
+                        <Percentage selected = {race.label === store.race}> {race.percentage}%</Percentage>
+                    </LabelSection>
+                ): (<React.Fragment />)
+            })}
+            {racePercentages[racePercentages.length-1].percentage < clt && racePercentages[racePercentages.length-1].percentage > 0 &&
+                <LabelSection offset = {height+1} >
+                <LabelNotch />
+                </LabelSection>
+            }
+            <CompressedLabels>
+                {compressedLabels.map((r,i)=>{
+                    return (
+                        <Compressed 
+                            num = {numOfCompressedLabels}
+                            key = {'compressedlabel'+i}
+                            specialOffset = {
+                                (numOfCompressedLabels===3 && racePercentages[1].percentage < est)
+                                || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
+                            }
+                        >
+                            <Label> {capitalize(r.label)} </Label>
+                            <Percentage> {r.percentage}%</Percentage>
+                        </Compressed>
+                    )
+                })}
+            </CompressedLabels>
+        </LabelBar>
+        </RaceBreakdown>
+    )
+}
+
+const RaceBreakdown = styled.div`
+    height: ${props=>props.height}px;
+    position: relative;
     display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
     @media ${media.optimal}{
-        height: 305px;
+        width: 175px;
+    }
+    @media ${media.screen}{
+        width: 175px;
+    }
+    flex-shrink: 0;
+`
+const Bar = styled.div`
+    position: relative;
+    height: 100%;
+
+`
+const RaceBar = styled(Bar)`
+    width: 50px;
+    /*outline: 2px solid var(--bordergrey);*/
+    /*border-left: 2px solid var(--bordergrey); */
+    /*border-right: 2px solid var(--bordergrey); */
+    /*border-bottom: 2px solid var(--bordergrey); */
+    box-shadow: 0 2px 0 var(${props=>props.lastSegSelected?'--peach':'--bordergrey'});
+    overflow: hidden;
+`
+const LabelBar = styled(Bar)`
+    width: 100px;
+`
+const Positioned = styled.div`
+    position: absolute;
+    top: 0; left: 0;
+    transition: transform .35s;
+    transform: translateY(${props=>props.offset}px);    
+`
+const Backing = styled(Positioned)`
+    background: white;
+    width: 100%;
+    height: 500px;
+    border: 1.5px solid var(${props=>props.selected?'--peach': '--bordergrey'});
+
+`
+const EndNotch = styled(Positioned)`
+    height: 0;
+    left: 2px;
+    width: calc(100% - 4px);
+    border-top: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    border-bottom: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+    display: ${props=>props.hide?'none':'block'};
+`
+const Segment = styled(Positioned)`
+    /*outline: 2px solid var(--bordergrey);*/
+
+`
+
+const LabelSection = styled(Positioned)`
+    @media ${media.optimal}{ 
+        font-size: 16px; 
+        margin-top: ${props=>props.specialOffset? -.6 : 0}rem;
+    }
+    @media ${media.compact}{ 
+        font-size: 13px; 
+        margin-top: ${props=>props.specialOffset? -.5 : 0}rem;
+    }
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    height: 0;
+
+`
+const LabelNotch = styled.div`
+    width: 12px; 
+    border-top: .75px solid var(${props=>props.selected?'--peach' : '--bordergrey'});
+    border-bottom: .75px solid var(${props=>props.selected?'--peach' : '--bordergrey'});
+    margin-right: 10px;
+`
+const Compressed = styled.div`
+    @media ${media.optimal}{ 
+        font-size: 16px; 
+        height: ${props=> props.specialOffset? 1.15 : 1.25}rem;
+    }
+    @media ${media.compact}{ 
+        font-size: 13px; 
+        height: ${props=> props.specialOffset? .825 : 1}rem;
+    }
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    
+`
+const CompressedLabels = styled.div`
+    position: absolute;
+    @media ${media.optimal}{
+        bottom: -1rem;
     }
     @media ${media.compact}{
-        height: 275px;   
+        bottom: -.25rem;
     }
+    display: flex; flex-direction: column;
+    padding-left: 22px;
 `
 
-const centerText = css`
-     display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: ${props=> props.height}px;
-`
-
-const RaceLabel = styled.div`
-    position: absolute;
-    display: flex;
-    ${props => props.centerText? centerText: ''};
-    transform: translateY(${props=>props.offset}px);
-`
-const LabelPct = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-`
 const Label = styled.div`
     ${props => props.selected? 'color: var(--strokepeach);' : ''}
+
 `
 const Percentage = styled.div`
     margin-left: 7px;
     font-weight: bold;
      ${props => props.selected? 'color: var(--strokepeach);' : ''}
 `
-const VertBar = styled.div`
-    position: relative;
-    // height: 500px; //arbitrary
-    height: ${props => props.height}%;
-    background-color: white;
-    // outline: 1px solid #999999;
-    border: 2px solid var(--bordergrey);
-    // padding: 30px;
-    box-sizing: border-box;
-    width: 50px;
-    display: flex;
-    flex-direction: column;
-    // overflow: hidden;
-`
+
+@observer class RaceSegment extends React.Component{
+    @observable oldHatches = this.props.race
+    @observable newHatches = this.props.race //same at outset
+    @action setHatches = (which, val) => {this[which+'Hatches'] = val}
+    /*
+        segments are keyed by index, not race, so that they animate
+        organically; so they need to keep track via lifecycle methods
+        of when the assigned race changes, and play an animation
+        showing the pattern changing
+    */
+    componentDidUpdate(oldProps){
+        if(oldProps.race !== this.props.race){
+            this.setHatches('new',this.props.race)
+        }
+    }
+    render(){
+        const {race, infinitesimal, zero, selected, ...restOfProps} = this.props
+        return(
+            <Segment
+                selected = {selected}
+                {...restOfProps}
+            >
+                <Hatches 
+                    className = {[
+                        this.oldHatches,
+                        this.oldHatches!==this.newHatches?'animating' : ''
+                    ].join(' ')} 
+                    infinitesimal = {infinitesimal}
+                    zero = {zero}
+                    selected = {selected}
+                    // onAnimationEnd = {()=}
+
+                />
+                <NewHatches 
+                    className = {[
+                        this.newHatches,
+                        this.oldHatches!==this.newHatches?'animating' : ''
+                    ].join(' ')} 
+                    onAnimationEnd = {()=>{ this.setHatches('old',this.props.race) }}
+                    infinitesimal = {infinitesimal}
+                    zero = {zero}
+                    selected = {selected}
+                />
+            </Segment>
+        )
+    }
+}
+
 const hatch1 = require('../assets/hatch1-2.svg')
 const hatch2 = require('../assets/hatch2-4.svg')
 const hatch3 = require('../assets/hatch3-2.svg')
 const hatch4 = require('../assets/hatch4-2.svg')
 const hatch5 = require('../assets/hatch5-2.svg')
-
-const SelectionAccent = styled.div`
-    position: absolute;
-    top: calc(${props=>props.offset}% ${props=>!props.first?'+ 1px' : ''});
-    height: calc(${props=>props.pct}% ${props=>!props.first?'- 1px' : ''});
-    outline: 2px solid var(--peach);
-    width: 100%;
-    z-index: 10;
+const animateIn = keyframes`
+    from{ transform: translateX(100%);}
+    to{ transform: translateX(0%);}
 `
-const Segment = styled.div`
+const animateOut = keyframes`
+    from{ transform: translateX(0%);}
+    to{ transform: translateX(-100%);}
+`
+const Hatches = styled.div`
     position: absolute;
-    top: ${props=>props.offset}%;
-    height: ${props=>props.pct}%;
-    width: 100%;
-    outline: 2px solid var(--bordergrey);
-    mask-repeat: repeat;
+    width: 100%; height: 100%;
+    /*mask-repeat: repeat;*/
     background-color: ${props => props.infinitesimal? 'var(--bordergrey)' : props.selected? 'var(--peach)' :  'var(--bordergrey)'};
-    background-position: 0% -10px;
-    mask-size: 30px;
+    mask-size: 32px;
     ${props => props.zero? 'display: none;' : ''}
     &.asian{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch3})` : 'none'};
+        mask-position: 2px -7px;
     }
     &.black{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch4})` : 'none'};
-
     }
     &.latinx{ 
         mask-image: ${props=>!props.infinitesimal? `url(${hatch1})` : 'none'};
-
     }
     &.white{
         mask-image: ${props=>!props.infinitesimal? `url(${hatch2})` : 'none'};
-
     }
     &.other{
+        mask-size: 25px;
+        mask-position-x: -1px
         mask-image: ${props=>!props.infinitesimal? `url(${hatch5})` : 'none'};
     }
-`
-const Hatch = styled.div`
-    position: absolute;
-    width: 100%;
-    top: 0;
-    transform: translateY(${props=>props.offset}px);
-    border-top: ${props=>props.selected? '1px solid #EF6732' : '1px solid #999'};
-`
-
-const Notch = styled.div`
-    position: absolute;
-    width: 100%;
-    top: ${props=>props.offset}%;
-    border-top: 1px solid var(--bordergrey);
-`
-
-const Title = styled.div`
-    width: 100%;
-    margin-bottom: 20px;
-`
-const Content = styled.div`
-    width: 100%;
-    display: flex;
-    height: 100%;
-`
-
-const races = [
-    'asian',
-    'black',
-    'latinx',
-    'white',
-    'other'
-]
-
-const clt = 12 //compressed label threshold
-
-@observer
-export default class RaceBreakdownBar extends React.Component{
-
-
-    componentDidMount(){
-        // this.setHeight(this.container)
-        // console.log(findDOMNode(this.labelcolumn).offsetHeight)
-    }
-
-    setHeight = (node) => {
-        // console.log(findDOMNode(node).offsetHeight)
-    }
-    render(){
-        let {county, race} = this.props.store
-        if(!county) county = 'california'
-        county = demopop[county]
-
-        let numOfCompressedLabels = 0
-
-        const racePercentages = races.map((race)=>{
-            const pct = county[race]
-            if(pct < clt && pct > 0) numOfCompressedLabels++
-            return {label:race, percentage: pct}
-        }).sort((a,b)=>{
-            return b.label === 'other'? -2 : a.percentage > b.percentage? -1 : a.percentage < b.percentage? 1 : 0
-        })
-        const totalOfPcts = racePercentages.map((o)=>{return o.percentage}).reduce((a,b)=>{return a+b})
-        if(totalOfPcts!==100) console.log('non-100 total percentage for race breakdown: ', totalOfPcts)
-
-        console.log('number of compressed labels:', numOfCompressedLabels)
-        return(
-            <Container 
-                // innerRef = {(container)=>{this.container = container}}
-            >
-            <Content>
-
-            <VertBar
-                // height = {this.props.height}
-            >
-                {racePercentages.map((o,i,arr)=>{
-                    const previousSegs = arr.slice(0,i)
-                    const offset = previousSegs.map((seg)=>{
-                        return (seg.percentage * 100) / totalOfPcts
-                        
-                    }).reduce((a,b)=>a+b,0)
-                    
-                    const pct = totalOfPcts!==100? o.percentage * 100 / totalOfPcts : o.percentage
-
-
-                    return (
-                        <React.Fragment>
-                            {race===o.label && 
-                                <SelectionAccent 
-                                    pct = {pct}
-                                    first = {i===0}
-                                    offset = {i===0? 0 : offset}
-                                />
-                            }
-                            <Segment
-                                key = {i}
-                                style = {{zIndex: arr.length-i}}
-                                className = {o.label}
-                                pct = {pct}
-                                offset = {i===0? 0 : offset}
-                                infinitesimal = {pct < 3}
-                                zero = {pct == 0}
-                                selected = {o.label===race}
-                            />
-                            {i>0 && i<(arr.length-1) && 
-                                <Notch
-                                    offset = {offset}
-                                />
-                            }
-                        </React.Fragment>
-                    )
-                })}
-
-            </VertBar>
-            <LabelColumn
-                ref = {(column) => this.labelcolumn = column}
-                centerText = {this.props.centerText}
-            >
-                {racePercentages.map((o,i,arr)=>{
-                    const selected = o.label === race
-                    return(
-                        <LabelSection 
-                            key = {'rbblabelsection'+i}
-                            hide = {o.percentage === 0}
-                            pct = {o.percentage}
-                            lastAndSmall = {i===arr.length-1 && o.percentage < 10}
-                            small = {i<arr.length-1 && o.percentage < 10}
-                            selected = {selected}
-                        >
-                            <Label selected = {selected}> {o.label[0].toUpperCase()+o.label.substr(1)} </Label>
-                            <Percentage selected = {selected}> {o.percentage}% </Percentage>
-                        </LabelSection>
-                    )
-                })}
-
-            </LabelColumn>
-            </Content>
-            </Container>
-        )
-    }
-}
-
-const LabelColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: flex-start;
-    width: 100px;
-    margin-left: 25px;
-    height: 100%;
-    justify-content: space-between;
-`
-const LabelSection = styled.div`
-    position: relative;
-
-    // outline: 1px solid grey;
-    display: ${props=>!props.hide?'flex':'none'};
-    align-items: center;
-    flex-grow: 1;
-
-        @media ${media.optimal}{   
-        font-size: 16px;   
-    }
-    @media ${media.compact}{   
-        font-size: 13px;   
-    }
-    flex-basis: ${props => props.pct}%;
-    min-height: 15px;
-    padding-top: ${props => props.lastAndSmall? '10px' : 0};
-    &::after{
-        content: '';
-        position: absolute;
-        height: 0; 
-        width: 15px;
-        ${props => !props.small && props.selected? 'border-top: 2px solid var(--peach);'
-            : !props.small? `border-top: 2px solid var(--bordergrey);`
-        : ''}
-        ${props => props.lastAndSmall? 'bottom: 0;' : ''}
-        left: -25px;
+    animation-duration: .25s;
+    animation-fill-mode: forwards;
+    &.animating{
+        animation-name: ${animateOut}
     }
 `
 
-RaceBreakdownBar.defaultProps = {
+const NewHatches = styled(Hatches)`
+    transform: translateX(100%);
+    &.animating{
+        animation-name: ${animateIn}
+    }
+`
 
-}
+
+
+
+export default RaceBreakdownBar

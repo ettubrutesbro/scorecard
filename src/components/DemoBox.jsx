@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import commaNumber from 'comma-number'
 
-import RaceBreakdownBar from './RaceBreakdownBar2'
+import RaceBreakdownBar from './RaceBreakdownBar'
 import CountingNumber from './CountingNumber'
 
 import {DemographicSourceInfo} from './Sources'
