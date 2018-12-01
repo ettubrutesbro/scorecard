@@ -9,7 +9,7 @@ import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
-import {findIndex, debounce} from 'lodash'
+import {pickBy, findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
 
@@ -533,5 +533,39 @@ export default class AppStore{
         if(check) return true
         this['hovered'+capitalize(which)] = value
         console.log('hovered', which, ':', this['hovered'+capitalize(which)])
+    }
+
+
+    @action search = (str) => {        
+        //1. break searchstring into indiv. words
+        //2. check across all indicators: are all search words contained within any of keywords?
+            //T: return all inds for which that's true
+            //F: return nothing 
+
+        const searchWords = str.split(' ')
+        let matches = []
+
+        searchWords.forEach((word,i)=>{
+            matches[i] = pickBy(indicators, (ind)=>{
+                return ind.keywords.includes(word)
+                //TODO: also return if any keyword includes word;
+                //this code only works on exact match of search/keywords
+            })
+        })
+
+        console.log(matches)
+
+        // findKey(indicators,(ind)=>{
+        //     console.log(ind)
+        //     return ind.keywords.includes('str')
+        // })
+
+        // pickBy(indicators, (ind)=>{
+        //     // if(ind.keywords.includes())
+        //     ind.keywords.forEach((word,i,arr)=>{
+        //         console.log(word)
+        //     })
+        //     return ind.keywords.includes(str)
+        // })
     }
 }
