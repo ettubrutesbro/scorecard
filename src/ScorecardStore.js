@@ -12,6 +12,7 @@ import {capitalize} from './utilities/toLowerCase'
 import {pickBy, findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
+import stopwords from './utilities/stopwords'
 
 const {detect} = require('detect-browser')
 const browserInfo = detect()
@@ -537,35 +538,30 @@ export default class AppStore{
 
 
     @action search = (str) => {        
-        //1. break searchstring into indiv. words
-        //2. check across all indicators: are all search words contained within any of keywords?
-            //T: return all inds for which that's true
-            //F: return nothing 
-
         const searchWords = str.split(' ')
         let matches = []
 
         searchWords.forEach((word,i)=>{
-            matches[i] = pickBy(indicators, (ind)=>{
-                return ind.keywords.includes(word)
-                //TODO: also return if any keyword includes word;
-                //this code only works on exact match of search/keywords
-            })
+            matches[i] = Object.keys(pickBy(indicators, (ind)=>{
+                //does any indicator keyword contain the search word? 
+                let matchOrPartial = false
+                ind.keywords.some((keyword)=>{
+                    if(keyword.startsWith(word)) matchOrPartial = true
+                    return keyword.startsWith(word)
+                })
+                return matchOrPartial
+            }))
         })
+        let finalMatches = matches[0]
+        if(matches.length > 1){
+            for(let i = 1; i<matches.length; i++){
+                finalMatches = finalMatches.filter((match)=>{
+                    return matches[i].includes(match)
+                })
+            }
+        }
 
-        console.log(matches)
-
-        // findKey(indicators,(ind)=>{
-        //     console.log(ind)
-        //     return ind.keywords.includes('str')
-        // })
-
-        // pickBy(indicators, (ind)=>{
-        //     // if(ind.keywords.includes())
-        //     ind.keywords.forEach((word,i,arr)=>{
-        //         console.log(word)
-        //     })
-        //     return ind.keywords.includes(str)
-        // })
+        console.log(finalMatches)
+        return finalMatches
     }
 }
