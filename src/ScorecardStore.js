@@ -538,7 +538,9 @@ export default class AppStore{
 
 
     @action search = (str) => {        
-        const searchWords = str.split(' ')
+        const searchWords = str.split(' ').filter((word)=>{
+            return !stopwords.includes(word)
+        })
         let matches = []
 
         searchWords.forEach((word,i)=>{
