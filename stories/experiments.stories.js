@@ -13,10 +13,11 @@ import countyLabels from '../src/assets/countyLabels'
 import CountingNumber from '../src/components/CountingNumber'
 import ExpandBox from '../src/components/ExpandBox'
 import {Sprite} from '../src/components/generic/Icon'
-import RaceBreakdownBar2 from '../src/components/RaceBreakdownBar2'
+import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
+import SearchInput from '../src/components/SearchInput.jsx'
 
 import media from '../src/utilities/media'
-
+import combo from '../src/utilities/trungCombo'
 
 addDecorator(withKnobs)
 
@@ -86,6 +87,13 @@ const Ruler = styled.div`
 `
 
 storiesOf('Experiments', module)
+.add('searchinput', ()=>{
+    return(
+        <SearchInput 
+
+        />
+    )
+})
 .add('Sprite',()=>{
     const tog = boolean('toggle sprite state', false)
     return(
@@ -106,7 +114,7 @@ storiesOf('Experiments', module)
     const totalHeight = number('total rbb height', 250)
 
     return(
-        <RaceBreakdownBar2
+        <RaceBreakdownBar
             height = {totalHeight}
             store = {{
                 county: county

@@ -12,6 +12,9 @@ import {capitalize} from './utilities/toLowerCase'
 import {pickBy, findIndex, debounce} from 'lodash'
 import {isValid} from './utilities/isValid'
 
+
+import combo from '../src/utilities/trungCombo'
+
 import stopwords from './utilities/stopwords'
 
 const {detect} = require('detect-browser')
