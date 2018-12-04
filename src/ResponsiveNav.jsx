@@ -181,21 +181,23 @@ export default class ResponsiveNav extends React.Component{
     }
     componentDidMount(){
     }
-    componentWillUpdate(){
-        // if(this.props.open && this.raceDropdown) this.openRaceDropdown()
-        if(this.props.open){
-            document.addEventListener('click',this.handleClickOutside)
-            window.onkeyup = (e) => {
-                if(e.key==='Escape'||e.key==='Esc'){
-                    this.props.openNav(false)
-                }
-            }
-        }
-        else if(!this.props.open){
-            document.removeEventListener('click',this.handleClickOutside)
-            window.onkeyup = () => {console.log( 'nokey')}
-        }
-    }
+    // componentWillUpdate(){
+    //     if(this.props.open){
+    //         document.addEventListener('click',this.handleClickOutside)
+    //         window.onkeyup = (e) => {
+    //             if(e.key==='Escape'||e.key==='Esc'){
+    //                 this.props.openNav(false)
+    //             }
+    //             if(e.key==='ArrowLeft' || e.key === 'ArrowRight'){
+    //                 //TODO
+    //             }
+    //         }
+    //     }
+    //     else if(!this.props.open){
+    //         document.removeEventListener('click',this.handleClickOutside)
+    //         window.onkeyup = () => {console.log( 'nokey')}
+    //     }
+    // }
 
     handleClickOutside = (e) => {
         // if(this.props.open && this.nav.current){
@@ -533,6 +535,25 @@ export class PickingWorkflow extends React.Component{
 
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
+
+    componentDidMount(){
+        window.onkeyup = (e) => {
+            if(e.key==='Escape'||e.key==='Esc'){
+                this.props.x()
+            }
+            if(e.key==='ArrowLeft'){
+                const {indicatorListPage} = this.props.store
+                this.handlePageChange(null,indicatorListPage-1)
+            }
+            if(e.key==='ArrowRight'){
+                const {indicatorListPage} = this.props.store
+                this.handlePageChange(null,indicatorListPage+1)
+            }
+        }
+    }
+    componentWillUnmount(){
+        window.onkeyup = () => {}
+    }
 
     @action
     handlePageChange =(evt, goTo)=>{
