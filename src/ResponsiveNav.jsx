@@ -536,24 +536,39 @@ export class PickingWorkflow extends React.Component{
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
 
+    @observable countySearchString = ''
+    @observable indicatorSearchString = ''
+
     componentDidMount(){
         window.onkeyup = (e) => {
             if(e.key==='Escape'||e.key==='Esc'){
                 this.props.x()
             }
-            if(e.key==='ArrowLeft'){
+            else if(e.key==='ArrowLeft'){
                 const {indicatorListPage} = this.props.store
                 this.handlePageChange(null,indicatorListPage-1)
             }
-            if(e.key==='ArrowRight'){
+            else if(e.key==='ArrowRight'){
                 const {indicatorListPage} = this.props.store
                 this.handlePageChange(null,indicatorListPage+1)
+            }
+            else if(e.which >= 65 && e.which <= 90){ //typed letter
+                //searching indicator or county?
+                if(this.props.open === 'indicator'){
+                    //store.searchIndicator
+                }
+                else if(this.props.open === 'county'){
+                    //store.searchCounty
+                }
             }
         }
     }
     componentWillUnmount(){
         window.onkeyup = () => {}
     }
+
+    @action modifySearchString = (which, str) => this[which+'searchString'] = str
+
 
     @action
     handlePageChange =(evt, goTo)=>{
@@ -613,6 +628,9 @@ export class PickingWorkflow extends React.Component{
                             page = {this.page}
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
+
+                            // searchResults = {store. }
+                            onSearch = {(val)=>{this.modifySearchString('indicator', val)}}
                             // muted = {this.props.muted}
                             // animating = {this.animating}
                             // onStartAnim = {()=>{this.setAnimStatus(true)}}
@@ -624,6 +642,9 @@ export class PickingWorkflow extends React.Component{
                             muted = {this.props.muted}
                             store = {store} 
                             closeNav = {this.props.close}
+
+                            // searchResults = {store.}
+                            onSearch = {(val)=>{this.modifySearchString('county', val)}}
                             // muted = {this.props.muted}
                         />
                     }
