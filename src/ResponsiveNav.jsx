@@ -556,6 +556,11 @@ export class PickingWorkflow extends React.Component{
                 //searching indicator or county?
                 if(this.props.open === 'indicator'){
                     //store.searchIndicator
+                    if(!this.indicatorSearchString){
+                        this.modifySearchString('indicator', e.key)
+                        //focus the input
+                        
+                    }
                 }
                 else if(this.props.open === 'county'){
                     //store.searchCounty
@@ -566,6 +571,36 @@ export class PickingWorkflow extends React.Component{
     componentWillUnmount(){
         window.onkeyup = () => {}
     }
+
+   searchIndicator = combo((str) => {        
+        const searchWords = str.split(' ').filter((word)=>{
+            return !stopwords.includes(word)
+        })
+        let matches = []
+
+        searchWords.forEach((word,i)=>{
+            matches[i] = Object.keys(pickBy(indicators, (ind)=>{
+                //does any indicator keyword contain the search word? 
+                let matchOrPartial = false
+                ind.keywords.some((keyword)=>{
+                    if(keyword.startsWith(word)) matchOrPartial = true
+                    return keyword.startsWith(word)
+                })
+                return matchOrPartial
+            }))
+        })
+        let finalMatches = matches[0]
+        if(matches.length > 1){
+            for(let i = 1; i<matches.length; i++){
+                finalMatches = finalMatches.filter((match)=>{
+                    return matches[i].includes(match)
+                })
+            }
+        }
+
+        console.log(finalMatches)
+        return finalMatches
+    }, 300)
 
     @action modifySearchString = (which, str) => this[which+'searchString'] = str
 

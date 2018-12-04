@@ -9,7 +9,7 @@ import {find, findIndex} from 'lodash'
 
 import FlipMove from 'react-flip-move'
 
-import {Search, Toggle, Button, Tooltip, Tip} from './generic'
+import {Toggle, Button, Tooltip, Tip} from './generic'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
@@ -19,6 +19,7 @@ import {isValid} from '../utilities/isValid'
 import semanticTitles from '../assets/semanticTitles'
 
 import media, {getMedia} from '../utilities/media'
+import Icon from './generic/Icon'
 
 const IndRows = styled.ul`
     position: relative;
@@ -148,6 +149,7 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
+    display: flex; align-items: center;
     margin: 0 20px 0 0;
         opacity: ${props=>props.raceDropdown? 0.4 : props.muted?0.2:1};
     transition: opacity .5s;
@@ -159,6 +161,41 @@ const Title = styled.h1`
         font-size: 24px;
     }
 `
+
+const Search = styled.div`
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: var(--fainttext);
+    fill: var(--fainttext);
+    &:hover{
+        color: var(--strokepeach);
+        fill: var(--peach);
+    }
+    cursor: pointer;
+    position: absolute;
+    @media ${media.optimal}{
+        
+    }
+    @media ${media.compact}{
+        left: 280px;
+    }
+`
+const SearchIcon = styled(Icon)`
+    width: 18px; 
+    height: 18px;
+    margin-right: 5px;
+`
+const SearchPrompt = styled.span`
+
+`
+const SearchInput = styled.input`
+    position: absolute;
+    left: 20px;
+    opacity: 0;
+    pointer-events: none;
+`
+
 const Label = styled.div`
     font-size: 16px;
 
@@ -213,6 +250,10 @@ export default class IndicatorList extends React.Component{
         this.list = React.createRef()
     }
 
+    componentDidMount(){
+
+    }
+
     render(){
         const {store, animDir, prevOffset} = this.props
         const {county, race, indicatorFilter} = store
@@ -240,7 +281,15 @@ export default class IndicatorList extends React.Component{
             <Title
                 muted = {showSanityCheck}
                 raceDropdown = {this.props.muted}
-            > Choose an indicator. </Title>
+            > Choose an indicator. 
+                <Search>
+                    <SearchIcon img = "searchzoom"  />
+                    <SearchPrompt>Type to search...</SearchPrompt>
+                    <SearchInput
+                        // placeholder = ""
+                    />
+                </Search>
+            </Title>
                 {/* 
                 <Search 
                     placeholder = "Search indicators..."

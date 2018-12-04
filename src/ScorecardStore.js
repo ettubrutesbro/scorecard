@@ -540,7 +540,7 @@ export default class AppStore{
     }
 
 
-    @action search = (str) => {        
+    @action searchIndicator = combo((str) => {        
         const searchWords = str.split(' ').filter((word)=>{
             return !stopwords.includes(word)
         })
@@ -568,5 +568,5 @@ export default class AppStore{
 
         console.log(finalMatches)
         return finalMatches
-    }
+    }, 300)
 }
