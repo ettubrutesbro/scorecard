@@ -228,10 +228,21 @@ const SearchInput = styled.input`
     padding-left: 0px;
     letter-spacing: 0.7px;
     width: calc(100% - 20px);
-    /*padding: 10px;*/
-    /*border: 1px solid var(--fainttext);*/
-    /*opacity: 0;*/
-    /*pointer-events: none;*/
+
+`
+const CancelSearch = styled.div`
+    position: absolute;
+    right: -10px;
+    color: var(--strokepeach);
+    font-size: 13px;
+    letter-spacing: .5px;
+    margin-left: 20px;
+    transition: opacity .25s, transform .25s;
+    transform: ${props => props.hide? 'translateX(0)' : 'translateX(100%)'};
+    transition-delay: ${props => props.hide? 0 : 0.25}s;
+    opacity: ${props => props.hide? 0 : 1};
+    pointer-events: ${props => props.hide? 'none' : 'auto'};
+    cursor: pointer;
 `
 
 const Label = styled.div`
@@ -356,6 +367,12 @@ export default class IndicatorList extends React.Component{
                         value = {this.props.searchString}
                         onChange = {(e)=> this.props.onSearch(e.target.value)}
                     />
+                    <CancelSearch 
+                        hide = {!this.props.searchString}
+                        onClick = {()=>this.props.onSearch('')}
+                    >
+                        Cancel
+                    </CancelSearch>
                 </Search>
             </Title>
             <ListStatus 
@@ -396,8 +413,8 @@ export default class IndicatorList extends React.Component{
             >
                 {!page &&
                         <EmptyPage>
-                            
-                            Wtf
+                            <h1>No indicators seem to match &ldquo;{store.indicatorSearchString}&rdquo;.</h1>
+                            <h2> Try different keyword(s) or browsing by topic. </h2>
                         </EmptyPage>
                     }
                 <FlipMove
@@ -508,7 +525,26 @@ export default class IndicatorList extends React.Component{
     }
 }
 
-const EmptyPage = styled.div``
+const EmptyPage = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h1{
+        font-weight: 500;
+        font-size: 24px;
+        letter-spacing: .92px;
+        margin: 0;
+    }
+    h2{
+        font-weight: 400;
+        font-size: 16px;
+        letter-spacing: .7px;
+    }
+
+`
 
 @observer
 class SanityCheck extends React.Component{

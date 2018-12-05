@@ -179,6 +179,12 @@ class CountyList extends React.Component{
                             value = {this.props.searchString}
                             onChange = {(e)=> this.props.onSearch(e.target.value)}
                         />
+                        <CancelSearch 
+                            hide = {!this.props.searchString}
+                            onClick = {()=>this.props.onSearch('')}
+                        >
+                            Cancel
+                        </CancelSearch>
 
                     </Search>
                     </TitleSide>
@@ -196,6 +202,7 @@ class CountyList extends React.Component{
                     >
                         California
                     </GridItem>
+
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1
                         else if (a.id > b.id) return 1
@@ -274,6 +281,11 @@ class CountyList extends React.Component{
                     })
                     }
                 </GridList>
+                {store.countySearchResults.length===0 && store.countySearchString && 
+                    <EmptyPage>
+                        <h1>Your search for &ldquo;{store.countySearchString}&rdquo; doesn't match any counties.</h1>
+                    </EmptyPage>
+                }
             </Workflow>
         )
     }
@@ -357,6 +369,41 @@ const SearchInput = styled.input`
     /*border: 1px solid var(--fainttext);*/
     /*opacity: 0;*/
     /*pointer-events: none;*/
+`
+const CancelSearch = styled.div`
+    position: absolute;
+    right: -10px;
+    color: var(--strokepeach);
+    font-size: 13px;
+    letter-spacing: .5px;
+    margin-left: 20px;
+    transition: opacity .25s, transform .25s;
+    transform: ${props => props.hide? 'translateX(0)' : 'translateX(100%)'};
+    transition-delay: ${props => props.hide? 0 : 0.25}s;
+    opacity: ${props => props.hide? 0 : 1};
+    pointer-events: ${props => props.hide? 'none' : 'auto'};
+    cursor: pointer;
+    z-index: 4;
+`
+
+
+const EmptyPage = styled.div`
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    h1{
+        font-weight: 500;
+        font-size: 24px;
+        letter-spacing: .92px;
+        margin: 0;
+        text-align: center;
+    }
+
 `
 
 export default CountyList

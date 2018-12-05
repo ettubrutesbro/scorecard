@@ -506,6 +506,10 @@ export default class AppStore{
     @observable indicatorSearchResults = []
     @action setIndicatorFilter = (val) =>{
         console.log('setting indicator filter to ', val)
+        if(this.indicatorSearchString && this.indicatorSearchResults.length === 0){
+            //clear an empty search if user is changing topic
+            this.modifySearchString('indicator','')
+        }
         this.indicatorListPage = 0
         this.indicatorFilter = val
         this.setIndicatorPages()
