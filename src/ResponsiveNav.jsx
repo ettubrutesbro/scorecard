@@ -547,10 +547,15 @@ export class PickingWorkflow extends React.Component{
         this[which+'SearchFocus'] = tf
     }
     @observable indicatorSearchFocus = false
+    exit = () => {
+        const store = this.props.store
+        if(store.indicatorSearchString) store.modifySearchString('indicator','')
+        this.props.x()
+    }
     keyHandler = (e) => {
         const {store} = this.props
         if(e.key==='Escape'||e.key==='Esc'){
-            this.props.x()
+            this.exit()
         }
         else if(e.key==='ArrowLeft'){
             const {indicatorListPage} = this.props.store
@@ -603,7 +608,7 @@ export class PickingWorkflow extends React.Component{
                     img = "x" 
                     color = "bordergrey"
                     hoverColor = "strokepeach"
-                    onClick = {this.props.x}
+                    onClick = {this.exit}
                 />
                 <FlipMove
                     // typeName = {null}
