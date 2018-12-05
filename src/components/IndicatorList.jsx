@@ -132,14 +132,7 @@ const indicatorFilterOptions = [
     {label: 'Early Childhood', value: 'earlyChildhood'},
 ]
 
-const SearchIndicators = styled.input`
-    appearance: none;
-    position: relative;
-    padding: 10px 20px 10px 45px;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid var(--bordergrey);
-`
+
 const ToggleBlock = styled.div`
 
 `
@@ -149,6 +142,7 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
+    position: relative;
     display: flex; align-items: center;
     margin: 0 20px 0 0;
         opacity: ${props=>props.raceDropdown? 0.4 : props.muted?0.2:1};
@@ -161,39 +155,75 @@ const Title = styled.h1`
         font-size: 24px;
     }
 `
+const ChoosePrompt = styled.span`
+    opacity: ${props => props.hide? 0: 1};
+    transform: translateX(${props => props.hide?-20:0}px);
+    transition: opacity .35s, transform .35s;
+    transition-delay: ${props=>props.hide?0:.15}s;
 
+`
 const Search = styled.div`
     display: flex;
+    position: relative;
     align-items: center;
     font-size: 13px;
     color: var(--fainttext);
     fill: var(--fainttext);
-    &:hover{
-        color: var(--strokepeach);
-        fill: var(--peach);
-    }
-    cursor: pointer;
+    ${props => !props.active? `
+        &:hover{
+            color: var(--strokepeach);
+            fill: var(--peach);
+        }
+    `: ''}
+
+    cursor: text;
     position: absolute;
+    transition: transform .5s;
+    height: 36px;
+    &::after{
+        position: absolute;
+        bottom: 0;
+        border-bottom: 1px solid var(--bordergrey);
+        content: '';
+        transform-origin: 0% 50%;
+        transform: scaleX(${props=>props.active?1:0});
+        transition: transform .5s;
+    }
     @media ${media.optimal}{
-        
+        left: 275px;
+        transform: translateX(${props=>props.active?-275:0}px);
+        &::after{ width: 275px; }
     }
     @media ${media.compact}{
-        left: 280px;
+        left: 250px;
+        transform: translateX(${props=>props.active?-250:0}px);
+        &::after{ width: 250px; }
     }
+
 `
 const SearchIcon = styled(Icon)`
     width: 18px; 
     height: 18px;
-    margin-right: 5px;
+    /*margin-right: 6px;*/
 `
 const SearchPrompt = styled.span`
-
+    margin-left: 6px;
 `
 const SearchInput = styled.input`
     position: absolute;
+    border: none;
     left: 20px;
-    opacity: 0;
-    pointer-events: none;
+    appearance: none;
+    outline: none;
+    font-size: 16px;
+    background: none;
+    margin-left: 5px;
+    padding-left: 0px;
+    letter-spacing: 0.7px;
+    /*padding: 10px;*/
+    /*border: 1px solid var(--fainttext);*/
+    /*opacity: 0;*/
+    /*pointer-events: none;*/
 `
 
 const Label = styled.div`
@@ -248,22 +278,22 @@ export default class IndicatorList extends React.Component{
     constructor(){
         super()
         this.list = React.createRef()
+        this.searchInput = React.createRef()
     }
 
-    componentDidMount(){
-
+    componentDidUpdate(){
+        if(this.props.focusInput){
+            this.searchInput.current.focus()
+        }
+        else{
+            this.searchInput.current.blur()
+        }
     }
 
     render(){
         const {store, animDir, prevOffset} = this.props
         const {county, race, indicatorFilter} = store
-        // const page = this.pages[this.currentPage]
-        // console.log(store.indicatorPages.toJS())
-        // console.log(store.indicatorListPage)
         const page = store.indicatorPages[store.indicatorListPage]
-        // console.log(page)
-
-        // this.props.setNumPages(this.pages.length)
 
         const indRangeEnd = (store.indicatorListPage+1)*store.indicatorPageSize
         const numInds = Object.keys(indicators).filter((ind)=>{
@@ -273,6 +303,7 @@ export default class IndicatorList extends React.Component{
 
         const showSanityCheck = store.sanityCheck.indicator
         // console.log('sanity', showSanityCheck)
+        const searchActive = this.props.focusInput || this.props.searchString
 
         return(
             <Workflow>
@@ -281,21 +312,29 @@ export default class IndicatorList extends React.Component{
             <Title
                 muted = {showSanityCheck}
                 raceDropdown = {this.props.muted}
-            > Choose an indicator. 
-                <Search>
-                    <SearchIcon img = "searchzoom"  />
-                    <SearchPrompt>Type to search...</SearchPrompt>
+            > 
+                <ChoosePrompt
+                    hide = {searchActive}
+                >
+                    Choose an indicator. 
+                </ChoosePrompt>
+                <Search
+                    active = {searchActive} //redundant
+                    onClick = {()=> this.props.setSearchFocus(true)}
+                >
+                    <SearchIcon img = "searchzoom" />
+                    {!this.props.searchString && 
+                        <SearchPrompt>Type to search...</SearchPrompt>
+                    }
                     <SearchInput
-                        // placeholder = ""
+                        ref = {this.searchInput}
+                        onFocus = {()=> this.props.setSearchFocus(true)}
+                        onBlur = {()=> this.props.setSearchFocus(false)}
+                        value = {this.props.searchString}
+                        onChange = {(e)=> this.props.onSearch(e.target.value)}
                     />
                 </Search>
             </Title>
-                {/* 
-                <Search 
-                    placeholder = "Search indicators..."
-                />
-                */}
-
             <ListStatus 
                 muted = {showSanityCheck}
                 raceDropdown = {this.props.muted}
@@ -591,7 +630,7 @@ const ListStatus = styled.div`
         margin-bottom: 15px;
     }
     @media ${media.compact}{
-        margin-top: 12px;
+        margin-top: 15px;
         margin-bottom: 15px;
     }
 `

@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
-import { findIndex, find } from 'lodash'
+import { findIndex, find, pickBy } from 'lodash'
 import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
@@ -25,6 +25,10 @@ import {capitalize} from './utilities/toLowerCase'
 
 import caret from './assets/caret.svg'
 import resetIco from './assets/reset.svg'
+
+import combo from '../src/utilities/trungCombo'
+
+import stopwords from './utilities/stopwords'
 
 const Nav = styled.div`
     z-index: 3;
@@ -181,23 +185,15 @@ export default class ResponsiveNav extends React.Component{
     }
     componentDidMount(){
     }
-    // componentWillUpdate(){
-    //     if(this.props.open){
-    //         document.addEventListener('click',this.handleClickOutside)
-    //         window.onkeyup = (e) => {
-    //             if(e.key==='Escape'||e.key==='Esc'){
-    //                 this.props.openNav(false)
-    //             }
-    //             if(e.key==='ArrowLeft' || e.key === 'ArrowRight'){
-    //                 //TODO
-    //             }
-    //         }
-    //     }
-    //     else if(!this.props.open){
-    //         document.removeEventListener('click',this.handleClickOutside)
-    //         window.onkeyup = () => {console.log( 'nokey')}
-    //     }
-    // }
+    componentWillUpdate(){
+        if(this.props.open){
+            document.addEventListener('click',this.handleClickOutside)
+
+        }
+        else if(!this.props.open){
+            document.removeEventListener('click',this.handleClickOutside)
+        }
+    }
 
     handleClickOutside = (e) => {
         // if(this.props.open && this.nav.current){
@@ -536,9 +532,6 @@ export class PickingWorkflow extends React.Component{
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
 
-    @observable countySearchString = ''
-    @observable indicatorSearchString = ''
-
     componentDidMount(){
         window.onkeyup = (e) => {
             if(e.key==='Escape'||e.key==='Esc'){
@@ -552,14 +545,13 @@ export class PickingWorkflow extends React.Component{
                 const {indicatorListPage} = this.props.store
                 this.handlePageChange(null,indicatorListPage+1)
             }
-            else if(e.which >= 65 && e.which <= 90){ //typed letter
+            else if(e.which >= 65 && e.which <= 90){ //user typed letter
                 //searching indicator or county?
-                if(this.props.open === 'indicator'){
-                    //store.searchIndicator
+                if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
+                    //searchinput is not already focused: enter key and focus
                     if(!this.indicatorSearchString){
                         this.modifySearchString('indicator', e.key)
-                        //focus the input
-                        
+                        this.setSearchFocus('indicator', true)
                     }
                 }
                 else if(this.props.open === 'county'){
@@ -572,38 +564,11 @@ export class PickingWorkflow extends React.Component{
         window.onkeyup = () => {}
     }
 
-   searchIndicator = combo((str) => {        
-        const searchWords = str.split(' ').filter((word)=>{
-            return !stopwords.includes(word)
-        })
-        let matches = []
-
-        searchWords.forEach((word,i)=>{
-            matches[i] = Object.keys(pickBy(indicators, (ind)=>{
-                //does any indicator keyword contain the search word? 
-                let matchOrPartial = false
-                ind.keywords.some((keyword)=>{
-                    if(keyword.startsWith(word)) matchOrPartial = true
-                    return keyword.startsWith(word)
-                })
-                return matchOrPartial
-            }))
-        })
-        let finalMatches = matches[0]
-        if(matches.length > 1){
-            for(let i = 1; i<matches.length; i++){
-                finalMatches = finalMatches.filter((match)=>{
-                    return matches[i].includes(match)
-                })
-            }
-        }
-
-        console.log(finalMatches)
-        return finalMatches
-    }, 300)
-
-    @action modifySearchString = (which, str) => this[which+'searchString'] = str
-
+    @observable countySearchString = ''
+    @observable indicatorSearchString = ''
+    @action modifySearchString = (which, str) => this[which+'SearchString'] = str
+    @action setSearchFocus = (which, tf) => this[which+'SearchFocus'] = tf
+    @observable indicatorSearchFocus = false
 
     @action
     handlePageChange =(evt, goTo)=>{
@@ -664,12 +629,11 @@ export class PickingWorkflow extends React.Component{
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
 
-                            // searchResults = {store. }
                             onSearch = {(val)=>{this.modifySearchString('indicator', val)}}
-                            // muted = {this.props.muted}
-                            // animating = {this.animating}
-                            // onStartAnim = {()=>{this.setAnimStatus(true)}}
-                            // onFinishAnim = {()=>{this.setAnimStatus(false)}}
+                            searchString = {this.indicatorSearchString}
+                            focusInput = {this.indicatorSearchFocus}
+                            setSearchFocus = {(tf)=>this.setSearchFocus('indicator', tf)}
+
                         />
                     }
                     {which === 'county' && 
