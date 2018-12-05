@@ -62,7 +62,7 @@ const Dropdown = styled.div`
     display: flex;
     align-items: center;
     /*outline: 1px solid var(--offwhitebg);*/
-    transition: box-shadow .25s, background-color .25s, color .25s, transform .25s;
+    transition: box-shadow .25s, background-color .25s, transform .25s;
     white-space: nowrap;
     cursor: pointer;
 `  
