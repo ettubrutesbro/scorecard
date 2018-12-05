@@ -169,17 +169,10 @@ const Search = styled.div`
     align-items: center;
     font-size: 13px;
     color: var(--fainttext);
-    fill: var(--fainttext);
-    ${props => !props.active? `
-        &:hover{
-            color: var(--strokepeach);
-            fill: var(--peach);
-        }
-    `: ''}
-
+    fill: var(--bordergrey);
     cursor: text;
     position: absolute;
-    transition: transform .5s;
+    transition: transform .5s, fill .2s;
     height: 36px;
     &::after{
         position: absolute;
@@ -188,15 +181,28 @@ const Search = styled.div`
         content: '';
         transform-origin: 0% 50%;
         transform: scaleX(${props=>props.active?1:0});
-        transition: transform .5s;
+        transition: transform .5s, border-color .2s;
     }
+    ${props => props.inputFocused? `
+        fill: var(--fainttext);
+        &::after{
+            border-bottom-color: var(--fainttext);
+        }
+    ` : !props.active? `
+        &:hover{
+            color: var(--strokepeach);
+            fill: var(--peach);
+        }
+    `: ''}
     @media ${media.optimal}{
         left: 250px;
+        width: 400px;
         transform: translateX(${props=>props.active?-250:0}px);
         &::after{ width: 400px; }
     }
     @media ${media.compact}{
         left: 250px;
+        width: 375px;
         transform: translateX(${props=>props.active?-250:0}px);
         &::after{ width: 375px; }
     }
@@ -221,6 +227,7 @@ const SearchInput = styled.input`
     margin-left: 5px;
     padding-left: 0px;
     letter-spacing: 0.7px;
+    width: calc(100% - 20px);
     /*padding: 10px;*/
     /*border: 1px solid var(--fainttext);*/
     /*opacity: 0;*/
@@ -285,6 +292,12 @@ export default class IndicatorList extends React.Component{
     componentDidUpdate(){
         if(this.props.focusInput){
             this.searchInput.current.focus()
+            window.onkeyup = (e) => {
+                if(e.key==='Escape'||e.key==='Esc'){
+                    this.props.onSearch('') //clears string
+                    this.searchInput.current.blur()
+                }
+            }
         }
         else{
             this.searchInput.current.blur()
@@ -328,6 +341,7 @@ export default class IndicatorList extends React.Component{
                 </ChoosePrompt>
                 <Search
                     active = {searchActive} //redundant
+                    inputFocused = {this.props.focusInput}
                     onClick = {()=> this.props.setSearchFocus(true)}
                 >
                     <SearchIcon img = "searchzoom" />

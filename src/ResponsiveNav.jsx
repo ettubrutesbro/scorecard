@@ -533,41 +533,47 @@ export class PickingWorkflow extends React.Component{
     @observable hoveredPageBtn = false
 
     componentDidMount(){
-        const {store} = this.props
-        window.onkeyup = (e) => {
-            if(e.key==='Escape'||e.key==='Esc'){
-                this.props.x()
-            }
-            else if(e.key==='ArrowLeft'){
-                const {indicatorListPage} = this.props.store
-                this.handlePageChange(null,indicatorListPage-1)
-            }
-            else if(e.key==='ArrowRight'){
-                const {indicatorListPage} = this.props.store
-                this.handlePageChange(null,indicatorListPage+1)
-            }
-            else if(e.which >= 65 && e.which <= 90){ //user typed letter
-                //searching indicator or county?
-                if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
-                    //searchinput is not already focused: enter key and focus
-                    if(!store.indicatorSearchString){
-                        store.modifySearchString('indicator', e.key)
-                        this.setSearchFocus('indicator', true)
-                    }
-                }
-                else if(this.props.open === 'county'){
-                    //store.searchCounty
-                }
-            }
-        }
+        window.onkeyup = this.keyHandler
     }
     componentWillUnmount(){
         window.onkeyup = () => {}
     }
 
-    @action setSearchFocus = (which, tf) => this[which+'SearchFocus'] = tf
+    @action setSearchFocus = (which, tf) =>{
+        if(tf){
+            window.onkeyup = () => {}
+        }
+        else window.onkeyup = this.keyHandler
+        this[which+'SearchFocus'] = tf
+    }
     @observable indicatorSearchFocus = false
-
+    keyHandler = (e) => {
+        const {store} = this.props
+        if(e.key==='Escape'||e.key==='Esc'){
+            this.props.x()
+        }
+        else if(e.key==='ArrowLeft'){
+            const {indicatorListPage} = this.props.store
+            this.handlePageChange(null,indicatorListPage-1)
+        }
+        else if(e.key==='ArrowRight'){
+            const {indicatorListPage} = this.props.store
+            this.handlePageChange(null,indicatorListPage+1)
+        }
+        else if(e.which >= 65 && e.which <= 90){ //user typed letter
+            //searching indicator or county?
+            if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
+                //searchinput is not already focused: enter key and focus
+                if(!store.indicatorSearchString){
+                    store.modifySearchString('indicator', e.key)
+                    this.setSearchFocus('indicator', true)
+                }
+            }
+            else if(this.props.open === 'county'){
+                //store.searchCounty
+            }
+        }
+    }
     @action
     handlePageChange =(evt, goTo)=>{
 
