@@ -569,12 +569,12 @@ export default class AppStore{
         searchWords.forEach((word,i)=>{
             matches[i] = Object.keys(pickBy(indicators, (ind)=>{
                 //does any indicator keyword contain the search word? 
-                let matchOrPartial = false
-                ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
-                    if(keyword.startsWith(word)) matchOrPartial = true
-                    return keyword.startsWith(word)
+                // let matchOrPartial = false
+                return ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
+                    // if(keyword.startsWith(word)) matchOrPartial = true
+                    return keyword.toLowerCase().startsWith(word)
                 })
-                return matchOrPartial
+                // return matchOrPartial
             }))
         })
         let finalMatches = matches[0]
