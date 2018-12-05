@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
-import { findIndex, find, pickBy } from 'lodash'
+import { findIndex, find, pickBy, debounce } from 'lodash'
 import {findDOMNode} from 'react-dom'
 import FlipMove from 'react-flip-move'
 
@@ -26,7 +26,7 @@ import {capitalize} from './utilities/toLowerCase'
 import caret from './assets/caret.svg'
 import resetIco from './assets/reset.svg'
 
-import combo from '../src/utilities/trungCombo'
+// import combo from '../src/utilities/trungCombo'
 
 import stopwords from './utilities/stopwords'
 
@@ -533,6 +533,7 @@ export class PickingWorkflow extends React.Component{
     @observable hoveredPageBtn = false
 
     componentDidMount(){
+        const {store} = this.props
         window.onkeyup = (e) => {
             if(e.key==='Escape'||e.key==='Esc'){
                 this.props.x()
@@ -549,8 +550,8 @@ export class PickingWorkflow extends React.Component{
                 //searching indicator or county?
                 if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
                     //searchinput is not already focused: enter key and focus
-                    if(!this.indicatorSearchString){
-                        this.modifySearchString('indicator', e.key)
+                    if(!store.indicatorSearchString){
+                        store.modifySearchString('indicator', e.key)
                         this.setSearchFocus('indicator', true)
                     }
                 }
@@ -564,9 +565,6 @@ export class PickingWorkflow extends React.Component{
         window.onkeyup = () => {}
     }
 
-    @observable countySearchString = ''
-    @observable indicatorSearchString = ''
-    @action modifySearchString = (which, str) => this[which+'SearchString'] = str
     @action setSearchFocus = (which, tf) => this[which+'SearchFocus'] = tf
     @observable indicatorSearchFocus = false
 
@@ -629,11 +627,10 @@ export class PickingWorkflow extends React.Component{
                             animDir = {this.pageAnimDirection}
                             prevOffset = {this.hoveredPageBtn}
 
-                            onSearch = {(val)=>{this.modifySearchString('indicator', val)}}
-                            searchString = {this.indicatorSearchString}
+                            searchString = {store.indicatorSearchString}
                             focusInput = {this.indicatorSearchFocus}
                             setSearchFocus = {(tf)=>this.setSearchFocus('indicator', tf)}
-
+                            onSearch = {(val)=>{store.modifySearchString('indicator', val)}}
                         />
                     }
                     {which === 'county' && 

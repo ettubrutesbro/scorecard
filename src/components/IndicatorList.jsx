@@ -142,6 +142,7 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
+    height: 32px; flex-shrink: 0;
     position: relative;
     display: flex; align-items: center;
     margin: 0 20px 0 0;
@@ -190,14 +191,14 @@ const Search = styled.div`
         transition: transform .5s;
     }
     @media ${media.optimal}{
-        left: 275px;
-        transform: translateX(${props=>props.active?-275:0}px);
-        &::after{ width: 275px; }
+        left: 250px;
+        transform: translateX(${props=>props.active?-250:0}px);
+        &::after{ width: 400px; }
     }
     @media ${media.compact}{
         left: 250px;
         transform: translateX(${props=>props.active?-250:0}px);
-        &::after{ width: 250px; }
+        &::after{ width: 375px; }
     }
 
 `
@@ -298,7 +299,14 @@ export default class IndicatorList extends React.Component{
         const indRangeEnd = (store.indicatorListPage+1)*store.indicatorPageSize
         const numInds = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
-            return indicatorFilter === 'all'? true : cats.includes(indicatorFilter)
+            if(store.indicatorSearchString && store.indicatorSearchResults.length === 0) return false
+            if(store.indicatorSearchString && store.indicatorFilter === 'all'){
+                return store.indicatorSearchResults.includes(ind)
+            }
+            else if(store.indicatorSearchString){
+                return store.indicatorSearchResults.includes(ind) && cats.includes(store.indicatorFilter)
+            }
+            else return store.indicatorFilter === 'all'? true : cats.includes(store.indicatorFilter)
         }).length
 
         const showSanityCheck = store.sanityCheck.indicator
@@ -339,7 +347,6 @@ export default class IndicatorList extends React.Component{
                 muted = {showSanityCheck}
                 raceDropdown = {this.props.muted}
                 className = "caption"
-
             >
                 <Toggle
                     options = {indicatorFilterOptions}
@@ -350,18 +357,34 @@ export default class IndicatorList extends React.Component{
                    <AboutPcts>
                        {`${county?countyLabels[county]:'Statewide'} %'s for ${race==='other'?'other race':race?capitalize(race):'all race'}s`}
                     </AboutPcts> 
-                   Viewing {(store.indicatorPageSize * store.indicatorListPage)+1} 
-                   &#8212; 
-                   {indRangeEnd > numInds? numInds : indRangeEnd}
-                    &nbsp;of {numInds}
+                    {numInds > 0 &&
+                        <React.Fragment>
+                           Viewing {(store.indicatorPageSize * store.indicatorListPage)+1} 
+                           &#8212; 
+                           {indRangeEnd > numInds? numInds : indRangeEnd}
+                            &nbsp;of {numInds}
+                        </React.Fragment>
+                    } 
+                    {numInds === 0 &&
+                        <React.Fragment>
+                            No results
+                        </React.Fragment>
+                    }
                     
 
                 </Readout>
             </ListStatus>
+                                
             <IndRows 
                 raceDropdown = {this.props.muted}
                 ref = {this.list}
             >
+                {!page &&
+                        <EmptyPage>
+                            
+                            Wtf
+                        </EmptyPage>
+                    }
                 <FlipMove
                     typeName = {null}
                     duration = {300}
@@ -391,8 +414,9 @@ export default class IndicatorList extends React.Component{
                         this.setAnimating(false)
                         if(this.interrupt) this.setInterrupt(false)
                     }}
-                >
-                    {page.map((ind, i, arr)=>{
+                >   
+
+                    {page && page.map((ind, i, arr)=>{
                         const indicator = indicators[ind]
                         const cats = indicator.categories
                         const selected = this.props.store.indicator === ind
@@ -435,7 +459,7 @@ export default class IndicatorList extends React.Component{
                                 }}
                             > 
                                 <IndLeft muted = {showSanityCheck && !isolated}>
-                                        {semanticTitles[ind].label}
+                                        <IndLabel>{semanticTitles[ind].label}</IndLabel>
                                         {noRace &&
                                             <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
                                         }
@@ -468,6 +492,8 @@ export default class IndicatorList extends React.Component{
         )
     }
 }
+
+const EmptyPage = styled.div``
 
 @observer
 class SanityCheck extends React.Component{
@@ -625,14 +651,8 @@ const ListStatus = styled.div`
     opacity: ${props=>props.raceDropdown? 0.4 : props.muted?0.2:1};
     transition: opacity .5s;
     font-size: 13px;
-    @media ${media.optimal}{
-        margin-top: 10px;
-        margin-bottom: 15px;
-    }
-    @media ${media.compact}{
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
+    height: 65px;
+    flex-shrink: 0;
 `
 
 
@@ -649,11 +669,14 @@ const AboutPcts = styled.div`
     color: var(--normtext);
     margin-bottom: 2px;
 `
+const IndLabel = styled.span`
+    margin-right: 7px;
+`
 const NoRaceBadge = styled.div`
     color: ${props => props.needRace? 'var(--normtext)' : 'var(--fainttext)'};
     /*border-bottom: 1px solid var(--bordergrey);*/
     /*padding: 1.5px 7px;*/
-    margin-left: 7px;
+    /*margin-left: 7px;*/
     display: inline-flex;
     align-items: center;
     font-size: 13px;

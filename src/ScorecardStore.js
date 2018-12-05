@@ -473,9 +473,16 @@ export default class AppStore{
         else if(screen==='compact'){
             this.indicatorPageSize = 9
         }
+
         const indKeys = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
-            return this.indicatorFilter === 'all'? true : cats.includes(this.indicatorFilter)
+            if(this.indicatorSearchString && this.indicatorFilter === 'all'){
+                return this.indicatorSearchResults.includes(ind)
+            }
+            else if(this.indicatorSearchString){
+                return this.indicatorSearchResults.includes(ind) && cats.includes(this.indicatorFilter)
+            }
+            else return this.indicatorFilter === 'all'? true : cats.includes(this.indicatorFilter)
         })
         console.log('total inds:', indKeys.length)
         for(var i = 0; i<indKeys.length/this.indicatorPageSize; i++){
@@ -486,9 +493,18 @@ export default class AppStore{
         console.log(this.indicatorPages.toJS())
     }
 
+    @action modifySearchString = (which, str) => {
+        this[which+'SearchString'] = str
+        if(which === 'indicator'){
+            this.searchIndicator(this.indicatorSearchString.toLowerCase())
+        }
+    }
+
     @observable indicatorPages = null
     @observable indicatorListPage = 0
     @observable indicatorFilter = 'all'
+    @observable indicatorSearchString = ''
+    @observable indicatorSearchResults = []
     @action setIndicatorFilter = (val) =>{
         console.log('setting indicator filter to ', val)
         this.indicatorListPage = 0
@@ -540,7 +556,11 @@ export default class AppStore{
     }
 
 
-    @action searchIndicator = combo((str) => {        
+    @action searchIndicator = debounce((str) => {        
+        if(str){
+            this.indicatorFilter = 'all'
+            this.indicatorListPage = 0
+        }
         const searchWords = str.split(' ').filter((word)=>{
             return !stopwords.includes(word)
         })
@@ -550,7 +570,7 @@ export default class AppStore{
             matches[i] = Object.keys(pickBy(indicators, (ind)=>{
                 //does any indicator keyword contain the search word? 
                 let matchOrPartial = false
-                ind.keywords.some((keyword)=>{
+                ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
                     if(keyword.startsWith(word)) matchOrPartial = true
                     return keyword.startsWith(word)
                 })
@@ -567,6 +587,7 @@ export default class AppStore{
         }
 
         console.log(finalMatches)
-        return finalMatches
-    }, 300)
+        this.indicatorSearchResults = finalMatches
+        this.setIndicatorPages()
+    },150)
 }

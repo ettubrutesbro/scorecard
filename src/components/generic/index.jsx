@@ -52,7 +52,7 @@ const Option = styled.div`
     &:hover{
         color: var(--strokepeach);
         outline-color: var(--strokepeach);
-        z-index: 1;
+        /*z-index: 1;*/
     }
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);

@@ -117,15 +117,15 @@ const DataTable = (props) => {
                 */}
                 <DemoRow> 
                     <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.immigrantFamilies)} /> </DemoValue>
-                    have one or more immigrant parent.
+                    have one or more immigrant&nbsp;parent.
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo.poverty}% </DemoValue>
-                    are living at or below 2X the poverty&nbsp;level.
+                    are living at or below 2X the&nbsp;poverty&nbsp;level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
                     <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.homeless)} /> </DemoValue>
-                    students experience homelessness.
+                    students&nbsp;experience homelessness.
                 </DemoRow>
             </RowTable>
         )
