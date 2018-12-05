@@ -291,6 +291,7 @@ export default class IndicatorList extends React.Component{
 
     componentDidUpdate(){
         if(this.props.focusInput){
+            console.log('ind focus updated')
             this.searchInput.current.focus()
             window.onkeyup = (e) => {
                 if(e.key==='Escape'||e.key==='Esc'){
@@ -340,7 +341,7 @@ export default class IndicatorList extends React.Component{
                     Choose an indicator. 
                 </ChoosePrompt>
                 <Search
-                    active = {searchActive} //redundant
+                    active = {searchActive} 
                     inputFocused = {this.props.focusInput}
                     onClick = {()=> this.props.setSearchFocus(true)}
                 >

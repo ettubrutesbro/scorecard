@@ -9,7 +9,7 @@ import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
-import {pickBy, findIndex, debounce} from 'lodash'
+import {pickBy, findIndex, debounce, findKey} from 'lodash'
 import {isValid} from './utilities/isValid'
 
 
@@ -19,6 +19,10 @@ import stopwords from './utilities/stopwords'
 
 const {detect} = require('detect-browser')
 const browserInfo = detect()
+
+var values = require('object.values')
+var assert = require('assert')
+if(!Object.values) values.shim()
 
 export default class AppStore{
     browser = {
@@ -493,12 +497,7 @@ export default class AppStore{
         console.log(this.indicatorPages.toJS())
     }
 
-    @action modifySearchString = (which, str) => {
-        this[which+'SearchString'] = str
-        if(which === 'indicator'){
-            this.searchIndicator(this.indicatorSearchString.toLowerCase())
-        }
-    }
+
 
     @observable indicatorPages = null
     @observable indicatorListPage = 0
@@ -568,13 +567,9 @@ export default class AppStore{
 
         searchWords.forEach((word,i)=>{
             matches[i] = Object.keys(pickBy(indicators, (ind)=>{
-                //does any indicator keyword contain the search word? 
-                // let matchOrPartial = false
                 return ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
-                    // if(keyword.startsWith(word)) matchOrPartial = true
                     return keyword.toLowerCase().startsWith(word)
                 })
-                // return matchOrPartial
             }))
         })
         let finalMatches = matches[0]
@@ -586,8 +581,31 @@ export default class AppStore{
             }
         }
 
-        console.log(finalMatches)
         this.indicatorSearchResults = finalMatches
         this.setIndicatorPages()
     },150)
+
+    @action modifySearchString = (which, str) => {
+        this[which+'SearchString'] = str
+        if(which === 'indicator'){
+            this.searchIndicator(this.indicatorSearchString.toLowerCase())
+        }
+        if(which === 'county'){
+            this.searchCounty(this.countySearchString.toLowerCase())
+        }
+    }
+
+    @observable countySearchString = ''
+    @observable countySearchResults = []
+    @action searchCounty = debounce((str)=>{
+        const matches = Object.values(countyLabels).filter((cty)=>{
+            return cty.toLowerCase().split(' ').some((word)=>{ 
+                return word.startsWith(str)
+            })
+        }).map((cty)=>{
+            return findKey(countyLabels, (o)=>{return o===cty})
+        })
+        console.log(matches)
+        this.countySearchResults = matches
+    }, 150)
 }

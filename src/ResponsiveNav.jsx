@@ -540,13 +540,12 @@ export class PickingWorkflow extends React.Component{
     }
 
     @action setSearchFocus = (which, tf) =>{
-        if(tf){
-            window.onkeyup = () => {}
-        }
-        else window.onkeyup = this.keyHandler
+        console.log('nav set search focus')
+        if(!tf) window.onkeyup = this.keyHandler
         this[which+'SearchFocus'] = tf
     }
     @observable indicatorSearchFocus = false
+    @observable countySearchFocus = false
     exit = () => {
         const store = this.props.store
         if(store.indicatorSearchString) store.modifySearchString('indicator','')
@@ -574,8 +573,11 @@ export class PickingWorkflow extends React.Component{
                     this.setSearchFocus('indicator', true)
                 }
             }
-            else if(this.props.open === 'county'){
-                //store.searchCounty
+            else if(this.props.open === 'county' && !this.countySearchFocus){
+                if(!store.countySearchString){
+                    store.modifySearchString('county', e.key)
+                    this.setSearchFocus('county', true)
+                }
             }
         }
     }
@@ -651,7 +653,10 @@ export class PickingWorkflow extends React.Component{
                             closeNav = {this.props.close}
 
                             // searchResults = {store.}
-                            onSearch = {(val)=>{this.modifySearchString('county', val)}}
+                            searchString = {store.countySearchString}
+                            focusInput = {this.countySearchFocus}
+                            setSearchFocus = {(tf)=>this.setSearchFocus('county', tf)}
+                            onSearch = {(val)=>{store.modifySearchString('county', val)}}
                             // muted = {this.props.muted}
                         />
                     }
