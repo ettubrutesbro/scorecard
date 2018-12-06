@@ -116,7 +116,7 @@ const DataTable = (props) => {
                 </DemoRow>
                 */}
                 <DemoRow> 
-                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.immigrantFamilies)} /> </DemoValue>
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {demo.immigrantFamilies} /> </DemoValue>
                     have one or more immigrant parent.
                 </DemoRow>
                 <DemoRow> 
@@ -124,7 +124,7 @@ const DataTable = (props) => {
                     are living at or below 2X the poverty&nbsp;level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
-                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.homeless)} /> </DemoValue>
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {demo.homeless} /> </DemoValue>
                     students experience homelessness.
                 </DemoRow>
             </RowTable>
