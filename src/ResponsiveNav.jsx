@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, {css} from 'styled-components'
+import styled, {css, keyframes} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
@@ -468,7 +468,7 @@ const YrToggle = styled.div`
 const Triangle = styled.div`
     position: absolute;
     z-index: 1000;
-    transition: transform .35s;
+    transition: transform ${props => props.speed}; 
     @media ${media.optimal}{
         transform: translate(${props => props.hide? '0, 2px' : props.active==='indicator'? '35px, 2px' : '440px, 2px'});
     }
@@ -616,7 +616,7 @@ export class PickingWorkflow extends React.Component{
                     opacity: open? 1 : 0,
                     transition: 'opacity .3s',
                     transitionDelay: open? '0s' : '0.1s',
-                    pointerEvents: open? 'auto' : 'none'
+                    pointerEvents: open? 'auto' : 'none',
                 }}
             >
                 <X 
@@ -628,10 +628,12 @@ export class PickingWorkflow extends React.Component{
                 <Lists
                     currentMode = {open? 'open' : 'closed'}
                     modes = {{
-                        closed: {width: 50, height: 50},
+                        closed: {width: 78, height: 57},
                         open: {width: 780, height: 575},
                     }}
-                    duration = {.5}
+                    // duration = {.375}
+                    delay = {open?'.125s':'0s'}
+                    duration = {.35}
                 >
                 <FlipMove
                     // typeName = {null}
@@ -728,6 +730,7 @@ export class PickingWorkflow extends React.Component{
                 <Triangle
                     hide = {!open}
                     active = {which}
+                    speed = {this.animationType === 'mount' && which==='county'? '0s' : '.25s'}
                  />
                         </LargeWorkflow>
                     
@@ -736,7 +739,6 @@ export class PickingWorkflow extends React.Component{
         )
     }
 }
-
 const LargeWorkflow = styled.div`
     position: absolute;
     /*border: 1px solid var(--bordergrey);*/
@@ -756,6 +758,8 @@ const LargeWorkflow = styled.div`
         /*padding: 20px 35px;*/
     }
 `
+
+
 
 const Lists = styled(ExpandBox)`
     background: var(--offwhitefg);
