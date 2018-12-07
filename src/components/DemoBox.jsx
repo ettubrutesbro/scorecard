@@ -116,8 +116,8 @@ const DataTable = (props) => {
                 </DemoRow>
                 */}
                 <DemoRow> 
-                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.immigrantFamilies)} /> </DemoValue>
-                    have one or more immigrant&nbsp;parent.
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {demo.immigrantFamilies} /> </DemoValue>
+                    have one or more immigrant parent.
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo.poverty}% </DemoValue>

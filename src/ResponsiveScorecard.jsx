@@ -317,7 +317,7 @@ export default class ResponsiveScorecard extends React.Component{
     }
     @observable screen = getMedia()
 
-    componentDidMount(){
+    componentWillMount(){
         store.setIndicatorPages()
         // window.addEventListener('resize', this.resizeRefresh, false)
         //eventually....
