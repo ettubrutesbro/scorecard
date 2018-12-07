@@ -64,10 +64,9 @@ const RowItem = styled.li`
     margin-top: -1px;
     z-index: ${props=>props.isolated?10:props.selected? 2: 1};
     pointer-events: ${props => props.muted? 'none' : 'auto'};
-    cursor: ${props=>props.disabled? 'auto' : 'pointer'};
-
+    cursor: pointer;
     &:hover{
-        color: ${props => props.isolated? 'var(--normtext)' : props.disabled? 'var(--fainttext)' : 'var(--strokepeach)'};
+        color: ${props => props.isolated? 'var(--normtext)' : 'var(--strokepeach)'};
         h4{
             color: ${props => props.disabled? 'var(--fainttext)' : 'var(--peach)'};
         }
@@ -324,6 +323,7 @@ export default class IndicatorList extends React.Component{
         const indRangeEnd = (store.indicatorListPage+1)*store.indicatorPageSize
         const numInds = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
+            if(!store.indicatorSearchResults) return false
             if(store.indicatorSearchString && store.indicatorSearchResults.length === 0) return false
             if(store.indicatorSearchString && store.indicatorFilter === 'all'){
                 return store.indicatorSearchResults.includes(ind)
