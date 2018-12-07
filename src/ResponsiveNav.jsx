@@ -485,7 +485,7 @@ const LargeWorkflow = styled.div`
     transform-origin: 0% 0%;
     opacity: ${props => props.muted? 0.5 : 1};
     @media ${media.optimal}{
-        width: 1000px;
+        width: 950px;
         height: 720px;
         padding: 30px 45px;
         top: 100px;
@@ -746,7 +746,7 @@ const PageBtn = styled.div`
     }
 `
 const PagePrev = styled(PageBtn)`
-    left: -25px;
+    left: -32px;
     transform: translateX(${props=>props.show?0:'15px'});
     &::before, &::after{
         transform: rotate(180deg);
@@ -756,6 +756,6 @@ const PagePrev = styled(PageBtn)`
     }
 `
 const PageNext = styled(PageBtn)`
-    right: -25px;
+    right: -32px;
     transform: translateX(${props=>props.show?0:'-15px'});
 `
