@@ -22,7 +22,7 @@ const Box = styled.div`
         right: 0;
         @media ${media.optimal}{
             width: 550px;
-            height: 450px;
+            height: 475px;
             padding: 35px;
         }
         @media ${media.compact}{

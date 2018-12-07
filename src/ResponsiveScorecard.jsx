@@ -627,7 +627,7 @@ const LegendContainer = styled.div`
         height: 80px;
     }
     @media ${media.compact}{
-        height: 40px;
+        height: 64px;
     }
 
 `
