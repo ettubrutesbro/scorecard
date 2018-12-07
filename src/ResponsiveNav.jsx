@@ -338,35 +338,11 @@ export default class ResponsiveNav extends React.Component{
                         muted = {this.raceDropdown}
                         x = {()=>openNav(false)} 
                         store = {store}
-                        open = {open}
+                        open = {open? true : false}
+                        which = {open}
                         close = {()=>openNav(false)} 
                     />
 
-                {/*
-                <FlipMove 
-                    typeName = {null}
-                    delay = {!store.indicator && !store.init? 100 : open? 150 : 0}
-                    duration = {200}
-                    enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateY(0px)'},
-                        to: {opacity: 1, transform: 'translateY(0px)'}
-                    }}
-                    leaveAnimation = {{
-                        from: {opacity: 1, transform: 'translateY(0px)'},
-                        to: {opacity: 0, transform: 'translateY(0px)'}
-                    }}
-                >
-                {open && 
-                    <PickingWorkflow 
-                        muted = {this.raceDropdown}
-                        x = {()=>openNav(false)} 
-                        store = {store}
-                        open = {open}
-                        close = {()=>openNav(false)} 
-                    />
-                }
-                </FlipMove>
-                 */}
                 
                 <Reset 
                     className = 'negativeOnDark' 
@@ -486,35 +462,17 @@ const YrToggle = styled.div`
     transform: translateX(${props=>props.offset===2 && props.bigscreen? 468 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
 `
 
-const LargeWorkflow = styled(ExpandBox)`
-    position: absolute;
 
-    background: var(--offwhitefg);
-    /*border: 1px solid var(--bordergrey);*/
-    z-index: 3;
-    transform-origin: 0% 0%;
-    opacity: ${props => props.muted? 0.5 : 1};
-    @media ${media.optimal}{
-        /*width: 950px;*/
-        /*height: 720px;*/
-        /*padding: 30px 45px;*/
-        top: 100px;
-    }
-    @media ${media.compact}{
-        top: 90px;
-        /*width: 780px;*/
-        /*height: 575px;*/
-        /*padding: 20px 35px;*/
-    }
-`
 
 const Triangle = styled.div`
-    transition: transform .3s;
+    position: absolute;
+    z-index: 1000;
+    transition: transform .35s;
     @media ${media.optimal}{
-        transform: translate(${props => props.active==='indicator'? '35px, -30px' : '440px, -30px'});
+        transform: translate(${props => props.hide? '0, 2px' : props.active==='indicator'? '35px, 2px' : '440px, 2px'});
     }
     @media ${media.compact}{
-        transform: translate(${props => props.active==='indicator'? '40px, -20px' : '445px, -20px'});
+        transform: translate(${props => props.hide? '0, 2px' : props.active==='indicator'? '40px, 2px' : '450px, 2px'});
     }
     &::after, &::before{
         position: absolute;
@@ -542,12 +500,7 @@ export class PickingWorkflow extends React.Component{
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
 
-    componentDidMount(){
-        window.onkeyup = this.keyHandler
-    }
-    componentWillUnmount(){
-        window.onkeyup = () => {}
-    }
+    @observable animationType = 'mount' //mount or change
 
     @action setSearchFocus = (which, tf) =>{
         console.log('nav set search focus')
@@ -564,6 +517,7 @@ export class PickingWorkflow extends React.Component{
     }
     keyHandler = (e) => {
         const {store} = this.props
+        console.log(e.which)
         if(e.key==='Escape'||e.key==='Esc'){
             this.exit()
         }
@@ -577,14 +531,14 @@ export class PickingWorkflow extends React.Component{
         }
         else if(e.which >= 65 && e.which <= 90){ //user typed letter
             //searching indicator or county?
-            if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
+            if(this.props.which === 'indicator' && !this.indicatorSearchFocus){
                 //searchinput is not already focused: enter key and focus
                 if(!store.indicatorSearchString){
                     store.modifySearchString('indicator', e.key)
                     this.setSearchFocus('indicator', true)
                 }
             }
-            else if(this.props.open === 'county' && !this.countySearchFocus){
+            else if(this.props.which === 'county' && !this.countySearchFocus){
                 if(!store.countySearchString){
                     store.modifySearchString('county', e.key)
                     this.setSearchFocus('county', true)
@@ -608,43 +562,70 @@ export class PickingWorkflow extends React.Component{
     @action onHoverPageBtn = (val) => this.hoveredPageBtn = val
 
     componentDidUpdate(oldProps){
-        if(oldProps.open !== this.props.open){
-            if(oldProps.open === 'indicator' && this.props.store.indicatorSearchString){
+        if(oldProps.which !== this.props.which){
+            if(oldProps.which === 'indicator' && this.props.store.indicatorSearchString){
                 this.props.store.modifySearchString('indicator','')
             }
-            else if(oldProps.open === 'county' && this.props.store.countySearchString){
+            else if(oldProps.which === 'county' && this.props.store.countySearchString){
                 this.props.store.modifySearchString('county','')
             }
+            if(this.props.which) this.setLastList(this.props.which)
         }
     }
 
+    componentWillUpdate(newProps){
+        if(this.props.open !== newProps.open){ 
+            this.setAnimationMode('mount')
+            console.log('setting mount/unmount animation, last list shown is', this.lastListShown)
+            console.log(this.animationType)
+            if(newProps.open){
+                console.log('setting keyhandler')
+                window.onkeyup = this.keyHandler
+            }
+            else{
+                window.onkeyup = () => {}
+            }
+        }
+        else if(this.props.which !== newProps.which){
+            this.setAnimationMode('change')
+        }
+    }
+
+    @observable lastListShown = ''
+    @action setLastList = (list) => this.lastListShown = list
+    @action setAnimationMode = (mode) => this.animationType = mode
+
     render(){
         const {store, close} = this.props
-        const which = this.props.open
+        const {which, open} = this.props
         const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
 
+        const showInd = which === 'indicator' || (!open && this.lastListShown === 'indicator')
+        const showCounty = which === 'county' || (!open && this.lastListShown === 'county')
+
+        console.log(!open && this.lastListShown === 'indicator')
+        console.log(!open)
+        console.log(this.lastListShown)
         return(
 
-            <LargeWorkflow
-                currentMode = {which? 'open' : 'closed'}
-                modes = {{
-                    // open: {width: 950, height: 720},
-                    closed: {width: 50, height: 50},
-                    open: {width: 780, height: 575},
-                }}
-                duration = {5}
-                delay = {!store.indicator && !store.init? 100 : which? 150 : 0}
-            >
-                <Triangle
-                    active = {which}
-                 />
+            <LargeWorkflow>
                 <X 
                     img = "x" 
                     color = "bordergrey"
                     hoverColor = "strokepeach"
                     onClick = {this.exit}
                 />
-
+                <Lists
+                    currentMode = {open? 'open' : 'closed'}
+                    modes = {{
+                        // open: {width: 950, height: 720},
+                        closed: {width: 50, height: 50},
+                        open: {width: 780, height: 575},
+                    }}
+                    duration = {.5}
+                    // delay = {!store.indicator && !store.init? 100 : which? 150 : 0}
+                    // delay = {!store.indicator && !store.init? '.1s' : which? '.15s' : 0}
+                >
                 <FlipMove
                     // typeName = {null}
                     style = {{
@@ -652,32 +633,33 @@ export class PickingWorkflow extends React.Component{
                         top: 0, left: 0,
                         padding: screen==='optimal'? '35px 50px' : '25px 35px',
                         overflow: 'hidden',
-                        width: '100%', 
-                        // height: '100%'    
+                        width: '780px',     
+                        height: '575px'    
                     }}
+                    disableAllAnimations = {this.animationType==='mount'}
                     enterAnimation = {{
                         from: {
                             opacity: 0, 
-                            // transform: `translateX(${which==='indicator'?-150:150}px)`
+                            transform: `translateX(${which==='indicator'?-150:150}px)`
                         },
                         to: {
                             opacity: 1, 
-                            // transform: `translateX(0px)`
+                            transform: `translateX(0px)`
                         },
                     }}
                     leaveAnimation = {{
                         from: {
                             opacity: 1, 
-                            // transform: `translateX(0px)`
+                            transform: `translateX(0px)`
                         },
                         to: {
                             opacity: -1,
-                            // transform: `translateX(${which==='indicator'?150:-150}px)`
+                            transform: `translateX(${which==='indicator'?150:-150}px)`
                         },
                     }}
                     maintainContainerHeight = {true}
                 >
-                    {which === 'indicator' && 
+                    {showInd &&
                         <IndicatorList 
                             muted = {this.props.muted}
                             store = {store} 
@@ -693,7 +675,7 @@ export class PickingWorkflow extends React.Component{
                             onSearch = {(val)=>{store.modifySearchString('indicator', val)}}
                         />
                     }
-                    {which === 'county' && 
+                    {showCounty &&
                         <CountyList 
                             muted = {this.props.muted}
                             store = {store} 
@@ -708,6 +690,7 @@ export class PickingWorkflow extends React.Component{
                         />
                     }
                 </FlipMove>
+                </Lists>
 
                         <PageNext 
                             show = {which==='indicator' && indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
@@ -728,12 +711,42 @@ export class PickingWorkflow extends React.Component{
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
                         />
+                <Triangle
+                    hide = {!open}
+                    active = {which}
+                 />
+                        </LargeWorkflow>
                     
 
-            </LargeWorkflow>
+
         )
     }
 }
+
+const LargeWorkflow = styled.div`
+    position: absolute;
+    /*border: 1px solid var(--bordergrey);*/
+    z-index: 3;
+    transform-origin: 0% 0%;
+    opacity: ${props => props.muted? 0.5 : 1};
+    @media ${media.optimal}{
+        width: 950px;
+        height: 720px;
+        /*padding: 30px 45px;*/
+        top: 100px;
+    }
+    @media ${media.compact}{
+        top: 90px;
+        width: 780px;
+        height: 575px;
+        /*padding: 20px 35px;*/
+    }
+`
+
+const Lists = styled(ExpandBox)`
+    background: var(--offwhitefg);
+`
+
 const arrow = require('./assets/arrow.svg')
 
 const PageBtn = styled.div`

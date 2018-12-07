@@ -53,6 +53,7 @@ const RowItem = styled.li`
     @media ${media.compact}{
         padding: 10px 25px;
     }
+    white-space: normal;
     // margin: 10px;
     list-style-type: none;
     border: 1px solid ${props=> props.muted && !props.disabled? '#DFDFDF' : props.disabled&&!props.isolated? 'transparent' : props.selected? 'var(--strokepeach)' : 'var(--bordergrey)'};
@@ -141,7 +142,7 @@ const Caption = styled.div`
     margin-bottom: 2px;
 `
 const Title = styled.h1`
-    height: 32px; flex-shrink: 0;
+    /*height: 32px; flex-shrink: 0;*/
     position: relative;
     display: flex; align-items: center;
     margin: 0 20px 0 0;
@@ -697,9 +698,6 @@ const Dashes = styled.div`
 `
 
 const Workflow = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
 `
 
 const ListStatus = styled.div`
