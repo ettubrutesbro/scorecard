@@ -414,7 +414,8 @@ const ShareIco = styled.div`
 
 const X = styled(Icon)`
      position: absolute;
-     right: 30px;
+     right: 22px;
+     top: 22px;
      width:25px;
      height: 25px;
      cursor: pointer;
@@ -591,6 +592,11 @@ export class PickingWorkflow extends React.Component{
         }
     }
 
+    @observable display = false
+    @action setDisplay = (tf) => {
+        console.log('seting display to ', tf)
+        this.display = tf
+    }
     @observable lastListShown = ''
     @action setLastList = (list) => this.lastListShown = list
     @action setAnimationMode = (mode) => this.animationType = mode
@@ -603,12 +609,16 @@ export class PickingWorkflow extends React.Component{
         const showInd = which === 'indicator' || (!open && this.lastListShown === 'indicator')
         const showCounty = which === 'county' || (!open && this.lastListShown === 'county')
 
-        console.log(!open && this.lastListShown === 'indicator')
-        console.log(!open)
-        console.log(this.lastListShown)
         return(
 
-            <LargeWorkflow>
+            <LargeWorkflow
+                style = {{
+                    opacity: open? 1 : 0,
+                    transition: 'opacity .3s',
+                    transitionDelay: open? '0s' : '0.1s',
+                    pointerEvents: open? 'auto' : 'none'
+                }}
+            >
                 <X 
                     img = "x" 
                     color = "bordergrey"
@@ -618,13 +628,10 @@ export class PickingWorkflow extends React.Component{
                 <Lists
                     currentMode = {open? 'open' : 'closed'}
                     modes = {{
-                        // open: {width: 950, height: 720},
                         closed: {width: 50, height: 50},
                         open: {width: 780, height: 575},
                     }}
                     duration = {.5}
-                    // delay = {!store.indicator && !store.init? 100 : which? 150 : 0}
-                    // delay = {!store.indicator && !store.init? '.1s' : which? '.15s' : 0}
                 >
                 <FlipMove
                     // typeName = {null}
@@ -694,8 +701,12 @@ export class PickingWorkflow extends React.Component{
 
                         <PageNext 
                             show = {which==='indicator' && indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
+                            delay = {this.animationType === 'mount' && open? '.5s' : '0s'}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage+1)
+                                (e)=>{
+                                    this.setAnimationMode('page')
+                                    this.handlePageChange(e,indicatorListPage+1)
+                                }
                                 
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
@@ -704,9 +715,12 @@ export class PickingWorkflow extends React.Component{
                     
                         <PagePrev 
                             show = {which==='indicator' && indicatorListPage > 0 && !store.sanityCheck.indicator}
+                            delay = {this.animationType === 'mount' && open? '.5s' : '0s'}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage-1)
-                            
+                                (e)=>{
+                                    this.setAnimationMode('page')
+                                    this.handlePageChange(e,indicatorListPage-1)
+                                }                           
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
@@ -761,6 +775,7 @@ const PageBtn = styled.div`
     // display: ${props => props.show? 'block' : 'none'};
     opacity: ${props => props.show? 1 : 0};
     transition: transform .25s, opacity .25s;
+    transition-delay: ${props => props.delay};
     cursor: pointer;
     z-index: 4;
     &::before, &::after{
