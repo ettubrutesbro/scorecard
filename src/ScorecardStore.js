@@ -128,7 +128,7 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                            `This indicator has no race data; picking it will deselect your currently selected race (${capitalize(race)}) and show data for all races instead.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('indicator',value)
@@ -140,7 +140,7 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), but you can view its statewide data for all races.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('county',null)
@@ -154,7 +154,7 @@ export default class AppStore{
                     this.setSanityCheck(
                         'indicator',
                         value, 
-                        `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                        `This indicator has no race data; picking it will deselect your currently selected race (${capitalize(race)}) and show data for all races instead.`,
                         ()=>{
                             this.completeWorkflow('race',null)
                             this.completeWorkflow('indicator',value)
@@ -177,7 +177,7 @@ export default class AppStore{
                          this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), but you can view its statewide data for all races.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('county',null)
@@ -190,7 +190,8 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            // `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            `This indicator has no data for ${countyLabels[county]} county, but you can view statewide data.`,
                             ()=>{
                                 this.completeWorkflow('county',null)
                                 this.completeWorkflow('indicator',value)

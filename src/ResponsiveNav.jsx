@@ -200,6 +200,8 @@ export default class ResponsiveNav extends React.Component{
             if(!this.nav.current.contains(e.target) && !countyIds.includes(e.target.id)){
                 console.log('clicked something outside the nav:', e.target)
                 this.props.openNav()
+                if(this.props.store.indicatorSearchString) this.props.store.modifySearchString('indicator','')
+                if(this.props.store.countySearchString) this.props.store.modifySearchString('county','')
             }
         // }
     }
@@ -493,7 +495,7 @@ const LargeWorkflow = styled.div`
     @media ${media.compact}{
         top: 90px;
         width: 780px;
-        height: 570px;
+        height: 575px;
         padding: 20px 35px;
     }
 `
@@ -546,6 +548,7 @@ export class PickingWorkflow extends React.Component{
     }
     @observable indicatorSearchFocus = false
     @observable countySearchFocus = false
+
     exit = () => {
         const store = this.props.store
         if(store.indicatorSearchString) store.modifySearchString('indicator','')
