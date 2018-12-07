@@ -596,6 +596,17 @@ export class PickingWorkflow extends React.Component{
     }
     @action onHoverPageBtn = (val) => this.hoveredPageBtn = val
 
+    componentDidUpdate(oldProps){
+        if(oldProps.open !== this.props.open){
+            if(oldProps.open === 'indicator' && this.props.store.indicatorSearchString){
+                this.props.store.modifySearchString('indicator','')
+            }
+            else if(oldProps.open === 'county' && this.props.store.countySearchString){
+                this.props.store.modifySearchString('county','')
+            }
+        }
+    }
+
     render(){
         const {store, close} = this.props
         const which = this.props.open
@@ -629,6 +640,7 @@ export class PickingWorkflow extends React.Component{
                         from: {opacity: 1, transform: `translateX(0px)`},
                         to: {opacity: -1, transform: `translateX(${which==='indicator'?150:-150}px)`},
                     }}
+                    maintainContainerHeight = {true}
                 >
                     {which === 'indicator' && 
                         <IndicatorList 

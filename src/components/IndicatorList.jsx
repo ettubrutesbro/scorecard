@@ -414,7 +414,7 @@ export default class IndicatorList extends React.Component{
                 {!page &&
                         <EmptyPage>
                             <h1>No indicators seem to match &ldquo;{store.indicatorSearchString}&rdquo;.</h1>
-                            <h2> Try different keyword(s) or browsing by topic. </h2>
+                            <h2> Try different keywords or browsing by topic. </h2>
                         </EmptyPage>
                     }
                 <FlipMove
@@ -526,10 +526,16 @@ export default class IndicatorList extends React.Component{
 }
 
 const EmptyPage = styled.div`
+    position: absolute;
+    text-align: center;
+    @media ${media.optimal}{
+        top: 130px;
+    }
+    @media ${media.compact}{
+        top: 130px;
+    }
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    color: var(--fainttext);
     align-items: center;
     justify-content: center;
     h1{
@@ -539,6 +545,7 @@ const EmptyPage = styled.div`
         margin: 0;
     }
     h2{
+        margin: 10px;
         font-weight: 400;
         font-size: 16px;
         letter-spacing: .7px;

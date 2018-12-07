@@ -19,6 +19,7 @@ import {isValid} from '../utilities/isValid'
 
 
 const GridList = styled.ul`
+    flex-grow: 1;
     transition: opacity .5s;
     opacity: ${p => p.muted? 0.4 : 1};
     display: grid;
@@ -77,6 +78,7 @@ const GridItem = styled.li`
 const Titleblock = styled.div`
     opacity: ${props => props.raceDropdown? 0.4 : props.muted? 0.2 : 1};
     transition: opacity .5s;
+    flex-shrink: 0; flex-grow: 0;
     h1{
         margin: 0;
         font-weight: 400;
@@ -190,7 +192,7 @@ class CountyList extends React.Component{
                     </TitleSide>
 
                 </Titleblock>
-
+                {((store.countySearchResults.length!==0 && store.countySearchString) || !store.countySearchString) && 
                 <GridList
                     raceDropdown = {this.props.muted}
                 >
@@ -281,6 +283,7 @@ class CountyList extends React.Component{
                     })
                     }
                 </GridList>
+                }
                 {store.countySearchResults.length===0 && store.countySearchString && 
                     <EmptyPage>
                         <h1>Your search for &ldquo;{store.countySearchString}&rdquo; doesn't match any counties.</h1>
@@ -292,7 +295,8 @@ class CountyList extends React.Component{
 }
 
 const Workflow = styled.div`
-    
+    display: flex; flex-direction: column;
+    height: 100%;
 `
 const PickPrompt = styled.h1`
     opacity: ${props => props.hide? 0: 1};
@@ -388,14 +392,18 @@ const CancelSearch = styled.div`
 
 
 const EmptyPage = styled.div`
+    left: 0; 
     position: absolute;
-    left: 0; top: 0;
+    text-align: center;
+    @media ${media.optimal}{
+        top: 275px;
+    }
+    @media ${media.compact}{
+        top: 240px;
+    }
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    color: var(--fainttext);
     h1{
         font-weight: 500;
         font-size: 24px;
@@ -403,6 +411,7 @@ const EmptyPage = styled.div`
         margin: 0;
         text-align: center;
     }
+    margin-bottom: 25px;
 
 `
 
