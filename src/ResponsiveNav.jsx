@@ -18,6 +18,7 @@ import semanticTitles from './assets/semanticTitles'
 import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
 import {Tooltip, DropdownToggle} from './components/generic'
+import ExpandBox from './components/ExpandBox'
 
 import media, {getMedia} from './utilities/media'
 import {isValid} from './utilities/isValid'
@@ -333,8 +334,15 @@ export default class ResponsiveNav extends React.Component{
                         bigscreen = {screen==='optimal'}
                     />
 
-                    
+                    <PickingWorkflow 
+                        muted = {this.raceDropdown}
+                        x = {()=>openNav(false)} 
+                        store = {store}
+                        open = {open}
+                        close = {()=>openNav(false)} 
+                    />
 
+                {/*
                 <FlipMove 
                     typeName = {null}
                     delay = {!store.indicator && !store.init? 100 : open? 150 : 0}
@@ -358,7 +366,7 @@ export default class ResponsiveNav extends React.Component{
                     />
                 }
                 </FlipMove>
-                {/*open && <X onClick = {()=>openNav(false)}/>*/}
+                 */}
                 
                 <Reset 
                     className = 'negativeOnDark' 
@@ -478,25 +486,25 @@ const YrToggle = styled.div`
     transform: translateX(${props=>props.offset===2 && props.bigscreen? 468 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
 `
 
-const LargeWorkflow = styled.div`
+const LargeWorkflow = styled(ExpandBox)`
     position: absolute;
 
     background: var(--offwhitefg);
-    border: 1px solid var(--bordergrey);
+    /*border: 1px solid var(--bordergrey);*/
     z-index: 3;
     transform-origin: 0% 0%;
     opacity: ${props => props.muted? 0.5 : 1};
     @media ${media.optimal}{
-        width: 950px;
-        height: 720px;
-        padding: 30px 45px;
+        /*width: 950px;*/
+        /*height: 720px;*/
+        /*padding: 30px 45px;*/
         top: 100px;
     }
     @media ${media.compact}{
         top: 90px;
-        width: 780px;
-        height: 575px;
-        padding: 20px 35px;
+        /*width: 780px;*/
+        /*height: 575px;*/
+        /*padding: 20px 35px;*/
     }
 `
 
@@ -616,7 +624,17 @@ export class PickingWorkflow extends React.Component{
         const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
 
         return(
-            <LargeWorkflow>
+
+            <LargeWorkflow
+                currentMode = {which? 'open' : 'closed'}
+                modes = {{
+                    // open: {width: 950, height: 720},
+                    closed: {width: 50, height: 50},
+                    open: {width: 780, height: 575},
+                }}
+                duration = {5}
+                delay = {!store.indicator && !store.init? 100 : which? 150 : 0}
+            >
                 <Triangle
                     active = {which}
                  />
@@ -626,6 +644,7 @@ export class PickingWorkflow extends React.Component{
                     hoverColor = "strokepeach"
                     onClick = {this.exit}
                 />
+
                 <FlipMove
                     // typeName = {null}
                     style = {{
@@ -633,15 +652,28 @@ export class PickingWorkflow extends React.Component{
                         top: 0, left: 0,
                         padding: screen==='optimal'? '35px 50px' : '25px 35px',
                         overflow: 'hidden',
-                        width: '100%', height: '100%'    
+                        width: '100%', 
+                        // height: '100%'    
                     }}
                     enterAnimation = {{
-                        from: {opacity: 0, transform: `translateX(${which==='indicator'?-150:150}px)`},
-                        to: {opacity: 1, transform: `translateX(0px)`},
+                        from: {
+                            opacity: 0, 
+                            // transform: `translateX(${which==='indicator'?-150:150}px)`
+                        },
+                        to: {
+                            opacity: 1, 
+                            // transform: `translateX(0px)`
+                        },
                     }}
                     leaveAnimation = {{
-                        from: {opacity: 1, transform: `translateX(0px)`},
-                        to: {opacity: -1, transform: `translateX(${which==='indicator'?150:-150}px)`},
+                        from: {
+                            opacity: 1, 
+                            // transform: `translateX(0px)`
+                        },
+                        to: {
+                            opacity: -1,
+                            // transform: `translateX(${which==='indicator'?150:-150}px)`
+                        },
                     }}
                     maintainContainerHeight = {true}
                 >
