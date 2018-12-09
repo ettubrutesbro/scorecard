@@ -713,7 +713,15 @@ export class PickingWorkflow extends React.Component{
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
-                        />
+                        >
+                            <ChevIcon 
+                                img = "chevright" 
+                                style = {{
+                                    width: '25px', height: '25px'    
+                                }}
+                                color = ''
+                            />
+                        </PageNext>
                     
                         <PagePrev 
                             show = {which==='indicator' && indicatorListPage > 0 && !store.sanityCheck.indicator}
@@ -765,64 +773,55 @@ const Lists = styled(ExpandBox)`
     background: var(--offwhitefg);
 `
 
-const arrow = require('./assets/arrow.svg')
 
 const PageBtn = styled.div`
     position: absolute;
-    width: 50px; height: 95px; 
-    border: 1px solid var(--fainttext);
-    background: white;
-    /*background-position: center;*/
-    /*background-repeat: no-repeat;*/
-    /*background-image: url(${arrow});*/
+
+
+
     top: 0; bottom: 0; margin: auto;
-    // display: ${props => props.show? 'block' : 'none'};
     opacity: ${props => props.show? 1 : 0};
     transition: transform .25s, opacity .25s;
     transition-delay: ${props => props.delay};
-    cursor: pointer;
+    width: 50px;
+    height: 95px;
     z-index: 4;
+    display: flex; justify-content: center;
+            background: white;
+        border: 1px solid var(--fainttext);
+        cursor: pointer;
     &::before, &::after{
-        position: absolute;
         content: '';
-        width: 100%;
-        height: 100%;
-        mask-image: url(${arrow});
-        mask-position: center;
-        mask-repeat: no-repeat;
-        transform-origin: 50% 50%;
+        position: absolute;
+        height: 15px; 
+        width: 3px; 
+
+    background: var(--offwhitefg);
     }
     &::before{
-        background: var(--normtext);
-        transition: opacity .25s;
+        top: -16px;
     }
     &::after{
-        background: var(--strokepeach);
-        opacity: 0;
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        transition: opacity .1s, clip-path .25s;
+        bottom: -16px;
     }
-    &:hover{
-        &::before{
-            opacity: 0.25;
-        }
-         &::after{
-            opacity: 1;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
-    }
+
 `
 const PagePrev = styled(PageBtn)`
     left: -32px;
     transform: translateX(${props=>props.show?0:'15px'});
-    &::before, &::after{
-        transform: rotate(180deg);
-    }
-    &::after{
-        /*clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);*/
+    &::after, &::before{
+        right: 16px;
     }
 `
 const PageNext = styled(PageBtn)`
     right: -32px;
     transform: translateX(${props=>props.show?0:'-15px'});
+    &::after, &::before{
+        left: 16px;
+    }
+`
+const ChevIcon = styled(Icon)`
+    fill: var(--normtext);
+    width: 25px;
+    height: 25px;
 `
