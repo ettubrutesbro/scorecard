@@ -316,6 +316,9 @@ export default class ResponsiveScorecard extends React.Component{
     }
     @observable screen = getMedia()
 
+    @observable displayApp = false
+    @action setDisplay = () => this.displayApp = true
+
     componentWillMount(){
         store.setIndicatorPages()
         // window.addEventListener('resize', this.resizeRefresh, false)
@@ -366,14 +369,12 @@ export default class ResponsiveScorecard extends React.Component{
         }else{
             this.setRandomIndicatorCycle(true)   
         }
-
-        
-
-
-
-        
     }
 
+    componentDidMount(){
+        window.setTimeout(this.setDisplay, 10)
+        // this.setDisplay()
+    }
 
     // @observable randInd = 0 
     @observable alreadyDisplayedRandomIndicators = []
@@ -418,7 +419,9 @@ export default class ResponsiveScorecard extends React.Component{
         return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
             <React.Fragment>
             <Styles />
-            <App>
+            <App
+                style = {{visibility: this.displayApp? 'visible' : 'hidden'}}
+            >
                 <Nav> 
                     <NavComponent 
                         init = {store.init}
