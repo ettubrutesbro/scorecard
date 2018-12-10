@@ -602,12 +602,19 @@ export class PickingWorkflow extends React.Component{
     @action setAnimationMode = (mode) => this.animationType = mode
 
     render(){
-        const {store, close} = this.props
-        const {which, open} = this.props
+        const {store, close, which, open} = this.props
         const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
 
         const showInd = which === 'indicator' || (!open && this.lastListShown === 'indicator')
         const showCounty = which === 'county' || (!open && this.lastListShown === 'county')
+
+        const modeSizes = screen === 'optimal'? {
+            closed: {width: 95, height: 72},
+            open: {width: 950, height: 720},
+        }: screen === 'compact'? {
+            closed: {width: 78, height: 57},
+            open: {width: 780, height: 575},
+        } : {}
 
         return(
 
@@ -627,10 +634,7 @@ export class PickingWorkflow extends React.Component{
                 />
                 <Lists
                     currentMode = {open? 'open' : 'closed'}
-                    modes = {{
-                        closed: {width: 78, height: 57},
-                        open: {width: 780, height: 575},
-                    }}
+                    modes = {modeSizes}
                     // duration = {.375}
                     delay = {open?'.125s':'0s'}
                     duration = {.35}
@@ -642,8 +646,8 @@ export class PickingWorkflow extends React.Component{
                         top: 0, left: 0,
                         padding: screen==='optimal'? '35px 50px' : '25px 35px',
                         overflow: 'hidden',
-                        width: '780px',     
-                        height: '575px'    
+                        width: modeSizes.open.width + 'px' ,    
+                        height: modeSizes.open.height + 'px'
                     }}
                     disableAllAnimations = {this.animationType==='mount'}
                     enterAnimation = {{
