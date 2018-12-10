@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, {css} from 'styled-components'
+import styled, {css, keyframes} from 'styled-components'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 
@@ -18,6 +18,7 @@ import semanticTitles from './assets/semanticTitles'
 import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
 import {Tooltip, DropdownToggle} from './components/generic'
+import ExpandBox from './components/ExpandBox'
 
 import media, {getMedia} from './utilities/media'
 import {isValid} from './utilities/isValid'
@@ -333,32 +334,15 @@ export default class ResponsiveNav extends React.Component{
                         bigscreen = {screen==='optimal'}
                     />
 
-                    
-
-                <FlipMove 
-                    typeName = {null}
-                    delay = {!store.indicator && !store.init? 100 : open? 150 : 0}
-                    duration = {200}
-                    enterAnimation = {{
-                        from: {opacity: 0, transform: 'translateY(0px)'},
-                        to: {opacity: 1, transform: 'translateY(0px)'}
-                    }}
-                    leaveAnimation = {{
-                        from: {opacity: 1, transform: 'translateY(0px)'},
-                        to: {opacity: 0, transform: 'translateY(0px)'}
-                    }}
-                >
-                {open && 
                     <PickingWorkflow 
                         muted = {this.raceDropdown}
                         x = {()=>openNav(false)} 
                         store = {store}
-                        open = {open}
+                        open = {open? true : false}
+                        which = {open}
                         close = {()=>openNav(false)} 
                     />
-                }
-                </FlipMove>
-                {/*open && <X onClick = {()=>openNav(false)}/>*/}
+
                 
                 <Reset 
                     className = 'negativeOnDark' 
@@ -430,7 +414,8 @@ const ShareIco = styled.div`
 
 const X = styled(Icon)`
      position: absolute;
-     right: 30px;
+     right: 22px;
+     top: 22px;
      width:25px;
      height: 25px;
      cursor: pointer;
@@ -478,35 +463,17 @@ const YrToggle = styled.div`
     transform: translateX(${props=>props.offset===2 && props.bigscreen? 468 : (props.offset===2 && !props.bigscreen) || props.offset===1? 25: 0}px);
 `
 
-const LargeWorkflow = styled.div`
-    position: absolute;
 
-    background: var(--offwhitefg);
-    border: 1px solid var(--bordergrey);
-    z-index: 3;
-    transform-origin: 0% 0%;
-    opacity: ${props => props.muted? 0.5 : 1};
-    @media ${media.optimal}{
-        width: 950px;
-        height: 720px;
-        padding: 30px 45px;
-        top: 100px;
-    }
-    @media ${media.compact}{
-        top: 90px;
-        width: 780px;
-        height: 575px;
-        padding: 20px 35px;
-    }
-`
 
 const Triangle = styled.div`
-    transition: transform .3s;
+    position: absolute;
+    z-index: 1000;
+    transition: transform ${props => props.speed}; 
     @media ${media.optimal}{
-        transform: translate(${props => props.active==='indicator'? '35px, -30px' : '440px, -30px'});
+        transform: translate(${props => props.hide? '0, 2px' : props.active==='indicator'? '35px, 2px' : '440px, 2px'});
     }
     @media ${media.compact}{
-        transform: translate(${props => props.active==='indicator'? '40px, -20px' : '445px, -20px'});
+        transform: translate(${props => props.hide? '0, 2px' : props.active==='indicator'? '40px, 2px' : '450px, 2px'});
     }
     &::after, &::before{
         position: absolute;
@@ -534,12 +501,7 @@ export class PickingWorkflow extends React.Component{
     @observable pageAnimDirection = 'left'
     @observable hoveredPageBtn = false
 
-    componentDidMount(){
-        window.onkeyup = this.keyHandler
-    }
-    componentWillUnmount(){
-        window.onkeyup = () => {}
-    }
+    @observable animationType = 'mount' //mount or change
 
     @action setSearchFocus = (which, tf) =>{
         console.log('nav set search focus')
@@ -556,6 +518,7 @@ export class PickingWorkflow extends React.Component{
     }
     keyHandler = (e) => {
         const {store} = this.props
+        console.log(e.which)
         if(e.key==='Escape'||e.key==='Esc'){
             this.exit()
         }
@@ -569,14 +532,14 @@ export class PickingWorkflow extends React.Component{
         }
         else if(e.which >= 65 && e.which <= 90){ //user typed letter
             //searching indicator or county?
-            if(this.props.open === 'indicator' && !this.indicatorSearchFocus){
+            if(this.props.which === 'indicator' && !this.indicatorSearchFocus){
                 //searchinput is not already focused: enter key and focus
                 if(!store.indicatorSearchString){
                     store.modifySearchString('indicator', e.key)
                     this.setSearchFocus('indicator', true)
                 }
             }
-            else if(this.props.open === 'county' && !this.countySearchFocus){
+            else if(this.props.which === 'county' && !this.countySearchFocus){
                 if(!store.countySearchString){
                     store.modifySearchString('county', e.key)
                     this.setSearchFocus('county', true)
@@ -600,32 +563,82 @@ export class PickingWorkflow extends React.Component{
     @action onHoverPageBtn = (val) => this.hoveredPageBtn = val
 
     componentDidUpdate(oldProps){
-        if(oldProps.open !== this.props.open){
-            if(oldProps.open === 'indicator' && this.props.store.indicatorSearchString){
+        if(oldProps.which !== this.props.which){
+            if(oldProps.which === 'indicator' && this.props.store.indicatorSearchString){
                 this.props.store.modifySearchString('indicator','')
             }
-            else if(oldProps.open === 'county' && this.props.store.countySearchString){
+            else if(oldProps.which === 'county' && this.props.store.countySearchString){
                 this.props.store.modifySearchString('county','')
             }
+            if(this.props.which) this.setLastList(this.props.which)
         }
     }
 
+    componentWillUpdate(newProps){
+        if(this.props.open !== newProps.open){ 
+            this.setAnimationMode('mount')
+            console.log('setting mount/unmount animation, last list shown is', this.lastListShown)
+            console.log(this.animationType)
+            if(newProps.open){
+                console.log('setting keyhandler')
+                window.onkeyup = this.keyHandler
+            }
+            else{
+                window.onkeyup = () => {}
+            }
+        }
+        else if(this.props.which !== newProps.which){
+            this.setAnimationMode('change')
+        }
+    }
+
+    @observable display = false
+    @action setDisplay = (tf) => {
+        console.log('seting display to ', tf)
+        this.display = tf
+    }
+    @observable lastListShown = ''
+    @action setLastList = (list) => this.lastListShown = list
+    @action setAnimationMode = (mode) => this.animationType = mode
+
     render(){
-        const {store, close} = this.props
-        const which = this.props.open
+        const {store, close, which, open} = this.props
         const {indicatorListPage, setIndicatorListPage, indicatorPages, screen} = store
 
+        const showInd = which === 'indicator' || (!open && this.lastListShown === 'indicator')
+        const showCounty = which === 'county' || (!open && this.lastListShown === 'county')
+
+        const modeSizes = screen === 'optimal'? {
+            closed: {width: 95, height: 72},
+            open: {width: 950, height: 720},
+        }: screen === 'compact'? {
+            closed: {width: 78, height: 57},
+            open: {width: 780, height: 575},
+        } : {}
+
         return(
-            <LargeWorkflow>
-                <Triangle
-                    active = {which}
-                 />
+
+            <LargeWorkflow
+                style = {{
+                    opacity: open? 1 : 0,
+                    transition: 'opacity .3s',
+                    transitionDelay: open? '0s' : '0.1s',
+                    pointerEvents: open? 'auto' : 'none',
+                }}
+            >
                 <X 
-                    img = "x" 
+                    img = "x_thin" 
                     color = "bordergrey"
                     hoverColor = "strokepeach"
                     onClick = {this.exit}
                 />
+                <Lists
+                    currentMode = {open? 'open' : 'closed'}
+                    modes = {modeSizes}
+                    // duration = {.375}
+                    delay = {open?'.125s':'0s'}
+                    duration = {.35}
+                >
                 <FlipMove
                     // typeName = {null}
                     style = {{
@@ -633,19 +646,33 @@ export class PickingWorkflow extends React.Component{
                         top: 0, left: 0,
                         padding: screen==='optimal'? '35px 50px' : '25px 35px',
                         overflow: 'hidden',
-                        width: '100%', height: '100%'    
+                        width: modeSizes.open.width + 'px' ,    
+                        height: modeSizes.open.height + 'px'
                     }}
+                    disableAllAnimations = {this.animationType==='mount'}
                     enterAnimation = {{
-                        from: {opacity: 0, transform: `translateX(${which==='indicator'?-150:150}px)`},
-                        to: {opacity: 1, transform: `translateX(0px)`},
+                        from: {
+                            opacity: 0, 
+                            transform: `translateX(${which==='indicator'?-150:150}px)`
+                        },
+                        to: {
+                            opacity: 1, 
+                            transform: `translateX(0px)`
+                        },
                     }}
                     leaveAnimation = {{
-                        from: {opacity: 1, transform: `translateX(0px)`},
-                        to: {opacity: -1, transform: `translateX(${which==='indicator'?150:-150}px)`},
+                        from: {
+                            opacity: 1, 
+                            transform: `translateX(0px)`
+                        },
+                        to: {
+                            opacity: -1,
+                            transform: `translateX(${which==='indicator'?150:-150}px)`
+                        },
                     }}
                     maintainContainerHeight = {true}
                 >
-                    {which === 'indicator' && 
+                    {showInd &&
                         <IndicatorList 
                             muted = {this.props.muted}
                             store = {store} 
@@ -661,7 +688,7 @@ export class PickingWorkflow extends React.Component{
                             onSearch = {(val)=>{store.modifySearchString('indicator', val)}}
                         />
                     }
-                    {which === 'county' && 
+                    {showCounty &&
                         <CountyList 
                             muted = {this.props.muted}
                             store = {store} 
@@ -676,89 +703,130 @@ export class PickingWorkflow extends React.Component{
                         />
                     }
                 </FlipMove>
+                </Lists>
 
                         <PageNext 
                             show = {which==='indicator' && indicatorListPage < indicatorPages.length-1 && !store.sanityCheck.indicator}
+                            delay = {this.animationType === 'mount' && open? '.5s' : '0s'}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage+1)
+                                (e)=>{
+                                    this.setAnimationMode('page')
+                                    this.handlePageChange(e,indicatorListPage+1)
+                                }
                                 
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
-                        />
+                        >
+                            <ChevIcon img = "chevright_thin" color = ''/>
+                        </PageNext>
                     
                         <PagePrev 
                             show = {which==='indicator' && indicatorListPage > 0 && !store.sanityCheck.indicator}
+                            delay = {this.animationType === 'mount' && open? '.5s' : '0s'}
                             onClick = {
-                                (e)=>this.handlePageChange(e,indicatorListPage-1)
-                            
+                                (e)=>{
+                                    this.setAnimationMode('page')
+                                    this.handlePageChange(e,indicatorListPage-1)
+                                }                           
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
-                        />
+                        >
+                            <ChevIcon img = "chevleft_thin" color = ''/>
+                        </PagePrev>
+                <Triangle
+                    hide = {!open}
+                    active = {which}
+                    speed = {this.animationType === 'mount' && which==='county'? '0s' : '.25s'}
+                 />
+                        </LargeWorkflow>
                     
 
-            </LargeWorkflow>
+
         )
     }
 }
-const arrow = require('./assets/arrow.svg')
+const LargeWorkflow = styled.div`
+    position: absolute;
+    /*border: 1px solid var(--bordergrey);*/
+    z-index: 3;
+    transform-origin: 0% 0%;
+    opacity: ${props => props.muted? 0.5 : 1};
+    @media ${media.optimal}{
+        width: 950px;
+        height: 720px;
+        /*padding: 30px 45px;*/
+        top: 100px;
+    }
+    @media ${media.compact}{
+        top: 90px;
+        width: 780px;
+        height: 575px;
+        /*padding: 20px 35px;*/
+    }
+`
+
+
+
+const Lists = styled(ExpandBox)`
+    background: var(--offwhitefg);
+`
+
 
 const PageBtn = styled.div`
     position: absolute;
-    width: 50px; height: 95px; 
-    border: 1px solid var(--fainttext);
-    background: white;
-    /*background-position: center;*/
-    /*background-repeat: no-repeat;*/
-    /*background-image: url(${arrow});*/
+
+
     top: 0; bottom: 0; margin: auto;
-    // display: ${props => props.show? 'block' : 'none'};
     opacity: ${props => props.show? 1 : 0};
     transition: transform .25s, opacity .25s;
-    cursor: pointer;
+    transition-delay: ${props => props.delay};
+    width: 50px;
+    height: 95px;
     z-index: 4;
+    display: flex; justify-content: center;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--fainttext);
+    cursor: pointer;
+    background: var(--offwhitefg);
+    fill: var(--normtext);
+    &:hover{
+        fill: var(--strokepeach);
+    }
     &::before, &::after{
-        position: absolute;
         content: '';
-        width: 100%;
-        height: 100%;
-        mask-image: url(${arrow});
-        mask-position: center;
-        mask-repeat: no-repeat;
-        transform-origin: 50% 50%;
+        position: absolute;
+        height: 15px; 
+        width: 3px; 
+        background: var(--offwhitefg);
     }
     &::before{
-        background: var(--normtext);
-        transition: opacity .25s;
+        top: -16px;
     }
     &::after{
-        background: var(--strokepeach);
-        opacity: 0;
-        clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
-        transition: opacity .1s, clip-path .25s;
+        bottom: -16px;
     }
-    &:hover{
-        &::before{
-            opacity: 0.25;
-        }
-         &::after{
-            opacity: 1;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
-    }
+
 `
 const PagePrev = styled(PageBtn)`
+    padding-right: 4px;
     left: -32px;
     transform: translateX(${props=>props.show?0:'15px'});
-    &::before, &::after{
-        transform: rotate(180deg);
-    }
-    &::after{
-        /*clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);*/
+    &::after, &::before{
+        right: 15px;
     }
 `
 const PageNext = styled(PageBtn)`
+    padding-left: 4px;
     right: -32px;
     transform: translateX(${props=>props.show?0:'-15px'});
+    &::after, &::before{
+        left: 16px;
+    }
+`
+const ChevIcon = styled(Icon)`
+    width: 35px;
+    height: 35px;
 `

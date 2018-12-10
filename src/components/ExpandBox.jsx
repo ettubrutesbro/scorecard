@@ -54,7 +54,7 @@ const computeAnim = (goTo, startFrom, invert) => {
              }
 
             frames += `${step}% { 
-                transform: scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)}); 
+                transform: scale(${scaleX.toFixed(5)}, ${scaleY.toFixed(5)}); 
             } `
         }
         return keyframes`${frames}`
