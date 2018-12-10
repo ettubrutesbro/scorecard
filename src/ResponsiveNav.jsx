@@ -620,7 +620,7 @@ export class PickingWorkflow extends React.Component{
                 }}
             >
                 <X 
-                    img = "x" 
+                    img = "x_thin" 
                     color = "bordergrey"
                     hoverColor = "strokepeach"
                     onClick = {this.exit}
@@ -714,13 +714,7 @@ export class PickingWorkflow extends React.Component{
                             onMouseEnter = {()=>{this.onHoverPageBtn('next')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}}   
                         >
-                            <ChevIcon 
-                                img = "chevright" 
-                                style = {{
-                                    width: '25px', height: '25px'    
-                                }}
-                                color = ''
-                            />
+                            <ChevIcon img = "chevright_thin" color = ''/>
                         </PageNext>
                     
                         <PagePrev 
@@ -734,7 +728,9 @@ export class PickingWorkflow extends React.Component{
                             }
                             onMouseEnter = {()=>{this.onHoverPageBtn('prev')}}
                             onMouseLeave = {()=>{this.onHoverPageBtn(false)}} 
-                        />
+                        >
+                            <ChevIcon img = "chevleft_thin" color = ''/>
+                        </PagePrev>
                 <Triangle
                     hide = {!open}
                     active = {which}
@@ -778,7 +774,6 @@ const PageBtn = styled.div`
     position: absolute;
 
 
-
     top: 0; bottom: 0; margin: auto;
     opacity: ${props => props.show? 1 : 0};
     transition: transform .25s, opacity .25s;
@@ -787,16 +782,21 @@ const PageBtn = styled.div`
     height: 95px;
     z-index: 4;
     display: flex; justify-content: center;
-            background: white;
-        border: 1px solid var(--fainttext);
-        cursor: pointer;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--fainttext);
+    cursor: pointer;
+    background: var(--offwhitefg);
+    fill: var(--normtext);
+    &:hover{
+        fill: var(--strokepeach);
+    }
     &::before, &::after{
         content: '';
         position: absolute;
         height: 15px; 
         width: 3px; 
-
-    background: var(--offwhitefg);
+        background: var(--offwhitefg);
     }
     &::before{
         top: -16px;
@@ -807,13 +807,15 @@ const PageBtn = styled.div`
 
 `
 const PagePrev = styled(PageBtn)`
+    padding-right: 4px;
     left: -32px;
     transform: translateX(${props=>props.show?0:'15px'});
     &::after, &::before{
-        right: 16px;
+        right: 15px;
     }
 `
 const PageNext = styled(PageBtn)`
+    padding-left: 4px;
     right: -32px;
     transform: translateX(${props=>props.show?0:'-15px'});
     &::after, &::before{
@@ -821,7 +823,6 @@ const PageNext = styled(PageBtn)`
     }
 `
 const ChevIcon = styled(Icon)`
-    fill: var(--normtext);
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
 `
