@@ -19,6 +19,7 @@ import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
 import {DemoSources} from './components/Sources'
 import DemoBox from './components/DemoBox'
+import MobileScorecard from './MobileScorecard'
 
 import {Button} from './components/generic'
 
@@ -416,7 +417,9 @@ export default class ResponsiveScorecard extends React.Component{
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
+        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) 
+        : store.screen==='mobile'? ( <MobileScorecard store = {store} /> )
+        : (
             <React.Fragment>
             <Styles />
             <App
