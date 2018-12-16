@@ -28,7 +28,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 import '../src/global.css'
 
   addDecorator(withKnobs)
-// addDecorator(withViewport('iphone6'))
+addDecorator(withViewport('iphone6'))
 
 class AppStore{
     @observable indicator = null
