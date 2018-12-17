@@ -70,13 +70,14 @@ const SemiFixedBar = styled.div`
 const Content = styled.div`
     position: absolute;
     top: 0;
-    height: 100vh;
+    /*height: 100vh;*/
     width: 100%;
     overflow: hidden;
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
     padding: 10px 20px 80px 20px;
+    margin-bottom: 67px;
 `
 const Tables = styled.div`
     position: relative;
