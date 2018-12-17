@@ -11,9 +11,9 @@ import Readout from '../src/components/Readout'
 
 @observer
 export default class MobileScorecard extends React.Component{
-    componentDidMount(){
 
-    }
+    @observable 
+
     render(){
         const {store} = this.props
         return(
@@ -33,6 +33,11 @@ export default class MobileScorecard extends React.Component{
                     />
                     </Tables>
                 </Content>
+                <SectionChooser>
+                    <BreakdownBtn />
+                    <DemoBtn />
+                    <SourcesBtn />
+                </SectionChooser>
             </div>
         )
     }
@@ -48,6 +53,7 @@ const NavBar = (props) => {
 }
 const SearchIcon = styled(Icon)`
     width: 15px; height: 15px;
+    margin-right: 10px;
 `
 const SemiFixedBar = styled.div`
     position: fixed;
@@ -55,21 +61,46 @@ const SemiFixedBar = styled.div`
     width: 100%;
     height: 55px;
     background: var(--offwhitebg);
-    padding: 10px;
+    padding: 0 20px;
     color: white;
     display: flex; align-items: center;
     z-index: 2;
+    font-size: 14px;
 `
 const Content = styled.div`
     position: absolute;
     top: 0;
     height: 100vh;
     width: 100%;
+    overflow: hidden;
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
-    padding: 10px 20px;
+    padding: 10px 20px 80px 20px;
 `
 const Tables = styled.div`
+    position: relative;
     margin-top: 25px;
+    height: 495px;
+`
+const SectionChooser = styled.div`
+    position: fixed;
+    height: 67px;
+    border-top: 1px solid var(--fainttext);
+    background: white;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+`
+const SectionBtn = styled.div`
+    
+`
+const BreakdownBtn = styled(SectionBtn)`
+    
+`
+const DemoBtn = styled(SectionBtn)`
+    
+`
+const SourcesBtn = styled(SectionBtn)`
+    
 `

@@ -96,7 +96,7 @@ const Header = styled.div`
         const {selectBar} = this.props
         // console.log(selectBar)
         const screen = getMedia()
-        const labelLineOffset = screen === 'mobile'? 50 : 75
+        const labelLineOffset = screen === 'mobile'? 60 : 75
         return (
 
             <GraphTable
@@ -266,7 +266,7 @@ const Content = styled.div`
     padding: 0 36px 0px 25px;
     margin: ${props => props.beefyPadding?'42px 0 32px 0' : '25px 0 18px 0'};
     @media ${media.mobile}{
-        padding: 0 20px 0px 15px;
+        padding: 0 30px 0px 15px;
     }
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};

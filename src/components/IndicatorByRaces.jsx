@@ -72,7 +72,7 @@ export default class IndicatorByRaces extends React.Component{
             }
         })
 
-        const vertOffsets = this.props.mobile? [-220, -100] : [-150, -50]
+        const vertOffsets = this.props.mobile? [-160, -0] : [-150, -50]
 
         return(
             <Wrapper
@@ -90,7 +90,7 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: 150},
+                        expanded: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: screen==='mobile'? 160: 150},
                         collapsed: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}

@@ -24,7 +24,7 @@ const Void = styled.div`
     position: relative;
     width: 100vw;
     max-width: 640px;
-    height: 100vh;
+    /*height: 100vh;*/
     background: var(--offwhitefg);
     padding: 25px;
     /*font-size: 14px; */
