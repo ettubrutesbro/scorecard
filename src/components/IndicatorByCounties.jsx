@@ -297,35 +297,43 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        // let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        let modes
         if(screen==='optimal'){
-            expandDims = {width: 610, height: 515}
-            collapseDims = {width: 610, height: 390}
-            noRaceExpandDims = {width: 610, height: 575}
-            noRaceCollapseDims = {width: 610, height: 575}
-            
+            modes = {
+                optimalExpanded: {width: 610, height: 515},
+                optimalCollapsed: {width: 610, height: 390},
+                optimalNoRaceExpanded: {width: 610, height: 575},
+                optimalNoRaceCollapsed: {width: 610, height: 575},
+                optimalsources: {width: 370, height: 50}
+            }
         }
         else if(screen==='compact'){
-            expandDims = {width: 480, height: 390}
-            collapseDims = {width: 480, height: 280}
-            noRaceExpandDims = {width: 480, height: 450}
-            noRaceCollapseDims = {width: 480, height: 450}
-            
+            modes = {
+                compactExpanded: {width: 480, height: 390},
+                compactCollapsed: {width: 480, height: 280},
+                compactNoRaceExpanded: {width: 480, height: 450},
+                compactNoRaceCollapsed: {width: 480, height: 450},
+                compactsources: {width: 370, height: 50}
+            }
         }
         else if(screen==='mobile'){
-            expandDims = {width: 300, height: 450}
-            collapseDims = {width: 300, height: 450}
-            noRaceExpandDims = {width: 300, height: 450}
-            noRaceCollapseDims = {width: 300, height: 450}
+            modes = {
+                mobileExpanded: {width: 300, height: 450},
+                mobileCollapsed: {width: 300, height: 450},
+                mobileNoRaceExpanded: {width: 300, height: 450},
+                mobileNoRaceCollapsed: {width: 300, height: 450},
+                mobilesources: {width: 300, height: 50}
+            }
         }
 
-        const modes = {
-            collapsed: collapseDims,
-            expanded: expandDims,
-            noraceexpanded: noRaceExpandDims,
-            noracecollapsed: noRaceCollapseDims,
-            sources: {width: 370, height: 50}
-        }
+        // const modes = {
+        //     collapsed: collapseDims,
+        //     expanded: expandDims,
+        //     noraceexpanded: noRaceExpandDims,
+        //     noracecollapsed: noRaceCollapseDims,
+        //     sources: {width: 370, height: 50}
+        // }
         console.log(modes)
         return (
             <Wrapper offset = {this.props.sources}>
@@ -333,12 +341,12 @@ export default class IndicatorByCounties extends React.Component{
             <Graph
                 expandable
                 withScroll
-                currentMode = {
-                    this.props.sources? 'sources' : 
-                    !this.props.hasRace && this.props.expand? 'noraceexpanded' :
-                    !this.props.hasRace && !this.props.expand? 'noracecollapsed' :
-                    this.props.expand? 'expanded' : 
-                    'collapsed'
+                currentMode = { 
+                    this.props.sources? screen + 'sources' : 
+                    !this.props.hasRace && this.props.expand? screen + 'NoRaceExpanded' :
+                    !this.props.hasRace && !this.props.expand? screen + 'NoRaceCollapsed' :
+                    this.props.expand? screen + 'Expanded' : 
+                    screen + 'Collapsed'
                 }
                 modes = {modes}
                 duration = {this.props.sources? .5 : .35}

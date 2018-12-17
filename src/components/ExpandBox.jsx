@@ -93,7 +93,7 @@ export default class ExpandTest extends React.Component{
     componentWillUpdate(newProps){
         if(newProps.currentMode !== this.props.currentMode){
             console.log('setting mode to', newProps.currentMode, {...this.props.modes[newProps.currentMode]})
-            this.setDims('goTo', this.props.modes[newProps.currentMode])
+            this.setDims('goTo', newProps.modes[newProps.currentMode])
             if(this.props.withScroll){
                 findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
             }
@@ -101,6 +101,7 @@ export default class ExpandTest extends React.Component{
     }
 
     render(){
+        console.log(this.props.currentMode)
         const scaleX = this.goTo.width / this.default.width 
         const scaleY = this.goTo.height / this.default.height
         return( 
@@ -113,13 +114,13 @@ export default class ExpandTest extends React.Component{
                         {this.props.header}
                     </Header>
                 }
-                {this.props.withScroll &&
+                {/*this.props.withScroll &&
                     <FadeCropper 
                         // a hack...
                         show = {this.props.currentMode.includes('expanded')} 
                         width = {this.props.modes.expanded.width}
                     />
-                }
+                */}
                 <Box
                     current = {this.goTo}
                     animFrames = {computeAnim(this.current, this.goTo)}
@@ -155,14 +156,14 @@ export default class ExpandTest extends React.Component{
                         </Content>
                     </ScrollbarWrap>
                 </Box>
-                {this.props.withScroll && 
+                {/*this.props.withScroll && 
                     <FadeCropperBottom
                         width = {this.props.modes.expanded.width}
                         // expanded exception hack.III
                         show = {this.props.currentMode.includes('expanded')}
                         offset = {this.goTo.height}
                     />
-                }
+                */}
                 <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
                 <Bottom delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
                 <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
