@@ -46,6 +46,10 @@ const Option = styled.div`
     @media ${media.compact}{
         padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};    
     }
+    @media ${media.mobile}{
+        font-size: 12px;
+        padding: 8.5px 15px;
+    }
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
     white-space: nowrap;

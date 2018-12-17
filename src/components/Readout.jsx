@@ -19,17 +19,21 @@ import media, {getMedia} from '../utilities/media'
 const ReadoutBlock = styled.div`
     display: flex;
     align-items: center;
+    padding-right: 30px;
     @media ${media.optimal}{
         width: 950px;   
     }
     @media ${media.compact}{
         width: 850px;   
     }
+    @media ${media.mobile}{
+        width: 100%;
+        padding: 15px;
+    }
     left: 0;
     top: 0;
     transform-origin: 50% 0%;
     /*position: absolute;*/
-    padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
     b{
         font-weight: 600;
@@ -43,6 +47,9 @@ const ReadoutBlock = styled.div`
         @media ${media.compact}{
             font-size: 42px;
         }
+        @media ${media.mobile}{
+            font-size: 32px;
+        }
         font-weight: 600;
     }
 `
@@ -55,6 +62,10 @@ const IndentedTitle = styled.div`
     @media ${media.compact}{
         padding-top: 12px;
         line-height: 34px;
+    }
+    @media ${media.mobile}{
+        padding-top: 5px;
+        line-height: 25px;
     }
 `
 const Crumb = styled.span`

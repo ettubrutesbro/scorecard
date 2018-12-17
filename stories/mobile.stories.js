@@ -7,17 +7,111 @@ import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 import { linkTo } from '@storybook/addon-links';
 import '../src/global.css'
 
+import chroma from 'chroma-js'
+
 import MobileScorecard from '../src/MobileScorecard'
+import {counties} from '../src/assets/counties'
+import indicators from '../src/data/indicators'
+import demopop from '../src/data/demographicsAndPopulation'
+
+import IndicatorByCounties from '../src/components/IndicatorByCounties'
+import Readout from '../src/components/Readout'
+import IndicatorByRaces from '../src/components/IndicatorByRaces'
 
 addDecorator(withViewport('iphone6'))
 
-storiesOf('Mobile version', module).add('MobileScorecard', ()=>{
+const Void = styled.div`
+    position: relative;
+    width: 100vw;
+    max-width: 640px;
+    height: 100vh;
+    background: var(--offwhitefg);
+    padding: 25px;
+    /*font-size: 14px; */
+`
 
-	return(
-		<MobileScorecard 
-			store = {{
-				indicator: 'earlyPrenatalCare'
-			}}
-		/>
-	)
+let allCounties = counties.map((cty)=>{return cty.id})
+allCounties.push('')
+let allIndicators = Object.keys(indicators)
+allIndicators.push('')
+
+storiesOf('Mobile version', module)
+.add('MobileScorecard', ()=>{
+    const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
+    const county = select('county', allCounties, null)
+    const race = select('race', ['asian','black','latinx','white','other',null],null)
+    const year = select('year(index)', [0,1], 0)
+
+    const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
+        let use = race
+        if(!indicators[indicator].counties[cty][race]) use = 'totals'
+        return indicators[indicator].counties[cty][use][year]
+    }).filter((o)=>{return o===''||o==='*'?false : true})
+
+    return(
+        <MobileScorecard 
+            store = {{
+                indicator: indicator,
+                screen: 'mobile',
+                year: 0,
+                race: race,
+                county: county,
+                colorScale: chroma.scale('BuPu')
+                    .domain([0,100])
+                    .padding([Math.min(...allNums)/100, 0])
+                    .classes(5)
+            }}
+        />
+    )
+})
+
+.add('IndByCounties', ()=>{
+    const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
+    const county = select('county', allCounties, null)
+    const race = select('race', ['asian','black','latinx','white','other',null],null)
+    const year = select('year(index)', [0,1], 0)
+
+    const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
+        let use = race
+        if(!indicators[indicator].counties[cty][race]) use = 'totals'
+        return indicators[indicator].counties[cty][use][year]
+    }).filter((o)=>{return o===''||o==='*'?false : true})
+    return(
+        <Void>
+        <IndicatorByCounties
+            entries = {10}
+            store = {{
+                screen: 'mobile',
+                year: year,
+                race: race,
+                indicator: indicator,
+                county: county,
+                completeWorkflow: (a,b) => {console.log(a,b)},
+                colorScale: chroma.scale('BuPu')
+                    .domain([0,100])
+                    .padding([Math.min(...allNums)/100, 0])
+                    .classes(5)
+            }}
+        />
+        </Void>
+    )
+})
+.add('Readout', ()=>{
+    const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
+    const county = select('county', allCounties, null)
+    const race = select('race', ['asian','black','latinx','white','other',null],null)
+    const year = select('year(index)', [0,1], 0)
+    return(
+        <Void>
+            <Readout 
+                store = {{
+                    screen: 'mobile',
+                    year: year,
+                    race: race,
+                    indicator: indicator,
+                    county: county,
+                }}
+            />
+        </Void>
+    )
 })

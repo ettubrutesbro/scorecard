@@ -5,6 +5,8 @@ import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 import chroma from 'chroma-js'
 
+import media from '../src/utilities/media'
+
 
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
@@ -25,7 +27,9 @@ const Void = styled.div`
     height: 100vh;
     background: var(--offwhitefg);
     padding: 50px;
-
+    @media ${media.mobile}{
+        padding: 25px;
+    }
 `
 
 const Note = styled.h3`

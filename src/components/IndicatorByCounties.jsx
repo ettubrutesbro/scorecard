@@ -15,6 +15,7 @@ import semanticTitles from '../assets/semanticTitles'
 
 import {capitalize} from '../utilities/toLowerCase'
 import {truncateNum} from '../utilities/sigFig'
+import media from '../utilities/media'
 
 import ordinal from 'ordinal'
 
@@ -205,6 +206,8 @@ export default class IndicatorByCounties extends React.Component{
 
         const distribute = !this.props.expand
 
+        let maxNumRows = !race? performance.length : 0
+
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
                 if(Number(a.population) > Number(b.population)) return -1 
@@ -270,6 +273,7 @@ export default class IndicatorByCounties extends React.Component{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
         if(race){
+            maxNumRows = withRace.length
             withRace = withRace.slice(0,distribute?this.props.entries:withRace.length) 
             .map((cty)=>{
                 const val = indicators[indicator].counties[cty.id][race][year]
@@ -319,13 +323,16 @@ export default class IndicatorByCounties extends React.Component{
         }
         else if(screen==='mobile'){
             modes = {
-                mobileExpanded: {width: 300, height: 450},
-                mobileCollapsed: {width: 300, height: 450},
-                mobileNoRaceExpanded: {width: 300, height: 450},
-                mobileNoRaceCollapsed: {width: 300, height: 450},
+                mobileExpanded: {width: 300, height: 275},
+                mobileCollapsed: {width: 300, height: 275},
+                mobileNoRaceExpanded: {width: 300, height: 275},
+                mobileNoRaceCollapsed: {width: 300, height: 275},
                 mobilesources: {width: 300, height: 50}
             }
         }
+
+        console.log('indbycounties max:')
+        console.log(maxNumRows)
 
         // const modes = {
         //     collapsed: collapseDims,
@@ -360,6 +367,7 @@ export default class IndicatorByCounties extends React.Component{
                 selectable
                 beefyPadding
                 header = {(<HeaderComponent 
+                    screen = {screen}
                     sources = {this.props.sources}
                     race = {race} 
                     distribute = {distribute}
@@ -370,12 +378,13 @@ export default class IndicatorByCounties extends React.Component{
 
                 hideGraph = {this.props.sources}
 
-                labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
+                labelWidth = {screen === 'mobile' && this.sortOverviewBy === 'pop'? 145 : screen === 'mobile'? 125 : this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
                 selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
                 footer = {(
                     <FooterComponent
+                        mobile = {screen==='mobile'}
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
                         hide = {this.props.sources}
@@ -432,8 +441,8 @@ const HeaderComponent = (props) => {
                     hide = {props.sources}
                     offset = {!props.distribute}
                     options = {[
-                        {label: 'by %', value: 'pct'},
-                        {label: 'by Child Population', value: 'pop'}
+                        {label: props.screen==='mobile'? 'by %' : 'by %', value: 'pct'},
+                        {label: props.screen === 'mobile'? '#' :  'by Child Population', value: 'pop'}
                     ]}
                     theme = "bw"
                     onClick = {props.setOverviewSort}
@@ -465,10 +474,12 @@ const FooterComponent = (props) => {
             hide = {props.hide}
         >
             <ExpandBox
-                currentMode = {!props.offset? 'expanded' : 'collapsed'}
+                currentMode = {(props.mobile? 'mobile' : '')+(!props.offset? 'expanded' : 'collapsed')}
                 modes = {{
                     expanded: {width: 160, height: 33},
+                    mobileexpanded: {width: 100, height: 33},
                     collapsed: {width: 112, height: 33},
+                    mobilecollapsed: {width: 75, height: 33},
                 }}
                 borderColor = 'var(--fainttext)'
             >
@@ -476,7 +487,8 @@ const FooterComponent = (props) => {
                     onClick = {props.onClick} 
                     label = {(
                         <React.Fragment>
-                            {!props.offset && 'See all counties'}
+                            {!props.offset && !props.mobile && 'See all counties'}
+                            {!props.offset && props.mobile && 'See all'}
                             {props.offset && 'See less'}
                             <Sprite 
                                 style = {{
@@ -508,6 +520,9 @@ const headerfooter = styled.div`
     display: inline-flex; align-items: center; 
     height: 3px;
     margin: 0 20px;
+    @media ${media.mobile}{
+        margin: 0 15px;
+    }
     /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
@@ -589,6 +604,9 @@ const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
     position: absolute;
     width: 192px;
+    @media ${media.mobile}{
+        width: 130px;
+    }
     right: 0px;
     padding: 0 15px;
     opacity: ${props => props.hide? 0 : 1};

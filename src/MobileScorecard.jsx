@@ -5,6 +5,10 @@ import styled from 'styled-components'
 
 import Icon from './components/generic/Icon'
 
+import IndicatorByCounties from '../src/components/IndicatorByCounties'
+import IndicatorByRaces from '../src/components/IndicatorByRaces'
+import Readout from '../src/components/Readout'
+
 @observer
 export default class MobileScorecard extends React.Component{
     componentDidMount(){
@@ -16,7 +20,18 @@ export default class MobileScorecard extends React.Component{
             <div>
                 <NavBar store = {store}/>
                 <Content>
-                    readout and tables for {store.indicator}
+                    <Readout store = {store} />
+                    <Tables>
+                    <IndicatorByCounties
+                        entries = {9}
+                        store = {store}
+                    />
+                    <IndicatorByRaces
+                        store = {store}
+                        expand = {true}
+                        mobile = {true}
+                    />
+                    </Tables>
                 </Content>
             </div>
         )
@@ -53,4 +68,8 @@ const Content = styled.div`
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
+    padding: 10px 20px;
+`
+const Tables = styled.div`
+    margin-top: 25px;
 `

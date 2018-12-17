@@ -5,7 +5,7 @@ import {observer} from 'mobx-react'
 import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
-import media from '../utilities/media'
+import media, {getMedia} from '../utilities/media'
 
 import ExpandBox from './ExpandBox'
 
@@ -95,6 +95,8 @@ const Header = styled.div`
     render(){
         const {selectBar} = this.props
         // console.log(selectBar)
+        const screen = getMedia()
+        const labelLineOffset = screen === 'mobile'? 50 : 75
         return (
 
             <GraphTable
@@ -179,7 +181,7 @@ const Header = styled.div`
                                             hovered = {item.id === this.props.hovered}
                                             selected = {item.id === this.props.selected}
                                             alignValue = {this.props.alignValue}
-                                            offset = {this.props.labelWidth + (((this.width-75) - this.props.labelWidth) * (item.value/100) ) }
+                                            offset = {this.props.labelWidth + (((this.width-labelLineOffset) - this.props.labelWidth) * (item.value/100) ) }
                                         >
                                             {item.trueValue && item.trueValue}
                                             {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
@@ -205,7 +207,7 @@ const Header = styled.div`
                             // offset = {0}
                             side = {this.props.average>65?'left':'right'}
                             muted = {this.props.hovered}
-                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-75)}
+                            offset = {(this.props.average/100)*(this.width-this.props.labelWidth-labelLineOffset)}
                         >
                             <AverageLabel side = {this.props.average>65?'left':'right'}>
                              CA Avg 
@@ -232,6 +234,9 @@ const GraphTable = styled.div`
     flex-wrap: wrap;
     letter-spacing: 0.5px;
     font-size: 13px;
+    @media ${media.mobile}{
+        font-size: 12px;
+    }
     transition: border-color .25s, background-color .25s, box-shadow .25s, opacity .45s;
     overflow: hidden;
     position: absolute;
@@ -260,6 +265,9 @@ const Content = styled.div`
     height: 100%;
     padding: 0 36px 0px 25px;
     margin: ${props => props.beefyPadding?'42px 0 32px 0' : '25px 0 18px 0'};
+    @media ${media.mobile}{
+        padding: 0 20px 0px 15px;
+    }
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
 `
@@ -272,6 +280,9 @@ const Label = styled.div`
     flex-shrink: 0;
     justify-content: ${props => props.hasLeftLabel? 'space-between' : 'flex-end'};
     padding-right: 20px;
+    @media ${media.mobile}{
+        padding-right: 7px;
+    }
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
     white-space: nowrap;
@@ -302,11 +313,17 @@ const RowComponent = styled.div`
     display: flex;
     align-items: center;
     margin-top: 3px;
+    @media ${media.mobile}{
+        margin-top: 7px;
+    }
 `
 const AverageLine = styled.div`
     position: absolute;
     bottom: 20px;
     left: ${props => props.labelWidth + 20}px;
+    @media ${media.mobile}{
+        left: ${props => props.labelWidth + 10}px;
+    }
     width: 1px;
     background-color: var(--fainttext);
     height: calc(100% - 52px);
@@ -350,6 +367,9 @@ const AverageLabel = styled.div`
     display: inline-flex;
     justify-content: ${props=>props.side==='left'? 'flex-end' : 'flex-start'};
     top: -10px;
+    @media ${media.mobile}{
+        top: -6px;
+    }
     transform: translateX(${props=>props.side==='left'?-100:0}%);
     /*transition: transform .5s;*/
     padding: 0 23px;

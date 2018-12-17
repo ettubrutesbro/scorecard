@@ -71,9 +71,16 @@ export default class IndicatorByRaces extends React.Component{
                 fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
         })
+
+        const vertOffsets = this.props.mobile? [-220, -100] : [-150, -50]
+
         return(
             <Wrapper
-                offset = {this.props.hideForSources? '0, -150px' : !this.props.expand? '0, -50px' : '0, -150px'}
+                offset = {
+                    this.props.hideForSources? `0, ${vertOffsets[0]}px` 
+                    : !this.props.expand? `0, ${vertOffsets[1]}px` 
+                    : `0, ${vertOffsets[0]}px`
+                }
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
@@ -83,8 +90,8 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='optimal'?610:480, height: 150},
-                        collapsed: {width: screen==='optimal'?610:480, height: 50},
+                        expanded: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: 150},
+                        collapsed: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}
@@ -108,7 +115,7 @@ export default class IndicatorByRaces extends React.Component{
                         </Header>
                     }
                     bars = {this.props.expand? indicatorPerformanceByRace : []}
-                    labelWidth = {150}
+                    labelWidth = {screen === 'mobile'? 125 : 150}
                     selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
                 />
             </Wrapper>
