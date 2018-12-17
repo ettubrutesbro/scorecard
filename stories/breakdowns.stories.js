@@ -50,6 +50,8 @@ storiesOf('Breakdowns', module)
     const race = select('race', ['asian','black','latinx','white','other',null],null)
     const year = select('year(index)', [0,1], 0)
 
+    const screen = select('screen size', ['optimal','compact','mobile'], 'optimal')
+
     const allNums = Object.keys(indicators[indicator].counties).map((cty)=>{
         let use = race
         if(!indicators[indicator].counties[cty][race]) use = 'totals'
@@ -61,11 +63,16 @@ storiesOf('Breakdowns', module)
     console.log(1-(Math.max(...allNums)/100))
 
     return(
-        <Void>
+        <Void
+            style = {screen==='mobile'?{
+                width: '360px',
+                height: '640px'
+            }: {}}
+        >
         <IndicatorByCounties
-            entries = {10}
+            entries = {screen==='optimal'? 14 : screen==='compact'? 19 : 6 }
             store = {{
-
+                screen: screen,
                 year: year,
                 race: race,
                 indicator: indicator,

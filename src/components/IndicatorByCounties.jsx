@@ -312,6 +312,12 @@ export default class IndicatorByCounties extends React.Component{
             noRaceCollapseDims = {width: 480, height: 450}
             
         }
+        else if(screen==='mobile'){
+            expandDims = {width: 300, height: 450}
+            collapseDims = {width: 300, height: 450}
+            noRaceExpandDims = {width: 300, height: 450}
+            noRaceCollapseDims = {width: 300, height: 450}
+        }
 
         const modes = {
             collapsed: collapseDims,
