@@ -314,7 +314,7 @@ const RowComponent = styled.div`
     align-items: center;
     margin-top: 3px;
     @media ${media.mobile}{
-        margin-top: 7px;
+        margin-top: 9px;
     }
 `
 const AverageLine = styled.div`
