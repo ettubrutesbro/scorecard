@@ -323,10 +323,10 @@ export default class IndicatorByCounties extends React.Component{
         }
         else if(screen==='mobile'){
             modes = {
-                mobileExpanded: {width: 300, height: 285},
+                mobileExpanded: {width: 300, height: 100+(maxNumRows*23)},
                 mobileCollapsed: {width: 300, height: 285},
-                mobileNoRaceExpanded: {width: 300, height: 285},
-                mobileNoRaceCollapsed: {width: 300, height: 285},
+                mobileNoRaceExpanded: {width: 300, height: 100+(maxNumRows*23)},
+                mobileNoRaceCollapsed: {width: 300, height: 360},
                 mobilesources: {width: 300, height: 50}
             }
         }

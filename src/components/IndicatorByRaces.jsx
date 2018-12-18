@@ -126,6 +126,9 @@ export default class IndicatorByRaces extends React.Component{
 const Header = styled.div`
     margin: 0 20px;
     padding: 0 15px;
+    @media ${media.mobile}{
+        margin: 0 15px;
+    }
     background: var(--offwhitefg);
     transform: translate(${props=>props.offset?'0, 25px':'0,0'});
     transition: transform ${props=>props.hide? .2 : .35}s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s;

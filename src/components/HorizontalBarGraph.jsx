@@ -96,7 +96,7 @@ const Header = styled.div`
         const {selectBar} = this.props
         // console.log(selectBar)
         const screen = getMedia()
-        const labelLineOffset = screen === 'mobile'? 60 : 75
+        const labelLineOffset = screen === 'mobile'? 65 : 75
         return (
 
             <GraphTable
@@ -266,7 +266,7 @@ const Content = styled.div`
     padding: 0 36px 0px 25px;
     margin: ${props => props.beefyPadding?'42px 0 32px 0' : '25px 0 18px 0'};
     @media ${media.mobile}{
-        padding: 0 30px 0px 15px;
+        padding: 0 30px 0px 20px;
     }
     transition: transform .25s;
     // transform: ${props => props.offset? 'translateY(-20px)' : ''};
@@ -281,7 +281,7 @@ const Label = styled.div`
     justify-content: ${props => props.hasLeftLabel? 'space-between' : 'flex-end'};
     padding-right: 20px;
     @media ${media.mobile}{
-        padding-right: 7px;
+        padding-right: 6px;
     }
     // border: 1px solid black;
     color: ${props => props.selected||props.hovered? "var(--strokepeach)" :props.invalid? "var(--fainttext)" : "var(--normtext)"};
@@ -314,7 +314,7 @@ const RowComponent = styled.div`
     align-items: center;
     margin-top: 3px;
     @media ${media.mobile}{
-        margin-top: 9px;
+        margin-top: 5.5px;
     }
 `
 const AverageLine = styled.div`
@@ -322,7 +322,7 @@ const AverageLine = styled.div`
     bottom: 20px;
     left: ${props => props.labelWidth + 20}px;
     @media ${media.mobile}{
-        left: ${props => props.labelWidth + 10}px;
+        left: ${props => props.labelWidth + 15}px;
     }
     width: 1px;
     background-color: var(--fainttext);
@@ -404,6 +404,9 @@ const Value = styled.div`
     transition: transform .25s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
     margin-left: ${props => props.percentage===0? 0 : 5}px;
+    @media ${media.mobile}{
+        margin-left: ${props => props.percentage===0? 0 : 3}px;
+    }
 `
 
 HorizontalBarGraph.defaultProps = {

@@ -64,7 +64,7 @@ const IndentedTitle = styled.div`
         line-height: 34px;
     }
     @media ${media.mobile}{
-        padding-top: 5px;
+        padding-top: 9px;
         line-height: 25px;
     }
 `

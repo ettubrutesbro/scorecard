@@ -3,6 +3,8 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import indicators from './data/indicators'
+
 import Icon from './components/generic/Icon'
 
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
@@ -20,18 +22,7 @@ export default class MobileScorecard extends React.Component{
             <div>
                 <NavBar store = {store}/>
                 <Content>
-                    <Readout store = {store} />
-                    <Tables>
-                    <IndicatorByCounties
-                        entries = {9}
-                        store = {store}
-                    />
-                    <IndicatorByRaces
-                        store = {store}
-                        expand = {true}
-                        mobile = {true}
-                    />
-                    </Tables>
+                    <Breakdown store = {store} />
                 </Content>
                 <SectionChooser>
                     <BreakdownBtn />
@@ -73,16 +64,15 @@ const Content = styled.div`
     /*height: 100vh;*/
     width: 100%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
     padding: 10px 20px 80px 20px;
     margin-bottom: 67px;
-`
-const Tables = styled.div`
-    position: relative;
-    margin-top: 25px;
-    height: 495px;
 `
 const SectionChooser = styled.div`
     position: fixed;
@@ -104,4 +94,50 @@ const DemoBtn = styled(SectionBtn)`
 `
 const SourcesBtn = styled(SectionBtn)`
     
+`
+
+
+
+@observer class Breakdown extends React.Component{
+    @observable allCounties = false 
+    @action expandCountyList = (tf) => this.allCounties = tf
+    render(){
+        const store = this.props.store
+        const {indicator, race, county, year} = store
+        const hasRace = indicators[indicator].categories.includes('hasRace')
+
+        return(
+            <React.Fragment>
+                <Readout store = {store} />
+                <Tables expanded = {this.allCounties} >
+                    <IndicatorByCounties
+                        entries = {hasRace? 9 : 12}
+                        store = {store}
+                        hasRace = {hasRace}
+                        onExpand = {this.expandCountyList}
+                        expand = {this.allCounties}
+                        toggleDistribute = {()=>{
+                            console.log('toggling distribution...')
+                            this.expandCountyList(!this.allCounties?true:false)
+                        }}
+                        sources = {this.props.sources}
+                    />
+                    {hasRace && !this.allCounties && 
+                        <IndicatorByRaces
+                            store = {store}
+                            expand = {true}
+                            mobile = {true}
+                        />
+                    }
+                </Tables>
+            </React.Fragment>
+        )
+    }
+}
+
+const Tables = styled.div`
+    position: relative;
+    margin-top: 25px;
+    width: 300px;
+    height: ${props => props.expanded? 1300 : 495}px;
 `
