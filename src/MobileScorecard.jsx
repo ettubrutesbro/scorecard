@@ -3,6 +3,8 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import IntersectionObserver from '@researchgate/react-intersection-observer'
+
 import indicators from './data/indicators'
 
 import Icon from './components/generic/Icon'
@@ -108,7 +110,12 @@ const SourcesBtn = styled(SectionBtn)`
 
         return(
             <React.Fragment>
-                <Readout store = {store} />
+                <IntersectionObserver
+                    onChange = {(wat)=>console.log(wat.isIntersecting)}
+                    rootMargin = '-75px 0% 0% 0%'
+                >
+                    <Readout store = {store} />
+                </IntersectionObserver>
                 <Tables expanded = {this.allCounties} >
                     <IndicatorByCounties
                         entries = {hasRace? 9 : 12}
@@ -139,5 +146,5 @@ const Tables = styled.div`
     position: relative;
     margin-top: 25px;
     width: 300px;
-    height: ${props => props.expanded? 1300 : 495}px;
+    height: ${props => props.expanded? 1400 : 495}px;
 `

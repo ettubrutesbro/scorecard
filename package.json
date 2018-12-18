@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@researchgate/react-intersection-observer": "^0.7.4",
     "array-includes": "^3.0.3",
     "array.prototype.flat": "^1.2.1",
     "babel-plugin-styled-components": "^1.8.0",

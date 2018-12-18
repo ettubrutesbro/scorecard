@@ -6,6 +6,7 @@ import styled from 'styled-components'
 
 import {find, findIndex} from 'lodash'
 import commaNumber from 'comma-number'
+import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
@@ -356,7 +357,7 @@ export default class IndicatorByCounties extends React.Component{
                     screen + 'Collapsed'
                 }
                 modes = {modes}
-                duration = {this.props.sources? .5 : .35}
+                duration = {screen==='mobile'? 0 : this.props.sources? .5 : .35}
 
                 onHoverRow = {(val)=>{setHover('county',val)}}
                 hovered = {hoveredCounty}
@@ -405,8 +406,17 @@ const Wrapper = styled.div`
     //this needs z-index adjustment to sit atop demo when it's in btn mode
 `
 
-const HeaderComponent = (props) => {
+@observer class HeaderComponent extends React.Component{
+    @observable intersectsViewport = true
+    @action intersectChange = (tf) => this.intersectsViewport = tf
+    render(){
+        const props = this.props
     return(
+        <IntersectionObserver
+            // make this a conditional wrapper for mobile only
+            onChange = {(wat)=>this.intersectChange(wat.isIntersecting)}
+            rootMargin = '-75px 0% 0% 0%'
+        >
         <Header
             offset = {props.sources}
             buttonMode = {props.sources}
@@ -448,10 +458,37 @@ const HeaderComponent = (props) => {
                     onClick = {props.setOverviewSort}
                     selected = {props.sortOverviewBy === 'pct'? 0 : 1}
                 />
-        }
+            }
+            {props.screen==='mobile' && 
+                <MobileX 
+                    mode = {this.intersectsViewport? 'header' : 'fixed'} //header, fixed, footer
+                    visible = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}
+                > 
+                    <XIcon img = "x" color = "bordergrey" /> 
+                </MobileX>
+            }
         </Header>
+        </IntersectionObserver>
     )
 }
+}
+
+//on mode change, get boundingclientrect and use it to build a keyframe transition...?
+
+
+const MobileX = styled.div`
+    position: ${props => props.mode==='fixed'? 'fixed' : 'absolute'};
+    display: flex; align-items: center; justify-content: center;
+    right: -45px;
+    height: 35px;
+    width: 35px;
+    /*border: 1px solid var(--fainttext);*/
+    background: var(--offwhitefg);
+`
+const XIcon = styled(Icon)`
+    width: 18px; height: 18px;
+`
+
 const SourceString = styled.div`
     position: absolute;
     display: flex;
@@ -470,7 +507,7 @@ const Minigraph = styled(Icon)`
 const FooterComponent = (props) => {
     return(
         <Footer 
-            offset = {props.offset}
+            offset = {!props.mobile? props.offset : 0}
             hide = {props.hide}
         >
             <ExpandBox
@@ -479,7 +516,7 @@ const FooterComponent = (props) => {
                     expanded: {width: 160, height: 33},
                     mobileexpanded: {width: 100, height: 33},
                     collapsed: {width: 112, height: 33},
-                    mobilecollapsed: {width: 75, height: 33},
+                    mobilecollapsed: {width: 100, height: 33},
                 }}
                 borderColor = 'var(--fainttext)'
             >
