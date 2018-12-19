@@ -129,6 +129,9 @@ export default class ExpandTest extends React.Component{
                     }}
                     duration = {this.props.duration}
                     delay = {this.props.delay}
+                    style = {{
+                        backgroundColor: this.props.backgroundColor || 'transparent'
+                    }}
                 >
                     <ScrollbarWrap
                         withScroll = {this.props.withScroll}

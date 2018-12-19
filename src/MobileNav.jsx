@@ -4,96 +4,186 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import IntersectionObserver from '@researchgate/react-intersection-observer'
+import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
 
 import Icon from './components/generic/Icon'
 import ExpandBox from './components/ExpandBox'
 
-@observer
 export default class MobileNav extends React.Component{
-	render(){ 
-		const {open} = this.props
-		return(
-                <Header 
-                    store = {store}
-                    mode = {
-                    	open === 'county' || open === 'indicator' || open === 'race'? 'offscreen' :
-                    	open? 'button' : 'prompt'
-                    } //shorthand, button, prompt, offscreen
-                />
-		)
-	}
+    render(){ 
+        const props = this.props
+        const {open, store} = props
+        return(
+            <FixWrap>
+                <PickMenu
+                    currentMode = {props.mode === 'bar'? 'closed' : props.mode === 'button'? 'open' : ''}
+                    modes = {{
+                        closed: {width: window.innerWidth, height: 1},
+                        open: {width: window.innerWidth, height: 250}    
+                    }}
+                >
+                    <FlipMove>
+                        <div style = {{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '25px',
+                            height: '50px'
+                        }}>
+                            What data do you want to see?
+                        </div>
+                        <div style = {{height: '50px'}}>
+                        <ExpandBox
+                            currentMode = 'compact'
+                            modes = {{compact: {width: window.innerWidth, height: 50}}}
+                        >
+                            <MenuSelectBlock left = 'County' right = 'California (all)' />
+                        </ExpandBox>
+                        </div>
+                        <div style = {{height: '50px'}}>
+                        <ExpandBox
+                            currentMode = 'compact'
+                            modes = {{compact: {width: window.innerWidth, height: 50}}}
+                        >
+                            <MenuSelectBlock left = 'Race' right = 'All races' />
+                        </ExpandBox>
+                        </div>
+                        <div style = {{height: '100px'}}>
+                        <ExpandBox
+                            currentMode = 'compact'
+                            modes = {{compact: {width: window.innerWidth, height: 100}}}
+                        >
+                            <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care' />
+                        </ExpandBox>
+                        </div>
+                    </FlipMove>
+                </PickMenu>
+             <Header 
+                currentMode = {props.mode}
+                modes = {{
+                    bar: {width: window.innerWidth, height: 55},
+                    button: {width: 150, height: 55},
+                    offscreen: {width: 150, height: 0} 
+                }}
+                backgroundColor = 'var(--offwhitebg)'
+                borderColor = 'var(--offwhitebg)'
+            >
+                <HeaderContent
+                >
+                    <Prompt active = {props.mode==='bar'}>
+                        <SearchIcon img = "searchzoom" color = 'white'/>
+                        Refine or restart your search...
+                    </Prompt>
+                    <Shorthand active = {props.mode==='shorthand'}>
+                        Shorthand bla bla
+                    </Shorthand>
+                    <Btn active = {props.mode==='button'}>
+                        Back to view
+                    </Btn>
+                </HeaderContent>
+            </Header>
+            </FixWrap>
+        )
+    }
 }
 
-
-const Header = (props) => {
+const MenuSelectBlock = (props) => {
     return(
-    	<Fixer>
-        <HeaderExpandBox 
-        	// mode = {props.mode}
-        	currentMode = {props.mode==='prompt'?'bar': 'button'}
-        	modes = {{
-        		bar: {width: 300, height: 55},
-        		button: {width: 150, height: 55} 
-        	}}
-        	borderColor = 'offwhitebg'
-        >
-        	<HeaderContent>
-	        	<Prompt active = {props.mode==='prompt'}>
-		            <SearchIcon img = "searchzoom" color = 'white'/>
-		            Refine or restart your search...
-	            </Prompt>
-	            <Shorthand active = {props.mode==='shorthand'}>
-	            	Shorthand bla bla
-	            </Shorthand>
-	            <Btn active = {props.mode==='button'}>
-	            	Back to view
-	            </Btn>
-            </HeaderContent>
-        </HeaderExpandBox>
-        </Fixer>
+    <MSB>
+        <MSBLabel>{props.left}</MSBLabel>
+        <MSBValue>{props.right} <Caret /></MSBValue>
+
+    </MSB>
     )
 }
+const MSB = styled.div`
+    padding: 0 25px;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    align-items: center; justify-content: space-between;
+`
+const MSBLabel = styled.div`
+    font-size: 12px;
+`
+const MSBValue = styled.div`
+    display: flex; align-items: center;
+    font-size: 16px;
+    color: var(--fainttext);
+`
+const Caret = styled.div`
+    margin-left: 10px; 
+    width: 15px; height: 15px;
+    border: 1px solid black;
+`
+const FixWrap = styled.div`
+    position: fixed;
+    top: 0px; left: 0px;
+`
+const WorkflowWrap = styled.div`
+    border: 1px solid red;
+    height: 83px;
+
+` 
+const PickMenu = styled(ExpandBox)`
+    top: -1px; left: -2px;
+    height: 83px;
+
+`
+const Header = styled(ExpandBox)`
+    z-index: 2;
+    top: 0; left: 0;
+    transform: translate(${props=>props.currentMode==='button'? window.innerWidth - 150 + 'px,235px' : '0px,0px'});
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    &::before{
+        content: '';
+        position: absolute;
+        left: -20px;
+        height: 1px;
+        top: 15px;
+        width: 20px;
+        background: var(--offwhitefg);
+    }
+`
 const HeaderContent = styled.div`
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	color: white;
-	width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    width: 100%;
+    height: 55px;
 `
 const HeaderSection = styled.div`
-	position: absolute; top: 0;
-	display: flex; align-items: center;
-	padding-left: 25px;
-	// white-space: nowrap;
-	height: 55px;
-	transition: transform .35s;
-	width: 100%;
+    position: absolute; top: 0; left: 0;
+    display: flex; align-items: center;
+    padding-left: 25px;
+    // white-space: nowrap;
+    height: 55px;
+    transition: transform .35s;
+    width: 100%;
 `
 const Prompt = styled(HeaderSection)`
-	transform: translateY(${props => props.active? 0 : -100}%);
+    transform: translateY(${props => props.active? 0 : -100}%);
 `
 const Shorthand = styled(HeaderSection)`
-	transform: translateY(${props => props.active? 0 : 100}%)
+    transform: translateY(${props => props.active? 0 : 100}%)
 `
 const Btn = styled(HeaderSection)`
-	transform: translateY(${props => props.active? 0 : 100}%)
+    transform: translateY(${props => props.active? 0 : 100}%)
 `
 
 const SearchIcon = styled(Icon)`
     width: 15px; height: 15px;
     margin-right: 10px;
+    flex-shrink: 0;
 `
 
-const HeaderExpandBox = styled(ExpandBox)`
-	font-size: 14px;
-	background: var(--offwhitebg);
-`
+
 const Fixer = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0; 
+    position: fixed;
+    top: 0;
+    left: 0; 
 `
 const HeaderBar = styled.div`
     position: fixed;

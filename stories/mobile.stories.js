@@ -69,15 +69,14 @@ storiesOf('Mobile version', module)
 })
 
 .add('MobileNav', ()=>{
-    const open = select('open', ['foo','indicator','county','race',null], null)
+    const mode = select('mode', ['button','bar','offscreen'], 'bar')
     return(
         <Void>
         <MobileNav
-            open = {open}
             store = {{
                 indicator: 'earlyPrenatalCare',
-
             }}
+            mode = {mode}
         />
         </Void>   
     )
