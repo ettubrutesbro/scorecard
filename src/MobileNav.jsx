@@ -20,8 +20,8 @@ export default class MobileNav extends React.Component{
                 <PickMenu
                     currentMode = {props.mode === 'bar'? 'closed' : props.mode === 'button'? 'open' : ''}
                     modes = {{
-                        closed: {width: window.innerWidth, height: 1},
-                        open: {width: window.innerWidth, height: 250}    
+                        closed: {width: window.innerWidth+1, height: 1},
+                        open: {width: window.innerWidth+1, height: 250}    
                     }}
                 >
                     <FlipMove>
@@ -33,28 +33,28 @@ export default class MobileNav extends React.Component{
                         }}>
                             What data do you want to see?
                         </div>
-                        <div style = {{height: '50px'}}>
+                        <div style = {{height: '50px', marginLeft: '-1px'}}>
                         <ExpandBox
                             currentMode = 'compact'
-                            modes = {{compact: {width: window.innerWidth, height: 50}}}
+                            modes = {{compact: {width: window.innerWidth+1, height: 50}}}
                         >
                             <MenuSelectBlock left = 'County' right = 'California (all)' />
                         </ExpandBox>
                         </div>
-                        <div style = {{height: '50px'}}>
+                        <div style = {{height: '50px', marginLeft: '-1px'}}>
                         <ExpandBox
                             currentMode = 'compact'
-                            modes = {{compact: {width: window.innerWidth, height: 50}}}
+                            modes = {{compact: {width: window.innerWidth+1, height: 50}}}
                         >
                             <MenuSelectBlock left = 'Race' right = 'All races' />
                         </ExpandBox>
                         </div>
-                        <div style = {{height: '100px'}}>
+                        <div style = {{height: '100px', marginLeft: '-1px'}}>
                         <ExpandBox
                             currentMode = 'compact'
-                            modes = {{compact: {width: window.innerWidth, height: 100}}}
+                            modes = {{compact: {width: window.innerWidth+1, height: 100}}}
                         >
-                            <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care' />
+                            <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care' multiline />
                         </ExpandBox>
                         </div>
                     </FlipMove>
@@ -90,10 +90,9 @@ export default class MobileNav extends React.Component{
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB>
-        <MSBLabel>{props.left}</MSBLabel>
-        <MSBValue>{props.right} <Caret /></MSBValue>
-
+    <MSB multiline = {props.multiline}>
+        <MSBLabel multiline = {props.multiline}>{props.left}</MSBLabel>
+        <MSBValue multiline = {props.multiline}><Val>{props.right}</Val><Caret /></MSBValue>
     </MSB>
     )
 }
@@ -103,19 +102,35 @@ const MSB = styled.div`
     width: 100%;
     height: 50px;
     align-items: center; justify-content: space-between;
+    ${props => props.multiline? `
+        align-items: flex-start;
+        padding-top: 18px;
+    ` : ''}
 `
 const MSBLabel = styled.div`
     font-size: 12px;
+    flex-shrink: 0;
 `
 const MSBValue = styled.div`
     display: flex; align-items: center;
     font-size: 16px;
     color: var(--fainttext);
+    margin-left: 25px; 
+`
+const Val = styled.div`
+    flex-shrink: 1;
+    white-space: normal;
+    text-align: right;
+    ${props => props.multiline? `
+        margin-top: -4px;
+        line-height: 23px;
+    ` : ''}
 `
 const Caret = styled.div`
-    margin-left: 10px; 
+    margin-left: 13px; 
     width: 15px; height: 15px;
     border: 1px solid black;
+    flex-shrink: 0;
 `
 const FixWrap = styled.div`
     position: fixed;
