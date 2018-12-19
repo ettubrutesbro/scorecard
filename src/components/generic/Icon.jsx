@@ -10,6 +10,7 @@ const icons = {
     chevright_thin: <polygon points="11.5,4.2 12.7,4.2 25,18.4 12.8,31.8 10.6,31.8 11.5,31.8 23.7,18.4 "/>,
     chevleft: <polygon points="25.4,5.4 22.9,5.4 10.6,18.4 22.8,30.6 25,30.6 25.4,30.6 13.2,18.4 "/>,
     chevleft_thin: <polyline points="22.8,31.8 10.6,18.4 22.9,4.2 24.1,4.2 11.9,18.4 24.1,31.8 "/>,
+    chevup: <polygon points="30.6,24.8 30.6,21.5 17.6,9.2 5.4,21.4 5.4,24.8 17.6,12.6 "/>,
     minigraph: <g>
         <rect x="5.2" y="7.1" width="2" height="21.7"/>
         <rect x="10.8" y="8.6" width="14.4" height="2"/>

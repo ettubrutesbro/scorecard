@@ -44,6 +44,8 @@ function indexOfClosest(nums, target) {
 @observer
 export default class IndicatorByCounties extends React.Component{
 
+
+
     @observable distribute = true
     @observable fullHeight = false
 
@@ -56,6 +58,36 @@ export default class IndicatorByCounties extends React.Component{
         console.log('setting sort for overview')
         this.sortOverviewBy = v
     }
+
+    // mobile-only: track header or footer visibility when in allcounties mode
+    @observable mobileXmode = 'header'
+    @observable animateFixedXFrom = ''
+    @observable animateFooterXFrom = ''
+    @action setMobileIntersect = (val, coords) =>{
+        if(this.props.store.screen !== 'mobile') return
+        const lastVal = this.mobileXmode
+        console.log('mobile X is now', val)
+        this.mobileXmode = val
+        //scrolling down
+        // if(lastVal === 'header' && val === 'fixed'){
+        //     //build animation from headerX coords to fixedX coords 
+        //     this.animateFixedXFrom = coords
+        //     console.log('animate fixed x from', coords)
+
+        // }
+        // if(lastVal === 'fixed' && val === 'footer'){
+        //     //build animation from diff of fixedX coords and footerX coords, to footerX coords
+        //     // const fixedXCoords = this.
+        //     // this.animateFooterXFrom = 
+        // }
+        // //going back up
+        // if(lastVal === 'footer' && val === 'fixed'){
+
+        // }
+        // if(lastVal === 'fixed' && val === 'header'){
+
+        // }
+     }
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
@@ -209,6 +241,8 @@ export default class IndicatorByCounties extends React.Component{
 
         let maxNumRows = !race? performance.length : 0
 
+        const width = window.innerWidth - 50
+
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
                 if(Number(a.population) > Number(b.population)) return -1 
@@ -324,11 +358,11 @@ export default class IndicatorByCounties extends React.Component{
         }
         else if(screen==='mobile'){
             modes = {
-                mobileExpanded: {width: 300, height: 100+(maxNumRows*23)},
-                mobileCollapsed: {width: 300, height: 285},
-                mobileNoRaceExpanded: {width: 300, height: 100+(maxNumRows*23)},
-                mobileNoRaceCollapsed: {width: 300, height: 360},
-                mobilesources: {width: 300, height: 50}
+                mobileExpanded: {width:width, height: 100+(maxNumRows*23)},
+                mobileCollapsed: {width:width, height: 285},
+                mobileNoRaceExpanded: {width:width, height: 100+(maxNumRows*23)},
+                mobileNoRaceCollapsed: {width:width, height: 360},
+                mobilesources: {width:width, height: 50}
             }
         }
 
@@ -344,6 +378,7 @@ export default class IndicatorByCounties extends React.Component{
         // }
         console.log(modes)
         return (
+            <React.Fragment>
             <Wrapper offset = {this.props.sources}>
 
             <Graph
@@ -367,15 +402,22 @@ export default class IndicatorByCounties extends React.Component{
                 selected = {county}
                 selectable
                 beefyPadding
-                header = {(<HeaderComponent 
-                    screen = {screen}
-                    sources = {this.props.sources}
-                    race = {race} 
-                    distribute = {distribute}
-                    setOverviewSort = {this.setOverviewSort}
-                    sortOverviewBy = {this.sortOverviewBy}
-                    setSourcesMode = {this.props.store.setSourcesMode}
-                />)}
+                header = {(
+                    <HeaderComponent 
+                        screen = {screen}
+                        sources = {this.props.sources}
+                        race = {race} 
+                        distribute = {distribute}
+                        setOverviewSort = {this.setOverviewSort}
+                        sortOverviewBy = {this.sortOverviewBy}
+                        setSourcesMode = {this.props.store.setSourcesMode}
+
+                        //mobile intersect stuff
+                        onExitView = {(tf)=>this.setMobileIntersect(tf?'header':'fixed')}
+                        renderMobileX = {this.mobileXmode === 'header' && !distribute}
+                        toggleDistribute = {this.props.toggleDistribute}
+                    />
+                )}
 
                 hideGraph = {this.props.sources}
 
@@ -389,14 +431,47 @@ export default class IndicatorByCounties extends React.Component{
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
                         hide = {this.props.sources}
+
+                        onEnterView = {(tf)=>this.setMobileIntersect(tf?'footer' : 'fixed')}
+                        renderMobileX = {this.mobileXmode === 'footer'}
                     />
                 )}
                 fullHeight = {this.props.expand}
             />
+
             </Wrapper>
+            <FixedMobileX 
+                visible = {this.mobileXmode === 'fixed' && !distribute}
+                onClick = {this.props.toggleDistribute}
+                // animateFrom = {}
+            >
+                <XIcon img = "x" color = "bordergrey" /> 
+            </FixedMobileX>
+            
+            </React.Fragment>
         )
     }
 }
+const MobileX = styled.div`
+    position: absolute;
+    display: flex; align-items: center; justify-content: center;
+    right: -45px;
+    height: 35px;
+    width: 35px;
+    background: var(--offwhitefg);
+    opacity: ${props => props.visible? 1 : 0};
+    transition: transform .2s, opacity .125s;
+`
+const XIcon = styled(Icon)`
+    width: 18px; height: 18px;
+`
+const FixedMobileX = styled(MobileX)`
+    position: fixed;
+    top: 90px; right: 18px;
+    transform: scale(${props => props.visible? 1 : 0.6});
+
+    z-index: 1000;
+`
 
 const Wrapper = styled.div`
     position: relative;
@@ -407,14 +482,21 @@ const Wrapper = styled.div`
 `
 
 @observer class HeaderComponent extends React.Component{
-    @observable intersectsViewport = true
-    @action intersectChange = (tf) => this.intersectsViewport = tf
+    constructor(props){
+        super(props)
+        if(props.screen === 'mobile'){
+            this.mobileX = React.createRef()
+        }
+    }
     render(){
         const props = this.props
     return(
         <IntersectionObserver
             // make this a conditional wrapper for mobile only
-            onChange = {(wat)=>this.intersectChange(wat.isIntersecting)}
+            onChange = {props.screen === 'mobile'? (wat)=>{
+                //this.mobileX.current.getBoundingClientRect()
+                this.props.onExitView(wat.isIntersecting)
+            }: ()=>{}}
             rootMargin = '-75px 0% 0% 0%'
         >
         <Header
@@ -439,7 +521,9 @@ const Wrapper = styled.div`
                 </FadeTitle>
                 <FadeTitle show = {!props.sources && props.race}>
                     {props.race === 'other' && 'In counties with the most children of other races'}
+                    {props.screen === 'mobile' && props.race === 'other' && 'In counties with the most children of other races'}
                     {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+                    {props.screen === 'mobile' && !props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
                 </FadeTitle> 
             </HeaderTitle>
             <SourceString show = {props.sources}>
@@ -459,12 +543,14 @@ const Wrapper = styled.div`
                     selected = {props.sortOverviewBy === 'pct'? 0 : 1}
                 />
             }
-            {props.screen==='mobile' && 
+            {props.screen==='mobile' &&
                 <MobileX 
-                    mode = {this.intersectsViewport? 'header' : 'fixed'} //header, fixed, footer
+                    ref = {this.mobileX}
+                    // mode = {this.intersectsViewport? 'header' : 'fixed'} //header, fixed, footer
+
                     visible = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}
                 > 
-                    <XIcon img = "x" color = "bordergrey" /> 
+                    <XIcon img = "x" color = "bordergrey" onClick = {this.props.toggleDistribute} /> 
                 </MobileX>
             }
         </Header>
@@ -476,18 +562,7 @@ const Wrapper = styled.div`
 //on mode change, get boundingclientrect and use it to build a keyframe transition...?
 
 
-const MobileX = styled.div`
-    position: ${props => props.mode==='fixed'? 'fixed' : 'absolute'};
-    display: flex; align-items: center; justify-content: center;
-    right: -45px;
-    height: 35px;
-    width: 35px;
-    /*border: 1px solid var(--fainttext);*/
-    background: var(--offwhitefg);
-`
-const XIcon = styled(Icon)`
-    width: 18px; height: 18px;
-`
+
 
 const SourceString = styled.div`
     position: absolute;
@@ -497,6 +572,7 @@ const SourceString = styled.div`
     left: 158px;
     z-index: 10;
     opacity: ${props=>props.show? 1 : 0};
+    pointer-events: ${props => props.show? 'auto' : 'none'};
     transition: opacity .2s;
     transition-delay: ${props=>props.show? '.15s' : '0s'};
 `
@@ -504,8 +580,19 @@ const Minigraph = styled(Icon)`
     width: 30px; height: 30px;
     margin-left: 10px;
 `
-const FooterComponent = (props) => {
+class FooterComponent extends React.Component{
+    render(){
+    const props = this.props
     return(
+        <IntersectionObserver
+            onChange = {(wat)=>{
+                if(props.mobile && props.offset){
+                    if(wat.isIntersecting) props.onEnterView(true)
+                    else if(props.renderMobileX) props.onEnterView(false)
+                }
+            }}
+            rootMargin = '0px 0px -100px 0px'
+        >
         <Footer 
             offset = {!props.mobile? props.offset : 0}
             hide = {props.hide}
@@ -516,7 +603,7 @@ const FooterComponent = (props) => {
                     expanded: {width: 160, height: 33},
                     mobileexpanded: {width: 100, height: 33},
                     collapsed: {width: 112, height: 33},
-                    mobilecollapsed: {width: 100, height: 33},
+                    mobilecollapsed: {width: 112, height: 33},
                 }}
                 borderColor = 'var(--fainttext)'
             >
@@ -543,7 +630,9 @@ const FooterComponent = (props) => {
                 />
             </ExpandBox>
         </Footer> 
+        </IntersectionObserver>
     )
+    }
 }
 const ExpandButton = styled(Button)`
     margin-top: 1px;

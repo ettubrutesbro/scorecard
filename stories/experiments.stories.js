@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
-import ReactTooltip from 'react-tooltip'
 import CountUp from 'react-countup'
 
 import demopop from '../src/data/demographicsAndPopulation'
@@ -148,15 +147,5 @@ storiesOf('Experiments', module)
         <CountingNumber 
             number = {num}
         />
-    )
-})
-.add('ReactTooltip',()=>{
-    return(
-        <div>
-            <div data-tip = "hi"> Normal target? </div>
-            <ReactTooltip />
-            <AbsTarget data-tip = "Hello world"> Absolutely positioned</AbsTarget>
-
-        </div>
     )
 })

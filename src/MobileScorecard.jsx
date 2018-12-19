@@ -8,24 +8,31 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 import indicators from './data/indicators'
 
 import Icon from './components/generic/Icon'
+import ExpandBox from './components/ExpandBox'
 
+import MobileNav from './MobileNav'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import Readout from '../src/components/Readout'
 
+const width = window.innerWidth - 50
+
 @observer
 export default class MobileScorecard extends React.Component{
 
-    @observable 
+    @observable picking = false
+    @observable view = 'breakdown'
 
     render(){
         const {store} = this.props
         return(
             <div>
-                <NavBar store = {store}/>
+                <MobileNav store = {store}/>
+
                 <Content>
                     <Breakdown store = {store} />
                 </Content>
+                
                 <SectionChooser>
                     <BreakdownBtn />
                     <DemoBtn />
@@ -36,30 +43,7 @@ export default class MobileScorecard extends React.Component{
     }
 }
 
-const NavBar = (props) => {
-    return(
-        <SemiFixedBar>
-            <SearchIcon img = "searchzoom" color = 'white'/>
-                    Refine or restart your search...
-        </SemiFixedBar>
-    )
-}
-const SearchIcon = styled(Icon)`
-    width: 15px; height: 15px;
-    margin-right: 10px;
-`
-const SemiFixedBar = styled.div`
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 55px;
-    background: var(--offwhitebg);
-    padding: 0 20px;
-    color: white;
-    display: flex; align-items: center;
-    z-index: 2;
-    font-size: 14px;
-`
+
 const Content = styled.div`
     position: absolute;
     top: 0;
@@ -84,9 +68,13 @@ const SectionChooser = styled.div`
     width: 100%;
     bottom: 0;
     z-index: 1;
+    display: flex; 
+    align-items: center;
+    justify-content: space-around;
 `
 const SectionBtn = styled.div`
-    
+    width: 45px; height: 45px;
+    border: 1px solid black;
 `
 const BreakdownBtn = styled(SectionBtn)`
     
@@ -145,6 +133,6 @@ const SourcesBtn = styled(SectionBtn)`
 const Tables = styled.div`
     position: relative;
     margin-top: 25px;
-    width: 300px;
+    width: ${width}px;
     height: ${props => props.expanded? 1400 : 495}px;
 `

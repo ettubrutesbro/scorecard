@@ -10,6 +10,7 @@ import '../src/global.css'
 import chroma from 'chroma-js'
 
 import MobileScorecard from '../src/MobileScorecard'
+import MobileNav from '../src/MobileNav'
 import {counties} from '../src/assets/counties'
 import indicators from '../src/data/indicators'
 import demopop from '../src/data/demographicsAndPopulation'
@@ -17,6 +18,7 @@ import demopop from '../src/data/demographicsAndPopulation'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import Readout from '../src/components/Readout'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
+import ExpandBox from '../src/components/ExpandBox'
 
 addDecorator(withViewport('iphone6'))
 
@@ -25,6 +27,7 @@ const Void = styled.div`
     width: 100vw;
     max-width: 640px;
     /*height: 100vh;*/
+    height: 100vh;
     background: var(--offwhitefg);
     padding: 25px;
     /*font-size: 14px; */
@@ -65,6 +68,36 @@ storiesOf('Mobile version', module)
     )
 })
 
+.add('MobileNav', ()=>{
+    const open = select('open', ['foo','indicator','county','race',null], null)
+    return(
+        <Void>
+        <MobileNav
+            open = {open}
+            store = {{
+                indicator: 'earlyPrenatalCare',
+
+            }}
+        />
+        </Void>   
+    )
+})
+.add('ExpandBox', ()=>{
+    const current = select('mode', ['collapsed','expanded'], 'collapsed')
+    return(
+        <Void>
+        <ExpandTest 
+            currentMode = {current}
+            modes = {{
+                collapsed: {width: 100, height: 200},
+                expanded: {width: 500, height: 300}
+            }}
+        >
+            fuck
+        </ExpandTest>
+        </Void>
+    )
+})
 .add('IndByCounties', ()=>{
     const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
     const county = select('county', allCounties, null)
@@ -115,3 +148,7 @@ storiesOf('Mobile version', module)
         </Void>
     )
 })
+
+const ExpandTest = styled(ExpandBox)`
+    background: var(--offwhitebg);
+`

@@ -11,6 +11,8 @@ import HorizontalBarGraph from './HorizontalBarGraph'
 import {capitalize} from '../utilities/toLowerCase'
 import media from '../utilities/media'
 
+const width = window.innerWidth - 50
+
 const races = [
     'asian', 'black', 'latinx', 'white', 'other'
 ]
@@ -90,8 +92,8 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: screen==='mobile'? 160: 150},
-                        collapsed: {width: screen==='mobile'?300 : screen==='optimal'?610:480, height: 50},
+                        expanded: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: screen==='mobile'? 160: 150},
+                        collapsed: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}
