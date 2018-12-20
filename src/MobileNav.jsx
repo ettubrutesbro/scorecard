@@ -37,6 +37,7 @@ export default class MobileNav extends React.Component{
                         onClick = {()=> this.setMode('county') }
                         open = {this.mode === 'county'}
                         prompt = 'Select a race.'
+                        return = {()=>this.setMode('compact')}
                     />
                 </ExpandBox>
             </div>,
@@ -54,6 +55,7 @@ export default class MobileNav extends React.Component{
                                 onClick = {()=> this.setMode('race') }
                                 open = {this.mode === 'race'}
                                 prompt = 'Pick a county.'
+                                return = {()=>this.setMode('compact')}
                             />
                         </ExpandBox>
             </div>,
@@ -72,6 +74,7 @@ export default class MobileNav extends React.Component{
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
                         prompt = 'Choose an indicator.'
+                        return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                     />
                 </ExpandBox>
@@ -91,8 +94,13 @@ export default class MobileNav extends React.Component{
                         open: {width: window.innerWidth+1, height: 250}    
                     }}
                     backgroundColor = 'white'
+                    borderColor = 'var(--fainttext)'
                 >
                     <FlipMove
+                        enterAnimation = {{
+                            from: {transform: 'translateY(-100%)'},
+                            to: {transform: 'translateY(0%)'}
+                        }}
                         leaveAnimation = {{
                             from: {transform: 'translateY(0)'},
                             to: {transform: 'translateY(-100%)'}
@@ -151,7 +159,7 @@ export default class MobileNav extends React.Component{
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB multiline = {props.multiline} onClick = {props.onClick}>
+    <MSB multiline = {props.multiline} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBLabel 
             multiline = {props.multiline}
             open = {props.open}
@@ -166,7 +174,9 @@ const MenuSelectBlock = (props) => {
                 
             </Val>
             <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
-            <XCaret mode = {'caret'}/>
+            <XCaret mode = {'caret'}
+                onClick = {props.open? props.return : ()=>{} }
+            />
         </MSBValue>
     </MSB>
     )
@@ -242,7 +252,7 @@ const Header = styled(ExpandBox)`
         position: absolute;
         left: -20px;
         height: 1px;
-        top: 14px;
+        top: 13px;
         width: 20px;
         background: var(--offwhitefg);
     }
