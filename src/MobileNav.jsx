@@ -35,6 +35,7 @@ export default class MobileNav extends React.Component{
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
                     delay = {this.mode==='county'? '.35s' : 0}
+                    noBorderTop = {this.mode==='compact'}
                 >
                     <MenuSelectBlock left = 'County' right = 'California (all)' 
                         onClick = {()=> this.setMode('county') }
@@ -111,6 +112,7 @@ export default class MobileNav extends React.Component{
                     borderColor = 'var(--fainttext)'
                 >
                     <FlipMove
+                        style = {{width: '100%'}}
                         easing = 'cubic-bezier(0.215, 0.61, 0.355, 1)'
                         duration = {350}
                         enterAnimation = {{
@@ -124,10 +126,9 @@ export default class MobileNav extends React.Component{
                     >
                         {(!this.mode || this.mode==='compact') &&
                             <div style = {{
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: '25px',
-                                height: '50px'
+                                position: 'relative', zIndex: 5,
+                                display: 'flex', alignItems: 'center',
+                                padding: '12px 25px 0px 25px', height: '50px'
                             }}>
                                 What data do you want to see?
                             </div>
@@ -254,7 +255,7 @@ const XCaret = styled.div`
 `
 const FixWrap = styled.div`
     position: fixed;
-    top: 0px; left: 0px;
+    top: -1px; left: -1px;
 `
 const WorkflowWrap = styled.div`
     border: 1px solid red;
@@ -262,7 +263,7 @@ const WorkflowWrap = styled.div`
 
 ` 
 const PickMenu = styled(ExpandBox)`
-    top: -2px; left: -2px;
+    top: -1px; left: -1px;
     height: 83px;
 
 `
