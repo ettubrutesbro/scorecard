@@ -21,6 +21,7 @@ const Box = styled.div`
     animation-delay: ${props=>props.delay};
     top: 0;
     left: 0;
+    transition: background-color .35s;
 `
 
 const Content = styled.div`
