@@ -102,7 +102,6 @@ export default class ExpandTest extends React.Component{
     }
 
     render(){
-        console.log(this.props.currentMode)
         const scaleX = this.goTo.width / this.default.width 
         const scaleY = this.goTo.height / this.default.height
         return( 

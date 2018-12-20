@@ -9,6 +9,7 @@ import FlipMove from 'react-flip-move'
 import indicators from './data/indicators'
 
 import Icon from './components/generic/Icon'
+import {Toggle} from './components/generic'
 import ExpandBox from './components/ExpandBox'
 
 
@@ -24,51 +25,56 @@ export default class MobileNav extends React.Component{
         const {open, store} = props
 
         const NavItems = [
-            <div key = 'county' style = {{height: '50px', marginLeft: '-1px'}}>
+            <div key = 'county' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='county'?0:1}}>
                 <ExpandBox
+                    duration = {this.mode === 'county'? .5 : 0 }
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight - 100}
                     }}
-                    backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'transparent'}
+                    backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
+                    delay = {this.mode==='county'? '.35s' : 0}
                 >
                     <MenuSelectBlock left = 'County' right = 'California (all)' 
                         onClick = {()=> this.setMode('county') }
                         open = {this.mode === 'county'}
-                        prompt = 'Select a race.'
+                        prompt = 'Pick a county.'
                         return = {()=>this.setMode('compact')}
                     />
                 </ExpandBox>
             </div>,
 
-            <div key = 'race' style = {{height: '50px', marginLeft: '-1px'}}>
+            <div key = 'race' style = {{height: '50px', marginLeft: '-1px', zIndex: this.mode==='race'?0:1}}>
                         <ExpandBox
+                            duration = {this.mode === 'race'? .5 : 0 }
                             currentMode = {this.mode==='race'? 'fullscreen' : 'compact'}
                             modes = {{
                                 compact: {width: window.innerWidth+1, height: 50},
                                 fullscreen: {width: window.innerWidth+1, height: window.innerHeight - 100}
                             }}
-                            backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'transparent'}
+                            backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
+                            delay = {this.mode==='race'? '.35s' : 0}
                         >
                             <MenuSelectBlock left = 'Race' right = 'All races' 
                                 onClick = {()=> this.setMode('race') }
                                 open = {this.mode === 'race'}
-                                prompt = 'Pick a county.'
+                                prompt = 'Select a race.'
                                 return = {()=>this.setMode('compact')}
                             />
                         </ExpandBox>
             </div>,
 
-            <div key = 'indicator' style = {{height: '50px', marginLeft: '-1px'}}>
+            <div key = 'indicator' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
+                    duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 100},
+                        compact: {width: window.innerWidth+1, height: 115},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight-100}
                     }}
-                    backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'transparent'}
+                    backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
                 >
                     <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care and other asst. shit' multiline 
                         onClick = {()=> this.setMode('indicator') }
@@ -76,6 +82,14 @@ export default class MobileNav extends React.Component{
                         prompt = 'Choose an indicator.'
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
+                    />
+                    <YearToggle
+                        visible = {this.mode==='compact'}
+                        options = {[
+                            {label: 2016, value: 0},    
+                            {label: 2017, value: 1},    
+                        ]}
+                        selected = {1}
                     />
                 </ExpandBox>
             </div>
@@ -91,12 +105,14 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 1},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight},
-                        open: {width: window.innerWidth+1, height: 250}    
+                        open: {width: window.innerWidth+1, height: 265}    
                     }}
                     backgroundColor = 'white'
                     borderColor = 'var(--fainttext)'
                 >
                     <FlipMove
+                        easing = 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                        duration = {350}
                         enterAnimation = {{
                             from: {transform: 'translateY(-100%)'},
                             to: {transform: 'translateY(0%)'}
@@ -156,6 +172,14 @@ export default class MobileNav extends React.Component{
     }
 }
 
+const YearToggle = styled(Toggle)`
+    position: absolute;
+    left: 25px;
+    bottom: -45px;
+    transition: opacity .35s;
+    opacity: ${props => props.visible? 1 : 0};
+    pointer-events: ${props => props.visible? 'auto' : 'none'};
+`
 
 const MenuSelectBlock = (props) => {
     return(
