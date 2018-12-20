@@ -49,20 +49,21 @@ const Option = styled.div`
 
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
+    
     @media ${media.mobile}{
         font-size: 12px;
         padding: 8.5px 15px;
         border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
         color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
         background-color: white;
+        &::hover{
+            border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
+            color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
+        }
  
     }
     white-space: nowrap;
-    &:hover{
-        color: var(--strokepeach);
-        outline-color: var(--strokepeach);
-        /*z-index: 1;*/
-    }
+
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);
     }
