@@ -27,6 +27,14 @@ export default class MobileNav extends React.Component{
     @observable justComplete = null
     @action justCompleted = (what) => this.justComplete = what
 
+    @observable workflowScrollPos = 0
+    @observable userScrolledDownInWorkflow = false
+    @action setWorkflowScrollPos = (val) => {
+        if(val > this.workflowScrollPos) this.userScrolledDownInWorkflow = true
+        else this.userScrolledDownInWorkflow = false
+        this.workflowScrollPos = val
+    }
+
     render(){ 
         const props = this.props
         const {open, store} = props
@@ -38,11 +46,11 @@ export default class MobileNav extends React.Component{
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight - 100}
+                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
                     delay = {this.mode==='county'? '.35s' : 0}
-                    noBorderTop = {this.mode==='compact'}
+                    noBorderTop = {this.mode==='compact' || !this.mode}
                 >
                     <MenuSelectBlock left = 'County' right = 'California (all)' 
                         onClick = {()=> this.setMode('county') }
@@ -59,7 +67,7 @@ export default class MobileNav extends React.Component{
                             currentMode = {this.mode==='race'? 'fullscreen' : 'compact'}
                             modes = {{
                                 compact: {width: window.innerWidth+1, height: 50},
-                                fullscreen: {width: window.innerWidth+1, height: window.innerHeight - 100}
+                                fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
                             delay = {this.mode==='race'? '.35s' : 0}
@@ -84,9 +92,13 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 125},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight-100}
+                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
+                
+                    onScroll = {this.mode === 'indicator'? (e)=> {
+                        this.setWorkflowScrollPos(e.top)
+                    } : ()=>{} }
                 >
                     <div>
                     <MenuSelectBlock left = 'Indicator' right = 'Medical exams for children in child welfare' multiline 
@@ -127,11 +139,12 @@ export default class MobileNav extends React.Component{
                     currentMode = {!this.mode? 'closed' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 1},
-                        fullsize: {width: window.innerWidth+1, height: window.innerHeight},
+                        fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
                         open: {width: window.innerWidth+1, height: 275}    
                     }}
                     backgroundColor = 'white'
                     borderColor = 'var(--fainttext)'
+                    workflowScrollOffset = {this.userScrolledDownInWorkflow}
                 >
                     <FlipMove
                         style = {{width: '100%'}}
@@ -307,7 +320,8 @@ const PickMenu = styled(ExpandBox)`
     top: -1px; left: -1px;
     height: 83px;
     z-index: 1;
-
+    transform: translateY(${props => props.workflowScrollOffset? -100 : 0}px);
+    transition: transform .35s;
 `
 const Header = styled(ExpandBox)`
     z-index: 2;
@@ -416,6 +430,26 @@ class IndicatorList extends React.Component{
         console.log('filter set to ', this.filter)
         this.filter = v
     }
+
+    constructor(){
+        super()
+        this.scrollListener = this.scrollListener.bind(this)
+    }
+
+    componentDidMount(){
+        console.log('added scroll listener')
+        window.addEventListener('scroll', function(){
+            console.log('fuck you')
+        })
+    }
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.scrollListener)
+    }
+
+    scrollListener(e){
+        console.log(e)
+    }
+
     render(){
         const store = this.props.store
         const inds = Object.keys(indicators)
@@ -439,6 +473,7 @@ class IndicatorList extends React.Component{
                 }).map((ind)=>{
                     return (
                         <ListRow
+                            key = {ind}
                             onClick = {()=>{ 
                                 store.completeWorkflow('indicator', ind)
                                 this.props.onComplete('indicator')
@@ -481,7 +516,7 @@ const IndCats = styled.select`
     margin-left: 25px;
     margin-top: 2px;
     width: 190px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
     appearance: none;
     color: var(--normtext);
     background: white;

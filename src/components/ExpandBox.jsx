@@ -154,6 +154,7 @@ export default class ExpandTest extends React.Component{
 
                                 }
                                 renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
+                                onScrollFrame = {this.props.onScroll? (e)=>this.props.onScroll(e) : ()=>{} }
                             > 
                                 {children}
                             </Scrollbars>
