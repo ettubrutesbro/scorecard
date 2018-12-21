@@ -384,6 +384,7 @@ export default class IndicatorByCounties extends React.Component{
             <Graph
                 expandable
                 withScroll
+                hideScroll = {distribute || this.props.sources}
                 currentMode = { 
                     this.props.sources? screen + 'sources' : 
                     !this.props.hasRace && this.props.expand? screen + 'NoRaceExpanded' :
@@ -536,7 +537,7 @@ const Wrapper = styled.div`
                     offset = {!props.distribute}
                     options = {[
                         {label: props.screen==='mobile'? 'by %' : 'by %', value: 'pct'},
-                        {label: props.screen === 'mobile'? 'Pop.' :  'by Child Population', value: 'pop'}
+                        {label: props.screen === 'mobile'? '#' :  'by Child Population', value: 'pop'}
                     ]}
                     theme = "bw"
                     onClick = {props.setOverviewSort}

@@ -7,6 +7,7 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
+import semanticTitles from './assets/semanticTitles'
 
 import Icon from './components/generic/Icon'
 import {Toggle} from './components/generic'
@@ -68,6 +69,7 @@ export default class MobileNav extends React.Component{
 
             <div key = 'indicator' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
+                    withScroll
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
@@ -77,6 +79,7 @@ export default class MobileNav extends React.Component{
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
                 >
+                    <div>
                     <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care and other asst. shit' multiline 
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
@@ -92,6 +95,10 @@ export default class MobileNav extends React.Component{
                         ]}
                         selected = {1}
                     />
+                    {this.mode==='indicator' &&
+                        <IndicatorList />
+                    }
+                    </div>
                 </ExpandBox>
             </div>
         ].sort((a,b)=>{
@@ -356,4 +363,41 @@ const Nav = styled.div`
     top: 0;
     // height: 250px;
     background: white;
+`
+
+@observer
+class IndicatorList extends React.Component{
+    @observable filter = ''
+    render(){
+        return(
+            <Inds>
+                {Object.keys(indicators).map((ind)=>{
+                    return (
+                        <IndRow>
+                            {semanticTitles[ind].label}
+                        </IndRow>
+                        )
+                    })}
+            </Inds>
+        )
+    }
+}
+
+const Inds = styled.ul`
+    width: 100%;
+    white-space: normal;
+    margin: 10px 0 0 0;
+    padding: 0 25px;
+
+`
+const IndRow = styled.li`
+    list-style-type: none;    
+    font-size: 14px;
+    line-height: 21px;
+    padding: 15px 25px;
+    background: white;
+    border: 1px solid var(--bordergrey);
+    &:not(:first-of-type){
+        margin-top: -1px;
+    }
 `

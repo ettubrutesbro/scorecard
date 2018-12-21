@@ -137,13 +137,21 @@ export default class ExpandTest extends React.Component{
                         withScroll = {this.props.withScroll}
                         wrap = {children => 
                             <Scrollbars 
+                                id = 'scrollbar'
                                 ref = {this.scrollbar} 
                                 style = {{
                                     width: '100%',
                                     //expanded exception hack II
-                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? 3000 
+                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? this.props.modes[this.props.currentMode].height 
                                     : '100%'
                                 }}
+                                renderTrackVertical = {
+                                    (props) => <div {...props} style = {
+                                        this.props.hideScroll? {display: 'none'} : {position: 'absolute', width: '6px', right: '2px', bottom: '2px', top: '2px', borderRadius: '0px'}} 
+                                        className = 'track-vertical' 
+                                    />
+
+                                }
                                 renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
                             > 
                                 {children}
