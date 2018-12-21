@@ -55,7 +55,7 @@ export default class MobileNav extends React.Component{
         const yearOptions = indicator? ind.years.map((yr,i)=>{
             const val = ind.counties[county||'california'][race||'totals'][i]
             const disabled = val!==0 && (!val || val==='*')
-            return {label:yr, value: i, disabled: disabled}
+            return {label:i===1?String(yr).replace('20','\'') : yr, value: i, disabled: disabled}
         }): false
 
         const NavItems = [
@@ -127,7 +127,7 @@ export default class MobileNav extends React.Component{
                         </ExpandBox>
             </div>,
 
-            <div key = 'indicator' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
+            <div key = 'indicator' style = {{height: this.mode==='compact'?'70px':'50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
                     withScroll
                     hideScroll = {this.mode==='county' || this.mode==='race'}
@@ -135,7 +135,7 @@ export default class MobileNav extends React.Component{
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 125},
+                        compact: {width: window.innerWidth+1, height: 70},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
@@ -156,14 +156,14 @@ export default class MobileNav extends React.Component{
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                         justComplete = {this.justComplete==='indicator'}
                     />
-                    {this.mode !=='race' && this.mode !== 'county' && indicator &&
+                    {/*this.mode !=='race' && this.mode !== 'county' && indicator &&
                     <YearToggle
                         visible = {this.mode==='compact'}
                         options = {yearOptions}
                         onClick = {(yr)=>store.completeWorkflow('year',yr)}
                         selected = {year}
                     />
-                    }
+                    */}
                     {this.mode==='indicator' &&
                         <IndicatorList store = {store} onComplete = {(which)=>{
                             this.setMode('compact')
@@ -172,10 +172,28 @@ export default class MobileNav extends React.Component{
                     }
                     </div>
                 </ExpandBox>
+            </div>,
+            <div key = 'year' style = {{height: '60px', 
+                marginLeft: '-1px', 
+                borderBottom: '1px solid var(--bordergrey)',
+            }}>
+                <MenuSelectBlock left = 'Year'
+                    height = '60px'
+                    right = {(<YearToggle
+                        options = {yearOptions}
+                        onClick = {(yr)=>store.completeWorkflow('year',yr)}
+                        selected = {year}
+                    />)}
+                    open = {false}
+                    noCaret
+                />
+
             </div>
         ].sort((a,b)=>{
             if(a.key===this.mode) return 1
             if(b.key===this.mode) return -1
+        }).filter((item)=>{
+            return !indicator? item.key!=='year' : true
         })
 
         return(
@@ -185,7 +203,7 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 1},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
-                        open: {width: window.innerWidth+1, height: 275}    
+                        open: {width: window.innerWidth+1, height: 280}    
                     }}
                     backgroundColor = 'white'
                     borderColor = 'var(--fainttext)'
@@ -267,32 +285,29 @@ const Mask = styled.div`
 `
 
 const YearToggle = styled(Toggle)`
-    position: absolute;
-    left: 25px;
-    bottom: -58px;
-    transition: opacity .35s;
-    opacity: ${props => props.visible? 1 : 0};
-    pointer-events: ${props => props.visible? 'auto' : 'none'};
+
 `
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
+    <MSB height = {props.height} disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
         <MSBLabel visible = {!props.open}>
             {props.left}
         </MSBLabel>
-        <MSBValue>
+        <MSBValue noCaret = {props.noCaret}>
             <Val truncate = {props.truncateValue} multiline = {props.multiline && !props.truncateValue} visible = {!props.open} justComplete = {props.justComplete}>
                 {props.right}
             </Val>
             {!props.noSearch && 
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
             }
+            {!props.noCaret && 
             <XCaret mode = {'caret'}
                 disabled = {props.disabled}
                 onClick = {props.open? props.return : ()=>{} }
             />
+            }
         </MSBValue>
     </MSB>
     )
@@ -301,7 +316,7 @@ const MSB = styled.div`
     padding: 0 25px;
     display: flex;
     width: ${window.innerWidth}px;
-    height: 50px;
+    height: ${props => props.height? props.height : '50px'};
     align-items: center; justify-content: space-between;
     background: ${props => props.disabled? 'var(--disabledgrey)' : 'transparent'};
 `
@@ -322,7 +337,7 @@ const MSBValue = styled.div`
     color: var(--fainttext);
     margin-left: 20px; 
     max-width: calc(88% - 80px);
-    margin-right: 30px;
+    margin-right: ${props=>props.noCaret? '0':'30px'};
 `
 const NavSearch = styled(Icon)`
     position: absolute;
@@ -333,6 +348,7 @@ const NavSearch = styled(Icon)`
     pointer-events: ${props => props.visible? 'auto' : 'none'};
 `
 const Val = styled.div`
+    font-size: 14px;
     flex-shrink: 1;
     white-space: ${props => props.truncate? 'nowrap' : 'normal'};
     overflow: ${props => props.truncate? 'hidden' : 'visible'};
@@ -342,12 +358,12 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
-        height: 24px;
+        height: 21px;
     ` : ''}
 `
 const XCaret = styled.div`
     position: absolute;
-    top: 3px; right: -30px;
+    top: 2px; right: -30px;
     width: 18px; height: 18px;
     border: 1px solid black;
     flex-shrink: 0;
@@ -373,18 +389,12 @@ const PickMenu = styled(ExpandBox)`
 const Header = styled(ExpandBox)`
     z-index: 2;
     top: 0; left: 0;
-    transform: translate(${props=>props.currentMode==='offscreen'?  window.innerWidth - 150+'px,'+window.innerHeight+'px' : props.currentMode==='button'? window.innerWidth - 150 + 'px,245px' : '0px,0px'});
+    transform: translate(${props=>props.currentMode==='offscreen'?  
+        window.innerWidth - 150+'px,'+window.innerHeight+'px' 
+        : props.currentMode==='button'? window.innerWidth - 150 + 'px,280px' 
+        : '0px,0px'
+    });
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
-    &::before{
-        visibility: ${props => props.currentMode==='button'? 'visible' : 'hidden'};
-        content: '';
-        position: absolute;
-        left: -20px;
-        height: 1px;
-        top: 29px;
-        width: 20px;
-        background: var(--offwhitefg);
-    }
 `
 const HeaderContent = styled.div`
     position: relative;
@@ -401,14 +411,15 @@ const HeaderSection = styled.div`
     padding-left: 25px;
     // white-space: nowrap;
     height: 55px;
-    transition: transform .4s;
+    opacity: ${props => props.active? 1: 0};
+    transition: transform .4s, opacity .4s;
     width: 100%;
 `
 const BarContent = styled(HeaderSection)`
-    transform: translateY(${props => props.active? 0 : 100}%);
+    transform: translateX(${props => props.active? 0 : -25}px);
 `
 const Btn = styled(HeaderSection)`
-    transform: translateY(${props => props.active? 0 : -100}%);
+    transform: translateX(${props => props.active? 0 : 25}px);
 `
 const BarInfo = styled.div`
     position: absolute;
