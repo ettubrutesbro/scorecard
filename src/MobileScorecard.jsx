@@ -9,6 +9,7 @@ import indicators from './data/indicators'
 
 import Icon from './components/generic/Icon'
 import ExpandBox from './components/ExpandBox'
+import Styles from './components/Styles'
 
 import MobileNav from './MobileNav'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
@@ -32,6 +33,7 @@ export default class MobileScorecard extends React.Component{
         const {indicator} = store
         return(
             <div>
+                <Styles />
                 <MobileNav 
                     store = {store}
                     showShorthand = {this.showShorthand}

@@ -42,6 +42,7 @@ export default class MobileNav extends React.Component{
     render(){ 
         const props = this.props
         const {open, store} = props
+        const {indicator} = store
 
         const NavItems = [
             <div key = 'county' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='county'?0:1}}>
@@ -200,7 +201,7 @@ export default class MobileNav extends React.Component{
                             Refine or restart your search...
                         </Prompt>
                         <Shorthand visible = {this.props.showShorthand}>
-                            Shorthand bla bla
+                            {indicator && semanticTitles[indicator].shorthand}
                         </Shorthand>
                     </BarContent>
 
@@ -219,10 +220,10 @@ export default class MobileNav extends React.Component{
 const Mask = styled.div`
     width: 100vw;
     height: ${props => props.visible? '100vh' : '0px'};
-    background: linear-gradient(180deg, #FCFDFF 50%, rgba(252, 253, 255, 0.45) 100%);
+    background: linear-gradient(180deg, rgba(252, 253, 255, 0.9) 55%, rgba(252, 253, 255, 0.5) 100%);
     opacity: ${props => props.visible? 1 : 0};
-    transition: opacity .5s;
-    transition-delay: ${props => props.visible? '.1s' : '0s'};
+    transition: opacity .475s;
+    transition-delay: ${props => props.visible? '.075s' : '0s'};
     position: absolute;
     z-index: 0;
 `
@@ -380,6 +381,9 @@ const Prompt = styled(BarInfo)`
 `
 const Shorthand = styled(BarInfo)`
     transform: translateY(${props => props.visible? 0 : 100}%);
+    max-width: calc(100% - 75px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 const SearchIcon = styled(Icon)`

@@ -517,7 +517,8 @@ const Wrapper = styled.div`
             />
             <HeaderTitle hasRace = {props.race} sources = {props.sources}>
                 <FadeTitle show = {((props.sources && props.distribute) || (!props.race && props.distribute))}>
-                    County overview
+                    {props.screen !== 'mobile' && 'County overview'}
+                    {props.screen==='mobile' && 'Counties'}
                 </FadeTitle>
                 <FadeTitle show = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}>
                     All counties
@@ -692,7 +693,7 @@ const BackArrow = styled(Icon)`
 const HeaderTitle = styled.div`
     width: ${props => props.sources || !props.hasRace? '130px' : '315px'};
     @media ${media.mobile}{
-         width: ${props => props.sources || !props.hasRace? '130px' : '212px'};
+         width: ${props => props.sources || !props.hasRace? '95px' : '212px'};
     }
     position: relative;
     height: 10px;
@@ -730,6 +731,9 @@ const HeaderToggle = styled(Toggle)`
         background-color: var(--offwhitefg);
     }
     transform: translateX(${props=> props.offset? -35 : 0}px);
+    @media ${media.mobile}{
+        transform: translateX(${props=> props.offset? -5 : -25}px);
+    }
     transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     opacity: ${props =>props.hide? 0 : 1};
     transition-delay: ${props => props.hide? '0s' : '0.15s'};

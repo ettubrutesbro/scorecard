@@ -322,12 +322,15 @@ const AverageLine = styled.div`
     position: absolute;
     bottom: 20px;
     left: ${props => props.labelWidth + 20}px;
-    @media ${media.mobile}{
-        left: ${props => props.labelWidth + 15}px;
-    }
+
     width: 1px;
     background-color: var(--fainttext);
     height: calc(100% - 52px);
+    @media ${media.mobile}{
+        left: ${props => props.labelWidth + 15}px;
+        height: calc(100% - 56px);
+        bottom: 25px;
+    }
     box-shadow: -1.5px 0 0 0 var(--offwhitefg);
     /*border-left: 1.5px solid var(--offwhitefg);*/
     /*border-right: 1px solid var(--normtext);*/
