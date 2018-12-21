@@ -414,6 +414,7 @@ class IndicatorList extends React.Component{
         this.filter = v
     }
     render(){
+        const store = this.props.store
         const inds = Object.keys(indicators)
         return(
             <React.Fragment>
