@@ -75,6 +75,7 @@ storiesOf('Mobile version', module)
         <MobileNav
             store = {{
                 indicator: 'earlyPrenatalCare',
+                completeWorkflow: (t,v)=>{console.log('change',t,'to',v)}
             }}
             mode = {mode}
         />

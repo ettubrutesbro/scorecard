@@ -22,15 +22,23 @@ export default class MobileScorecard extends React.Component{
 
     @observable picking = false
     @observable view = 'breakdown'
+    @observable showShorthand = false
+    @action toggleHeaderInfo = (tf) => {
+        this.showShorthand = tf
+    }
 
     render(){
         const {store} = this.props
         return(
             <div>
-                <MobileNav store = {store}/>
+                <MobileNav store = {store}
+                    showShorthand = {this.showShorthand}
+                />
 
                 <Content>
-                    <Breakdown store = {store} />
+                    <Breakdown store = {store} 
+                        onScrollPastReadout = {this.toggleHeaderInfo}
+                    />
                 </Content>
                 
                 <SectionChooser>
@@ -99,7 +107,7 @@ const SourcesBtn = styled(SectionBtn)`
         return(
             <React.Fragment>
                 <IntersectionObserver
-                    onChange = {(wat)=>console.log(wat.isIntersecting)}
+                    onChange = {(wat)=>this.props.onScrollPastReadout(!wat.isIntersecting)}
                     rootMargin = '-75px 0% 0% 0%'
                 >
                     <Readout store = {store} />

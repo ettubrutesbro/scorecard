@@ -20,6 +20,8 @@ export default class MobileNav extends React.Component{
 
     @observable mode = false // compact, county, race, indicator
     @action setMode = (val) => this.mode = val
+    @observable justComplete = null
+    @action justCompleted = (what) => this.justComplete = what
 
     render(){ 
         const props = this.props
@@ -89,6 +91,7 @@ export default class MobileNav extends React.Component{
                         prompt = 'Choose an indicator.'
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
+                        justComplete = {this.justComplete==='indicator'}
                     />
                     {this.mode !=='race' && this.mode !== 'county' &&
                     <YearToggle
@@ -101,7 +104,10 @@ export default class MobileNav extends React.Component{
                     />
                     }
                     {this.mode==='indicator' &&
-                        <IndicatorList />
+                        <IndicatorList store = {store} onComplete = {(which)=>{
+                            this.setMode('compact')
+                            this.justCompleted(which)
+                        } }/>
                     }
                     </div>
                 </ExpandBox>
@@ -166,11 +172,11 @@ export default class MobileNav extends React.Component{
                     }}
                 >
                     <BarContent active = {!this.mode}>
-                        <Prompt>
-                            <SearchIcon img = "searchzoom" color = 'white'/>
+                        <SearchIcon img = "searchzoom" color = 'white'/>
+                        <Prompt visible = {!this.props.showShorthand}>
                             Refine or restart your search...
                         </Prompt>
-                        <Shorthand>
+                        <Shorthand visible = {this.props.showShorthand}>
                             Shorthand bla bla
                         </Shorthand>
                     </BarContent>
@@ -180,10 +186,21 @@ export default class MobileNav extends React.Component{
                     </Btn>
                 </HeaderContent>
             </Header>
+            <Mask visible = {this.mode}/>
+
             </FixWrap>
         )
     }
 }
+
+const Mask = styled.div`
+    width: 100vw;
+    height: ${props => props.visible? '100vh' : '0px'};
+    background: linear-gradient(180deg, #FCFDFF 45%, rgba(252, 253, 255, 0.4) 100%);
+    opacity: ${props => props.visible? 1 : 0};
+    transition: opacity .35s;
+    transition-delay: ${props => props.visible? '.15s' : '0s'};
+`
 
 const YearToggle = styled(Toggle)`
     position: absolute;
@@ -205,7 +222,7 @@ const MenuSelectBlock = (props) => {
             {props.left}
         </MSBLabel>
         <MSBValue multiline = {props.multiline}>
-            <Val multiline = {props.multiline} visible = {!props.open}>
+            <Val multiline = {props.multiline} visible = {!props.open} justComplete = {props.justComplete}>
                 {props.truncateValue && props.right.length > 27 && props.right.slice(0,25)+'...'}
                 {!(props.truncateValue && props.right.length > 27) && props.right}
                 
@@ -262,6 +279,7 @@ const Val = styled.div`
     text-align: right;
     opacity: ${props=>props.visible? 1 : 0};
     transition: opacity .35s;
+    transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
         // margin-top: -4px;
         // line-height: 23px;
@@ -277,6 +295,7 @@ const XCaret = styled.div`
 const FixWrap = styled.div`
     position: fixed;
     top: -1px; left: -1px;
+    z-index: 10;
 `
 const WorkflowWrap = styled.div`
     border: 1px solid red;
@@ -325,12 +344,20 @@ const BarContent = styled(HeaderSection)`
     transform: translateY(${props => props.active? 0 : 100}%);
 `
 const Btn = styled(HeaderSection)`
-    transform: translateY(${props => props.active? 0 : -100}%)
+    transform: translateY(${props => props.active? 0 : -100}%);
 `
-const Prompt = styled.div`
-    display: flex;
+const BarInfo = styled.div`
+    position: absolute;
+    left: 50px;
+    transition: transform .35s, opacity .35s;
+    opacity: ${props => props.visible? 1: 0};
 `
-const Shorthand = styled.div``
+const Prompt = styled(BarInfo)`
+    transform: translateY(${props => props.visible? 0 : -100}%);
+`
+const Shorthand = styled(BarInfo)`
+    transform: translateY(${props => props.visible? 0 : 100}%);
+`
 
 const SearchIcon = styled(Icon)`
     width: 15px; height: 15px;
@@ -407,7 +434,12 @@ class IndicatorList extends React.Component{
                     else return indicators[ind].categories.includes(this.filter)
                 }).map((ind)=>{
                     return (
-                        <ListRow>
+                        <ListRow
+                            onClick = {()=>{ 
+                                store.completeWorkflow('indicator', ind)
+                                this.props.onComplete('indicator')
+                            }}
+                        >
                             {semanticTitles[ind].label}
                         </ListRow>
                         )
