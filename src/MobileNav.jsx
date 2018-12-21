@@ -7,7 +7,13 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
+import demopop from './data/demographicsAndPopulation'
 import semanticTitles from './assets/semanticTitles'
+import countyLabels from './assets/countyLabels'
+import {counties} from './assets/counties'
+
+import {capitalize} from './utilities/toLowerCase'
+import sigFig from './utilities/sigFig'
 
 import Icon from './components/generic/Icon'
 import {Toggle} from './components/generic'
@@ -44,8 +50,10 @@ export default class MobileNav extends React.Component{
         const {open, store} = props
         const {indicator, county, race, year} = store
 
-        const yearOptions = indicator? indicators[indicator].years.map((yr,i)=>{
-            const val = indicators[indicator].counties[county||'california'][race||'totals'][i]
+        const ind = indicators[indicator]
+
+        const yearOptions = indicator? ind.years.map((yr,i)=>{
+            const val = ind.counties[county||'california'][race||'totals'][i]
             const disabled = val!==0 && (!val || val==='*')
             return {label:yr, value: i, disabled: disabled}
         }): false
@@ -60,15 +68,27 @@ export default class MobileNav extends React.Component{
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
-                    delay = {this.mode==='county'? '.35s' : 0}
+                    delay = {this.mode==='county'? '.175s' : 0}
                     noBorderTop = {this.mode==='compact' || !this.mode}
+
+                    withScroll
+                    hideScroll = {this.mode==='indicator' || this.mode==='race'}
+                    noFade
+                    onScroll = {this.mode === 'county'? (e)=> {
+                        this.setWorkflowScrollPos(e.top)
+                    } : ()=>{} }
                 >
+                    <div>
                     <MenuSelectBlock left = 'County' right = 'California (all)' 
                         onClick = {()=> this.setMode('county') }
                         open = {this.mode === 'county'}
                         prompt = 'Pick a county.'
                         return = {()=>this.setMode('compact')}
                     />
+                    {this.mode === 'county' &&
+                        <CountyList store = {store} />
+                    }
+                    </div>
                 </ExpandBox>
             </div>,
 
@@ -81,15 +101,21 @@ export default class MobileNav extends React.Component{
                                 fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
-                            delay = {this.mode==='race'? '.35s' : 0}
+                            delay = {this.mode==='race'? '.175s' : 0}
                         >
+                            <div>
                             <MenuSelectBlock left = 'Race' right = 'All races' 
-                                onClick = {()=> this.setMode('race') }
+                                disabled = {ind && !ind.categories.includes('hasRace')}
+                                onClick = {(ind && ind.categories.includes('hasRace')) || !ind?()=> this.setMode('race'):()=>{alert('The indicator you picked doesn\'t have any race-specific data.')} }
                                 open = {this.mode === 'race'}
                                 prompt = 'Select a race.'
                                 return = {()=>this.setMode('compact')}
                                 noSearch
                             />
+                            {this.mode === 'race' &&
+                                <RaceList store = {store} />
+                            }
+                            </div>
                         </ExpandBox>
             </div>,
 
@@ -243,7 +269,7 @@ const YearToggle = styled(Toggle)`
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
+    <MSB disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
         <MSBLabel visible = {!props.open}>
             {props.left}
@@ -256,6 +282,7 @@ const MenuSelectBlock = (props) => {
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
             }
             <XCaret mode = {'caret'}
+                disabled = {props.disabled}
                 onClick = {props.open? props.return : ()=>{} }
             />
         </MSBValue>
@@ -268,6 +295,7 @@ const MSB = styled.div`
     width: ${window.innerWidth}px;
     height: 50px;
     align-items: center; justify-content: space-between;
+    background: ${props => props.disabled? 'var(--disabledgrey)' : 'transparent'};
 `
 const MSBLabel = styled.div`
     font-size: 12px;
@@ -501,6 +529,9 @@ const ListRow = styled.li`
     &:not(:first-of-type){
         margin-top: -1px;
     }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `
 
 const IndCats = styled.select`
@@ -528,3 +559,43 @@ const SelectWrapper = styled.div`
         border-top-color: var(--fainttext);
     }
 `
+
+const RaceList = (props) => {
+    const races = ['asian','black','latinx','white','other']
+    const {store} = props
+    return (
+        <WorkflowList>
+            {races.map((r)=>{
+                const popPct = demopop[store.county || 'california'][r]
+                return <ListRow key = {r}>
+                    <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
+                    <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
+                        {popPct}% of 
+                        {!store.county && ' CA\'s children'}
+                        {store.county && ' county\'s children'}
+                    </div>
+                </ListRow>
+            })}
+        </WorkflowList>
+    )
+}
+const CountyList = (props) => {
+    const {store} = props
+    return (
+        <WorkflowList>
+            {counties.sort((a,b)=>{
+                if(a.id < b.id) return -1
+                else if (a.id > b.id) return 1
+                else return 0
+            }).map((cty)=>{
+                console.log(cty)
+                return <ListRow key = {cty.id}>
+                    <div>{countyLabels[cty.id]}</div>
+                    <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
+                        {sigFig(demopop[cty.id].population)} children
+                    </div>
+                </ListRow>
+            })}
+        </WorkflowList>
+    )
+}
