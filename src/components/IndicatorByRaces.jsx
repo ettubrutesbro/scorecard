@@ -117,7 +117,14 @@ export default class IndicatorByRaces extends React.Component{
                             offset = {!this.props.expand}
                             buttonMode = {!this.props.expand}
                         >
+                            {screen !== 'mobile' && <React.Fragment>
                             <span>Indicator breakdown</span> by race
+                            </React.Fragment>
+                            }
+                            {screen === 'mobile' && <React.Fragment>
+                                Race breakdown
+                                </React.Fragment>
+                            }
                         </Header>
                     }
                     bars = {this.props.expand? indicatorPerformanceByRace : []}

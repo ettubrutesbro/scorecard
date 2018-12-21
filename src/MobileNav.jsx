@@ -25,7 +25,11 @@ export default class MobileNav extends React.Component{
         this.mode = val
     }
     @observable justComplete = null
-    @action justCompleted = (what) => this.justComplete = what
+    @action justCompleted = (what) => {
+        this.workflowScrollPos = 0
+        this.userScrolledDownInWorkflow = false
+        this.justComplete = what
+    }
 
     @observable workflowScrollPos = 0
     @observable userScrolledDownInWorkflow = false

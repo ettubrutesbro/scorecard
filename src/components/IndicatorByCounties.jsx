@@ -522,11 +522,11 @@ const Wrapper = styled.div`
                 <FadeTitle show = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}>
                     All counties
                 </FadeTitle>
-                <FadeTitle show = {!props.sources && props.race}>
-                    {props.race === 'other' && 'In counties with the most children of other races'}
-                    {props.screen === 'mobile' && props.race === 'other' && 'In counties with the most children of other races'}
-                    {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
-                    {props.screen === 'mobile' && !props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+                <FadeTitle show = {!props.sources && props.race} superLong>
+                    {props.race === 'other' && props.screen !== 'mobile' && 'In counties with the most children of other races'}
+                    {props.screen === 'mobile' && props.race === 'other' && 'By most children of other races'}
+                    {!props.sources && props.race && props.race !== 'other' && props.screen!== 'mobile' && `In counties with the most ${capitalize(props.race)} children`}
+                    {props.screen === 'mobile' && !props.sources && props.race && props.race !== 'other' && `Counties w/ most ${capitalize(props.race)} children`}
                 </FadeTitle> 
             </HeaderTitle>
             <SourceString show = {props.sources}>
@@ -691,6 +691,9 @@ const BackArrow = styled(Icon)`
 `
 const HeaderTitle = styled.div`
     width: ${props => props.sources || !props.hasRace? '130px' : '315px'};
+    @media ${media.mobile}{
+         width: ${props => props.sources || !props.hasRace? '130px' : '212px'};
+    }
     position: relative;
     height: 10px;
     padding: 0 15px;
@@ -708,6 +711,10 @@ const FadeTitle = styled.span`
     transition: opacity .15s;
     transition-delay: ${props=>props.show?'.15s':'0s'};
     white-space: nowrap;
+    @media ${media.mobile}{
+        font-size: ${props => props.superLong? '14px' : '16px'};
+        letter-spacing: ${props => props.superLong? '0.4' : '0.6'}px;
+    }
 `
 
 const HeaderToggle = styled(Toggle)`
