@@ -13,7 +13,7 @@ import countyLabels from './assets/countyLabels'
 import {counties} from './assets/counties'
 
 import {capitalize} from './utilities/toLowerCase'
-import sigFig from './utilities/sigFig'
+import sigFig, {truncateNum} from './utilities/sigFig'
 
 import Icon from './components/generic/Icon'
 import {Toggle} from './components/generic'
@@ -573,6 +573,10 @@ const RaceList = (props) => {
     const {store} = props
     return (
         <WorkflowList>
+            <SpecialRow onClick = {()=>{ store.completeWorkflow('race',''); props.onComplete('race') }}> 
+                <div>All races</div> 
+                <ItemInfo>{truncateNum(demopop[store.county || 'california'].population)} children in {store.county? 'county' : 'CA'}</ItemInfo>
+            </SpecialRow>
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
                 return <ListRow key = {r} onClick = {()=>{ 
@@ -580,11 +584,11 @@ const RaceList = (props) => {
                     props.onComplete('race')
                 }}>
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
-                    <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
+                    <ItemInfo>
                         {popPct}% of 
                         {!store.county && ' CA\'s children'}
-                        {store.county && ' county\'s children'}
-                    </div>
+                        {store.county && ' county\'s kids'}
+                    </ItemInfo>
                 </ListRow>
             })}
         </WorkflowList>
@@ -594,13 +598,13 @@ const CountyList = (props) => {
     const {store} = props
     return (
         <WorkflowList>
-            <CAListRow onClick = {()=>{
+            <SpecialRow onClick = {()=>{
                 store.completeWorkflow('county', '')
                 props.onComplete('county')
             }} >
                 <div>California </div>
-                <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>{sigFig(demopop.california.population)} children</div>
-            </CAListRow>
+                <ItemInfo>{sigFig(demopop.california.population)} children</ItemInfo>
+            </SpecialRow>
             {counties.sort((a,b)=>{
                 if(a.id < b.id) return -1
                 else if (a.id > b.id) return 1
@@ -614,15 +618,19 @@ const CountyList = (props) => {
                     }}
                 >
                     <div>{countyLabels[cty.id]}</div>
-                    <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
+                    <ItemInfo>
                         {sigFig(demopop[cty.id].population)} children
-                    </div>
+                    </ItemInfo>
                 </ListRow>
             })}
         </WorkflowList>
     )
 }
 
-const CAListRow = styled(ListRow)`
+const SpecialRow = styled(ListRow)`
     margin-bottom: 15px;
+`
+const ItemInfo = styled.div`
+    font-size: 12px;
+    color: var(--fainttext);
 `
