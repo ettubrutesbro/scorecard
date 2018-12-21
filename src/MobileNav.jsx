@@ -196,10 +196,12 @@ export default class MobileNav extends React.Component{
 const Mask = styled.div`
     width: 100vw;
     height: ${props => props.visible? '100vh' : '0px'};
-    background: linear-gradient(180deg, #FCFDFF 45%, rgba(252, 253, 255, 0.4) 100%);
+    background: linear-gradient(180deg, #FCFDFF 50%, rgba(252, 253, 255, 0.45) 100%);
     opacity: ${props => props.visible? 1 : 0};
-    transition: opacity .35s;
-    transition-delay: ${props => props.visible? '.15s' : '0s'};
+    transition: opacity .5s;
+    transition-delay: ${props => props.visible? '.1s' : '0s'};
+    position: absolute;
+    z-index: 0;
 `
 
 const YearToggle = styled(Toggle)`
@@ -213,19 +215,14 @@ const YearToggle = styled(Toggle)`
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB multiline = {props.multiline} onClick = {!props.open? props.onClick : ()=>{}}>
+    <MSB onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
-        <MSBLabel 
-            multiline = {props.multiline}
-            visible = {!props.open}
-        >
+        <MSBLabel visible = {!props.open}>
             {props.left}
         </MSBLabel>
-        <MSBValue multiline = {props.multiline}>
-            <Val multiline = {props.multiline} visible = {!props.open} justComplete = {props.justComplete}>
-                {props.truncateValue && props.right.length > 27 && props.right.slice(0,25)+'...'}
-                {!(props.truncateValue && props.right.length > 27) && props.right}
-                
+        <MSBValue>
+            <Val truncate = {props.truncateValue} multiline = {props.multiline && !props.truncateValue} visible = {!props.open} justComplete = {props.justComplete}>
+                {props.right}
             </Val>
             {!props.noSearch && 
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
@@ -243,10 +240,6 @@ const MSB = styled.div`
     width: ${window.innerWidth}px;
     height: 50px;
     align-items: center; justify-content: space-between;
-    ${props => props.multiline? `
-        // align-items: flex-start;
-        // padding-top: 16px;
-    ` : ''}
 `
 const MSBLabel = styled.div`
     font-size: 12px;
@@ -275,14 +268,15 @@ const NavSearch = styled(Icon)`
 `
 const Val = styled.div`
     flex-shrink: 1;
-    white-space: normal;
+    max-width: 200px;
+    white-space: ${props => props.truncate? 'nowrap' : 'normal'};
+    overflow: ${props => props.truncate? 'hidden' : 'visible'};
+    text-overflow: ellipsis;
     text-align: right;
     opacity: ${props=>props.visible? 1 : 0};
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
-        // margin-top: -4px;
-        // line-height: 23px;
         height: 16px;
     ` : ''}
 `
@@ -303,8 +297,10 @@ const WorkflowWrap = styled.div`
 
 ` 
 const PickMenu = styled(ExpandBox)`
+    position: absolute;
     top: -1px; left: -1px;
     height: 83px;
+    z-index: 1;
 
 `
 const Header = styled(ExpandBox)`
@@ -313,11 +309,12 @@ const Header = styled(ExpandBox)`
     transform: translate(${props=>props.currentMode==='offscreen'?  window.innerWidth - 150+'px,'+window.innerHeight+'px' : props.currentMode==='button'? window.innerWidth - 150 + 'px,235px' : '0px,0px'});
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     &::before{
+        visibility: ${props => props.currentMode==='button'? 'visible' : 'hidden'};
         content: '';
         position: absolute;
         left: -20px;
         height: 1px;
-        top: 13px;
+        top: 29px;
         width: 20px;
         background: var(--offwhitefg);
     }
@@ -481,6 +478,7 @@ const IndCats = styled.select`
     letter-spacing: 0.5px;
     appearance: none;
     color: var(--normtext);
+    background: white;
 
 `
 const SelectWrapper = styled.div`

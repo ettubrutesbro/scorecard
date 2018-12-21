@@ -35,9 +35,7 @@ export default class AppStore{
 
     @action resize = debounce(() => { 
         const size = getMedia()
-        if(size === 'mobile'){
-            window.location.reload()
-        }
+        
         if(this.screen!==size){
             // this.screen = size 
             window.location.reload()
