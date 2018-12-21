@@ -250,7 +250,7 @@ const MSBValue = styled.div`
 `
 const NavSearch = styled(Icon)`
     position: absolute;
-    right: 55px;
+    right: 60px;
     width: 18px; height: 18px;
     transition: opacity .35s;
     opacity: ${props => props.visible? 1 : 0};
@@ -381,37 +381,83 @@ const Nav = styled.div`
 
 @observer
 class IndicatorList extends React.Component{
-    @observable filter = ''
+    @observable filter = 'all'
+    @action setFilter = (v) => {
+        console.log('filter set to ', this.filter)
+        this.filter = v
+    }
     render(){
+        const inds = Object.keys(indicators)
         return(
-            <Inds>
-                {Object.keys(indicators).map((ind)=>{
+            <React.Fragment>
+            <SelectWrapper>
+            <IndCats
+                onChange = {(e)=>this.setFilter(e.target.value)}
+            >
+                <option value = "all"> All topics ({inds.length})</option>
+                <option value = "health"> Health (12)</option>
+                <option value = "education"> Education (15)</option>
+                <option value = "welfare"> Child Welfare (6)</option>
+                <option value = "earlyChildhood"> Early Childhood (8)</option>
+            </IndCats>
+            </SelectWrapper>
+            <WorkflowList>
+                {Object.keys(indicators).filter((ind)=>{
+                    if(this.filter === 'all') return true 
+                    else return indicators[ind].categories.includes(this.filter)
+                }).map((ind)=>{
                     return (
-                        <IndRow>
+                        <ListRow>
                             {semanticTitles[ind].label}
-                        </IndRow>
+                        </ListRow>
                         )
                     })}
-            </Inds>
+            </WorkflowList>
+            </React.Fragment>
         )
     }
 }
 
-const Inds = styled.ul`
+const WorkflowList = styled.ul`
     width: 100%;
     white-space: normal;
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
     padding: 0 25px;
 
 `
-const IndRow = styled.li`
+const ListRow = styled.li`
     list-style-type: none;    
     font-size: 14px;
     line-height: 21px;
-    padding: 15px 25px;
+    padding: 15px 15px;
     background: white;
     border: 1px solid var(--bordergrey);
     &:not(:first-of-type){
         margin-top: -1px;
+    }
+`
+
+const IndCats = styled.select`
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    height: 44px;
+    padding: 10px 15px;
+    margin-left: 25px;
+    margin-top: 2px;
+    width: 190px;
+    letter-spacing: 0.5px;
+    appearance: none;
+    color: var(--normtext);
+
+`
+const SelectWrapper = styled.div`
+    display: inline-flex;
+    position: relative;
+    &::after{
+        position: absolute;
+        top: 21px; right: 15px;
+        content: '';
+        border: 6px solid transparent;
+        border-top-color: var(--fainttext);
     }
 `
