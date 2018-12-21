@@ -265,12 +265,13 @@ export default class ResponsiveScorecard extends React.Component{
     @action blockUserBrowser = (why) => this.browserBlock = why
 
     @action setInit = (tf) => {
-        if(!tf){ 
-            this.setRandomIndicatorCycle(false)
+        if(store.screen !== 'mobile'){
+            if(!tf){ 
+                this.setRandomIndicatorCycle(false)
+            }
+            else if(tf) this.setRandomIndicatorCycle(true)
         }
-        else if(tf) this.setRandomIndicatorCycle(true)
         store.init = tf
-
     }
     @action closeSplash = () => {
         this.setInit(false)
@@ -368,7 +369,7 @@ export default class ResponsiveScorecard extends React.Component{
                 }
             }
         }else{
-            this.setRandomIndicatorCycle(true)   
+            if(store.screen !== 'mobile') this.setRandomIndicatorCycle(true)   
         }
     }
 

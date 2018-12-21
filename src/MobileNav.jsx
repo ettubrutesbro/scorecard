@@ -19,7 +19,11 @@ import ExpandBox from './components/ExpandBox'
 export default class MobileNav extends React.Component{
 
     @observable mode = false // compact, county, race, indicator
-    @action setMode = (val) => this.mode = val
+    @action setMode = (val) =>{
+        if(val==='compact') this.props.setNavStatus(true)
+        else if(!val) this.props.setNavStatus(false)
+        this.mode = val
+    }
     @observable justComplete = null
     @action justCompleted = (what) => this.justComplete = what
 

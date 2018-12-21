@@ -20,28 +20,35 @@ const width = window.innerWidth - 50
 @observer
 export default class MobileScorecard extends React.Component{
 
-    @observable picking = false
-    @observable view = 'breakdown'
+    @observable navOpen = false
     @observable showShorthand = false
     @action toggleHeaderInfo = (tf) => {
         this.showShorthand = tf
     }
+    @action setNavStatus = (tf) => this.navOpen = tf
 
     render(){
         const {store} = this.props
+        const {indicator} = store
         return(
             <div>
-                <MobileNav store = {store}
+                <MobileNav 
+                    store = {store}
                     showShorthand = {this.showShorthand}
+                    setNavStatus = {this.setNavStatus}
                 />
 
                 <Content>
-                    <Breakdown store = {store} 
-                        onScrollPastReadout = {this.toggleHeaderInfo}
-                    />
+                    {indicator && 
+                        <Breakdown store = {store} 
+                            onScrollPastReadout = {this.toggleHeaderInfo}
+                        />
+                    }
                 </Content>
                 
-                <SectionChooser>
+                <SectionChooser
+                    visible = {!this.navOpen}
+                >
                     <BreakdownBtn />
                     <DemoBtn />
                     <SourcesBtn />
@@ -56,6 +63,7 @@ const Content = styled.div`
     position: absolute;
     top: 0;
     /*height: 100vh;*/
+    height: 100%;
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -79,6 +87,8 @@ const SectionChooser = styled.div`
     display: flex; 
     align-items: center;
     justify-content: space-around;
+    transform: translateY(${props => props.visible? 0 : 100}%);
+    transition: transform .35s;
 `
 const SectionBtn = styled.div`
     width: 45px; height: 45px;

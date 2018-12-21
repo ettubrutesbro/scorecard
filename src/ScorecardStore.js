@@ -12,9 +12,6 @@ import {capitalize} from './utilities/toLowerCase'
 import {pickBy, findIndex, debounce, findKey} from 'lodash'
 import {isValid} from './utilities/isValid'
 
-
-import combo from '../src/utilities/trungCombo'
-
 import stopwords from './utilities/stopwords'
 
 const {detect} = require('detect-browser')
@@ -32,13 +29,20 @@ export default class AppStore{
     }
 
     @observable screen = getMedia()
+    @observable mobileDeviceWidth = this.screen === 'mobile'? window.innerWidth : 0
 
     @action resize = debounce(() => { 
         const size = getMedia()
-        
+
         if(this.screen!==size){
             // this.screen = size 
             window.location.reload()
+        }
+        if(this.screen==='mobile' && size === 'mobile'){
+            if(window.innerWidth !== this.mobileDeviceWidth){
+                console.log('width changed for mobile; refresh')
+                window.location.reload()
+            }
         }
         else return
 
