@@ -258,7 +258,7 @@ export default class MobileNav extends React.Component{
 const Mask = styled.div`
     width: 100vw;
     height: ${props => props.visible? '100vh' : '0px'};
-    background: linear-gradient(180deg, rgba(252, 253, 255, 0.9) 50%, rgba(252, 253, 255, 0.6) 100%);
+    background: linear-gradient(180deg, var(--offwhitefg) 53%, rgba(252, 253, 255, 0.75) 100%);
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .475s;
     transition-delay: ${props => props.visible? '.075s' : '0s'};
