@@ -79,14 +79,18 @@ export default class MobileNav extends React.Component{
                     } : ()=>{} }
                 >
                     <div>
-                    <MenuSelectBlock left = 'County' right = 'California (all)' 
+                    <MenuSelectBlock left = 'County' right = {county? countyLabels[county] : 'California (all)'} 
                         onClick = {()=> this.setMode('county') }
                         open = {this.mode === 'county'}
                         prompt = 'Pick a county.'
                         return = {()=>this.setMode('compact')}
+                        justComplete = {this.justComplete === 'county'}
                     />
                     {this.mode === 'county' &&
-                        <CountyList store = {store} />
+                        <CountyList store = {store} onComplete = {(which)=>{
+                            this.setMode('compact')
+                            this.justCompleted(which)
+                        }}/>
                     }
                     </div>
                 </ExpandBox>
@@ -104,16 +108,20 @@ export default class MobileNav extends React.Component{
                             delay = {this.mode==='race'? '.175s' : 0}
                         >
                             <div>
-                            <MenuSelectBlock left = 'Race' right = 'All races' 
+                            <MenuSelectBlock left = 'Race' right = {race? capitalize(race) : 'All races'} 
                                 disabled = {ind && !ind.categories.includes('hasRace')}
                                 onClick = {(ind && ind.categories.includes('hasRace')) || !ind?()=> this.setMode('race'):()=>{alert('The indicator you picked doesn\'t have any race-specific data.')} }
                                 open = {this.mode === 'race'}
                                 prompt = 'Select a race.'
                                 return = {()=>this.setMode('compact')}
                                 noSearch
+                                justComplete = {this.justComplete === 'race'}
                             />
                             {this.mode === 'race' &&
-                                <RaceList store = {store} />
+                                <RaceList store = {store} onComplete = {(which)=>{
+                                    this.setMode('compact')
+                                    this.justCompleted(which)
+                                }}/>
                             }
                             </div>
                         </ExpandBox>
@@ -567,7 +575,10 @@ const RaceList = (props) => {
         <WorkflowList>
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
-                return <ListRow key = {r}>
+                return <ListRow key = {r} onClick = {()=>{ 
+                    store.completeWorkflow('race', r)
+                    props.onComplete('race')
+                }}>
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
                     <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
                         {popPct}% of 
@@ -583,13 +594,25 @@ const CountyList = (props) => {
     const {store} = props
     return (
         <WorkflowList>
+            <CAListRow onClick = {()=>{
+                store.completeWorkflow('county', '')
+                props.onComplete('county')
+            }} >
+                <div>California </div>
+                <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>{sigFig(demopop.california.population)} children</div>
+            </CAListRow>
             {counties.sort((a,b)=>{
                 if(a.id < b.id) return -1
                 else if (a.id > b.id) return 1
                 else return 0
             }).map((cty)=>{
                 console.log(cty)
-                return <ListRow key = {cty.id}>
+                return <ListRow key = {cty.id}
+                    onClick = {()=>{ 
+                        store.completeWorkflow('county', cty.id)
+                        props.onComplete('county')
+                    }}
+                >
                     <div>{countyLabels[cty.id]}</div>
                     <div style = {{color: 'var(--fainttext)', fontSize: '12px'}}>
                         {sigFig(demopop[cty.id].population)} children
@@ -599,3 +622,7 @@ const CountyList = (props) => {
         </WorkflowList>
     )
 }
+
+const CAListRow = styled(ListRow)`
+    margin-bottom: 15px;
+`
