@@ -42,7 +42,13 @@ export default class MobileNav extends React.Component{
     render(){ 
         const props = this.props
         const {open, store} = props
-        const {indicator} = store
+        const {indicator, county, race, year} = store
+
+        const yearOptions = indicator? indicators[indicator].years.map((yr,i)=>{
+            const val = indicators[indicator].counties[county||'california'][race||'totals'][i]
+            const disabled = val!==0 && (!val || val==='*')
+            return {label:yr, value: i, disabled: disabled}
+        }): false
 
         const NavItems = [
             <div key = 'county' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='county'?0:1}}>
@@ -107,7 +113,7 @@ export default class MobileNav extends React.Component{
                 >
                     <div>
                     <MenuSelectBlock left = 'Indicator' 
-                        right = {store.indicator? semanticTitles[store.indicator].shorthand : 'Browse / search...'} 
+                        right = {indicator? semanticTitles[indicator].shorthand : 'Browse / search...'} 
                         multiline 
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
@@ -116,14 +122,12 @@ export default class MobileNav extends React.Component{
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                         justComplete = {this.justComplete==='indicator'}
                     />
-                    {this.mode !=='race' && this.mode !== 'county' &&
+                    {this.mode !=='race' && this.mode !== 'county' && indicator &&
                     <YearToggle
                         visible = {this.mode==='compact'}
-                        options = {[
-                            {label: 2016, value: 0},    
-                            {label: 2017, value: 1},    
-                        ]}
-                        selected = {1}
+                        options = {yearOptions}
+                        onClick = {(yr)=>store.completeWorkflow('year',yr)}
+                        selected = {year}
                     />
                     }
                     {this.mode==='indicator' &&
@@ -220,7 +224,7 @@ export default class MobileNav extends React.Component{
 const Mask = styled.div`
     width: 100vw;
     height: ${props => props.visible? '100vh' : '0px'};
-    background: linear-gradient(180deg, rgba(252, 253, 255, 0.9) 55%, rgba(252, 253, 255, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(252, 253, 255, 0.9) 50%, rgba(252, 253, 255, 0.6) 100%);
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .475s;
     transition-delay: ${props => props.visible? '.075s' : '0s'};
