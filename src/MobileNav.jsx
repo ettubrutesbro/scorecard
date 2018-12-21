@@ -78,14 +78,14 @@ export default class MobileNav extends React.Component{
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 115},
+                        compact: {width: window.innerWidth+1, height: 125},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight-100}
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
                 >
                     <div>
-                    <MenuSelectBlock left = 'Indicator' right = 'Early prenatal care and other asst. shit' multiline 
+                    <MenuSelectBlock left = 'Indicator' right = 'Medical exams for children in child welfare' multiline 
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
                         prompt = 'Choose an indicator.'
@@ -124,7 +124,7 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 1},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight},
-                        open: {width: window.innerWidth+1, height: 265}    
+                        open: {width: window.innerWidth+1, height: 275}    
                     }}
                     backgroundColor = 'white'
                     borderColor = 'var(--fainttext)'
@@ -207,7 +207,7 @@ const Mask = styled.div`
 const YearToggle = styled(Toggle)`
     position: absolute;
     left: 25px;
-    bottom: -45px;
+    bottom: -58px;
     transition: opacity .35s;
     opacity: ${props => props.visible? 1 : 0};
     pointer-events: ${props => props.visible? 'auto' : 'none'};
@@ -215,7 +215,7 @@ const YearToggle = styled(Toggle)`
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB onClick = {!props.open? props.onClick : ()=>{}}>
+    <MSB multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
         <MSBLabel visible = {!props.open}>
             {props.left}
@@ -253,14 +253,16 @@ const MSBPrompt = styled.span`
     opacity: ${props => props.visible? 1: 0};
 `
 const MSBValue = styled.div`
-    display: flex; align-items: center;
+    position: relative;
     font-size: 16px;
     color: var(--fainttext);
-    margin-left: 25px; 
+    margin-left: 20px; 
+    max-width: calc(88% - 80px);
+    margin-right: 30px;
 `
 const NavSearch = styled(Icon)`
     position: absolute;
-    right: 60px;
+    right: 12px; top: 4px;
     width: 18px; height: 18px;
     transition: opacity .35s;
     opacity: ${props => props.visible? 1 : 0};
@@ -268,7 +270,6 @@ const NavSearch = styled(Icon)`
 `
 const Val = styled.div`
     flex-shrink: 1;
-    max-width: 200px;
     white-space: ${props => props.truncate? 'nowrap' : 'normal'};
     overflow: ${props => props.truncate? 'hidden' : 'visible'};
     text-overflow: ellipsis;
@@ -277,12 +278,13 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
-        height: 16px;
+        height: 24px;
     ` : ''}
 `
 const XCaret = styled.div`
-    margin-left: 13px; 
-    width: 15px; height: 15px;
+    position: absolute;
+    top: 3px; right: -30px;
+    width: 18px; height: 18px;
     border: 1px solid black;
     flex-shrink: 0;
 `
@@ -306,7 +308,7 @@ const PickMenu = styled(ExpandBox)`
 const Header = styled(ExpandBox)`
     z-index: 2;
     top: 0; left: 0;
-    transform: translate(${props=>props.currentMode==='offscreen'?  window.innerWidth - 150+'px,'+window.innerHeight+'px' : props.currentMode==='button'? window.innerWidth - 150 + 'px,235px' : '0px,0px'});
+    transform: translate(${props=>props.currentMode==='offscreen'?  window.innerWidth - 150+'px,'+window.innerHeight+'px' : props.currentMode==='button'? window.innerWidth - 150 + 'px,245px' : '0px,0px'});
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     &::before{
         visibility: ${props => props.currentMode==='button'? 'visible' : 'hidden'};
