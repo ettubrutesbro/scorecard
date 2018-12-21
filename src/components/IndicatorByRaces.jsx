@@ -35,6 +35,10 @@ const Wrapper = styled.div`
     transition: transform ${props=>props.hide? .5 : .35}s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity ${props=>props.hide? '.2s .15s' : '.1s'};
     opacity: ${props => props.hide? 0 : 1};
     cursor: ${props=>props.clickable?'pointer':'auto'};
+
+    @media ${media.mobile}{
+        top: 490px;
+    }
 `
 @observer
 export default class IndicatorByRaces extends React.Component{
@@ -74,7 +78,7 @@ export default class IndicatorByRaces extends React.Component{
             }
         })
 
-        const vertOffsets = this.props.mobile? [-160, -0] : [-150, -50]
+        const vertOffsets = [-150, -50]
 
         return(
             <Wrapper

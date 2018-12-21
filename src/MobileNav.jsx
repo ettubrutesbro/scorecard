@@ -101,7 +101,9 @@ export default class MobileNav extends React.Component{
                     } : ()=>{} }
                 >
                     <div>
-                    <MenuSelectBlock left = 'Indicator' right = 'Medical exams for children in child welfare' multiline 
+                    <MenuSelectBlock left = 'Indicator' 
+                        right = {store.indicator? semanticTitles[store.indicator].shorthand : 'Browse / search...'} 
+                        multiline 
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
                         prompt = 'Choose an indicator.'
@@ -429,25 +431,6 @@ class IndicatorList extends React.Component{
     @action setFilter = (v) => {
         console.log('filter set to ', this.filter)
         this.filter = v
-    }
-
-    constructor(){
-        super()
-        this.scrollListener = this.scrollListener.bind(this)
-    }
-
-    componentDidMount(){
-        console.log('added scroll listener')
-        window.addEventListener('scroll', function(){
-            console.log('fuck you')
-        })
-    }
-    componentWillUnmount(){
-        window.removeEventListener('scroll', this.scrollListener)
-    }
-
-    scrollListener(e){
-        console.log(e)
     }
 
     render(){

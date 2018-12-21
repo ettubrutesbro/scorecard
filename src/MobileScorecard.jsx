@@ -60,16 +60,13 @@ export default class MobileScorecard extends React.Component{
 
 
 const Content = styled.div`
-    position: absolute;
+    /*position: absolute;*/
+    position: relative;
     top: 0;
     /*height: 100vh;*/
     height: 100%;
     width: 100%;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
@@ -152,5 +149,5 @@ const Tables = styled.div`
     position: relative;
     margin-top: 25px;
     width: ${width}px;
-    height: ${props => props.expanded? 1400 : 495}px;
+    height: ${props=>props.expanded? 1300 : 370}px;
 `
