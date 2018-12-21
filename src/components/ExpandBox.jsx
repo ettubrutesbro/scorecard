@@ -114,13 +114,14 @@ export default class ExpandTest extends React.Component{
                         {this.props.header}
                     </Header>
                 }
-                {/*this.props.withScroll &&
+                {this.props.withScroll && !this.props.noFade &&
                     <FadeCropper 
+                        id = 'fadecropper'
                         // a hack...
-                        show = {this.props.currentMode.includes('expanded')} 
-                        width = {this.props.modes.expanded.width}
+                        show = {this.props.currentMode.toLowerCase().includes('expanded')} 
+                        // width = {this.props.modes.expanded.width}
                     />
-                */}
+                }
                 <Box
                     current = {this.goTo}
                     animFrames = {computeAnim(this.current, this.goTo)}
@@ -167,14 +168,14 @@ export default class ExpandTest extends React.Component{
                         </Content>
                     </ScrollbarWrap>
                 </Box>
-                {/*this.props.withScroll && 
+                {this.props.withScroll && !this.props.noFade &&
                     <FadeCropperBottom
-                        width = {this.props.modes.expanded.width}
+                        // width = {this.props.modes.expanded.width}
                         // expanded exception hack.III
-                        show = {this.props.currentMode.includes('expanded')}
+                        show = {this.props.currentMode.toLowerCase().includes('expanded')}
                         offset = {this.goTo.height}
                     />
-                */}
+                }
                 {!this.props.noBorderTop &&
                     <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
                 }
@@ -269,7 +270,8 @@ const FadeCropper = styled.div`
     z-index: 1;
     position: absolute;
     left: 1px;
-    width: ${props=>props.width}px;
+    /*width: ${props=>props.width}px;*/
+    width: 100%;
     height: 45px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
     opacity: ${props => props.show? 1 : 0};

@@ -383,7 +383,9 @@ export default class IndicatorByCounties extends React.Component{
 
             <Graph
                 expandable
-                withScroll
+                withScroll = {screen!=='mobile'}
+                noFade = {screen==='mobile'}
+
                 hideScroll = {distribute || this.props.sources}
                 currentMode = { 
                     this.props.sources? screen + 'sources' : 
@@ -395,8 +397,8 @@ export default class IndicatorByCounties extends React.Component{
                 modes = {modes}
                 duration = {screen==='mobile'? 0 : this.props.sources? .5 : .35}
 
-                onHoverRow = {(val)=>{setHover('county',val)}}
-                hovered = {hoveredCounty}
+                onHoverRow = {screen!=='mobile'? (val)=>{setHover('county',val)} : ()=>{} }
+                hovered = {screen==='mobile'? null : hoveredCounty}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 

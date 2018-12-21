@@ -63,6 +63,7 @@ export default class MobileNav extends React.Component{
                                 open = {this.mode === 'race'}
                                 prompt = 'Select a race.'
                                 return = {()=>this.setMode('compact')}
+                                noSearch
                             />
                         </ExpandBox>
             </div>,
@@ -70,6 +71,8 @@ export default class MobileNav extends React.Component{
             <div key = 'indicator' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
                     withScroll
+                    hideScroll = {this.mode==='county' || this.mode==='race'}
+                    noFade
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
@@ -87,6 +90,7 @@ export default class MobileNav extends React.Component{
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                     />
+                    {this.mode !=='race' && this.mode !== 'county' &&
                     <YearToggle
                         visible = {this.mode==='compact'}
                         options = {[
@@ -95,6 +99,7 @@ export default class MobileNav extends React.Component{
                         ]}
                         selected = {1}
                     />
+                    }
                     {this.mode==='indicator' &&
                         <IndicatorList />
                     }
@@ -192,12 +197,12 @@ const YearToggle = styled(Toggle)`
 const MenuSelectBlock = (props) => {
     return(
     <MSB multiline = {props.multiline} onClick = {!props.open? props.onClick : ()=>{}}>
+        <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
         <MSBLabel 
             multiline = {props.multiline}
-            open = {props.open}
+            visible = {!props.open}
         >
-            {!props.open && props.left}
-            {props.open && props.prompt}
+            {props.left}
         </MSBLabel>
         <MSBValue multiline = {props.multiline}>
             <Val multiline = {props.multiline} visible = {!props.open}>
@@ -205,7 +210,9 @@ const MenuSelectBlock = (props) => {
                 {!(props.truncateValue && props.right.length > 27) && props.right}
                 
             </Val>
-            <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
+            {!props.noSearch && 
+                <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
+            }
             <XCaret mode = {'caret'}
                 onClick = {props.open? props.return : ()=>{} }
             />
@@ -216,7 +223,7 @@ const MenuSelectBlock = (props) => {
 const MSB = styled.div`
     padding: 0 25px;
     display: flex;
-    width: 100%;
+    width: ${window.innerWidth}px;
     height: 50px;
     align-items: center; justify-content: space-between;
     ${props => props.multiline? `
@@ -225,8 +232,15 @@ const MSB = styled.div`
     ` : ''}
 `
 const MSBLabel = styled.div`
-    font-size: ${props => props.open? 16 : 12}px;
+    font-size: 12px;
     flex-shrink: 0;
+    position: relative;
+    opacity: ${props=>props.visible? 1 : 0};
+`
+const MSBPrompt = styled.span`
+    position: absolute;
+    margin-top: 2px;
+    opacity: ${props => props.visible? 1: 0};
 `
 const MSBValue = styled.div`
     display: flex; align-items: center;
