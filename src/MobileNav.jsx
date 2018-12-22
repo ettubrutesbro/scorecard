@@ -55,7 +55,7 @@ export default class MobileNav extends React.Component{
         const yearOptions = indicator? ind.years.map((yr,i)=>{
             const val = ind.counties[county||'california'][race||'totals'][i]
             const disabled = val!==0 && (!val || val==='*')
-            return {label:i===1?String(yr).replace('20','\'') : yr, value: i, disabled: disabled}
+            return {label: yr, value: i, disabled: disabled}
         }): false
 
         const NavItems = [
@@ -133,10 +133,14 @@ export default class MobileNav extends React.Component{
                     hideScroll = {this.mode==='county' || this.mode==='race'}
                     noFade
                     duration = {this.mode === 'indicator'? .5 : 0 }
-                    currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
+                    currentMode = {this.mode==='indicator'? 'fullscreen' 
+                        : this.mode === 'compact' && indicator && ind.years.length > 1? 'compactWithYear' 
+                        // : this.mode === 'county' || this.mode==='race'? 'compactTruncated'
+                        : 'compact'
+                    }
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 70},
-                        compactTruncated: {width: window.innerWidth+1, height: 50},
+                        compact: {width: window.innerWidth+1, height: 50},
+                        compactWithYear: {width: window.innerWidth+1, height: 117},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
@@ -155,15 +159,18 @@ export default class MobileNav extends React.Component{
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                         justComplete = {this.justComplete==='indicator'}
+
+                        yearToggle = {this.mode!=='race' && this.mode !== 'county' && indicator? (
+                            <YearToggle
+                                visible = {this.mode==='compact'}
+                                options = {yearOptions}
+                                onClick = {(yr)=>store.completeWorkflow('year',yr)}
+                                selected = {year}
+                            />
+                            ): null
+                        }
                     />
-                    {/*this.mode !=='race' && this.mode !== 'county' && indicator &&
-                    <YearToggle
-                        visible = {this.mode==='compact'}
-                        options = {yearOptions}
-                        onClick = {(yr)=>store.completeWorkflow('year',yr)}
-                        selected = {year}
-                    />
-                    */}
+
                     {this.mode==='indicator' &&
                         <IndicatorList store = {store} onComplete = {(which)=>{
                             this.setMode('compact')
@@ -173,37 +180,21 @@ export default class MobileNav extends React.Component{
                     </div>
                 </ExpandBox>
             </div>,
-            <div key = 'year' style = {{height: '60px', 
-                marginLeft: '-1px', 
-                borderBottom: '1px solid var(--bordergrey)',
-            }}>
-                <MenuSelectBlock left = 'Year'
-                    height = '60px'
-                    right = {(<YearToggle
-                        options = {yearOptions}
-                        onClick = {(yr)=>store.completeWorkflow('year',yr)}
-                        selected = {year}
-                    />)}
-                    open = {false}
-                    noCaret
-                />
-
-            </div>
+            
         ].sort((a,b)=>{
             if(a.key===this.mode) return 1
             if(b.key===this.mode) return -1
-        }).filter((item)=>{
-            return !indicator? item.key!=='year' : true
         })
 
         return(
             <FixWrap>
                 <PickMenu
-                    currentMode = {!this.mode? 'closed' : this.mode === 'compact'? 'open' : 'fullsize'}
+                    currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 1},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
-                        open: {width: window.innerWidth+1, height: 280}    
+                        openNoInd: {width: window.innerWidth+1, height: 200},
+                        open: {width: window.innerWidth+1, height: 267}    
                     }}
                     backgroundColor = 'white'
                     borderColor = 'var(--fainttext)'
@@ -285,19 +276,22 @@ const Mask = styled.div`
 `
 
 const YearToggle = styled(Toggle)`
-
+    position: absolute;
+    bottom: -45px;
+    right: -32px;
 `
 
 const MenuSelectBlock = (props) => {
     return(
     <MSB height = {props.height} disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
-        <MSBLabel visible = {!props.open}>
+        <MSBLabel visible = {!props.open} multiline = {props.multiline && !props.truncateValue}>
             {props.left}
         </MSBLabel>
         <MSBValue noCaret = {props.noCaret}>
             <Val truncate = {props.truncateValue} multiline = {props.multiline && !props.truncateValue} visible = {!props.open} justComplete = {props.justComplete}>
                 {props.right}
+                {props.yearToggle}
             </Val>
             {!props.noSearch && 
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
@@ -317,14 +311,20 @@ const MSB = styled.div`
     display: flex;
     width: ${window.innerWidth}px;
     height: ${props => props.height? props.height : '50px'};
-    align-items: center; justify-content: space-between;
+    ${props => props.multiline? `
+        padding-top: 14px;
+        `
+        : `align-items: center;`}
+    justify-content: space-between;
     background: ${props => props.disabled? 'var(--disabledgrey)' : 'transparent'};
+
 `
 const MSBLabel = styled.div`
     font-size: 12px;
     flex-shrink: 0;
     position: relative;
     opacity: ${props=>props.visible? 1 : 0};
+    ${props => props.multiline? `margin-top: 2px;` : ``}
 `
 const MSBPrompt = styled.span`
     position: absolute;
@@ -358,8 +358,9 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
-        height: 21px;
+        // height: 21px;
     ` : ''}
+    position: relative;
 `
 const XCaret = styled.div`
     position: absolute;
@@ -391,7 +392,7 @@ const Header = styled(ExpandBox)`
     top: 0; left: 0;
     transform: translate(${props=>props.currentMode==='offscreen'?  
         window.innerWidth - 150+'px,'+window.innerHeight+'px' 
-        : props.currentMode==='button'? window.innerWidth - 150 + 'px,280px' 
+        : props.currentMode==='button'? window.innerWidth - 150 + 'px,267px' 
         : '0px,0px'
     });
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
