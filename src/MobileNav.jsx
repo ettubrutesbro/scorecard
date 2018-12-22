@@ -166,6 +166,9 @@ export default class MobileNav extends React.Component{
                                 options = {yearOptions}
                                 onClick = {(yr)=>store.completeWorkflow('year',yr)}
                                 selected = {year}
+                                stopPropagation
+                                muted
+                                theme = 'muted'
                             />
                             ): null
                         }

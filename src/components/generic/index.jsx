@@ -53,6 +53,8 @@ const Option = styled.div`
     @media ${media.mobile}{
         font-size: 12px;
         padding: 8.5px 15px;
+    }
+    &.muted{
         border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
         color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
         background-color: white;
@@ -60,7 +62,6 @@ const Option = styled.div`
             border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
             color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
         }
- 
     }
     white-space: nowrap;
 
@@ -127,7 +128,7 @@ export class Toggle extends React.Component {
                     key = {this.hash+'option'+i}
                     ref = {(option)=> this['option'+i] = option}
                     onClick = {!option.disabled? (e)=>{
-                        e.stopPropagation()
+                        if(this.props.stopPropagation) e.stopPropagation()
                         this.props.onClick(option.value)
                     } : ()=>console.log('this option is disabled.')}
                     selected = {i===this.props.selected}

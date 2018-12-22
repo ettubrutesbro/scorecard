@@ -539,8 +539,8 @@ const Wrapper = styled.div`
                     hide = {props.sources}
                     offset = {!props.distribute}
                     options = {[
-                        {label: props.screen==='mobile'? 'by %' : 'by %', value: 'pct'},
-                        {label: props.screen === 'mobile'? '#' :  'by Child Population', value: 'pop'}
+                        {label: props.screen==='mobile'? '%' : 'by %', value: 'pct'},
+                        {label: props.screen === 'mobile'? 'pop.' :  'by Child Population', value: 'pop'}
                     ]}
                     theme = "bw"
                     onClick = {props.setOverviewSort}
