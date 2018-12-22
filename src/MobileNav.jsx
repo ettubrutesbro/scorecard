@@ -231,6 +231,11 @@ export default class MobileNav extends React.Component{
                     </FlipMove>
                 </PickMenu>
              <Header 
+                offset = {!this.mode? '0,0' 
+                    : this.mode==='compact' && !indicator? `${window.innerWidth - 165}px,215px`
+                    : this.mode==='compact' && indicator? `${window.innerWidth - 165}px,282px`
+                    : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
+                }
                 currentMode = {!this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
@@ -239,6 +244,7 @@ export default class MobileNav extends React.Component{
                 }}
                 backgroundColor = 'var(--offwhitebg)'
                 borderColor = 'var(--offwhitebg)'
+                duration = {.4}
             >
                 <HeaderContent
                     onClick = {()=>{
@@ -260,12 +266,42 @@ export default class MobileNav extends React.Component{
                     </Btn>
                 </HeaderContent>
             </Header>
+
+            <CancelCommitButton
+                currentMode = {this.mode==='compact' && this.justComplete? 'visible' : 'hidden'}
+                modes = {{
+                    hidden: {width: 15, height: 55},
+                    visible: {width: 100, height: 55}
+                }}
+                backgroundColor = 'white'
+                offset = {'0,0'}
+            >
+                <div style = {{
+                    display: 'flex', 
+                    alignItems: 'center',
+                    height: '55px',
+                    justifyContent: 'center',
+                }}>
+                Cancel <Icon img = "x" color = "normtext" />
+                </div>
+            </CancelCommitButton>
+
             <Mask visible = {this.mode}/>
 
             </FixWrap>
         )
     }
 }
+
+const CancelCommitButton = styled(ExpandBox)`
+    position: absolute;
+    z-index: 3;
+    top: 282px;
+    left: calc(100vw - 100px - 15px - 150px - 15px);
+    transform: translate(${props=>props.offset});
+    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-delay: ${props => props.currentMode==='visible'? '.4s' : '0s'};
+`
 
 const Mask = styled.div`
     width: 100vw;
@@ -401,12 +437,8 @@ const PickMenu = styled(ExpandBox)`
 const Header = styled(ExpandBox)`
     z-index: 2;
     top: 0; left: 0;
-    transform: translate(${props=>props.currentMode==='offscreen'?  
-        window.innerWidth - 150+'px,'+window.innerHeight+'px' 
-        : props.currentMode==='button'? window.innerWidth - 150 + 'px,267px' 
-        : '0px,0px'
-    });
-    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate(${props=>props.offset});
+    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const HeaderContent = styled.div`
     position: relative;
