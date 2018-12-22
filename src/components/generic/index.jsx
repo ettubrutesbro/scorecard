@@ -126,7 +126,10 @@ export class Toggle extends React.Component {
                     size = {this.props.size}
                     key = {this.hash+'option'+i}
                     ref = {(option)=> this['option'+i] = option}
-                    onClick = {!option.disabled? ()=>this.props.onClick(option.value) : ()=>console.log('this option is disabled.')}
+                    onClick = {!option.disabled? (e)=>{
+                        e.stopPropagation()
+                        this.props.onClick(option.value)
+                    } : ()=>console.log('this option is disabled.')}
                     selected = {i===this.props.selected}
                     disabled = {option.disabled}
                 > 

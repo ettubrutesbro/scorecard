@@ -283,9 +283,17 @@ const YearToggle = styled(Toggle)`
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB height = {props.height} disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
+    <MSB 
+        height = {props.height} 
+        disabled = {props.disabled} 
+        multiline = {props.multiline && !props.truncateValue} 
+        onClick = {!props.open? props.onClick : ()=>{}}
+    >
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
-        <MSBLabel visible = {!props.open} multiline = {props.multiline && !props.truncateValue}>
+        <MSBLabel 
+            visible = {!props.open} 
+            multiline = {props.multiline && !props.truncateValue}
+        >
             {props.left}
         </MSBLabel>
         <MSBValue noCaret = {props.noCaret}>
