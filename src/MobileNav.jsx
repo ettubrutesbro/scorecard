@@ -27,14 +27,17 @@ export default class MobileNav extends React.Component{
     @observable mode = false // compact, county, race, indicator
     @action setMode = (val) =>{
         if(val==='compact') this.props.setNavStatus(true)
-        else if(!val) this.props.setNavStatus(false)
+        else if(!val){
+            this.props.setNavStatus(false)
+            this.justComplete.county = this.justComplete.race = this.justComplete.indicator = false
+        }
         this.mode = val
     }
-    @observable justComplete = null
+    @observable justComplete = { county: false, race: false, indicator: false }
     @action justCompleted = (what) => {
         this.workflowScrollPos = 0
         this.userScrolledDownInWorkflow = false
-        this.justComplete = what
+        this.justComplete[what] = true
     }
 
     @observable workflowScrollPos = 0
@@ -84,12 +87,12 @@ export default class MobileNav extends React.Component{
                         open = {this.mode === 'county'}
                         prompt = 'Pick a county.'
                         return = {()=>this.setMode('compact')}
-                        justComplete = {this.justComplete === 'county'}
+                        justComplete = {this.justComplete.county}
                     />
                     {this.mode === 'county' &&
-                        <CountyList store = {store} onComplete = {(which)=>{
+                        <CountyList store = {store} onComplete = {(which, hasNewVal)=>{
                             this.setMode('compact')
-                            this.justCompleted(which)
+                            if(hasNewVal) this.justCompleted(which)
                         }}/>
                     }
                     </div>
@@ -115,12 +118,12 @@ export default class MobileNav extends React.Component{
                                 prompt = 'Select a race.'
                                 return = {()=>this.setMode('compact')}
                                 noSearch
-                                justComplete = {this.justComplete === 'race'}
+                                justComplete = {this.justComplete.race}
                             />
                             {this.mode === 'race' &&
-                                <RaceList store = {store} onComplete = {(which)=>{
+                                <RaceList store = {store} onComplete = {(which, hasNewVal)=>{
                                     this.setMode('compact')
-                                    this.justCompleted(which)
+                                    if(hasNewVal) this.justCompleted(which)
                                 }}/>
                             }
                             </div>
@@ -158,7 +161,7 @@ export default class MobileNav extends React.Component{
                         prompt = 'Choose an indicator.'
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
-                        justComplete = {this.justComplete==='indicator'}
+                        justComplete = {this.justComplete.indicator}
 
                         yearToggle = {this.mode!=='race' && this.mode !== 'county' && indicator? (
                             <YearToggle
@@ -175,9 +178,9 @@ export default class MobileNav extends React.Component{
                     />
 
                     {this.mode==='indicator' &&
-                        <IndicatorList store = {store} onComplete = {(which)=>{
+                        <IndicatorList store = {store} onComplete = {(which, hasNewVal)=>{
                             this.setMode('compact')
-                            this.justCompleted(which)
+                            if(hasNewVal) this.justCompleted(which)
                         } }/>
                     }
                     </div>
@@ -200,8 +203,9 @@ export default class MobileNav extends React.Component{
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
                     backgroundColor = 'white'
-                    borderColor = 'var(--fainttext)'
+                    borderColor = 'var(--bordergrey)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
+                    delay = {!this.mode? '0s' : '.075s'}
                 >
                     <FlipMove
                         style = {{width: '100%'}}
@@ -231,24 +235,28 @@ export default class MobileNav extends React.Component{
                     </FlipMove>
                 </PickMenu>
              <Header 
-                offset = {!this.mode? '0,0' 
-                    : this.mode==='compact' && !indicator? `${window.innerWidth - 165}px,215px`
-                    : this.mode==='compact' && indicator? `${window.innerWidth - 165}px,282px`
+                offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
+                    : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${window.innerHeight+25}px`
+                    : !this.mode? '0,0' 
+                    : this.mode==='compact' && !indicator? `${window.innerWidth - 175}px,215px`
+                    : this.mode==='compact' && indicator? `${window.innerWidth - 175}px,282px`
                     : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
                 }
-                currentMode = {!this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
+                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
-                    button: {width: 150, height: 55},
-                    offscreen: {width: 150, height: 55} 
+                    button: {width: 160, height: 55},
+                    offscreen: {width: 160, height: 55},
+                    noIndicator: {width: 215, height: 55}
                 }}
-                backgroundColor = 'var(--offwhitebg)'
-                borderColor = 'var(--offwhitebg)'
-                duration = {.4}
+                backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
+                borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
+                duration = {.425}
             >
                 <HeaderContent
+                    whitetext = {!(this.mode && !indicator)}
                     onClick = {()=>{
-                        this.setMode(this.mode==='compact'? false : 'compact')
+                        this.setMode(this.mode === 'compact' && !indicator? 'indicator' : this.mode==='compact'? false : 'compact')
                     }}
                 >
                     <BarContent active = {!this.mode}>
@@ -261,24 +269,25 @@ export default class MobileNav extends React.Component{
                         </Shorthand>
                     </BarContent>
 
-                    <Btn active = {this.mode}>
-                        Back to view
+                    <Btn active = {this.mode} superwide = {this.mode && !indicator}>
+                        {!indicator && 'Choose an indicator.'}
+                        {!this.justComplete.county && !this.justComplete.race && !this.justComplete.indicator && indicator && 'Back to view'}
+                        {(this.justComplete.county || this.justComplete.race || this.justComplete.indicator) && indicator && 'View new data'}
                     </Btn>
                 </HeaderContent>
             </Header>
 
             <ResetButton
                 offset = {!this.mode? '0,0' 
-                    : this.mode==='compact' && !indicator && (county || race)? `${window.innerWidth - 280}px,215px`
-                    // : this.mode==='compact' && indicator? `${window.innerWidth - 180}px,215px`
-                    : this.mode==='compact' && (indicator || county || race)? `${window.innerWidth - 280}px,282px`
-                    : this.mode === 'compact'? `${window.innerWidth - 180}px,215px`
-                    : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
+                    // : this.mode==='compact' && !indicator && (county || race)? `${window.innerWidth - 300}px,215px`
+                    : this.mode==='compact' && indicator ? `${window.innerWidth - 300}px,282px`
+                    : this.mode === 'compact'? `${window.innerWidth - 190}px,215px`
+                    : `${window.innerWidth - 190}px,${window.innerHeight+25}px`
                 }
-                currentMode = {this.mode==='compact' && (indicator || county || race) ? 'visible' : 'hidden'}
+                currentMode = {this.mode==='compact' && indicator ? 'visible' : 'hidden'}
                 modes = {{
                     hidden: {width: 15, height: 55},
-                    visible: {width: 100, height: 55}
+                    visible: {width: 110, height: 55}
                 }}
                 backgroundColor = 'white'
             >
@@ -311,9 +320,8 @@ export default class MobileNav extends React.Component{
 const ResetButton = styled(ExpandBox)`
     position: absolute;
     z-index: 1;
-    margin-right: 200px;
     transform: translate(${props=>props.offset});
-    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
     /*transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};*/
     opacity: ${props => props.currentMode==='visible'? 1 : 0};
 `
@@ -323,8 +331,10 @@ const ResetIcon = styled(Icon)`
 
 const Mask = styled.div`
     width: 100vw;
-    height: ${props => props.visible? '100vh' : '0px'};
-    background: linear-gradient(180deg, var(--offwhitefg) 53%, rgba(252, 253, 255, 0.75) 100%);
+    height: ${props => props.visible? 'calc(100vh + 2px)' : '0px'};
+    background: linear-gradient(180deg, var(--offwhitefg) 300px, rgba(252, 253, 255, 0.725) 100%);
+    /*background: var(--offwhitefg);*/
+    /*background: linear-gradient(180deg, var(--offwhitebg) 53%, rgba(0, 0, 0, 0.5) 100%);*/
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .475s;
     position: absolute;
@@ -420,7 +430,8 @@ const Val = styled.div`
     text-align: right;
     opacity: ${props=>props.visible? 1 : 0};
     transition: opacity .35s;
-    transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
+    transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
+    color: ${props => props.justComplete? 'var(--normtext)' : 'var(--fainttext)'};
     ${props => props.multiline? `
         // height: 21px;
     ` : ''}
@@ -455,14 +466,14 @@ const Header = styled(ExpandBox)`
     z-index: 3;
     top: 0; left: 0;
     transform: translate(${props=>props.offset});
-    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const HeaderContent = styled.div`
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    color: white;
+    color: ${props => props.whitetext? 'white' : 'var(--fainttext)'};
     width: 100%;
     height: 55px;
     cursor: pointer;
@@ -474,13 +485,16 @@ const HeaderSection = styled.div`
     // white-space: nowrap;
     height: 55px;
     opacity: ${props => props.active? 1: 0};
-    transition: transform .4s, opacity .25s ${props=>props.active? '.3s' : ''};
+    transition: transform .425s, opacity .275s ${props=>props.active? '.3s' : ''};
     width: 100%;
 `
 const BarContent = styled(HeaderSection)`
     transform: translateX(${props => props.active? 0 : -25}px);
 `
 const Btn = styled(HeaderSection)`
+    padding: 0 25px;
+    justify-content: center;
+    width: ${props => props.superwide? 215 : 160}px;
     transform: translateX(${props => props.active? 0 : 25}px);
 `
 const BarInfo = styled.div`
@@ -579,8 +593,9 @@ class IndicatorList extends React.Component{
                         <ListRow
                             key = {ind}
                             onClick = {()=>{ 
+                                this.props.onComplete('indicator', ind !== store.indicator)
                                 store.completeWorkflow('indicator', ind)
-                                this.props.onComplete('indicator')
+                                
                             }}
                         >
                             {semanticTitles[ind].label}
@@ -653,8 +668,9 @@ const RaceList = (props) => {
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
                 return <ListRow key = {r} onClick = {()=>{ 
+
+                    props.onComplete('race', r !== store.race)
                     store.completeWorkflow('race', r)
-                    props.onComplete('race')
                 }}>
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
                     <ItemInfo>
@@ -686,8 +702,9 @@ const CountyList = (props) => {
                 console.log(cty)
                 return <ListRow key = {cty.id}
                     onClick = {()=>{ 
+
+                        props.onComplete('county', cty.id !== store.county)
                         store.completeWorkflow('county', cty.id)
-                        props.onComplete('county')
                     }}
                 >
                     <div>{countyLabels[cty.id]}</div>
