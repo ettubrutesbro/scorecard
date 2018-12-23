@@ -130,7 +130,7 @@ export default class MobileNav extends React.Component{
                         </ExpandBox>
             </div>,
 
-            <div key = 'indicator' style = {{height: this.mode==='compact'?'70px':'50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
+            <div key = 'indicator' style = {{height: this.mode==='compact'?'117px':'50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
                     withScroll
                     hideScroll = {this.mode==='county' || this.mode==='race'}
@@ -138,7 +138,7 @@ export default class MobileNav extends React.Component{
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
-                         compact: {width: window.innerWidth+1, height: 70},
+                        compact: {width: window.innerWidth+1, height: 117},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
@@ -202,7 +202,6 @@ export default class MobileNav extends React.Component{
                     borderColor = 'var(--bordergrey)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
                     delay = {!this.mode? '0s' : '.075s'}
-                    duration = {1}
                 >
                     <FlipMove
                         // style = {{width: '100%'}}
