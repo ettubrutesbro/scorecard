@@ -267,24 +267,33 @@ export default class MobileNav extends React.Component{
                 </HeaderContent>
             </Header>
 
-            <CancelCommitButton
-                currentMode = {this.mode==='compact' && this.justComplete? 'visible' : 'hidden'}
+            <ResetButton
+                currentMode = {this.mode==='compact' && (this.justComplete || indicator)? 'visible' : 'hidden'}
                 modes = {{
                     hidden: {width: 15, height: 55},
                     visible: {width: 100, height: 55}
                 }}
                 backgroundColor = 'white'
-                offset = {'0,0'}
+                delay = {indicator && this.mode === 'compact'? '.65s' : 0}
+                offsetY = { indicator && this.mode === 'compact'? 282 : 0 }
+                offsetX = { indicator && this.mode === 'compact'? 0 : 100 }
             >
                 <div style = {{
                     display: 'flex', 
                     alignItems: 'center',
-                    height: '55px',
+                    height: '55px', width: '100px',
                     justifyContent: 'center',
-                }}>
-                Cancel <Icon img = "x" color = "normtext" />
+                    cursor: 'pointer'
+                }}
+                    onClick = {()=>{
+                       store.completeWorkflow('race',null)
+                       store.completeWorkflow('county',null)
+                       store.completeWorkflow('indicator',null)
+                    }}
+                >
+                Reset <ResetIcon img = "x" color = "normtext" />
                 </div>
-            </CancelCommitButton>
+            </ResetButton>
 
             <Mask visible = {this.mode}/>
 
@@ -293,14 +302,18 @@ export default class MobileNav extends React.Component{
     }
 }
 
-const CancelCommitButton = styled(ExpandBox)`
+const ResetButton = styled(ExpandBox)`
+    opacity: ${props => props.currentMode==='visible'? '1' : '0'};
     position: absolute;
-    z-index: 3;
-    top: 282px;
+    z-index: 2;
+    top: ${props=> props.offsetY}px;
     left: calc(100vw - 100px - 15px - 150px - 15px);
-    transform: translate(${props=>props.offset});
-    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-delay: ${props => props.currentMode==='visible'? '.4s' : '0s'};
+    transform: translateX(${props=>props.offsetX}px);
+    transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
+    transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};
+`
+const ResetIcon = styled(Icon)`
+    width: 15px; height: 15px;
 `
 
 const Mask = styled.div`
@@ -309,7 +322,6 @@ const Mask = styled.div`
     background: linear-gradient(180deg, var(--offwhitefg) 53%, rgba(252, 253, 255, 0.75) 100%);
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .475s;
-    transition-delay: ${props => props.visible? '.075s' : '0s'};
     position: absolute;
     z-index: 0;
 `
@@ -435,7 +447,7 @@ const PickMenu = styled(ExpandBox)`
     transition: transform .35s;
 `
 const Header = styled(ExpandBox)`
-    z-index: 2;
+    z-index: 3;
     top: 0; left: 0;
     transform: translate(${props=>props.offset});
     transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1);
