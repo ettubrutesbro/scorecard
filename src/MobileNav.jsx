@@ -268,32 +268,38 @@ export default class MobileNav extends React.Component{
             </Header>
 
             <ResetButton
-                currentMode = {this.mode==='compact' && (this.justComplete || indicator)? 'visible' : 'hidden'}
+                offset = {!this.mode? '0,0' 
+                    : this.mode==='compact' && !indicator && (county || race)? `${window.innerWidth - 280}px,215px`
+                    // : this.mode==='compact' && indicator? `${window.innerWidth - 180}px,215px`
+                    : this.mode==='compact' && (indicator || county || race)? `${window.innerWidth - 280}px,282px`
+                    : this.mode === 'compact'? `${window.innerWidth - 180}px,215px`
+                    : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
+                }
+                currentMode = {this.mode==='compact' && (indicator || county || race) ? 'visible' : 'hidden'}
                 modes = {{
                     hidden: {width: 15, height: 55},
                     visible: {width: 100, height: 55}
                 }}
                 backgroundColor = 'white'
-                delay = {indicator && this.mode === 'compact'? '.65s' : 0}
-                offsetY = { indicator && this.mode === 'compact'? 282 : 0 }
-                offsetX = { indicator && this.mode === 'compact'? 0 : 100 }
             >
-                <div style = {{
-                    display: 'flex', 
-                    alignItems: 'center',
-                    height: '55px', width: '100px',
-                    justifyContent: 'center',
-                    cursor: 'pointer'
-                }}
-                    onClick = {()=>{
-                       store.completeWorkflow('race',null)
-                       store.completeWorkflow('county',null)
-                       store.completeWorkflow('indicator',null)
+                    <div style = {{
+                        display: 'flex', 
+                        alignItems: 'center',
+                        height: '55px', width: '100px',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
                     }}
-                >
-                Reset <ResetIcon img = "x" color = "normtext" />
-                </div>
-            </ResetButton>
+                        onClick = {()=>{
+                           store.completeWorkflow('race',null)
+                           store.completeWorkflow('county',null)
+                           store.completeWorkflow('indicator',null)
+                        }}
+                    >
+                    Reset <ResetIcon img = "x" color = "normtext" />
+                    </div>
+                </ResetButton>
+
+
 
             <Mask visible = {this.mode}/>
 
@@ -303,14 +309,13 @@ export default class MobileNav extends React.Component{
 }
 
 const ResetButton = styled(ExpandBox)`
-    opacity: ${props => props.currentMode==='visible'? '1' : '0'};
     position: absolute;
-    z-index: 2;
-    top: ${props=> props.offsetY}px;
-    left: calc(100vw - 100px - 15px - 150px - 15px);
-    transform: translateX(${props=>props.offsetX}px);
+    z-index: 1;
+    margin-right: 200px;
+    transform: translate(${props=>props.offset});
     transition: transform .4s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
-    transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};
+    /*transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};*/
+    opacity: ${props => props.currentMode==='visible'? 1 : 0};
 `
 const ResetIcon = styled(Icon)`
     width: 15px; height: 15px;
@@ -454,6 +459,7 @@ const Header = styled(ExpandBox)`
 `
 const HeaderContent = styled.div`
     position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     color: white;

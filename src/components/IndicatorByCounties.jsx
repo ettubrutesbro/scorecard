@@ -221,6 +221,7 @@ export default class IndicatorByCounties extends React.Component{
         const wtf = autorun(()=>{
             const {indicator, race, county, year} = this.props.store
             // console.log(indicator, race, county, year)
+            if(!indicator) return
             this.calculatePerformance()
             this.generateDistribution()
         })
