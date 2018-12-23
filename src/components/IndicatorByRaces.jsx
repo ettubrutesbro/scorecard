@@ -114,7 +114,7 @@ export default class IndicatorByRaces extends React.Component{
                     header = {
                         <Header 
                             hovered = {!this.props.expand? this.hovered : false} 
-                            offset = {!this.props.expand}
+                            offset = {!this.props.expand? true : 0}
                             buttonMode = {!this.props.expand}
                         >
                             {screen !== 'mobile' && <React.Fragment>

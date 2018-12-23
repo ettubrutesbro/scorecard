@@ -261,7 +261,7 @@ export default class MobileNav extends React.Component{
                         </Shorthand>
                     </BarContent>
 
-                    <Btn active = {this.mode==='compact'}>
+                    <Btn active = {this.mode}>
                         Back to view
                     </Btn>
                 </HeaderContent>
@@ -474,7 +474,7 @@ const HeaderSection = styled.div`
     // white-space: nowrap;
     height: 55px;
     opacity: ${props => props.active? 1: 0};
-    transition: transform .4s, opacity .4s;
+    transition: transform .4s, opacity .25s ${props=>props.active? '.3s' : ''};
     width: 100%;
 `
 const BarContent = styled(HeaderSection)`
