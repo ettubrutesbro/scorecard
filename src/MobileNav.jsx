@@ -137,13 +137,19 @@ export default class MobileNav extends React.Component{
                     noFade
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' 
-                        : this.mode === 'compact' && indicator && ind.years.length > 1? 'compactWithYear' 
-                        // : this.mode === 'county' || this.mode==='race'? 'compactTruncated'
-                        : 'compact'
+                        : this.mode === 'county' || this.mode==='race'? 'compact': 
+                        this.mode==='compact' && indicator? 'compactWithYear' :
+                        'compact'
                     }
+                    // currentMode = {this.mode==='indicator'? 'fullscreen' 
+                    //     : this.mode === 'compact' && indicator && ind.years.length > 1? 'compactWithYear' 
+                    //     : 'compact'
+                    // }
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 50},
-                        compactWithYear: {width: window.innerWidth+1, height: 117},
+                        // compactTruncated: {width: window.innerWidth+1, height: 50},
+                        // compact: {width: window.innerWidth+1, height: 50},
+                        compactWithYear: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
@@ -162,21 +168,7 @@ export default class MobileNav extends React.Component{
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
                         justComplete = {this.justComplete.indicator}
-
-                        yearToggle = {this.mode!=='race' && this.mode !== 'county' && indicator? (
-                            <YearToggle
-                                visible = {this.mode==='compact'}
-                                options = {yearOptions}
-                                onClick = {(yr)=>store.completeWorkflow('year',yr)}
-                                selected = {year}
-                                stopPropagation
-                                muted
-                                theme = 'muted'
-                            />
-                            ): null
-                        }
                     />
-
                     {this.mode==='indicator' &&
                         <IndicatorList store = {store} onComplete = {(which, hasNewVal)=>{
                             this.setMode('compact')
@@ -185,8 +177,7 @@ export default class MobileNav extends React.Component{
                     }
                     </div>
                 </ExpandBox>
-            </div>,
-            
+            </div>
         ].sort((a,b)=>{
             if(a.key===this.mode) return 1
             if(b.key===this.mode) return -1
@@ -195,20 +186,19 @@ export default class MobileNav extends React.Component{
         return(
             <FixWrap>
                 <PickMenu
-                    currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
+                    currentMode = {!this.mode? 'closed' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
-                        closed: {width: window.innerWidth+1, height: 25},
+                        closed: {width: window.innerWidth+1, height: 1},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
-                        openNoInd: {width: window.innerWidth+1, height: 200},
-                        open: {width: window.innerWidth+1, height: 267}    
+                        open: {width: window.innerWidth+1, height: 280}    
                     }}
-                    // backgroundColor = 'white'
-                    borderColor = 'var(--bordergrey)'
+                    backgroundColor = 'white'
+                    borderColor = 'var(--fainttext)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
-                    delay = {!this.mode? '0s' : '.075s'}
+                    duration = {2}
                 >
                     <FlipMove
-                        // style = {{width: '100%'}}
+                        style = {{width: '100%'}}
                         easing = 'cubic-bezier(0.215, 0.61, 0.355, 1)'
                         duration = {350}
                         enterAnimation = {{
@@ -235,28 +225,18 @@ export default class MobileNav extends React.Component{
                     </FlipMove>
                 </PickMenu>
              <Header 
-                offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
-                    : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${window.innerHeight+25}px`
-                    : !this.mode? '0,0' 
-                    : this.mode==='compact' && !indicator? `${window.innerWidth - 175}px,215px`
-                    : this.mode==='compact' && indicator? `${window.innerWidth - 175}px,282px`
-                    : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
-                }
-                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
+                currentMode = {!this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
-                    button: {width: 160, height: 55},
-                    offscreen: {width: 160, height: 55},
-                    noIndicator: {width: 215, height: 55}
+                    button: {width: 150, height: 55},
+                    offscreen: {width: 150, height: 55} 
                 }}
-                backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
-                borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
-                duration = {.425}
+                backgroundColor = 'var(--offwhitebg)'
+                borderColor = 'var(--offwhitebg)'
             >
                 <HeaderContent
-                    whitetext = {!(this.mode && !indicator)}
                     onClick = {()=>{
-                        this.setMode(this.mode === 'compact' && !indicator? 'indicator' : this.mode==='compact'? false : 'compact')
+                        this.setMode(this.mode==='compact'? false : 'compact')
                     }}
                 >
                     <BarContent active = {!this.mode}>
@@ -269,47 +249,11 @@ export default class MobileNav extends React.Component{
                         </Shorthand>
                     </BarContent>
 
-                    <Btn active = {this.mode} superwide = {this.mode && !indicator}>
-                        {!indicator && 'Choose an indicator.'}
-                        {!this.justComplete.county && !this.justComplete.race && !this.justComplete.indicator && indicator && 'Back to view'}
-                        {(this.justComplete.county || this.justComplete.race || this.justComplete.indicator) && indicator && 'View new data'}
+                    <Btn active = {this.mode==='compact'}>
+                        Back to view
                     </Btn>
                 </HeaderContent>
             </Header>
-
-            <ResetButton
-                offset = {!this.mode? '0,0' 
-                    // : this.mode==='compact' && !indicator && (county || race)? `${window.innerWidth - 300}px,215px`
-                    : this.mode==='compact' && indicator ? `${window.innerWidth - 300}px,282px`
-                    : this.mode === 'compact'? `${window.innerWidth - 190}px,215px`
-                    : `${window.innerWidth - 190}px,${window.innerHeight+25}px`
-                }
-                currentMode = {this.mode==='compact' && indicator ? 'visible' : 'hidden'}
-                modes = {{
-                    hidden: {width: 15, height: 55},
-                    visible: {width: 110, height: 55}
-                }}
-                backgroundColor = 'white'
-            >
-                    <div style = {{
-                        display: 'flex', 
-                        alignItems: 'center',
-                        height: '55px', width: '100px',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                    }}
-                        onClick = {()=>{
-                           store.completeWorkflow('race',null)
-                           store.completeWorkflow('county',null)
-                           store.completeWorkflow('indicator',null)
-                        }}
-                    >
-                    Reset <ResetIcon img = "x" color = "normtext" />
-                    </div>
-                </ResetButton>
-
-
-
             <Mask visible = {this.mode}/>
 
             </FixWrap>
@@ -317,55 +261,31 @@ export default class MobileNav extends React.Component{
     }
 }
 
-const ResetButton = styled(ExpandBox)`
-    position: absolute;
-    z-index: 1;
-    transform: translate(${props=>props.offset});
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
-    /*transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};*/
-    opacity: ${props => props.currentMode==='visible'? 1 : 0};
-`
-const ResetIcon = styled(Icon)`
-    width: 15px; height: 15px;
-`
-
 const Mask = styled.div`
     width: 100vw;
-    height: ${props => props.visible? 'calc(100vh + 2px)' : '0px'};
-    background: linear-gradient(180deg, var(--offwhitefg) 300px, rgba(252, 253, 255, 0.725) 100%);
-    /*background: var(--offwhitefg);*/
-    /*background: linear-gradient(180deg, var(--offwhitebg) 53%, rgba(0, 0, 0, 0.5) 100%);*/
+    height: ${props => props.visible? '100vh' : '0px'};
+    background: linear-gradient(180deg, var(--offwhitefg) 53%, rgba(252, 253, 255, 0.75) 100%);
     opacity: ${props => props.visible? 1 : 0};
     transition: opacity .475s;
+    transition-delay: ${props => props.visible? '.075s' : '0s'};
     position: absolute;
     z-index: 0;
 `
 
 const YearToggle = styled(Toggle)`
-    position: absolute;
-    bottom: -45px;
-    right: -32px;
+
 `
 
 const MenuSelectBlock = (props) => {
     return(
-    <MSB 
-        height = {props.height} 
-        disabled = {props.disabled} 
-        multiline = {props.multiline && !props.truncateValue} 
-        onClick = {!props.open? props.onClick : ()=>{}}
-    >
+    <MSB height = {props.height} disabled = {props.disabled} multiline = {props.multiline && !props.truncateValue} onClick = {!props.open? props.onClick : ()=>{}}>
         <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
-        <MSBLabel 
-            visible = {!props.open} 
-            multiline = {props.multiline && !props.truncateValue}
-        >
+        <MSBLabel visible = {!props.open}>
             {props.left}
         </MSBLabel>
         <MSBValue noCaret = {props.noCaret}>
             <Val truncate = {props.truncateValue} multiline = {props.multiline && !props.truncateValue} visible = {!props.open} justComplete = {props.justComplete}>
                 {props.right}
-                {props.yearToggle}
             </Val>
             {!props.noSearch && 
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
@@ -385,20 +305,14 @@ const MSB = styled.div`
     display: flex;
     width: ${window.innerWidth}px;
     height: ${props => props.height? props.height : '50px'};
-    ${props => props.multiline? `
-        padding-top: 14px;
-        `
-        : `align-items: center;`}
-    justify-content: space-between;
+    align-items: center; justify-content: space-between;
     background: ${props => props.disabled? 'var(--disabledgrey)' : 'transparent'};
-
 `
 const MSBLabel = styled.div`
     font-size: 12px;
     flex-shrink: 0;
     position: relative;
     opacity: ${props=>props.visible? 1 : 0};
-    ${props => props.multiline? `margin-top: 2px;` : ``}
 `
 const MSBPrompt = styled.span`
     position: absolute;
@@ -430,12 +344,10 @@ const Val = styled.div`
     text-align: right;
     opacity: ${props=>props.visible? 1 : 0};
     transition: opacity .35s;
-    transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
-    color: ${props => props.justComplete? 'var(--normtext)' : 'var(--fainttext)'};
+    transition-delay: ${props => props.visible && props.justComplete? '.4s' : '0s'};
     ${props => props.multiline? `
-        // height: 21px;
+        height: 21px;
     ` : ''}
-    position: relative;
 `
 const XCaret = styled.div`
     position: absolute;
@@ -463,17 +375,20 @@ const PickMenu = styled(ExpandBox)`
     transition: transform .35s;
 `
 const Header = styled(ExpandBox)`
-    z-index: 3;
+    z-index: 2;
     top: 0; left: 0;
-    transform: translate(${props=>props.offset});
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate(${props=>props.currentMode==='offscreen'?  
+        window.innerWidth - 150+'px,'+window.innerHeight+'px' 
+        : props.currentMode==='button'? window.innerWidth - 150 + 'px,280px' 
+        : '0px,0px'
+    });
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const HeaderContent = styled.div`
     position: relative;
-    z-index: 2;
     display: flex;
     flex-direction: column;
-    color: ${props => props.whitetext? 'white' : 'var(--fainttext)'};
+    color: white;
     width: 100%;
     height: 55px;
     cursor: pointer;
@@ -485,16 +400,13 @@ const HeaderSection = styled.div`
     // white-space: nowrap;
     height: 55px;
     opacity: ${props => props.active? 1: 0};
-    transition: transform .425s, opacity .275s ${props=>props.active? '.3s' : ''};
+    transition: transform .4s, opacity .4s;
     width: 100%;
 `
 const BarContent = styled(HeaderSection)`
     transform: translateX(${props => props.active? 0 : -25}px);
 `
 const Btn = styled(HeaderSection)`
-    padding: 0 25px;
-    justify-content: center;
-    width: ${props => props.superwide? 215 : 160}px;
     transform: translateX(${props => props.active? 0 : 25}px);
 `
 const BarInfo = styled.div`
@@ -593,9 +505,8 @@ class IndicatorList extends React.Component{
                         <ListRow
                             key = {ind}
                             onClick = {()=>{ 
-                                this.props.onComplete('indicator', ind !== store.indicator)
                                 store.completeWorkflow('indicator', ind)
-                                
+                                this.props.onComplete('indicator')
                             }}
                         >
                             {semanticTitles[ind].label}
@@ -668,9 +579,8 @@ const RaceList = (props) => {
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
                 return <ListRow key = {r} onClick = {()=>{ 
-
-                    props.onComplete('race', r !== store.race)
                     store.completeWorkflow('race', r)
+                    props.onComplete('race')
                 }}>
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
                     <ItemInfo>
@@ -702,9 +612,8 @@ const CountyList = (props) => {
                 console.log(cty)
                 return <ListRow key = {cty.id}
                     onClick = {()=>{ 
-
-                        props.onComplete('county', cty.id !== store.county)
                         store.completeWorkflow('county', cty.id)
+                        props.onComplete('county')
                     }}
                 >
                     <div>{countyLabels[cty.id]}</div>
