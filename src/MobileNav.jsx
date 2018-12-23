@@ -197,18 +197,18 @@ export default class MobileNav extends React.Component{
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
-                        closed: {width: window.innerWidth+1, height: 1},
+                        closed: {width: window.innerWidth+1, height: 25},
                         fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
                         openNoInd: {width: window.innerWidth+1, height: 200},
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
-                    backgroundColor = 'white'
+                    // backgroundColor = 'white'
                     borderColor = 'var(--bordergrey)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
                     delay = {!this.mode? '0s' : '.075s'}
                 >
                     <FlipMove
-                        style = {{width: '100%'}}
+                        // style = {{width: '100%'}}
                         easing = 'cubic-bezier(0.215, 0.61, 0.355, 1)'
                         duration = {350}
                         enterAnimation = {{
