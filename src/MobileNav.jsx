@@ -201,7 +201,7 @@ export default class MobileNav extends React.Component{
                     // backgroundColor = 'white'
                     borderColor = 'var(--bordergrey)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
-                    delay = {!this.mode? '0s' : '.075s'}
+                    delay = {(!this.mode || this.mode==='indicator')? '0s' : '.175s'}
                 >
                     <FlipMove
                         // style = {{width: '100%'}}
@@ -248,6 +248,7 @@ export default class MobileNav extends React.Component{
                 backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
                 borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
                 duration = {.425}
+                delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             >
                 <HeaderContent
                     whitetext = {!(this.mode && !indicator)}
@@ -468,6 +469,7 @@ const Header = styled(ExpandBox)`
     top: 0; left: 0;
     transform: translate(${props=>props.offset});
     transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-delay: ${props => props.delay === '.175s'? '.175s' : '0s'};
 `
 const HeaderContent = styled.div`
     position: relative;
