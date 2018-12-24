@@ -201,7 +201,7 @@ export default class MobileNav extends React.Component{
                     // backgroundColor = 'white'
                     borderColor = 'var(--bordergrey)'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
-                    delay = {(!this.mode || this.mode==='indicator')? '0s' : '.175s'}
+                    delay = {(!this.mode || this.mode==='indicator' || (!indicator && this.mode==='compact'))? '0s' : '.175s'}
                 >
                     <FlipMove
                         // style = {{width: '100%'}}
