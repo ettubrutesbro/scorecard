@@ -199,9 +199,9 @@ export default class MobileNav extends React.Component{
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
                     // backgroundColor = 'white'
-                    borderColor = 'var(--bordergrey)'
+                    // borderColor = 'red'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
-                    delay = {(!this.mode || this.mode==='indicator' || (!indicator && this.mode==='compact'))? '0s' : '.175s'}
+                    // delay = {(!this.mode || this.mode==='indicator' || (indicator && ))? '0s' : '.175s'}
                 >
                     <FlipMove
                         // style = {{width: '100%'}}
@@ -230,7 +230,7 @@ export default class MobileNav extends React.Component{
                         })}
                     </FlipMove>
                 </PickMenu>
-             <Header 
+            <HeaderGroup
                 offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
                     : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${window.innerHeight+25}px`
                     : !this.mode? '0,0' 
@@ -238,6 +238,10 @@ export default class MobileNav extends React.Component{
                     : this.mode==='compact' && indicator? `${window.innerWidth - 175}px,282px`
                     : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
                 }
+                duration = {.425}
+                delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
+            > 
+             <Header 
                 currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
@@ -247,8 +251,6 @@ export default class MobileNav extends React.Component{
                 }}
                 backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
                 borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
-                duration = {.425}
-                delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             >
                 <HeaderContent
                     whitetext = {!(this.mode && !indicator)}
@@ -275,17 +277,13 @@ export default class MobileNav extends React.Component{
             </Header>
 
             <ResetButton
-                offset = {!this.mode? '0,0' 
-                    // : this.mode==='compact' && !indicator && (county || race)? `${window.innerWidth - 300}px,215px`
-                    : this.mode==='compact' && indicator ? `${window.innerWidth - 300}px,282px`
-                    : this.mode === 'compact'? `${window.innerWidth - 190}px,215px`
-                    : `${window.innerWidth - 190}px,${window.innerHeight+25}px`
-                }
                 currentMode = {this.mode==='compact' && indicator ? 'visible' : 'hidden'}
+                show = {this.mode==='compact' && indicator}
                 modes = {{
                     hidden: {width: 15, height: 55},
                     visible: {width: 110, height: 55}
                 }}
+                duration = {.25}
                 backgroundColor = 'white'
             >
                     <div style = {{
@@ -303,8 +301,8 @@ export default class MobileNav extends React.Component{
                     >
                     Reset <ResetIcon img = "x" color = "normtext" />
                     </div>
-                </ResetButton>
-
+            </ResetButton>
+        </HeaderGroup>
 
 
             <Mask visible = {this.mode}/>
@@ -314,13 +312,24 @@ export default class MobileNav extends React.Component{
     }
 }
 
+const HeaderGroup = styled.div`
+    position: absolute; top: 0; left: 0;
+    height: 55px; width: 100%;
+    z-index: 3;
+
+    transform: translate(${props=>props.offset});
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-delay: ${props => props.delay === '.175s'? '.175s' : '0s'};
+`
+
+
 const ResetButton = styled(ExpandBox)`
     position: absolute;
     z-index: 1;
-    transform: translate(${props=>props.offset});
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
-    /*transition-delay: ${props => props.currentMode==='visible'? '.65s' : '0s'};*/
-    opacity: ${props => props.currentMode==='visible'? 1 : 0};
+    left: -125px;
+    transform: translateX(${props=>props.show? 0 : 125}px);
+    transition: transform .25s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
+    transition-delay: ${props=>props.show? .425 : 0}s;
 `
 const ResetIcon = styled(Icon)`
     width: 15px; height: 15px;
@@ -467,9 +476,6 @@ const PickMenu = styled(ExpandBox)`
 const Header = styled(ExpandBox)`
     z-index: 3;
     top: 0; left: 0;
-    transform: translate(${props=>props.offset});
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-delay: ${props => props.delay === '.175s'? '.175s' : '0s'};
 `
 const HeaderContent = styled.div`
     position: relative;
