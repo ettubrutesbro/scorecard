@@ -277,14 +277,7 @@ export default class MobileNav extends React.Component{
             </Header>
 
             <ResetButton
-                currentMode = {this.mode==='compact' && indicator ? 'visible' : 'hidden'}
                 show = {this.mode==='compact' && indicator}
-                modes = {{
-                    hidden: {width: 15, height: 55},
-                    visible: {width: 110, height: 55}
-                }}
-                duration = {.25}
-                backgroundColor = 'white'
             >
                     <div style = {{
                         display: 'flex', 
@@ -323,12 +316,16 @@ const HeaderGroup = styled.div`
 `
 
 
-const ResetButton = styled(ExpandBox)`
+const ResetButton = styled.div`
     position: absolute;
     z-index: 1;
-    left: -125px;
+    top: 1px;
+    left: -124px;
+    background: white;
+    border: 1px solid var(--fainttext);
+    width: 110px; height: 55px;
     transform: translateX(${props=>props.show? 0 : 125}px);
-    transition: transform .25s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .15s;
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transition-delay: ${props=>props.show? .425 : 0}s;
 `
 const ResetIcon = styled(Icon)`
