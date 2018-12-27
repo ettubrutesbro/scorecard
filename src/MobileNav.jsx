@@ -292,7 +292,7 @@ export default class MobileNav extends React.Component{
                            store.completeWorkflow('indicator',null)
                         }}
                     >
-                    Reset <ResetIcon img = "x" color = "normtext" />
+                    Reset <ResetIcon img = "reset" color = "normtext" />
                     </div>
             </ResetButton>
         </HeaderGroup>
@@ -320,16 +320,19 @@ const ResetButton = styled.div`
     position: absolute;
     z-index: 1;
     top: 1px;
-    left: -124px;
+    left: -128px;
     background: white;
     border: 1px solid var(--fainttext);
-    width: 110px; height: 55px;
-    transform: translateX(${props=>props.show? 0 : 125}px);
+    width: 115px; height: 55px;
+    transform: translateX(${props=>props.show? 0 : 129}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transition-delay: ${props=>props.show? .425 : 0}s;
+    display: flex; align-items: center;
+    justify-content: center;
 `
 const ResetIcon = styled(Icon)`
-    width: 15px; height: 15px;
+    width: 18px; height: 18px;
+    margin-left: 8px;
 `
 
 const Mask = styled.div`
