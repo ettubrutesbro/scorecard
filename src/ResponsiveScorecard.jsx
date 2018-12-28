@@ -375,12 +375,8 @@ export default class ResponsiveScorecard extends React.Component{
 
     componentDidMount(){
         window.setTimeout(this.setDisplay, 10)
-
-
-        // this.setDisplay()
     }
-
-    // @observable randInd = 0 
+    
     @observable alreadyDisplayedRandomIndicators = []
     @action foistRandomIndicator = () => {
         let availableInds

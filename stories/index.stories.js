@@ -16,7 +16,7 @@ import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 import { linkTo } from '@storybook/addon-links';
 
 
-import counties from '../src/data/counties'
+import counties from '../src/assets/counties'
 import indicators from '../src/data/indicators'
 
 

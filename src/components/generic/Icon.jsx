@@ -19,10 +19,9 @@ const icons = {
     </g>,
     searchzoom: <path d="M32.5,29.2l-8.7-8.7c1.2-1.7,1.7-3.9,1.7-6c0.2-6-4.8-11-11-11c-6,0-11,5-11,11c0,6.2,5,11,11,11
     c2.1,0,4.3-0.6,6-1.7l8.7,8.7L32.5,29.2z M14.5,21.5c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7C21.5,18.4,18.4,21.5,14.5,21.5z"/>,
-    reset: <path class="st0" d="M26.8,4.3h5.6V2.9h-8.3V11h1.4V5.2c4.4,2.6,7.1,7.3,7.1,12.6c-0.1,3.9-1.7,7.6-4.5,10.3
-    c-2.8,2.8-6.5,4.3-10.4,4.2c-3.9-0.1-7.6-1.7-10.3-4.5C4.6,25,3.1,21.3,3.2,17.5C3.3,9.4,10,2.9,18,2.9V1.5
-    C9.2,1.5,1.9,8.7,1.8,17.4c-0.1,4.2,1.6,8.3,4.6,11.4c3,3.1,7.1,4.8,11.3,4.9c0.1,0,0.2,0,0.3,0c4.1,0,8.1-1.6,11.1-4.6
-    c3.1-3,4.8-7.1,4.9-11.3C34,12.2,31.2,7.2,26.8,4.3z"/>
+    reset: <path d="M34.1,3H23.3v10.7h2.3V6.6c3.7,2.5,5.9,6.6,5.9,11.2c-0.1,3.7-1.6,7.1-4.2,9.6c-2.6,2.6-6,4-9.6,3.9
+    c-3.7-0.1-7.1-1.6-9.6-4.2c-2.6-2.6-4-6-3.9-9.5c0.1-6.4,4.7-12,11-13.3l0.5-0.1l-0.4-2.3L14.7,2C7.4,3.5,2,10,1.9,17.4
+    c-0.1,4.1,1.6,8.2,4.6,11.3c2.9,3,7,4.8,11.2,4.9h0.3c4.2,0,8.1-1.6,11-4.6c3-2.9,4.8-7,4.9-11.2c0-4.9-2.2-9.5-5.9-12.5h6.3V3z"/>
     
 }
 
@@ -63,13 +62,13 @@ const Icon = (props) => {
 const SpriteWrapper = styled(IconWrapper)`
     display: inline-flex;
     /*outline: 1px solid red;*/
-    width: 25px; height: 25px;
+    width: ${props => props.width}px; height: ${props => props.height}px;
     overflow: hidden;
 `
 const SpriteSvg = styled(IconSvg)`
     width: auto;
     height: 100%;
-    animation-duration: .35s;
+    animation-duration: ${props => props.duration}s;
     animation-fill-mode: forwards;
     animation-timing-function: steps(${props=>props.numFrames-1}, end);
     &.up{
@@ -114,10 +113,11 @@ const computeAnim = (from, goTo) => {
 }
 
 export const Sprite = (props) =>{
-    const {img, state, ...restOfProps} = props
+    const {width, height, img, state, ...restOfProps} = props
 
     return (
         <SpriteWrapper
+            width = {width || 25} height = {height || 25}
             {...restOfProps}
         >
             <SpriteSvg
@@ -127,6 +127,7 @@ export const Sprite = (props) =>{
                     state
                 ].join(' ')} 
                 numFrames = {sprites[img].frames}
+                duration = {props.duration || .35}
             >
                 {sprites[img].paths}
             </SpriteSvg>

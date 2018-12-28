@@ -15,7 +15,7 @@ import {counties} from './assets/counties'
 import {capitalize} from './utilities/toLowerCase'
 import sigFig, {truncateNum} from './utilities/sigFig'
 
-import Icon from './components/generic/Icon'
+import Icon, {Sprite} from './components/generic/Icon'
 import {Toggle} from './components/generic'
 import ExpandBox from './components/ExpandBox'
 
@@ -261,7 +261,7 @@ export default class MobileNav extends React.Component{
                     <BarContent active = {!this.mode}>
                         <SearchIcon img = "searchzoom" color = 'white'/>
                         <Prompt visible = {!this.props.showShorthand}>
-                            Refine or restart your search...
+                            Refine / restart your search...
                         </Prompt>
                         <Shorthand visible = {this.props.showShorthand}>
                             {indicator && semanticTitles[indicator].shorthand}
@@ -382,7 +382,10 @@ const MenuSelectBlock = (props) => {
                 <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
             }
             {!props.noCaret && 
-            <XCaret mode = {'caret'}
+            <XCaret 
+                duration = {.2}
+                img = 'caretx'
+                state = {props.open? 'up' : 'down'}
                 disabled = {props.disabled}
                 onClick = {props.open? props.return : ()=>{} }
             />
@@ -426,7 +429,7 @@ const MSBValue = styled.div`
 `
 const NavSearch = styled(Icon)`
     position: absolute;
-    right: 12px; top: 4px;
+    right: 12px; top: 2px;
     width: 18px; height: 18px;
     transition: opacity .35s;
     opacity: ${props => props.visible? 1 : 0};
@@ -448,11 +451,11 @@ const Val = styled.div`
     ` : ''}
     position: relative;
 `
-const XCaret = styled.div`
+const XCaret = styled(Sprite)`
     position: absolute;
     top: 2px; right: -30px;
     width: 18px; height: 18px;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     flex-shrink: 0;
 `
 const FixWrap = styled.div`
@@ -523,8 +526,8 @@ const Shorthand = styled(BarInfo)`
 `
 
 const SearchIcon = styled(Icon)`
-    width: 15px; height: 15px;
-    margin-right: 10px;
+    width: 18px; height: 18px;
+    margin-right: 15px;
     flex-shrink: 0;
 `
 

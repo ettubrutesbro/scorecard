@@ -16,7 +16,6 @@ import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
 import SearchInput from '../src/components/SearchInput.jsx'
 
 import media from '../src/utilities/media'
-import combo from '../src/utilities/trungCombo'
 
 addDecorator(withKnobs)
 
@@ -101,6 +100,13 @@ storiesOf('Experiments', module)
             img = "chevsprite" 
             color = "strokepeach"
             state = {tog?'up':'down'}
+        />
+        <Sprite 
+            img = "caretx" 
+            color = "normtext"
+            state = {tog?'up':'down'}
+            duration = {.2}
+            width = {25} height = {25}
         />
         </Iono>
     )
