@@ -376,7 +376,6 @@ export default class ResponsiveScorecard extends React.Component{
     componentDidMount(){
         window.setTimeout(this.setDisplay, 10)
 
-        alert(store.browser.name+ ' ' +store.browser.version)
 
         // this.setDisplay()
     }
