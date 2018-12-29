@@ -25,8 +25,8 @@ const TheMap = styled.svg`
     right: 0;
     transition: transform .5s;
     transform-origin: 50% 50%;
-    //deviation from center...
-    transform: translate(calc(50% - (${p => p.zoomOrigin.x}px / 2)), calc(50% - (${p => p.zoomOrigin.y}px / 2))) scale(2);
+    transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : 1});
+
 `
 
 const CountyStyle = css`
@@ -42,9 +42,7 @@ const FullState = styled.polygon`
     stroke: black;
     stroke-width: 2;
 `
-const DebugMarker = styled.div`
-    z-index: 1000;
-`
+
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
 
@@ -59,23 +57,57 @@ const CountyPath = styled.path`${CountyStyle}`
     @observable defaultTooltip = null
         @action setDefaultTooltip = (val) => this.defaultTooltip = val
 
-
     @observable zoomOrigin = {x: 0, y: 0}
     @action setZoomOrigin = (x,y) => {
         this.zoomOrigin.x = x; 
         this.zoomOrigin.y = y
     }
 
+    @observable containerRect = ''
+    @action initContainerRect = (val) => this.containerRect = document.getElementById('svgMap').getBoundingClientRect()
+
+    componentDidMount(){
+        this.initContainerRect()
+        if(this.props.zoom){
+            const devi = this.calcDeviation(this.props.zoom)
+            this.setZoomOrigin(devi.x, devi.y)
+        }
+    }
+
     componentWillUpdate(newProps){
         if(this.props.zoom !== newProps.zoom){
-            const svgRect = document.getElementById('svg').getBoundingClientRect()
-            const bbox = document.getElementById(newProps.zoom).getBoundingClientRect()
-            const newX = (bbox.left + (bbox.width/2)) - svgRect.left
-            const newY = (bbox.top + ( bbox.height / 2)) - svgRect.top
-
-            console.log(newProps.zoom, newX, newY)
-            this.setZoomOrigin(newX, newY)
+            if(!newProps.zoom){ 
+                this.setZoomOrigin(0,0)
+                return
+            }
+            const devi = this.calcDeviation(newProps.zoom)
+            this.setZoomOrigin(devi.x, devi.y)
         }
+    }
+
+    calcDeviation = (zoomTo) => {
+            const svgRect = this.containerRect
+            const currentContainerRect = document.getElementById('svgMap').getBoundingClientRect()
+            let countybox = document.getElementById(zoomTo).getBoundingClientRect()
+            const adjustedLeft = countybox.left - ((this.zoomOrigin.x - svgRect.left))
+            const adjustedTop  = countybox.top - ((this.zoomOrigin.y - svgRect.top))
+
+            //target center calculated by finding local position relative to origin (topleft corner)
+            //of container plus half its width and height
+            const targetCtrX = (adjustedLeft + (countybox.width/2)) - svgRect.left
+            const targetCtrY = (adjustedTop + ( countybox.height / 2)) - svgRect.top
+
+            //find deviation from center of container?
+            const containerCtrX = svgRect.left + (svgRect.width / 2)
+            const containerCtrY = svgRect.top + (svgRect.height / 2)
+
+            let deviationX = (containerCtrX - targetCtrX) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2 : 1)
+            let deviationY = (containerCtrY - targetCtrY) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2 : 1)
+
+            console.log(zoomTo, 's center of', containerCtrX, containerCtrY)
+            console.log('deviates by', deviationX, deviationY)
+
+            return {x: deviationX.toFixed(1), y: deviationY.toFixed(1)}
     }
 
     componentDidUpdate(prevProps){
@@ -89,7 +121,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 this.toggleTooltip(false)
             }
             else if(this.props.hoveredCounty){
-                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                const svgRect = this.containerRect
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
@@ -101,7 +133,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 console.log('hello')
                 // this.defaultTooltip = indicators[indicator].highlight
                 this.setDefaultTooltip(this.props.defaultHighlight)
-                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                const svgRect = this.containerRect
                 const bbox = document.getElementById(this.props.defaultHighlight).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
                 const newY = (bbox.top) - svgRect.top
@@ -120,7 +152,7 @@ const CountyPath = styled.path`${CountyStyle}`
     handleClick(e, id){
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            if(id==='svg' || id === 'full'){
+            if(id==='svgMap' || id === 'full'){
                 // this.props.clickedOutside()
                 // ^ rendered unnecessary by click outside event listener for nav
             }
@@ -215,20 +247,13 @@ const CountyPath = styled.path`${CountyStyle}`
                     }
                     </Tooltip>
                 }
-                <DebugMarker
-                    style = {{
-                        position: 'absolute',
-                        top: this.zoomOrigin.y, left: this.zoomOrigin.x,
-                        width: '5px', height: '5px',
-                        background: 'red'
-                    }}
-                />
                 <TheMap 
-                    id = "svg"
+                    id = "svgMap"
                     viewBox = '5 14 510 615'
                     {...domProps}
                     version="1.1"
 
+                    zoomable = {this.props.zoomable}
                     zoomOrigin = {this.zoomOrigin}
                     zoomed = {this.props.zoom}
 
@@ -251,7 +276,7 @@ const CountyPath = styled.path`${CountyStyle}`
                             // onClick: ()=> this.handleClick(id)
                         } : {}
                         
-                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && id!=='svg' && id!=='full'? {
+                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && id!=='svgMap' && id!=='full'? {
                             onMouseEnter: ()=> this.props.onHoverCounty(id),
                             onMouseLeave: ()=> this.props.onHoverCounty(),
                         }: {}

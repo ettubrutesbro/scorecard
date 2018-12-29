@@ -22,6 +22,7 @@ import indicators from '../src/data/indicators'
 
 
 import CAMap from '../src/components/InteractiveMap'
+import ZoomableMap from '../src/components/ZoomableMap'
 
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -163,12 +164,11 @@ storiesOf('Scorecard Prototypes', module)
 
 storiesOf('Maps',module)
 .add('CAMap', ()=>{
-    const zoomCounty = select(`zoom county: `, Object.keys(countyLabels), 'napa')
+    // const zoomCounty = select(`zoom county: `, ['imperial', 'sanFrancisco', 'delNorte', 'modoc', 'losAngeles'])
     const selectCounty = select('select county: ', ['sanLuisObispo', 'alameda', 'siskiyou', 'napa', 'losAngeles'], 'sanLuisObispo')
     return(
     <div style = {{width: '100vw', height: '100vh'}}>
         <CAMap 
-            zoom = {zoomCounty}
             data = ''
             store = {store}
             selected = {selectCounty}
@@ -176,6 +176,17 @@ storiesOf('Maps',module)
             // selected = {store.county}
         />
     </div>
+    )
+})
+.add('ZoomableMap (for mobile)', ()=>{
+    const zoomCounty = select(`zoom county: `, [null,'imperial', 'sanFrancisco', 'delNorte', 'modoc', 'losAngeles'])
+    
+    return(
+        <ZoomableMap
+            data = ''
+            store = {store}
+            zoom = {zoomCounty}
+        />
     )
 })
 
