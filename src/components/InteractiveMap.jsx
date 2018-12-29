@@ -25,8 +25,7 @@ const TheMap = styled.svg`
     right: 0;
     transition: transform .5s;
     transform-origin: 50% 50%;
-    transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : 1});
-
+    transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : props.zoomable? .875 : 1});
 `
 
 const CountyStyle = css`
@@ -101,11 +100,14 @@ const CountyPath = styled.path`${CountyStyle}`
             const containerCtrX = svgRect.left + (svgRect.width / 2)
             const containerCtrY = svgRect.top + (svgRect.height / 2)
 
-            let deviationX = (containerCtrX - targetCtrX) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2 : 1)
-            let deviationY = (containerCtrY - targetCtrY) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2 : 1)
+            let deviationX = (containerCtrX - targetCtrX) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
+            let deviationY = (containerCtrY - targetCtrY) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
 
             console.log(zoomTo, 's center of', containerCtrX, containerCtrY)
             console.log('deviates by', deviationX, deviationY)
+
+            console.log('target area:', (countybox.width * countybox.height).toFixed(1))
+            console.log('scale factor:', 2+ (9000-(countybox.width * countybox.height)) / 4500 )
 
             return {x: deviationX.toFixed(1), y: deviationY.toFixed(1)}
     }
