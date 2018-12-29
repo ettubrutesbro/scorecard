@@ -121,7 +121,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 this.toggleTooltip(false)
             }
             else if(this.props.hoveredCounty){
-                const svgRect = this.containerRect
+                const svgRect = document.getElementById('svgMap').getBoundingClientRect()
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
@@ -133,7 +133,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 console.log('hello')
                 // this.defaultTooltip = indicators[indicator].highlight
                 this.setDefaultTooltip(this.props.defaultHighlight)
-                const svgRect = this.containerRect
+                const svgRect = document.getElementById('svgMap').getBoundingClientRect()
                 const bbox = document.getElementById(this.props.defaultHighlight).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
                 const newY = (bbox.top) - svgRect.top
