@@ -511,7 +511,7 @@ const Btn = styled(HeaderSection)`
 `
 const BarInfo = styled.div`
     position: absolute;
-    left: 50px;
+    left: 55px;
     transition: transform .35s, opacity .35s;
     opacity: ${props => props.visible? 1: 0};
 `

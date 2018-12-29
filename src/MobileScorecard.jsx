@@ -7,7 +7,7 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 import indicators from './data/indicators'
 
-import Icon from './components/generic/Icon'
+import Icon, {Sprite} from './components/generic/Icon'
 import ExpandBox from './components/ExpandBox'
 import Styles from './components/Styles'
 
@@ -28,6 +28,9 @@ export default class MobileScorecard extends React.Component{
     }
     @action setNavStatus = (tf) => this.navOpen = tf
 
+    @observable currentSection = 'breakdown'
+    @action goToSection = (sec) => this.currentSection = sec
+
     render(){
         const {store} = this.props
         const {indicator} = store
@@ -41,7 +44,7 @@ export default class MobileScorecard extends React.Component{
                 />
 
                 <Content>
-                    {indicator && 
+                    {indicator && this.currentSection === 'breakdown' &&
                         <Breakdown store = {store} 
                             onScrollPastReadout = {this.toggleHeaderInfo}
                         />
@@ -51,8 +54,24 @@ export default class MobileScorecard extends React.Component{
                 <SectionChooser
                     visible = {!this.navOpen}
                 >
-                    <BreakdownBtn />
-                    <DemoBtn />
+                    <BreakdownBtn>
+                        <Sprite img = "ind"
+                            width = {42} height = {42}
+                            state = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'up' : 'down'}
+                            color = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'strokepeach' : 'normtext'}
+                            onClick = {()=> this.goToSection('breakdown')}
+                            duration = {.25}
+                        />
+                    </BreakdownBtn>
+                    <DemoBtn>
+                        <Sprite img = "county"
+                            width = {44 } height = {44}
+                            state = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'up' : 'down'}
+                            color = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'strokepeach' : 'normtext'}
+                            onClick = {()=> this.goToSection('demographic')}
+                            duration = {.25}
+                        />
+                    </DemoBtn>
                     <SourcesBtn />
                 </SectionChooser>
             </div>
@@ -91,13 +110,14 @@ const SectionChooser = styled.div`
 `
 const SectionBtn = styled.div`
     width: 45px; height: 45px;
-    border: 1px solid black;
+    // border: 1px solid black;
 `
 const BreakdownBtn = styled(SectionBtn)`
-    
+    display: flex; align-items: center; justify-content: center;
+
 `
 const DemoBtn = styled(SectionBtn)`
-    
+    padding-top: 2px;
 `
 const SourcesBtn = styled(SectionBtn)`
     

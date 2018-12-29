@@ -108,6 +108,20 @@ storiesOf('Experiments', module)
             duration = {.2}
             width = {25} height = {25}
         />
+        <Sprite
+            img = 'ind'
+            color = 'normtext'
+            state = {tog?'up':'down'}
+            duration = {.25}
+            width = {30} height = {30}
+        />
+        <Sprite
+            img = 'county'
+            color = 'normtext'
+            state = {tog?'up':'down'}
+            duration = {.25}
+            width = {30} height = {30}
+        />
         </Iono>
     )
 })
