@@ -17,6 +17,7 @@ import { linkTo } from '@storybook/addon-links';
 
 
 import counties from '../src/assets/counties'
+import countyLabels from '../src/assets/countyLabels'
 import indicators from '../src/data/indicators'
 
 
@@ -162,10 +163,12 @@ storiesOf('Scorecard Prototypes', module)
 
 storiesOf('Maps',module)
 .add('CAMap', ()=>{
+    const zoomCounty = select(`zoom county: `, Object.keys(countyLabels), 'napa')
     const selectCounty = select('select county: ', ['sanLuisObispo', 'alameda', 'siskiyou', 'napa', 'losAngeles'], 'sanLuisObispo')
     return(
     <div style = {{width: '100vw', height: '100vh'}}>
         <CAMap 
+            zoom = {zoomCounty}
             data = ''
             store = {store}
             selected = {selectCounty}

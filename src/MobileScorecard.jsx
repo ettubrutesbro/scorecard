@@ -49,6 +49,11 @@ export default class MobileScorecard extends React.Component{
                             onScrollPastReadout = {this.toggleHeaderInfo}
                         />
                     }
+                    {indicator && this.currentSection === 'demographic' &&
+                        <Demographics
+                            store = {store}
+                        />
+                    }
                 </Content>
                 
                 <SectionChooser
@@ -58,18 +63,18 @@ export default class MobileScorecard extends React.Component{
                         <Sprite img = "ind"
                             width = {42} height = {42}
                             state = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'strokepeach' : 'normtext'}
+                            color = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('breakdown')}
-                            duration = {.25}
+                            duration = {.2}
                         />
                     </BreakdownBtn>
                     <DemoBtn>
                         <Sprite img = "county"
                             width = {44 } height = {44}
                             state = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'strokepeach' : 'normtext'}
+                            color = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('demographic')}
-                            duration = {.25}
+                            duration = {.2}
                         />
                     </DemoBtn>
                     <SourcesBtn />
@@ -173,3 +178,15 @@ const Tables = styled.div`
     width: ${width}px;
     height: ${props=>props.expanded? 1300 : 370}px;
 `
+
+@observer class Demographics extends React.Component{
+    render(){
+        const {store} = this.props
+        return(
+            <React.Fragment>
+                <Readout tiny store = {store} />
+            </React.Fragment> 
+         )
+    }
+}
+

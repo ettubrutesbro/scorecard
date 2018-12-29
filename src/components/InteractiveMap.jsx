@@ -23,6 +23,10 @@ const Wrapper = styled.div`
 const TheMap = styled.svg`
     position: absolute;
     right: 0;
+    transition: transform .5s;
+    transform-origin: 50% 50%;
+    //deviation from center...
+    transform: translate(calc(50% - (${p => p.zoomOrigin.x}px / 2)), calc(50% - (${p => p.zoomOrigin.y}px / 2))) scale(2);
 `
 
 const CountyStyle = css`
@@ -38,7 +42,9 @@ const FullState = styled.polygon`
     stroke: black;
     stroke-width: 2;
 `
-
+const DebugMarker = styled.div`
+    z-index: 1000;
+`
 const CountyPolygon = styled.polygon`${CountyStyle}`
 const CountyPath = styled.path`${CountyStyle}`
 
@@ -53,7 +59,27 @@ const CountyPath = styled.path`${CountyStyle}`
     @observable defaultTooltip = null
         @action setDefaultTooltip = (val) => this.defaultTooltip = val
 
+
+    @observable zoomOrigin = {x: 0, y: 0}
+    @action setZoomOrigin = (x,y) => {
+        this.zoomOrigin.x = x; 
+        this.zoomOrigin.y = y
+    }
+
+    componentWillUpdate(newProps){
+        if(this.props.zoom !== newProps.zoom){
+            const svgRect = document.getElementById('svg').getBoundingClientRect()
+            const bbox = document.getElementById(newProps.zoom).getBoundingClientRect()
+            const newX = (bbox.left + (bbox.width/2)) - svgRect.left
+            const newY = (bbox.top + ( bbox.height / 2)) - svgRect.top
+
+            console.log(newProps.zoom, newX, newY)
+            this.setZoomOrigin(newX, newY)
+        }
+    }
+
     componentDidUpdate(prevProps){
+
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
             console.log('color stop or colorinterp changed')
             this.updateColors()   
@@ -109,7 +135,7 @@ const CountyPath = styled.path`${CountyStyle}`
 
     render(){
         const {store, colorStops, quantile, selected, hoveredCounty, ...domProps} = this.props
-        const {indicator, colorScale, race} = store
+        const {indicator, colorScale, race, screen} = store
 
         const tooltipCty = hoveredCounty? hoveredCounty : this.defaultTooltip? this.defaultTooltip : ''
 
@@ -189,12 +215,23 @@ const CountyPath = styled.path`${CountyStyle}`
                     }
                     </Tooltip>
                 }
-                
+                <DebugMarker
+                    style = {{
+                        position: 'absolute',
+                        top: this.zoomOrigin.y, left: this.zoomOrigin.x,
+                        width: '5px', height: '5px',
+                        background: 'red'
+                    }}
+                />
                 <TheMap 
                     id = "svg"
                     viewBox = '5 14 510 615'
                     {...domProps}
                     version="1.1"
+
+                    zoomOrigin = {this.zoomOrigin}
+                    zoomed = {this.props.zoom}
+
                 >
                     {this.props.children.map((child,i)=>{
                         const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
@@ -203,18 +240,21 @@ const CountyPath = styled.path`${CountyStyle}`
                         const wire = !data && this.props.mode === 'offset'
                         const fill = wire? 'var(--offwhitefg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
+                        const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
+                            style: {
+                                fill: selected===id? 'var(--peach)' : fill,
+                                transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
+                            },
+                            // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
+                            selected: selected===id,
+                            highlighted: this.highlighted===id || this.props.hoveredCounty===id || (!selected && !this.props.hoveredCounty && this.defaultTooltip === id),
+                            // onClick: ()=> this.handleClick(id)
+                        } : {}
                         
-                            const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
-                                style: {
-                                    fill: selected===id? 'var(--peach)' : fill,
-                                    transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
-                                },
-                                // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
-                                selected: selected===id,
-                                highlighted: this.highlighted===id || this.props.hoveredCounty===id || (!selected && !this.props.hoveredCounty && this.defaultTooltip === id),
-                                // onClick: ()=> this.handleClick(id)
-                            } : {}
-                        
+                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && id!=='svg' && id!=='full'? {
+                            onMouseEnter: ()=> this.props.onHoverCounty(id),
+                            onMouseLeave: ()=> this.props.onHoverCounty(),
+                        }: {}
 
                         return(
                             <InteractivePolygonOrPath
@@ -228,8 +268,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 offset = {this.props.mode === 'offset'}
 
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
-                                onMouseEnter = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty(id) : ''}
-                                onMouseLeave = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty() : ''}
+                                {...hoverActions}
                             />
                         )
                     })}

@@ -52,6 +52,12 @@ const ReadoutBlock = styled.div`
         }
         font-weight: 600;
     }
+    ${props => props.tiny? `
+        h1{
+            font-size: 18px;
+        }
+    `: ''}
+
 `
 const IndentedTitle = styled.div`
     
@@ -66,6 +72,12 @@ const IndentedTitle = styled.div`
     @media ${media.mobile}{
         padding-top: 9px;
         line-height: 25px;
+        ${props => props.tiny? `
+            font-size: 14px;
+            line-height: 21px;
+            margin-top: -2px;
+            padding-top: 0;
+        `: ''}
     }
 `
 const Crumb = styled.span`
@@ -158,6 +170,7 @@ export default class Readout extends React.Component{
         // this.props.offsetBreakdown(v)
     }
     render(){
+        const {tiny} = this.props
         const {county, indicator, race, year} = this.props.store
 
 
@@ -190,13 +203,9 @@ export default class Readout extends React.Component{
             <ReadoutBlock
                 className = 'title'
                 compact = {this.props.store.activeWorkflow}
+                tiny = {tiny}
             >
-                {/*!indicator && (county || race) && 
-                    <React.Fragment>
-                    <b>{commaNumber(popCount)} </b> 
-                    {computedString}.
-                    </React.Fragment>
-                */}
+
                 {indicator && 
                     <div style = {{position: 'relative'}}>
                         <h1 ref = {(h1)=>{this.bigNumber = h1}}>
@@ -206,11 +215,13 @@ export default class Readout extends React.Component{
                                 suffix = '%'
                                 absolute
                             />
+
                             
                         </h1>
                         <IndentedTitle
+                            tiny = {tiny}
                             style = {{
-                                textIndent: this.bigNumberWidth+8 + 'px'
+                                textIndent: this.bigNumberWidth+(tiny? 5: 8)+ 'px'
                             }}
                         > 
                             {this.firstLine}
