@@ -70,6 +70,8 @@ const CountyPath = styled.path`${CountyStyle}`
         if(this.props.zoom){
             const devi = this.calcDeviation(this.props.zoom)
             this.setZoomOrigin(devi.x, devi.y)
+            console.log('component mounted with zoom origin at', this.zoomOrigin.x, this.zoomOrigin.y)
+            this.forceUpdate()
         }
     }
 
@@ -77,14 +79,28 @@ const CountyPath = styled.path`${CountyStyle}`
         if(this.props.zoom !== newProps.zoom){
             if(!newProps.zoom){ 
                 this.setZoomOrigin(0,0)
+                console.log('zoom origin was set to 0')
                 return
             }
             const devi = this.calcDeviation(newProps.zoom)
             this.setZoomOrigin(devi.x, devi.y)
+            console.log('zoom origin was updated to', devi.x, devi.y)
         }
     }
+    // componentDidUpdate(prevProps){
+    //     if(this.props.zoom !== prevProps.zoom){
+    //         if(!this.props.zoom){ 
+    //             this.setZoomOrigin(0,0)
+    //             console.log('zoom origin was set to 0')
+    //             return
+    //         }
+    //         const devi = this.calcDeviation(this.props.zoom)
+    //         this.setZoomOrigin(devi.x, devi.y)
+    //         console.log('zoom origin was updated to', devi.x, devi.y)
+    //     }
+    // }
 
-    calcDeviation = (zoomTo) => {
+    @action calcDeviation = (zoomTo) => {
             const svgRect = this.containerRect
             const currentContainerRect = document.getElementById('svgMap').getBoundingClientRect()
             let countybox = document.getElementById(zoomTo).getBoundingClientRect()
