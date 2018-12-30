@@ -15,6 +15,7 @@ import MobileNav from './MobileNav'
 import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import Readout from '../src/components/Readout'
+import ZoomableMap from '../src/components/ZoomableMap'
 
 const width = window.innerWidth - 50
 
@@ -91,7 +92,9 @@ const Content = styled.div`
     top: 0;
     /*height: 100vh;*/
     height: 100%;
+    min-height: 100vh;
     width: 100%;
+    min-width: 100vw;
     overflow: hidden;
     background: var(--offwhitefg);
     z-index: 1;
@@ -182,9 +185,15 @@ const Tables = styled.div`
 @observer class Demographics extends React.Component{
     render(){
         const {store} = this.props
+        const {indicator, race, county, year} = store
         return(
             <React.Fragment>
-                <Readout tiny store = {store} />
+                {/*<Readout tiny store = {store} />*/}
+            <ZoomableMap
+                data = ''
+                store = {store}
+                zoom = {county}
+            />
             </React.Fragment> 
          )
     }

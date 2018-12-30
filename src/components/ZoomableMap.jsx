@@ -6,7 +6,8 @@ import ExpandBox from './ExpandBox'
 import InteractiveMap from './InteractiveMap'
 
 const Container = styled.div`
-    
+    position: absolute;
+    left: 0;
     width: ${p => window.innerWidth}px;
     height: ${p => window.innerWidth * 1.15}px;
     transform: translateX(${p => p.zoom? 25 : 0}px);
@@ -18,12 +19,7 @@ const Container = styled.div`
 const ZoomableMap = (props) => {
     return(
         <Container
-            currentMode = {props.zoom? 'countyZoom' : 'california'}
-            modes = {{
-                california: {width: window.innerWidth-50, height: (window.innerWidth - 50) * 1.15},
-                countyZoom: {width: window.innerWidth-50, height: (window.innerWidth - 50) * 1.15}
-            }}
-            borderColor = {props.zoom? 'var(--bordergrey)' : 'red'}
+
         >
             <InteractiveMap 
                 data = {props.data}
