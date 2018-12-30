@@ -23,9 +23,9 @@ const Wrapper = styled.div`
 const TheMap = styled.svg`
     position: absolute;
     right: 0;
-    transition: transform .5s;
-    transform-origin: 50% 50%;
-    transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : props.zoomable? .875 : 1});
+    /*transition: transform .5s;*/
+    /*transform-origin: 50% 50%;*/
+    // transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : props.zoomable? .875 : 1});
 `
 
 const CountyStyle = css`
@@ -56,77 +56,39 @@ const CountyPath = styled.path`${CountyStyle}`
     @observable defaultTooltip = null
         @action setDefaultTooltip = (val) => this.defaultTooltip = val
 
-    @observable zoomOrigin = {x: 0, y: 0}
-    @action setZoomOrigin = (x,y) => {
-        this.zoomOrigin.x = x; 
-        this.zoomOrigin.y = y
-    }
+//     @observable zoomOrigin = {x: 0, y: 0}
+//     @action setZoomOrigin = (x,y) => {
+//         this.zoomOrigin.x = x; 
+//         this.zoomOrigin.y = y
+//     }
+// 
+//     @observable containerRect = ''
+//     @action initContainerRect = (val) => this.containerRect = document.getElementById('svgMap').getBoundingClientRect()
+// 
+//     componentDidMount(){
+//         this.initContainerRect()
+//         if(this.props.zoom){
+//             const devi = this.calcDeviation(this.props.zoom)
+//             this.setZoomOrigin(devi.x, devi.y)
+//             console.log('component mounted with zoom origin at', this.zoomOrigin.x, this.zoomOrigin.y)
+//             this.forceUpdate()
+//         }
+//     }
+// 
+//     componentWillUpdate(newProps){
+//         if(this.props.zoom !== newProps.zoom){
+//             if(!newProps.zoom){ 
+//                 this.setZoomOrigin(0,0)
+//                 console.log('zoom origin was set to 0')
+//                 return
+//             }
+//             const devi = this.calcDeviation(newProps.zoom)
+//             this.setZoomOrigin(devi.x, devi.y)
+//             console.log('zoom origin was updated to', devi.x, devi.y)
+//         }
+//     }
 
-    @observable containerRect = ''
-    @action initContainerRect = (val) => this.containerRect = document.getElementById('svgMap').getBoundingClientRect()
 
-    componentDidMount(){
-        this.initContainerRect()
-        if(this.props.zoom){
-            const devi = this.calcDeviation(this.props.zoom)
-            this.setZoomOrigin(devi.x, devi.y)
-            console.log('component mounted with zoom origin at', this.zoomOrigin.x, this.zoomOrigin.y)
-            this.forceUpdate()
-        }
-    }
-
-    componentWillUpdate(newProps){
-        if(this.props.zoom !== newProps.zoom){
-            if(!newProps.zoom){ 
-                this.setZoomOrigin(0,0)
-                console.log('zoom origin was set to 0')
-                return
-            }
-            const devi = this.calcDeviation(newProps.zoom)
-            this.setZoomOrigin(devi.x, devi.y)
-            console.log('zoom origin was updated to', devi.x, devi.y)
-        }
-    }
-    // componentDidUpdate(prevProps){
-    //     if(this.props.zoom !== prevProps.zoom){
-    //         if(!this.props.zoom){ 
-    //             this.setZoomOrigin(0,0)
-    //             console.log('zoom origin was set to 0')
-    //             return
-    //         }
-    //         const devi = this.calcDeviation(this.props.zoom)
-    //         this.setZoomOrigin(devi.x, devi.y)
-    //         console.log('zoom origin was updated to', devi.x, devi.y)
-    //     }
-    // }
-
-    @action calcDeviation = (zoomTo) => {
-            const svgRect = this.containerRect
-            const currentContainerRect = document.getElementById('svgMap').getBoundingClientRect()
-            let countybox = document.getElementById(zoomTo).getBoundingClientRect()
-            const adjustedLeft = countybox.left - ((this.zoomOrigin.x - svgRect.left))
-            const adjustedTop  = countybox.top - ((this.zoomOrigin.y - svgRect.top))
-
-            //target center calculated by finding local position relative to origin (topleft corner)
-            //of container plus half its width and height
-            const targetCtrX = (adjustedLeft + (countybox.width/2)) - svgRect.left
-            const targetCtrY = (adjustedTop + ( countybox.height / 2)) - svgRect.top
-
-            //find deviation from center of container?
-            const containerCtrX = svgRect.left + (svgRect.width / 2)
-            const containerCtrY = svgRect.top + (svgRect.height / 2)
-
-            let deviationX = (containerCtrX - targetCtrX) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
-            let deviationY = (containerCtrY - targetCtrY) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
-
-            console.log(zoomTo, 's center of', containerCtrX, containerCtrY)
-            console.log('deviates by', deviationX, deviationY)
-
-            console.log('target area:', (countybox.width * countybox.height).toFixed(1))
-            console.log('scale factor:', 2+ (9000-(countybox.width * countybox.height)) / 4500 )
-
-            return {x: deviationX.toFixed(1), y: deviationY.toFixed(1)}
-    }
 
     componentDidUpdate(prevProps){
 
@@ -271,9 +233,9 @@ const CountyPath = styled.path`${CountyStyle}`
                     {...domProps}
                     version="1.1"
 
-                    zoomable = {this.props.zoomable}
-                    zoomOrigin = {this.zoomOrigin}
-                    zoomed = {this.props.zoom}
+                    // zoomable = {this.props.zoomable}
+                    // zoomOrigin = {this.zoomOrigin}
+                    // zoomed = {this.props.zoom}
 
                 >
                     {this.props.children.map((child,i)=>{
