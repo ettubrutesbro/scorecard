@@ -252,6 +252,7 @@ export default class MobileNav extends React.Component{
                 }}
                 backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
                 borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
+                duration = {.425}
             >
                 <HeaderContent
                     whitetext = {!(this.mode && !indicator)}
