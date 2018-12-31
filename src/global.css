@@ -30,6 +30,8 @@ html{
     /*overflow: hidden;*/
 
     background: var(--offwhitebg, #1e1e1e);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body{
