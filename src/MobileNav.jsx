@@ -202,6 +202,7 @@ export default class MobileNav extends React.Component{
                     // backgroundColor = 'white'
                     // borderColor = 'red'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
+                    // delay = {(this.mode==='county'||this.mode==='race')? '.175s' : '0s'}
                     // delay = {(!this.mode || this.mode==='indicator' || (indicator && ))? '0s' : '.175s'}
                 >
                     <FlipMove
@@ -240,7 +241,7 @@ export default class MobileNav extends React.Component{
                     : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
                 }
                 duration = {.425}
-                delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
+                // delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             > 
              <Header 
                 currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
