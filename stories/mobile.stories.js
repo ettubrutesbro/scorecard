@@ -19,6 +19,7 @@ import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import Readout from '../src/components/Readout'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import ExpandBox from '../src/components/ExpandBox'
+import DemoBox from '../src/components/DemoBox'
 
 addDecorator(withViewport('iphone6'))
 
@@ -29,7 +30,7 @@ const Void = styled.div`
     /*height: 100vh;*/
     height: 100vh;
     background: var(--offwhitefg);
-    padding: 25px;
+    padding: 20px;
     /*font-size: 14px; */
 `
 
@@ -95,6 +96,21 @@ storiesOf('Mobile version', module)
         >
             fuck
         </ExpandTest>
+        </Void>
+    )
+})
+.add('DemoBox', ()=>{
+    const county = select('county', allCounties, null)
+    return(
+        <Void>
+        <DemoBox
+            store = {{
+                ...store,
+                county: county,
+                screen: 'mobile',
+            }}
+            show
+        />    
         </Void>
     )
 })

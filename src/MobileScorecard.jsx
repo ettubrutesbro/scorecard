@@ -3,6 +3,7 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import {mapValues} from 'lodash'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
 
@@ -17,6 +18,7 @@ import IndicatorByCounties from '../src/components/IndicatorByCounties'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import Readout from '../src/components/Readout'
 import ZoomableMap from '../src/components/ZoomableMap'
+import DemoBox from '../src/components/DemoBox'
 
 const width = window.innerWidth - 50
 
@@ -28,7 +30,16 @@ export default class MobileScorecard extends React.Component{
     @action toggleHeaderInfo = (tf) => {
         this.showShorthand = tf
     }
-    @action setNavStatus = (tf) => this.navOpen = tf
+    @action setNavStatus = (tf) => {
+        this.navOpen = tf
+        // if(!tf){
+        //     window.addEventListener('scroll', this.noscroll)
+        // }
+        // else window.removeEventListener('scroll', this.noscroll)
+    }
+    noscroll = () => {
+        window.scrollTo(0,0)
+    }
 
     @observable currentSection = 'breakdown'
     @action goToSection = (sec) => this.currentSection = sec
@@ -45,7 +56,10 @@ export default class MobileScorecard extends React.Component{
                     setNavStatus = {this.setNavStatus}
                 />
 
-                <Content>
+                <Content
+                    offsetForNav = {this.navOpen}
+                >
+
                     {indicator && this.currentSection === 'breakdown' &&
                         <Breakdown store = {store} 
                             onScrollPastReadout = {this.toggleHeaderInfo}
@@ -85,15 +99,10 @@ export default class MobileScorecard extends React.Component{
         )
     }
 }
-
-
 const Content = styled.div`
-    /*position: absolute;*/
     position: relative;
     top: 0;
-    /*height: 100vh;*/
     height: 100%;
-    min-height: 100vh;
     width: 100%;
     min-width: 100vw;
     overflow: hidden;
@@ -102,8 +111,11 @@ const Content = styled.div`
     margin-top: 55px;
     padding: 10px 20px 80px 20px;
     margin-bottom: 67px;
+    transform: translateY(${props => props.offsetForNav? '150px' : 0});
+    transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const SectionChooser = styled.div`
+    padding: 0 10px;
     position: fixed;
     height: 67px;
     border-top: 1px solid var(--fainttext);
@@ -184,26 +196,54 @@ const Tables = styled.div`
 `
 
 @observer class Demographics extends React.Component{
+
+    @observable forceCA = false
+    @action demoForceCA = (tf) => this.forceCA = tf 
+
     render(){
         const {store} = this.props
-        const {indicator, race, county, year} = store
+        const {indicator, race, county, year, ...restOfStore} = store
+        const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
+            return county[race||'totals'][year]
+        }): ''
+        const modifiedStore = {
+            ...restOfStore, 
+            county: this.forceCA? null : county,
+            indicator: indicator, race: race, year: year
+        }
         return(
             <React.Fragment>
-                <Readout tiny store = {store} />
+                <ReadoutWrapper offset = {!county}>
+                    <Readout tiny store = {store} />
+                </ReadoutWrapper>
                 <MapContainer>
                     <ZoomableMap
-                        data = ''
+                        data = {dataForMap}
                         store = {store}
-                        zoomTo = {county}
+                        zoomTo = {this.forceCA? '' : county}
                     />
                 </MapContainer>
+                <DemoBox
+                    store = {modifiedStore}
+                    hasCountyOptionality = {county}
+                    show
+                    onForce = {(val)=>{
+                        if(val==='county') this.demoForceCA(false)
+                        else this.demoForceCA(true)
+                    }}
+                    forceCA = {this.forceCA? 1 : 0}
+                />
             </React.Fragment> 
          )
     }
 }
-
+const ReadoutWrapper = styled.div`
+    transform: translateY(${props=>props.offset? '15px' : 0});
+    transition: transform .35s;
+`
 const MapContainer = styled.div`
     position: relative;
+    margin-top: 10px;
     margin-left: -20px;
     /*left: 0;*/
     height: ${p => window.innerWidth * 1.15}px;

@@ -5,6 +5,7 @@ import commaNumber from 'comma-number'
 
 import RaceBreakdownBar from './RaceBreakdownBar'
 import CountingNumber from './CountingNumber'
+import {Toggle} from './generic'
 
 import {DemographicSourceInfo} from './Sources'
 
@@ -37,6 +38,15 @@ const Box = styled.div`
         z-index: 1;
         transition: transform .4s, opacity .4s;
 
+    @media ${media.mobile}{
+        position: relative;
+        margin-top: 40px;
+        padding: 27px 30px 45px 30px;
+        width: calc(100vw - 40px);
+        /*height: 500px;*/
+        font-size: 14px;
+        border: 1px solid var(--bordergrey);
+    }
 `
 
 const DemoBox = (props) => {
@@ -46,21 +56,43 @@ const DemoBox = (props) => {
     let countyLabel = county? countyLabels[county] : 'California'
     if(countyLabel.length < 9) countyLabel+= ' county'
     pop = sigFig(pop)
+
     return(
         <Box
             id = "demobox"
             {...props}
         >
                     <Title>
-                         Current {county? 'county' : 'state'} demographics
+                        {screen!=='mobile' &&
+                             `Current ${county? 'county' : 'state'} demographics`
+                        }
+                        {screen === 'mobile' &&
+                            <React.Fragment>
+                                Demographics
+                                {(county || props.hasCountyOptionality) &&
+                                <DemoToggle 
+                                    options = {[
+                                        {label: 'County', value: 'county'},
+                                        {label: 'CA', value: 'ca'}
+                                    ]}
+                                    selected = {props.forceCA}
+                                    onClick = {props.onForce}
+                                />
+                                }
+                           </React.Fragment>
+                        }
                     </Title>
-                    <Population className = 'title'> <b>{pop}</b> children live in {countyLabel}. </Population>
+                    <Population className = 'title'> <b>{pop}</b> children live in&nbsp;{countyLabel}. </Population>
                     <Content>
+                        {screen!=='mobile' &&
                         <DataTable store = {store} />
+                        }
                         <RaceBreakdownBar 
                             store = {store} 
-                            height = {screen === 'optimal'? 315 : 275}
+                            width = {screen === 'mobile'? window.innerWidth - 102 : 'idc'}
+                            height = {screen === 'optimal'? 315 : screen === 'compact'? 275 : 44}
                         />
+                        {screen === 'mobile' && <DataTable store = {store} />}
                     </Content>
             
 
@@ -68,19 +100,24 @@ const DemoBox = (props) => {
                 viewBox = {screen==='optimal'? "0 0 515 433" : screen === 'compact'? "0 0 515 375": "0 0 100 100"}
                 preserveAspectRatio = "none"
             >
-                
+                {screen !== 'mobile' &&
                 <polyline 
                     points = {screen==='optimal'? "0,194.85 0,0 515,0 515,433 231.75,433" 
                         : screen === 'compact'? "0,168.75 0,0 515,0 515,375 231.75,375" 
                         : "0,45 0,0 100,0 100,100 45,100"
                     }
                 />
+                }
             </StrokeShape>
         </Box>  
     )
 }
 
 export default DemoBox
+
+const DemoToggle = styled(Toggle)`
+    margin-left: 15px;
+`
 
 const StrokeShape = styled.svg`
     position: absolute;
@@ -100,6 +137,14 @@ const Population = styled.h1`
         font-weight: 500;
     }
     white-space: nowrap;
+    @media ${media.mobile}{
+        text-align: left;
+        font-size: 16px;
+        font-weight: 400;
+        b{ font-weight: 600; }
+        letter-spacing: 0.5px;
+        white-space: normal;
+    }
 `
 
 const DataTable = (props) => {
@@ -141,6 +186,9 @@ const RowTable = styled.div`
     @media ${media.optimal}{
         // padding-right: 20px;
     }
+    @media ${media.mobile}{
+        align-items: flex-start;
+    }
 
 `
 const DemoRow = styled.div`
@@ -172,6 +220,15 @@ const DemoRow = styled.div`
             width: 210px;
         }
     }
+    @media ${media.mobile}{
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        line-height: 19px;
+        text-align: left;
+        &:not(:first-of-type){
+            margin-top: 15px;
+        }
+    }
 
 `
 const DemoLabel = styled.span`
@@ -191,6 +248,15 @@ const Title = styled.div`
     padding: 0 15px;
     background: var(--offwhitefg);
     z-index: 2;
+    @media ${media.mobile}{
+        /*position: relative;*/
+        margin-left: 15px;
+        margin-right: 0;
+        right: auto;
+        left: 0;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
 `
 
 const Content = styled.div`
@@ -198,4 +264,8 @@ const Content = styled.div`
     display: flex;
     justify-content: center;
     z-index: 3;
+    @media ${media.mobile}{
+        display: flex;
+        flex-wrap: wrap;
+    }
 `

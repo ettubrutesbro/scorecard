@@ -33,7 +33,7 @@ const CountyStyle = css`
     stroke: ${props => props.highlighted?'var(--peach)': 'transparent'};
     stroke-width: ${props => props.selected? 3.5 : 3.5};
     @media ${media.mobile}{
-        stroke-width: 2;
+        stroke-width: 2.25;
     }
 `
 
@@ -151,7 +151,7 @@ const CountyPath = styled.path`${CountyStyle}`
             <Wrapper 
                 onClick = {(e)=>this.handleClick(e, e.target.id)}
             >
-                {this.props.data && this.defaultTooltip && !this.tooltip && !selected && 
+                {this.props.data && this.defaultTooltip && !this.tooltip && !selected && store.screen!=='mobile' &&
                     <Tooltip 
                         key = {this.defaultTooltip}
                         pos = {this.defaultCoords}
@@ -170,7 +170,7 @@ const CountyPath = styled.path`${CountyStyle}`
                         </Tip>
                     </Tooltip>
                 }
-                {this.tooltip && 
+                {this.tooltip && store.screen!=='mobile' &&
                     <Tooltip
                         key = {hoveredCounty}
                         pos = {this.targetCoords}

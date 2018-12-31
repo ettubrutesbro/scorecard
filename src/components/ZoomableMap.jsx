@@ -10,7 +10,7 @@ import InteractiveMap from './InteractiveMap'
 @observer
 export default class ZoomableMap extends React.Component {
 
-    @observable zoomLevel = .875
+    @observable zoomLevel = .91
     @action setZoom = (val) => this.zoomLevel = val
     @observable containerTranslation = {x: 0, y: 0}
     @action translateContainer = (coords) => { 
@@ -42,8 +42,9 @@ export default class ZoomableMap extends React.Component {
     }
 
     calcTransform = (zoomTo) => {
+        console.log('going to zoomTo', zoomTo)
         if(!zoomTo){
-            this.setZoom(.875)
+            this.setZoom(.91)
             return {x: 0, y:0}
         }
 
@@ -79,8 +80,6 @@ export default class ZoomableMap extends React.Component {
             y: (mapbox.top + (mapbox.height / 2)) - countyCenter.y, 
         }
 
-        // console.log(zoomTo, 'deviates from ctr by', deviationFromContainerCenter)
-
         this.setZoom(zoomLevel)
         return {
             x: deviationFromContainerCenter.x,
@@ -91,7 +90,7 @@ export default class ZoomableMap extends React.Component {
     render(){
         const props = this.props
         return(
-            <Container>
+            <Container showBorder = {props.zoomTo}>
                 <TransformWrapper
                     offset = {this.containerTranslation} 
                     zoom = {this.zoomLevel}
@@ -100,7 +99,7 @@ export default class ZoomableMap extends React.Component {
                         data = {props.data}
                         store = {props.store}
                         hoveredCounty = {props.zoomTo}
-                        // selected = {props.zoomTo}
+                        selected = {!props.zoomTo && props.store.county? props.store.county : ''}
                     />
                 </TransformWrapper>
             </Container>
@@ -114,7 +113,8 @@ const Container = styled.div`
     width: ${p => window.innerWidth}px;
     height: ${p => window.innerWidth * 1.15}px;
     overflow: hidden;
-    border: 1px solid red;
+    border-top: 1px solid ${props => props.showBorder? 'var(--bordergrey)' : 'transparent'};
+    border-bottom: 1px solid ${props => props.showBorder? 'var(--bordergrey)' : 'transparent'};
 `
 
 const TransformWrapper = styled.div`
