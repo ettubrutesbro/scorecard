@@ -85,7 +85,7 @@ const races = ['asian','black','latinx','white','other']
                     hovered = {race.label === hoveredRace}
 
 
-                    onClick = {()=>store.completeWorkflow('race',race.label)}
+                    onClick = {race.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',race.label)}
 
                     {...hoverProps}
                 />
@@ -130,7 +130,7 @@ const races = ['asian','black','latinx','white','other']
 
                         onMouseEnter = {()=>store.setHover('race',race.label)} 
                         onMouseLeave = {()=>store.setHover('race',null)} 
-                        onClick = {()=>store.completeWorkflow('race',race.label)}
+                        onClick = {race.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',race.label)}
                         hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 
                     >
@@ -156,13 +156,13 @@ const races = ['asian','black','latinx','white','other']
                                 || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                             }
                             onMouseEnter = {()=>store.setHover('race',r.label)} 
-                            onClick = {()=>store.completeWorkflow('race',r.label)}
+                            onClick = {r.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',r.label)}
                             onMouseLeave = {()=>store.setHover('race',null)} 
                             hoverable = {store.indicator? store.setHover('race',r.label,true) : ()=>{}}
                 
                         >
-                            <Label> {capitalize(r.label)} </Label>
-                            <Percentage> {r.percentage}%</Percentage>
+                            <Label selected = {r.label===store.race}> {capitalize(r.label)} </Label>
+                            <Percentage selected = {r.label===store.race}> {r.percentage}%</Percentage>
                         </Compressed>
                     )
                 })}
@@ -427,16 +427,22 @@ const PercentageTable = (props) => {
     return(
         <PctTable>
             <HorizontalEndNotch selected = {store.race===pcts[0].label}/>
-            <PctBlock key = {'pcttable-'+pcts[0].label} selected = {store.race === pcts[0].label}>
+            <PctBlock key = {'pcttable-'+pcts[0].label} selected = {store.race === pcts[0].label}
+                onClick = {store.race===pcts[0].label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pcts[0].label)}
+            >
             <b><CountingNumber number={pcts[0].percentage}/>%</b>&nbsp;of&nbsp;them&nbsp;are&nbsp;{capitalize(pcts[0].label)}, 
             </PctBlock>
             {pcts.slice(1).map((pct,i)=>{
                 return i+1<pcts.length-1?(
-                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}>
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}
+                        onClick = {store.race===pct.label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pct.label)}
+                    >
                         <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;{capitalize(pct.label)},
                     </PctBlock>
                 ) : (
-                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}>
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}
+                        onClick = {store.race===pct.label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pct.label)}
+                    >
                         and <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;are&nbsp;{capitalize(pct.label)}.
                     </PctBlock>
                 )
@@ -451,7 +457,7 @@ const PctTable = styled.div`
     flex-wrap: wrap;
     width: 100%;
     margin-top: 20px;
-    line-height: 22px;
+    line-height: 23px;
     letter-spacing: 0.5px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--bordergrey);

@@ -67,7 +67,8 @@ const Header = styled.div`
 
     @action handleHoverRow = (row) => {
         // if(this.props.selectable) this.hoveredRow = row
-        if(this.props.onHoverRow) this.props.onHoverRow(row)
+        const screen = getMedia()
+        if(this.props.onHoverRow && screen !== 'mobile') this.props.onHoverRow(row)
     }
 
     @action expandGraph = () => {
