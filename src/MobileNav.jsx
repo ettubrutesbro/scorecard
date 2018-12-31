@@ -640,9 +640,10 @@ const WorkflowList = styled.ul`
     width: 100%;
     white-space: normal;
     margin: 15px 0 0 0;
-    padding: 0 25px;
+    padding: 0 25px 50px 25px;
     opacity: 0;
     animation: .2s ease-in .2s forwards ${FadeInWorkflow};
+    overscroll-behavior: contain;
 `
 const ListRow = styled.li`
     list-style-type: none;    
