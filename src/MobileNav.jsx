@@ -299,13 +299,22 @@ export default class MobileNav extends React.Component{
             </ResetButton>
         </HeaderGroup>
 
-
+            <MaskGapBlocker />
             <Mask visible = {this.mode}/>
 
             </FixWrap>
         )
     }
 }
+
+const MaskGapBlocker = styled.div`
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 0;
+    background: var(--offwhitefg);
+    width: 100vw;
+    height: 55px; 
+`
 
 const HeaderGroup = styled.div`
     position: absolute; top: 0; left: 0;
