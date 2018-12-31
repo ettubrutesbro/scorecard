@@ -179,7 +179,7 @@ storiesOf('Maps',module)
     )
 })
 .add('ZoomableMap (for mobile)', ()=>{
-    const zoomCounty = select(`zoom county: `, [null,'imperial', 'inyo', 'kern', 'sanFrancisco', 'sanBernardino' ,'delNorte', 'modoc', 'losAngeles'])
+    const zoomCounty = select(`zoom county: `, [null,'alameda','imperial', 'inyo', 'kern', 'sanFrancisco', 'sanBernardino' ,'delNorte', 'modoc', 'losAngeles'])
     
     return(
         <ZoomableMap

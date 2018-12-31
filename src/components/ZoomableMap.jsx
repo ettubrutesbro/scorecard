@@ -3,7 +3,6 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
-
 import ExpandBox from './ExpandBox'
 import InteractiveMap from './InteractiveMap'
 
@@ -11,7 +10,7 @@ import InteractiveMap from './InteractiveMap'
 @observer
 export default class ZoomableMap extends React.Component {
 
-    @observable zoomLevel = 1
+    @observable zoomLevel = .875
     @action setZoom = (val) => this.zoomLevel = val
     @observable containerTranslation = {x: 0, y: 0}
     @action translateContainer = (coords) => { 
@@ -20,16 +19,10 @@ export default class ZoomableMap extends React.Component {
         this.containerTranslation.y = coords.y
     }
 
-    constructor(){
-        super()
-        this.container = React.createRef()
-    }
-
     componentDidMount(){
         if(this.props.zoomTo){
             console.log('map mounting with zoom:', this.props.zoomTo)
             this.translateContainer(this.calcTransform(this.props.zoomTo))
-            this.setZoom(2)
         }
         else{
             console.log('map mounting unzoomed')
@@ -40,32 +33,28 @@ export default class ZoomableMap extends React.Component {
             if(!newProps.zoomTo){
                 console.log('map updated: unzooming')
                 this.translateContainer(this.calcTransform())
-                this.setZoom(1)
             }
             else{
                 console.log('map updated: zooming to', newProps.zoomTo)
                 this.translateContainer(this.calcTransform(newProps.zoomTo))
-                this.setZoom(2)
             }
         }
     }
 
     calcTransform = (zoomTo) => {
         if(!zoomTo){
+            this.setZoom(.875)
             return {x: 0, y:0}
-            console.log('fux')
         }
-        //absolute screen coordinates
-        //current offset/translations need to be accounted for...
-        
+
         const map = document.getElementById('svgMap').getBoundingClientRect()
-        // const mapbox = this.container.current.getBoundingClientRect()
         const county = document.getElementById(zoomTo).getBoundingClientRect()
 
-        //todo: calc zoom level
-        const zoomLevel = 2 
-        const zoomDifferential = zoomLevel / this.zoomLevel
-        console.log(zoomDifferential)
+        const countySize = ((county.width / this.zoomLevel) * (county.height / this.zoomLevel)) 
+        const scaleAdjust = countySize < 2000? (4000 - (countySize*2)) / 2000: countySize > 9000? -.3 : 0
+
+        const zoomLevel = 2 + scaleAdjust
+        const zoomDifferential = (zoomLevel / this.zoomLevel).toFixed(1)
 
         const mapbox = {
             left: map.left * zoomDifferential, 
@@ -90,43 +79,19 @@ export default class ZoomableMap extends React.Component {
             y: (mapbox.top + (mapbox.height / 2)) - countyCenter.y, 
         }
 
-        console.log(zoomTo, 'deviates from ctr by', deviationFromContainerCenter)
+        // console.log(zoomTo, 'deviates from ctr by', deviationFromContainerCenter)
 
+        this.setZoom(zoomLevel)
         return {
             x: deviationFromContainerCenter.x,
             y: deviationFromContainerCenter.y
         }
-
-//         const adjustedLeft = countybox.left - ((this.zoomOrigin.x - mapbox.left))
-//         const adjustedTop  = countybox.top - ((this.zoomOrigin.y - mapbox.top))
-// 
-//         //target center calculated by finding local position relative to origin (topleft corner)
-//         //of container plus half its width and height
-//         const targetCtrX = (adjustedLeft + (countybox.width/2)) - mapbox.left
-//         const targetCtrY = (adjustedTop + ( countybox.height / 2)) - mapbox.top
-// 
-//         //find deviation from center of container?
-//         const containerCtrX = mapbox.left + (mapbox.width / 2)
-//         const containerCtrY = mapbox.top + (mapbox.height / 2)
-// 
-//         let deviationX = (containerCtrX - targetCtrX) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
-//         let deviationY = (containerCtrY - targetCtrY) * (this.zoomOrigin.x === 0 && this.zoomOrigin.y === 0? 2.28 : 1)
-
-        // console.log(zoomTo, 's center of', containerCtrX, containerCtrY)
-        // console.log('deviates by', deviationX, deviationY)
-
-        // console.log('target area:', (countybox.width * countybox.height).toFixed(1))
-        // console.log('scale factor:', 2+ (9000-(countybox.width * countybox.height)) / 4500 )
-
-        // return {x: deviationX.toFixed(1), y: deviationY.toFixed(1)}
     }
 
     render(){
         const props = this.props
         return(
-            <Container
-                ref = {this.container}
-            >
+            <Container>
                 <TransformWrapper
                     offset = {this.containerTranslation} 
                     zoom = {this.zoomLevel}
@@ -143,16 +108,18 @@ export default class ZoomableMap extends React.Component {
 
 
 const Container = styled.div`
-
+    position: relative;
+    width: ${p => window.innerWidth}px;
+    height: ${p => window.innerWidth * 1.15}px;
     overflow: hidden;
     border: 1px solid red;
-
 `
 
 const TransformWrapper = styled.div`
-    border: 1px solid green;
+    position: absolute;
     width: ${p => window.innerWidth}px;
     height: ${p => window.innerWidth * 1.15}px;
     transform-origin: 50% 50%;
+    transition: transform .5s;
     transform: translate(${props=> props.offset.x}px, ${props=>props.offset.y}px) scale(${props => props.zoom});
 `
