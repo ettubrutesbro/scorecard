@@ -4,6 +4,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import IntersectionObserver from '@researchgate/react-intersection-observer'
+import 'intersection-observer'
 import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'

@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import {find, findIndex} from 'lodash'
 import commaNumber from 'comma-number'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
+import 'intersection-observer'
 
 import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'

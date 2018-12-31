@@ -14,6 +14,7 @@ import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
 import semanticTitles from '../assets/semanticTitles'
 import {capitalize} from '../utilities/toLowerCase'
+import media from '../utilities/media'
 
 const Wrapper = styled.div`
     position: relative;
@@ -31,6 +32,9 @@ const CountyStyle = css`
     cursor: pointer;
     stroke: ${props => props.highlighted?'var(--peach)': 'transparent'};
     stroke-width: ${props => props.selected? 3.5 : 3.5};
+    @media ${media.mobile}{
+        stroke-width: 2;
+    }
 `
 
 const FullState = styled.polygon`
@@ -54,40 +58,6 @@ const CountyPath = styled.path`${CountyStyle}`
     }
     @observable defaultTooltip = null
         @action setDefaultTooltip = (val) => this.defaultTooltip = val
-
-//     @observable zoomOrigin = {x: 0, y: 0}
-//     @action setZoomOrigin = (x,y) => {
-//         this.zoomOrigin.x = x; 
-//         this.zoomOrigin.y = y
-//     }
-// 
-//     @observable containerRect = ''
-//     @action initContainerRect = (val) => this.containerRect = document.getElementById('svgMap').getBoundingClientRect()
-// 
-//     componentDidMount(){
-//         this.initContainerRect()
-//         if(this.props.zoom){
-//             const devi = this.calcDeviation(this.props.zoom)
-//             this.setZoomOrigin(devi.x, devi.y)
-//             console.log('component mounted with zoom origin at', this.zoomOrigin.x, this.zoomOrigin.y)
-//             this.forceUpdate()
-//         }
-//     }
-// 
-//     componentWillUpdate(newProps){
-//         if(this.props.zoom !== newProps.zoom){
-//             if(!newProps.zoom){ 
-//                 this.setZoomOrigin(0,0)
-//                 console.log('zoom origin was set to 0')
-//                 return
-//             }
-//             const devi = this.calcDeviation(newProps.zoom)
-//             this.setZoomOrigin(devi.x, devi.y)
-//             console.log('zoom origin was updated to', devi.x, devi.y)
-//         }
-//     }
-
-
 
     componentDidUpdate(prevProps){
 

@@ -99,6 +99,8 @@ export default class ZoomableMap extends React.Component {
                     <InteractiveMap 
                         data = {props.data}
                         store = {props.store}
+                        hoveredCounty = {props.zoomTo}
+                        // selected = {props.zoomTo}
                     />
                 </TransformWrapper>
             </Container>
@@ -108,7 +110,7 @@ export default class ZoomableMap extends React.Component {
 
 
 const Container = styled.div`
-    position: relative;
+    position: absolute;
     width: ${p => window.innerWidth}px;
     height: ${p => window.innerWidth * 1.15}px;
     overflow: hidden;

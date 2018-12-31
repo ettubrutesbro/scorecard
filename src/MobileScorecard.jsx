@@ -4,6 +4,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import IntersectionObserver from '@researchgate/react-intersection-observer'
+import 'intersection-observer'
 
 import indicators from './data/indicators'
 
@@ -188,14 +189,22 @@ const Tables = styled.div`
         const {indicator, race, county, year} = store
         return(
             <React.Fragment>
-                {/*<Readout tiny store = {store} />*/}
-            <ZoomableMap
-                data = ''
-                store = {store}
-                zoom = {county}
-            />
+                <Readout tiny store = {store} />
+                <MapContainer>
+                    <ZoomableMap
+                        data = ''
+                        store = {store}
+                        zoomTo = {county}
+                    />
+                </MapContainer>
             </React.Fragment> 
          )
     }
 }
 
+const MapContainer = styled.div`
+    position: relative;
+    margin-left: -20px;
+    /*left: 0;*/
+    height: ${p => window.innerWidth * 1.15}px;
+`
