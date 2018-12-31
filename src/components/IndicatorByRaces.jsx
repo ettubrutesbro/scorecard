@@ -63,7 +63,7 @@ export default class IndicatorByRaces extends React.Component{
             else{
                 //trueValue is N/A
                 val = 0
-                isSomeBullshit = ind[race][year]==='*'? 'Data too small or unstable' : 'No data'
+                isSomeBullshit = ind[race][year]==='*' && screen==='mobile'? 'Small/unstable' :ind[race][year]==='*'? 'Data too small or unstable' : 'No data'
                 isSomeBullshit = (<Label invalid>{isSomeBullshit}</Label>)
             }
             const who = semanticTitles[indicator].shortWho || semanticTitles[indicator].who

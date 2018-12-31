@@ -233,8 +233,8 @@ export default class IndicatorByCounties extends React.Component{
 
 
     render(){
-
-        const {county, race, year, indicator, completeWorkflow, colorScale, screen, setHover, hoveredCounty} = this.props.store
+        const {store} = this.props
+        const {county, race, year, indicator, completeWorkflow, colorScale, screen, setHover, hoveredCounty} = store
         let {performance} = this 
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
@@ -429,7 +429,7 @@ export default class IndicatorByCounties extends React.Component{
                 labelWidth = {screen === 'mobile' && this.sortOverviewBy === 'pop'? 145 : screen === 'mobile'? 125 : this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
+                selectBar = {(id)=>{completeWorkflow('county',store.county===id?'':id)}}
                 footer = {(
                     <FooterComponent
                         mobile = {screen==='mobile'}
