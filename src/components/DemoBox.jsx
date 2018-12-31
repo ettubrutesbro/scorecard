@@ -51,7 +51,10 @@ const Box = styled.div`
 
 const DemoBox = (props) => {
     const store = props.store
-    const {county, screen} = store
+    const {screen} = store
+
+    const county = props.forceCA? '' : store.county
+
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
     if(countyLabel.length < 9) countyLabel+= ' county'
@@ -75,7 +78,7 @@ const DemoBox = (props) => {
                                         {label: 'County', value: 'county'},
                                         {label: 'CA', value: 'ca'}
                                     ]}
-                                    selected = {props.forceCA}
+                                    selected = {props.forceCA?1:0}
                                     onClick = {props.onForce}
                                 />
                                 }
@@ -88,11 +91,11 @@ const DemoBox = (props) => {
                         <DataTable store = {store} />
                         }
                         <RaceBreakdownBar 
-                            store = {store} 
+                            store = {store} forceCA = {props.forceCA} 
                             width = {screen === 'mobile'? window.innerWidth - 102 : 'idc'}
                             height = {screen === 'optimal'? 315 : screen === 'compact'? 275 : 44}
                         />
-                        {screen === 'mobile' && <DataTable store = {store} />}
+                        {screen === 'mobile' && <DataTable store = {store} forceCA = {props.forceCA} />}
                     </Content>
             
 
@@ -148,9 +151,9 @@ const Population = styled.h1`
 `
 
 const DataTable = (props) => {
-        const {county} = props.store
-        const demo = county? demopop[county] : demopop.california
-        const place = county? countyLabels[county] : 'California'
+    const county = props.forceCA? '' : props.store.county
+    const demo = county? demopop[county] : demopop.california
+    const place = county? countyLabels[county] : 'California'
 
         return(
             <RowTable> 

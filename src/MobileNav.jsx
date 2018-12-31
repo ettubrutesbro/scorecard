@@ -1,7 +1,7 @@
 import React from 'react'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
@@ -632,12 +632,17 @@ class IndicatorList extends React.Component{
     }
 }
 
+const FadeInWorkflow = keyframes`
+    from {opacity: 0;} to {opacity: 1;}
+`
+
 const WorkflowList = styled.ul`
     width: 100%;
     white-space: normal;
     margin: 15px 0 0 0;
     padding: 0 25px;
-
+    opacity: 0;
+    animation: .2s ease-in .2s forwards ${FadeInWorkflow};
 `
 const ListRow = styled.li`
     list-style-type: none;    

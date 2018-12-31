@@ -13,7 +13,9 @@ const races = ['asian','black','latinx','white','other']
     render(){
     const {props} = this
     const {height, store, width} = props
-    const {county, screen, hoveredRace} = store
+    const {screen, hoveredRace} = store
+
+    const county = this.props.forceCA? '' : store.county
 
     const clt = screen === 'compact'? 9 : 8//compressed label threshold (% below which label becomes compressed)
     const est = screen === 'compact'? 22: 24//exception segment threshold (% below which the last non-compressed seg has its label offset)
@@ -85,23 +87,21 @@ const races = ['asian','black','latinx','white','other']
                     onClick = {()=>store.completeWorkflow('race',race.label)}
 
                     {...hoverProps}
-                    // onMouseEnter = {()=>store.setHover('race',race.label)}
-                    // onMouseLeave = {()=>store.setHover('race',null)} 
-                    // hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 />
 
 
 
-                {screen!=='mobile' && 
                 <EndNotch 
+                    id = 'endnotch'
                     key = {'hatch'+i} 
-                    offset = {(offset/100) * height} 
+                    offset = {(offset/100) * (screen==='mobile'? width: height)} 
                     infinitesimal = {pct < 3}
                     hide = {i===0}
+                    // hide
+                    horizontal = {screen==='mobile'}
                     selected = {race.label === store.race || (i>0 && arr[i-1].label === store.race) }
 
                 />
-                }
                 </React.Fragment>
             )
         })
@@ -215,9 +215,23 @@ const EndNotch = styled(Positioned)`
     height: 0;
     left: 2px;
     width: calc(100% - 4px);
+    border-width: 0.5px;
+    border-style: solid;
     border-top: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
     border-bottom: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+
+    border-color: var(--${props => props.selected? 'peach' : props.infinitesimal? 'offwhitefg' : 'bordergrey'});
     display: ${props=>props.hide?'none':'block'};
+    ${props => props.horizontal? `
+        left: 0;
+        width: 1px;
+        height: 100%;
+        border-top-width: 0;
+        border-bottom-width: 0;
+    `: `
+        border-left-width: 0px;
+        border-right-width: 0px;
+    `}
 `
 
 const Segment = styled(Positioned)`

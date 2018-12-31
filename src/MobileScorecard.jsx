@@ -202,15 +202,11 @@ const Tables = styled.div`
 
     render(){
         const {store} = this.props
-        const {indicator, race, county, year, ...restOfStore} = store
+        const {indicator, race, county, year} = store
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        const modifiedStore = {
-            ...restOfStore, 
-            county: this.forceCA? null : county,
-            indicator: indicator, race: race, year: year
-        }
+
         return(
             <React.Fragment>
                 <ReadoutWrapper offset = {!county}>
@@ -224,14 +220,14 @@ const Tables = styled.div`
                     />
                 </MapContainer>
                 <DemoBox
-                    store = {modifiedStore}
+                    store = {store}
                     hasCountyOptionality = {county}
                     show
                     onForce = {(val)=>{
                         if(val==='county') this.demoForceCA(false)
                         else this.demoForceCA(true)
                     }}
-                    forceCA = {this.forceCA? 1 : 0}
+                    forceCA = {this.forceCA}
                 />
             </React.Fragment> 
          )
