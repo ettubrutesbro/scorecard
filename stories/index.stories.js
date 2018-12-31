@@ -185,7 +185,7 @@ storiesOf('Maps',module)
         <ZoomableMap
             data = ''
             store = {store}
-            zoom = {zoomCounty}
+            zoomTo = {zoomCounty}
         />
     )
 })

@@ -25,7 +25,6 @@ const TheMap = styled.svg`
     right: 0;
     /*transition: transform .5s;*/
     /*transform-origin: 50% 50%;*/
-    // transform: translate(${p => p.zoom? p.zoomOrigin.x : 0}px, ${p => p.zoom? p.zoomOrigin.y : 0}px) scale(${props => props.zoom? 2 : props.zoomable? .875 : 1});
 `
 
 const CountyStyle = css`
