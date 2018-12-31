@@ -6,6 +6,7 @@ import media from '../utilities/media'
 import {capitalize} from '../utilities/toLowerCase'
 import demopop from '../data/demographicsAndPopulation'
 
+import CountingNumber from './CountingNumber'
 
 const races = ['asian','black','latinx','white','other']
 
@@ -425,18 +426,18 @@ const PercentageTable = (props) => {
     const pcts = props.percentages
     return(
         <PctTable>
-            <HorizontalEndNotch />
-            <PctBlock selected = {store.race === pcts[0].label}>
-            <b>{pcts[0].percentage}%</b>&nbsp;of&nbsp;them&nbsp;are&nbsp;{capitalize(pcts[0].label)}, 
+            <HorizontalEndNotch selected = {store.race===pcts[0].label}/>
+            <PctBlock key = {'pcttable-'+pcts[0].label} selected = {store.race === pcts[0].label}>
+            <b><CountingNumber number={pcts[0].percentage}/>%</b>&nbsp;of&nbsp;them&nbsp;are&nbsp;{capitalize(pcts[0].label)}, 
             </PctBlock>
             {pcts.slice(1).map((pct,i)=>{
                 return i+1<pcts.length-1?(
-                    <PctBlock selected = {pct.label === store.race}>
-                        <b>{pct.percentage}%</b>&nbsp;{capitalize(pct.label)},
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}>
+                        <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;{capitalize(pct.label)},
                     </PctBlock>
                 ) : (
-                    <PctBlock selected = {pct.label === store.race}>
-                        and <b>{pct.percentage}%</b>&nbsp;are&nbsp;{capitalize(pct.label)}.
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}>
+                        and <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;are&nbsp;{capitalize(pct.label)}.
                     </PctBlock>
                 )
             })}
@@ -467,7 +468,7 @@ const HorizontalEndNotch = styled.div`
     left: 0;
     top: -20px;
     width: 0px; height: 12px;
-    border-left: 2px solid ${props => props.selected? 'var(--strokepeach)':' var(--bordergrey)'};
+    border-left: 2px solid ${props => props.selected? 'var(--peach)':' var(--bordergrey)'};
 `
 
 export default RaceBreakdownBar
