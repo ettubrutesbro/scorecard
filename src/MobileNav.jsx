@@ -302,11 +302,28 @@ export default class MobileNav extends React.Component{
 
             <MaskGapBlocker />
             <Mask visible = {this.mode}/>
+            {/*
+            <FixedActionsHelper 
+                id = "fixedactions" 
+                // currentMode = {'collapsed'}
 
+
+            />
+            */}
             </FixWrap>
         )
     }
 }
+
+const FixedActionsHelper = styled.div`
+    position: absolute;
+    width: 48px;
+    height: 100px;
+    border: 1px solid var(--bordergrey);
+    right: 20px;
+    top: 75px;
+    z-index: 5;
+`
 
 const MaskGapBlocker = styled.div`
     position: absolute;
@@ -474,6 +491,7 @@ const FixWrap = styled.div`
     position: fixed;
     top: -1px; left: -1px;
     z-index: 10;
+    width: calc(100% + 1px);
 `
 const WorkflowWrap = styled.div`
     border: 1px solid red;

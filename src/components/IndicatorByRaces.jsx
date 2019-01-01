@@ -96,7 +96,7 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: screen==='mobile'? 160: 150},
+                        expanded: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: screen==='mobile'? 170: 150},
                         collapsed: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}

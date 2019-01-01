@@ -62,32 +62,12 @@ export default class IndicatorByCounties extends React.Component{
 
     // mobile-only: track header or footer visibility when in allcounties mode
     @observable mobileXmode = 'header'
-    @observable animateFixedXFrom = ''
-    @observable animateFooterXFrom = ''
+
     @action setMobileIntersect = (val, coords) =>{
         if(this.props.store.screen !== 'mobile') return
         const lastVal = this.mobileXmode
         console.log('mobile X is now', val)
         this.mobileXmode = val
-        //scrolling down
-        // if(lastVal === 'header' && val === 'fixed'){
-        //     //build animation from headerX coords to fixedX coords 
-        //     this.animateFixedXFrom = coords
-        //     console.log('animate fixed x from', coords)
-
-        // }
-        // if(lastVal === 'fixed' && val === 'footer'){
-        //     //build animation from diff of fixedX coords and footerX coords, to footerX coords
-        //     // const fixedXCoords = this.
-        //     // this.animateFooterXFrom = 
-        // }
-        // //going back up
-        // if(lastVal === 'footer' && val === 'fixed'){
-
-        // }
-        // if(lastVal === 'fixed' && val === 'header'){
-
-        // }
      }
 
     @action calculatePerformance = () => {
@@ -445,14 +425,6 @@ export default class IndicatorByCounties extends React.Component{
             />
 
             </Wrapper>
-            <FixedMobileX 
-                visible = {this.mobileXmode === 'fixed' && !distribute}
-                onClick = {this.props.toggleDistribute}
-                // animateFrom = {}
-            >
-                <XIcon img = "x" color = "bordergrey" /> 
-            </FixedMobileX>
-            
             </React.Fragment>
         )
     }

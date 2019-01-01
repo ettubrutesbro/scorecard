@@ -20,6 +20,9 @@ import Readout from '../src/components/Readout'
 import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import ExpandBox from '../src/components/ExpandBox'
 import DemoBox from '../src/components/DemoBox'
+import Icon from '../src/components/generic/Icon'
+import FixedActionsHelper from '../src/components/FixedActionsHelper'
+
 
 addDecorator(withViewport('iphone6'))
 
@@ -83,19 +86,11 @@ storiesOf('Mobile version', module)
         </Void>   
     )
 })
-.add('ExpandBox', ()=>{
-    const current = select('mode', ['collapsed','expanded'], 'collapsed')
+.add('FixedActionsHelper (ExpandBox)', ()=>{
+    const current = select('mode', ['collapsed','expanded','xOnly','searching'], 'collapsed')
     return(
         <Void>
-        <ExpandTest 
-            currentMode = {current}
-            modes = {{
-                collapsed: {width: 100, height: 200},
-                expanded: {width: 500, height: 300}
-            }}
-        >
-            fuck
-        </ExpandTest>
+        <FixedActionsHelper mode = {current} />
         </Void>
     )
 })
