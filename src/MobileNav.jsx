@@ -209,7 +209,7 @@ export default class MobileNav extends React.Component{
                                 visible = {this.mode==='compact'}
                                 options = {yearOptions}
                                 onClick = {(yr)=>store.completeWorkflow('year',yr)}
-                                selected = {year}
+                                selected = {Number(year)}
                                 stopPropagation
                                 muted
                                 theme = 'muted'
@@ -724,6 +724,7 @@ class IndicatorList extends React.Component{
 
     render(){
         const store = this.props.store
+        const {race, year, county} = store
         const inds = store.indicatorSearchString? store.indicatorSearchResults : Object.keys(indicators)
         let numHealth = 0
         let numEd = 0
@@ -753,13 +754,22 @@ class IndicatorList extends React.Component{
                     if(this.filter === 'all') return true 
                     else return indicators[ind].categories.includes(this.filter)
                 }).map((ind)=>{
+                    const v = indicators[ind].counties[county||'california']
+                    const needsRaceHasRace = ((race && indicators[ind].categories.includes('hasRace')) || !race)
+                    const invalid = !needsRaceHasRace? true : (v[race||'totals'][year] === '*' || v[race||'totals'][year] === '')
                     return (
                         <ListRow
+                            className = {store.indicator===ind? 'selected' : invalid? 'invalid' : ''}
                             key = {ind}
                             onClick = {()=>{ 
-                                this.props.onComplete('indicator', ind !== store.indicator)
-                                store.completeWorkflow('indicator', ind)
-                                
+                                const completion = store.completeWorkflow('indicator', ind)
+                                if(!completion){
+                                    if(window.confirm(store.sanityCheck.message)){
+                                        store.sanityCheck.action()
+                                        this.props.onComplete('indicator', true)
+                                    }
+                                }
+                                else this.props.onComplete('indicator', ind !== store.indicator)
                             }}
                         >
                             {semanticTitles[ind].label}
@@ -800,6 +810,15 @@ const ListRow = styled.li`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    &.selected{
+        background: var(--faintpeach);
+    }
+    &.invalid{
+        background: var(--offwhitefg);
+        color: var(--fainttext);
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
 `
 
 const IndCats = styled.select`
@@ -839,9 +858,12 @@ const RaceList = (props) => {
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
                 return <ListRow key = {r} onClick = {()=>{ 
-
-                    props.onComplete('race', r !== store.race)
-                    store.completeWorkflow('race', r)
+                    const completion = store.completeWorkflow('race',r)
+                    if(completion)  props.onComplete('race', r !== store.race)
+                    else if(window.confirm(store.sanityCheck.message)){
+                        store.sanityCheck.action()
+                        props.onComplete('race',true)
+                    }
                 }}>
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
                     <ItemInfo>

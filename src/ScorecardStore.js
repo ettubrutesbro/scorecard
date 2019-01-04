@@ -356,7 +356,7 @@ export default class AppStore{
                 if(this.county && indicators[this.indicator].counties.california[value||'totals'].filter((v)=>{return isValid(v)}).length > 0){
                     console.log('race selection can be sanity checked: county')
                     this.setSanityCheck('race',value,
-                        `This indicator doesn't have value for this race for the county you have selected, but you can continue without the county selection...`, 
+                        `This indicator doesn't have data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county}, but you can see statewide data.`, 
                         ()=>{
                             this.completeWorkflow('county',null)
                             this.completeWorkflow('race',value)
@@ -366,7 +366,7 @@ export default class AppStore{
                 }
 
                 console.log('got to the end of the invalid race selection check without another solution...uh oh')
-
+                alert('Sorry, an error occurred - please refresh the app.')
                 
             }
         }

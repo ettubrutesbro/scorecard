@@ -38,7 +38,7 @@ const WrappedGraphComponent = (props) => {
             collapseHeight = {props.collapseHeight}
             expandHeight = {props.expandHeight}
         >
-            <HorizontalBarGraph {...restOfProps} />
+            <HorizontalBarGraph {...restOfProps} noFade = {noFade}/>
         </ExpandBox>
     ):(
         <Wrapper>
@@ -197,7 +197,10 @@ const Header = styled.div`
                                     <Invalid> No data </Invalid>
                                 }
                                 {invalidValue && item.value==='*' &&
-                                    <Invalid> Data too small or unstable </Invalid>
+                                    <Invalid> 
+                                        {!this.props.noFade && 'Data too small or unstable'} 
+                                        {this.props.noFade && 'Small/unstable'} 
+                                    </Invalid>
                                 }
                             </Row>
                         )
