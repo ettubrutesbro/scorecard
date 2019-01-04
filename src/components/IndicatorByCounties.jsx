@@ -60,14 +60,11 @@ export default class IndicatorByCounties extends React.Component{
         this.sortOverviewBy = v
     }
 
-    // mobile-only: track header or footer visibility when in allcounties mode
-    @observable mobileXmode = 'header'
 
-    @action setMobileIntersect = (val, coords) =>{
+    @action toggleFixedX = (tf) =>{
         if(this.props.store.screen !== 'mobile') return
-        const lastVal = this.mobileXmode
-        console.log('mobile X is now', val)
-        this.mobileXmode = val
+        // if(this.distribute) this.props.toggleFixedX(false)
+        else this.props.toggleFixedX(tf)
      }
 
     @action calculatePerformance = () => {
@@ -396,11 +393,11 @@ export default class IndicatorByCounties extends React.Component{
                         setOverviewSort = {this.setOverviewSort}
                         sortOverviewBy = {this.sortOverviewBy}
                         setSourcesMode = {this.props.store.setSourcesMode}
+                        toggleDistribute = {this.props.toggleDistribute}
 
                         //mobile intersect stuff
-                        onExitView = {(tf)=>this.setMobileIntersect(tf?'header':'fixed')}
-                        renderMobileX = {this.mobileXmode === 'header' && !distribute}
-                        toggleDistribute = {this.props.toggleDistribute}
+                        onExitView = {(tf)=>this.toggleFixedX(!tf)}
+                        
                     />
                 )}
 
@@ -417,8 +414,7 @@ export default class IndicatorByCounties extends React.Component{
                         onClick = {this.props.toggleDistribute}
                         hide = {this.props.sources}
 
-                        onEnterView = {(tf)=>this.setMobileIntersect(tf?'footer' : 'fixed')}
-                        renderMobileX = {this.mobileXmode === 'footer'}
+                        onEnterView = {(tf)=>this.toggleFixedX(!tf)}
                     />
                 )}
                 fullHeight = {this.props.expand}
@@ -469,9 +465,7 @@ const Wrapper = styled.div`
         const props = this.props
     return(
         <IntersectionObserver
-            // make this a conditional wrapper for mobile only
             onChange = {props.screen === 'mobile'? (wat)=>{
-                //this.mobileX.current.getBoundingClientRect()
                 this.props.onExitView(wat.isIntersecting)
             }: ()=>{}}
             rootMargin = '-75px 0% 0% 0%'
@@ -566,7 +560,7 @@ class FooterComponent extends React.Component{
             onChange = {(wat)=>{
                 if(props.mobile && props.offset){
                     if(wat.isIntersecting) props.onEnterView(true)
-                    else if(props.renderMobileX) props.onEnterView(false)
+                    else props.onEnterView(false)
                 }
             }}
             rootMargin = '0px 0px -100px 0px'

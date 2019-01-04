@@ -32,17 +32,18 @@ export default class MobileScorecard extends React.Component{
     }
     @action setNavStatus = (tf) => {
         this.navOpen = tf
-        // if(!tf){
-        //     window.addEventListener('scroll', this.noscroll)
-        // }
-        // else window.removeEventListener('scroll', this.noscroll)
-    }
-    noscroll = () => {
-        window.scrollTo(0,0)
+        if(tf) document.body.style.overflow = 'hidden'
+        else document.body.style.overflow = 'auto'
     }
 
     @observable currentSection = 'breakdown'
     @action goToSection = (sec) => this.currentSection = sec
+
+    @observable showFAH = false
+    @action setFAH = (tf) => {
+        console.log('FAH from body scroll actions: ', tf)
+        this.showFAH = true
+    }
 
     render(){
         const {store} = this.props
@@ -54,6 +55,8 @@ export default class MobileScorecard extends React.Component{
                     store = {store}
                     showShorthand = {this.showShorthand}
                     setNavStatus = {this.setNavStatus}
+
+                    showFAH = {this.showFAH}
                 />
 
                 <Content
@@ -63,6 +66,7 @@ export default class MobileScorecard extends React.Component{
                     {indicator && this.currentSection === 'breakdown' &&
                         <Breakdown store = {store} 
                             onScrollPastReadout = {this.toggleHeaderInfo}
+                            toggleFixedX = {this.setFAH}
                         />
                     }
                     {indicator && this.currentSection === 'demographic' &&
@@ -150,7 +154,7 @@ const SourcesBtn = styled(SectionBtn)`
     @observable allCounties = false 
     @action expandCountyList = (tf) => this.allCounties = tf
     render(){
-        const store = this.props.store
+        const {store, toggleFixedX} = this.props
         const {indicator, race, county, year} = store
         const hasRace = indicators[indicator].categories.includes('hasRace')
 
@@ -174,6 +178,9 @@ const SourcesBtn = styled(SectionBtn)`
                             this.expandCountyList(!this.allCounties?true:false)
                         }}
                         sources = {this.props.sources}
+
+                        toggleFixedX = {toggleFixedX}
+
                     />
                     {hasRace && !this.allCounties && 
                         <IndicatorByRaces
