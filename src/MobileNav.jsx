@@ -375,11 +375,11 @@ export default class MobileNav extends React.Component{
                             indListHeaderBlockRef.current.setSearching(true)
                         }
                     }}
-                    onX = {()=>{
+                    onX = {!this.props.fixedXAction? ()=>{
                         this.setWorkflowScrollPos(0)
                         this.setWorkflowHeaderVisibility(true)
                         this.setMode('compact')
-                    }}
+                    } : this.props.fixedXAction}
                 />
             }            
             </FixWrap>

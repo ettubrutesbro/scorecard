@@ -46,9 +46,14 @@ export default class MobileScorecard extends React.Component{
     @action goToSection = (sec) => this.currentSection = sec
 
     @observable showFAH = false
+    @observable fixedXAction = null
     @action setFAH = (tf) => {
         console.log('FAH from body scroll actions: ', tf)
         this.showFAH = tf
+        if(tf){ this.fixedXAction = () => {
+            this.breakdown.current.expandCountyList(false)
+        }}
+        else this.fixedXAction = null
     }
 
     constructor(){
@@ -68,6 +73,7 @@ export default class MobileScorecard extends React.Component{
                     setNavStatus = {this.setNavStatus}
 
                     showFAH = {this.showFAH}
+                    fixedXAction = {this.fixedXAction}
                     allowBodyOverflow = {this.allowBodyOverflow}
                 />
 
@@ -81,6 +87,7 @@ export default class MobileScorecard extends React.Component{
                             store = {store} 
                             onScrollPastReadout = {this.toggleHeaderInfo}
                             toggleFixedX = {this.setFAH}
+                            showFAH = {this.showFAH}
                         />
                     }
                     {indicator && this.currentSection === 'demographic' &&
@@ -171,7 +178,7 @@ const SourcesBtn = styled(SectionBtn)`
         this.allCounties = tf
     }
     render(){
-        const {store, toggleFixedX} = this.props
+        const {store, toggleFixedX, showFAH} = this.props
         const {indicator, race, county, year} = store
         const hasRace = indicators[indicator].categories.includes('hasRace')
 
@@ -197,7 +204,6 @@ const SourcesBtn = styled(SectionBtn)`
                         sources = {this.props.sources}
 
                         toggleFixedX = {this.allCounties? toggleFixedX : () => {}}
-
                     />
                     {hasRace && !this.allCounties && 
                         <IndicatorByRaces

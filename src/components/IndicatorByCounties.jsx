@@ -45,8 +45,6 @@ function indexOfClosest(nums, target) {
 @observer
 export default class IndicatorByCounties extends React.Component{
 
-
-
     @observable distribute = true
     @observable fullHeight = false
 
@@ -65,6 +63,13 @@ export default class IndicatorByCounties extends React.Component{
         if(this.props.store.screen !== 'mobile') return
         // if(this.distribute) this.props.toggleFixedX(false)
         else this.props.toggleFixedX(tf)
+     }
+     @observable headerVisible = false
+     @observable footerVisible = false
+     @action onHeaderFooterIntersect = (which, tf) => {
+        this[which+'Visible'] = tf
+        if(this.headerVisible || this.footerVisible) this.toggleFixedX(false)
+        else if(!this.headerVisible && !this.footerVisible) this.toggleFixedX(true)
      }
 
     @action calculatePerformance = () => {
@@ -396,7 +401,7 @@ export default class IndicatorByCounties extends React.Component{
                         toggleDistribute = {this.props.toggleDistribute}
 
                         //mobile intersect stuff
-                        onExitView = {(tf)=>this.toggleFixedX(!tf)}
+                        onIntersect = {(tf)=>this.onHeaderFooterIntersect('header',tf)}
                         
                     />
                 )}
@@ -414,7 +419,7 @@ export default class IndicatorByCounties extends React.Component{
                         onClick = {this.props.toggleDistribute}
                         hide = {this.props.sources}
 
-                        onEnterView = {(tf)=>this.toggleFixedX(!tf)}
+                        onIntersect = {(tf)=>this.onHeaderFooterIntersect('footer',tf)}
                     />
                 )}
                 fullHeight = {this.props.expand}
@@ -466,9 +471,9 @@ const Wrapper = styled.div`
     return(
         <IntersectionObserver
             onChange = {props.screen === 'mobile'? (wat)=>{
-                this.props.onExitView(wat.isIntersecting)
+                this.props.onIntersect(wat.isIntersecting)
             }: ()=>{}}
-            rootMargin = '-75px 0% 0% 0%'
+            // rootMargin = '75px 0% 0% 0%'
         >
         <Header
             offset = {props.sources}
@@ -553,17 +558,15 @@ const Minigraph = styled(Icon)`
     margin-left: 10px;
 `
 class FooterComponent extends React.Component{
+
     render(){
     const props = this.props
     return(
         <IntersectionObserver
             onChange = {(wat)=>{
-                if(props.mobile && props.offset){
-                    if(wat.isIntersecting) props.onEnterView(true)
-                    else props.onEnterView(false)
-                }
+                if(props.mobile){ props.onIntersect(wat.isIntersecting)}
             }}
-            rootMargin = '0px 0px -100px 0px'
+            // rootMargin = '0px 0px -100px 0px'
         >
         <Footer 
             offset = {!props.mobile? props.offset : 0}
