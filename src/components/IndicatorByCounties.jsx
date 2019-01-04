@@ -433,7 +433,8 @@ export default class IndicatorByCounties extends React.Component{
 const MobileX = styled.div`
     position: absolute;
     display: flex; align-items: center; justify-content: center;
-    right: -45px;
+    /*right: -45px;*/
+    left: calc(100vw - 85px);
     height: 35px;
     width: 35px;
     background: var(--offwhitefg);
@@ -523,8 +524,6 @@ const Wrapper = styled.div`
             {props.screen==='mobile' &&
                 <MobileX 
                     ref = {this.mobileX}
-                    // mode = {this.intersectsViewport? 'header' : 'fixed'} //header, fixed, footer
-
                     visible = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}
                 > 
                     <XIcon img = "x" color = "bordergrey" onClick = {this.props.toggleDistribute} /> 
