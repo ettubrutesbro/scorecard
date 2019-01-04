@@ -31,6 +31,8 @@ export default class MobileNav extends React.Component{
         if(val==='compact'){
             this.props.setNavStatus(true)
             this.props.allowBodyOverflow(false)
+            this.setWorkflowScrollPos(0)
+            // this.userScrolledDownInWorkflow = false
         }
         else if(!val){
             this.props.setNavStatus(false)
@@ -816,8 +818,11 @@ const ListRow = styled.li`
     &.invalid{
         background: var(--offwhitefg);
         color: var(--fainttext);
+        border-bottom-color: var(--inactivegrey);
         border-left-color: transparent;
+        border-top-color: transparent;
         border-right-color: transparent;
+        margin-top: 0;
     }
 `
 
@@ -849,22 +854,32 @@ const SelectWrapper = styled.div`
 const RaceList = (props) => {
     const races = ['asian','black','latinx','white','other']
     const {store} = props
+    const {indicator, county, year} = store
     return (
         <WorkflowList className = 'notIndicator'>
-            <SpecialRow onClick = {()=>{ store.completeWorkflow('race',''); props.onComplete('race') }}> 
+            <SpecialRow 
+                className = {!store.race? 'selected' : ''}
+                onClick = {()=>{ store.completeWorkflow('race',''); props.onComplete('race') }}
+            > 
                 <div>All races</div> 
                 <ItemInfo>{truncateNum(demopop[store.county || 'california'].population)} children in {store.county? 'county' : 'CA'}</ItemInfo>
             </SpecialRow>
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
-                return <ListRow key = {r} onClick = {()=>{ 
-                    const completion = store.completeWorkflow('race',r)
-                    if(completion)  props.onComplete('race', r !== store.race)
-                    else if(window.confirm(store.sanityCheck.message)){
-                        store.sanityCheck.action()
-                        props.onComplete('race',true)
-                    }
-                }}>
+                const ind = indicators[indicator]
+                const invalid = !ind.categories.includes('hasRace') || (ind.counties[county||'california'][r][year] === '*' || ind.counties[county||'california'][r][year] === '')
+                return <ListRow 
+                    key = {r} 
+                    className = {store.race===r? 'selected' : invalid? 'invalid' : ''}
+                    onClick = {()=>{ 
+                        const completion = store.completeWorkflow('race',r)
+                        if(completion)  props.onComplete('race', r !== store.race)
+                        else if(window.confirm(store.sanityCheck.message)){
+                            store.sanityCheck.action()
+                            props.onComplete('race',true)
+                        }
+                    }}
+                >
                     <div>{r!=='other' && capitalize(r)}{r==='other' && 'Other races'}</div>
                     <ItemInfo>
                         {popPct}% of 
@@ -880,13 +895,17 @@ const RaceList = (props) => {
     render(){
     const props = this.props
     const {store} = props
+    const {indicator, race, year} = store
     const cties = store.countySearchString? store.countySearchResults : Object.keys(countyLabels)
     return (
         <WorkflowList className = 'notIndicator'>
-            <SpecialRow onClick = {()=>{
-                store.completeWorkflow('county', '')
-                props.onComplete('county')
-            }} >
+            <SpecialRow
+                className = {!store.county? 'selected' : ''} 
+                onClick = {()=>{
+                    store.completeWorkflow('county', '')
+                    props.onComplete('county')
+                }} 
+            >
                 <div>California </div>
                 <ItemInfo>{sigFig(demopop.california.population)} children</ItemInfo>
             </SpecialRow>
@@ -895,12 +914,19 @@ const RaceList = (props) => {
                 else if (a > b) return 1
                 else return 0
             }).map((cty)=>{
-                
-                return <ListRow key = {cty}
+                const v = indicators[indicator].counties[cty][race||'totals'][year]
+                const invalid = v === '*' || v === ''
+                return <ListRow 
+                    key = {cty}
+                    className = {store.county===cty? 'selected' : invalid? 'invalid' : ''}
                     onClick = {()=>{ 
-
-                        props.onComplete('county', cty !== store.county)
-                        store.completeWorkflow('county', cty)
+                        const completion = store.completeWorkflow('county', cty)
+                        if(completion) props.onComplete('county', cty !== store.county)
+                        else if(window.confirm(store.sanityCheck.message)){
+                            store.sanityCheck.action()
+                            props.onComplete('county',true)
+                        }
+                        
                     }}
                 >
                     <div>{countyLabels[cty]}</div>
