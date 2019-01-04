@@ -42,6 +42,7 @@ const Fah = styled(ExpandBox)`
     transform: translate(0px, ${props => props.offsetFromTop}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     z-index: 20;
+    pointer-events: ${props => props.currentMode === 'collapsed' ? 'none' : 'auto'};
 `
 const Icons = styled.div`
     position: absolute;

@@ -111,7 +111,9 @@ export default class MobileNav extends React.Component{
                             return = {()=>this.setMode('compact')}
                             justComplete = {this.justComplete.county}
                             ref = {this.ctyListHeaderBlock}
-                            placeholder = 'Type to search counties...'
+                            placeholder = 'Type county name...'
+                            searchString = {store.countySearchString}
+                            onSearch = {(val)=>store.modifySearchString('county',val)}
                         />
                     </IntersectionObserver>
                     {this.mode === 'county' &&
@@ -207,7 +209,9 @@ export default class MobileNav extends React.Component{
                             ): null
                         }
                         ref = {this.indListHeaderBlock}
-                        placeholder = 'Type to search indicators...'
+                        placeholder = 'Find indicators...'
+                        searchString = {store.indicatorSearchString}
+                        onSearch = {(val)=>store.modifySearchString('indicator',val)}
                     />
                     </IntersectionObserver>
 
@@ -438,14 +442,16 @@ const YearToggle = styled(Toggle)`
         if(tf) this.searchInput.current.focus()
         else{
             this.searchInput.current.blur()
-            this.searchstring = ''
+            // this.searchstring = ''
+            this.setSearchString('')
         }
         this.searching = tf
     }
-    @observable searchstring = ''
+    // @observable searchstring = ''
     @action setSearchString = (val) => {
         console.log(val)
-        this.searchstring = val
+        // this.searchstring = val
+        this.props.onSearch(val)
     }
     constructor(){
         super()
@@ -457,7 +463,8 @@ const YearToggle = styled(Toggle)`
         }
     }
     render(){
-    const props = this.props
+        const props = this.props
+        const searchstring = this.props.searchString
         return(
             <MSB 
                 height = {props.height} 
@@ -475,12 +482,12 @@ const YearToggle = styled(Toggle)`
                             onChange = {(e)=>this.setSearchString(e.target.value)}
                             onBlur = {(e)=>{
                                 e.stopPropagation()
-                                if(!this.searchstring) this.setSearching(false)
+                                if(!searchstring) this.setSearching(false)
                             }}
-                            value = {this.searchstring}
+                            value = {searchstring}
                             onKeyUp = {(e)=>{
                                 if(e.key === 'Enter'){
-                                    if(this.searchstring) this.searchInput.current.blur()
+                                    if(searchstring) this.searchInput.current.blur()
                                     else this.setSearching(false)
                                 }  
                             }}
@@ -488,8 +495,8 @@ const YearToggle = styled(Toggle)`
                         <ClearCancelSearch 
                             onClick = {()=>{ this.setSearching(false)}}
                         >
-                            {this.searchstring && 'Clear'}
-                            {!this.searchstring && 'Cancel'}
+                            {searchstring && 'Clear'}
+                            {!searchstring && 'Cancel'}
                         </ClearCancelSearch>
                     </NavSearchBlock>
                 }
@@ -591,7 +598,7 @@ const NavSearchInput = styled.input`
     /*position: absolute; top: 9px;*/
     border: none;
     appearance: none; outline: none; background: transparent;
-    width: 200px;
+    width: calc(100vw - 160px);
     height: 32px;
     font-size: 14px; letter-spacing: 0.5px;
 
@@ -750,7 +757,17 @@ class IndicatorList extends React.Component{
 
     render(){
         const store = this.props.store
-        const inds = Object.keys(indicators)
+        const inds = store.indicatorSearchString? store.indicatorSearchResults : Object.keys(indicators)
+        let numHealth = 0
+        let numEd = 0
+        let numWelf = 0
+        let numEC = 0
+        inds.forEach(function(ind,i,arr){
+            if(indicators[ind].categories.includes('health')) numHealth++
+            if(indicators[ind].categories.includes('education')) numEd++
+            if(indicators[ind].categories.includes('welfare')) numWelf++
+            if(indicators[ind].categories.includes('earlyChildhood')) numEC++
+        })
         return(
             <React.Fragment>
             <SelectWrapper>
@@ -758,14 +775,14 @@ class IndicatorList extends React.Component{
                 onChange = {(e)=>this.setFilter(e.target.value)}
             >
                 <option value = "all"> All topics ({inds.length})</option>
-                <option value = "health"> Health (12)</option>
-                <option value = "education"> Education (15)</option>
-                <option value = "welfare"> Child Welfare (6)</option>
-                <option value = "earlyChildhood"> Early Childhood (8)</option>
+                <option value = "health"> Health ({numHealth})</option>
+                <option value = "education"> Education ({numEd})</option>
+                <option value = "welfare"> Child Welfare ({numWelf})</option>
+                <option value = "earlyChildhood"> Early Childhood ({numEC})</option>
             </IndCats>
             </SelectWrapper>
             <WorkflowList>
-                {Object.keys(indicators).filter((ind)=>{
+                {inds.filter((ind)=>{
                     if(this.filter === 'all') return true 
                     else return indicators[ind].categories.includes(this.filter)
                 }).map((ind)=>{
@@ -870,8 +887,11 @@ const RaceList = (props) => {
         </WorkflowList>
     )
 }
-const CountyList = (props) => {
+@observer class CountyList extends React.Component {
+    render(){
+    const props = this.props
     const {store} = props
+    const cties = store.countySearchString? store.countySearchResults : Object.keys(countyLabels)
     return (
         <WorkflowList className = 'notIndicator'>
             <SpecialRow onClick = {()=>{
@@ -881,27 +901,28 @@ const CountyList = (props) => {
                 <div>California </div>
                 <ItemInfo>{sigFig(demopop.california.population)} children</ItemInfo>
             </SpecialRow>
-            {counties.sort((a,b)=>{
-                if(a.id < b.id) return -1
-                else if (a.id > b.id) return 1
+            {cties.sort((a,b)=>{
+                if(a < b) return -1
+                else if (a > b) return 1
                 else return 0
             }).map((cty)=>{
-                console.log(cty)
-                return <ListRow key = {cty.id}
+                
+                return <ListRow key = {cty}
                     onClick = {()=>{ 
 
-                        props.onComplete('county', cty.id !== store.county)
-                        store.completeWorkflow('county', cty.id)
+                        props.onComplete('county', cty !== store.county)
+                        store.completeWorkflow('county', cty)
                     }}
                 >
-                    <div>{countyLabels[cty.id]}</div>
+                    <div>{countyLabels[cty]}</div>
                     <ItemInfo>
-                        {sigFig(demopop[cty.id].population)} children
+                        {sigFig(demopop[cty].population)} children
                     </ItemInfo>
                 </ListRow>
             })}
         </WorkflowList>
     )
+    }
 }
 
 const SpecialRow = styled(ListRow)`

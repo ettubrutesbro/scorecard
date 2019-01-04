@@ -592,7 +592,7 @@ export default class AppStore{
         }
 
         this.indicatorSearchResults = finalMatches
-        this.setIndicatorPages()
+        if(this.screen !== 'mobile') this.setIndicatorPages()
     },150)
 
     @action modifySearchString = (which, str) => {
