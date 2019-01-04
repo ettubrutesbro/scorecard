@@ -30,6 +30,8 @@ export default class AppStore{
 
     @observable screen = getMedia()
     @observable mobileDeviceWidth = this.screen === 'mobile'? window.innerWidth : 0
+    @observable mobileDeviceHeight = this.screen === 'mobile'? window.innerHeight : 0
+        //so that ht changes due to keyboard dont mess up positions that depend on innerheight
 
     @action resize = debounce(() => { 
         const size = getMedia()

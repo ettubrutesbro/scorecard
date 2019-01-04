@@ -90,7 +90,7 @@ export default class MobileNav extends React.Component{
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
+                        fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
                     delay = {this.mode==='county'? '.175s' : 0}
@@ -143,7 +143,7 @@ export default class MobileNav extends React.Component{
                             currentMode = {this.mode==='race'? 'fullscreen' : 'compact'}
                             modes = {{
                                 compact: {width: window.innerWidth+1, height: 50},
-                                fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
+                                fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
                             delay = {this.mode==='race'? '.175s' : 0}
@@ -179,7 +179,7 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         compact: {width: window.innerWidth+1, height: 117},
                         compactTruncated: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: window.innerHeight}
+                        fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
                 
@@ -252,7 +252,7 @@ export default class MobileNav extends React.Component{
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 25},
-                        fullsize: {width: window.innerWidth+1, height: window.innerHeight+100},
+                        fullsize: {width: window.innerWidth+1, height: store.mobileDeviceHeight+100},
                         openNoInd: {width: window.innerWidth+1, height: 200},
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
@@ -291,11 +291,11 @@ export default class MobileNav extends React.Component{
                 </PickMenu>
             <HeaderGroup
                 offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
-                    : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${window.innerHeight+25}px`
+                    : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${store.mobileDeviceHeight+25}px`
                     : !this.mode? '0,0' 
                     : this.mode==='compact' && !indicator? `${window.innerWidth - 175}px,215px`
                     : this.mode==='compact' && indicator? `${window.innerWidth - 175}px,282px`
-                    : `${window.innerWidth - 175}px,${window.innerHeight+25}px`
+                    : `${window.innerWidth - 175}px,${store.mobileDeviceHeight+25}px`
                 }
                 duration = {.425}
                 // delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
@@ -712,47 +712,6 @@ const SearchIcon = styled(Icon)`
     width: 18px; height: 18px;
     margin-right: 15px;
     flex-shrink: 0;
-`
-
-
-const Fixer = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0; 
-`
-const HeaderBar = styled.div`
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 55px;
-    background: var(--offwhitebg);
-    padding: 0 20px;
-    color: white;
-    display: flex; align-items: center;
-    z-index: 2;
-    font-size: 14px;
-    transform: translateY(${props => props.mode === 'offscreen'? window.innerHeight : props.mode === 'button'? 250 : 0}px);
-    transition: transform .35s;
-`
-const DataPicker = (props) => {
-    return(
-        <Nav>
-            <ExpandBox
-                currentMode = {'collapsed'}
-                modes = {{
-                    collapsed: {width: window.innerWidth, height: 0},
-                    expanded: {width: window.innerWidth, height: 250},  
-                }}
-            />
-        </Nav> 
-    )   
-}
-const Nav = styled.div`
-    position: fixed;
-    top: 0;
-    // height: 250px;
-    background: white;
 `
 
 @observer
