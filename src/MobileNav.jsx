@@ -866,8 +866,8 @@ const RaceList = (props) => {
             </SpecialRow>
             {races.map((r)=>{
                 const popPct = demopop[store.county || 'california'][r]
-                const ind = indicators[indicator]
-                const invalid = !ind.categories.includes('hasRace') || (ind.counties[county||'california'][r][year] === '*' || ind.counties[county||'california'][r][year] === '')
+                const ind = !indicator? '' : indicators[indicator]
+                const invalid = !indicator? false : !ind.categories.includes('hasRace') || (ind.counties[county||'california'][r][year] === '*' || ind.counties[county||'california'][r][year] === '')
                 return <ListRow 
                     key = {r} 
                     className = {store.race===r? 'selected' : invalid? 'invalid' : ''}
@@ -914,8 +914,8 @@ const RaceList = (props) => {
                 else if (a > b) return 1
                 else return 0
             }).map((cty)=>{
-                const v = indicators[indicator].counties[cty][race||'totals'][year]
-                const invalid = v === '*' || v === ''
+                const v = !indicator? '' : indicators[indicator].counties[cty][race||'totals'][year]
+                const invalid = !indicator? false : (v === '*' || v === '')
                 return <ListRow 
                     key = {cty}
                     className = {store.county===cty? 'selected' : invalid? 'invalid' : ''}
