@@ -79,7 +79,10 @@ export default class ExpandTest extends React.Component{
         this[which].width = dims.width
         this[which].height = dims.height
     }
-
+    forceScrollToTop = () => {
+        //method to be called from outside to force scroll to top
+        findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
+    }
     constructor(props){
         super(props)
         if(props.withScroll) this.scrollbar = React.createRef()

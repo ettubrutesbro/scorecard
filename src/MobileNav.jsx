@@ -19,6 +19,7 @@ import sigFig, {truncateNum} from './utilities/sigFig'
 import Icon, {Sprite} from './components/generic/Icon'
 import {Toggle} from './components/generic'
 import ExpandBox from './components/ExpandBox'
+import FixedActionsHelper from './components/FixedActionsHelper'
 
 
 
@@ -49,6 +50,17 @@ export default class MobileNav extends React.Component{
         this.workflowScrollPos = val
     }
 
+    @observable openWorkflowHeaderVisible = true
+    @action setWorkflowHeaderVisibility = (tf) => {this.openWorkflowHeaderVisible = tf}
+
+    constructor(){
+        super()
+        this.countyList = React.createRef()
+        this.indList = React.createRef()
+        this.ctyListHeaderBlock = React.createRef()
+        this.indListHeaderBlock = React.createRef()
+    }
+
     render(){ 
         const props = this.props
         const {open, store} = props
@@ -65,6 +77,7 @@ export default class MobileNav extends React.Component{
         const NavItems = [
             <div key = 'county' style = {{height: '50px', marginLeft: '-1px',zIndex: this.mode==='county'?0:1}}>
                 <ExpandBox
+                    ref = {this.countyList}
                     duration = {this.mode === 'county'? .5 : 0 }
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
@@ -83,18 +96,32 @@ export default class MobileNav extends React.Component{
                     } : ()=>{} }
                 >
                     <div>
-                    <MenuSelectBlock left = 'County' right = {county? countyLabels[county] : 'California (all)'} 
-                        onClick = {()=> this.setMode('county') }
-                        open = {this.mode === 'county'}
-                        prompt = 'Pick a county.'
-                        return = {()=>this.setMode('compact')}
-                        justComplete = {this.justComplete.county}
-                    />
+                    <IntersectionObserver
+                        onChange = {
+                            this.mode === 'county'? (wat)=>{
+                                this.setWorkflowHeaderVisibility(wat.isIntersecting)
+                            }
+                            : () => {}
+                        }
+                    >
+                        <MenuSelectBlock left = 'County' right = {county? countyLabels[county] : 'California (all)'} 
+                            onClick = {()=> this.setMode('county') }
+                            open = {this.mode === 'county'}
+                            prompt = 'Pick a county.'
+                            return = {()=>this.setMode('compact')}
+                            justComplete = {this.justComplete.county}
+                            ref = {this.ctyListHeaderBlock}
+                            placeholder = 'Type to search counties...'
+                        />
+                    </IntersectionObserver>
                     {this.mode === 'county' &&
-                        <CountyList store = {store} onComplete = {(which, hasNewVal)=>{
-                            this.setMode('compact')
-                            if(hasNewVal) this.justCompleted(which)
-                        }}/>
+                        <CountyList store = {store} 
+                            onComplete = {(which, hasNewVal)=>{
+                                this.setMode('compact')
+                                if(hasNewVal) this.justCompleted(which)
+                            }}
+                            // onHeaderScrollChange = {this.setWorkflowHeaderVisibility}
+                        />
                     }
                     </div>
                 </ExpandBox>
@@ -133,6 +160,7 @@ export default class MobileNav extends React.Component{
 
             <div key = 'indicator' style = {{height: this.mode==='compact'?'117px':'50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
                 <ExpandBox
+                    ref = {this.indList}
                     withScroll
                     hideScroll = {this.mode==='county' || this.mode==='race'}
                     noFade
@@ -150,6 +178,12 @@ export default class MobileNav extends React.Component{
                     } : ()=>{} }
                 >
                     <div>
+                    <IntersectionObserver
+                        onChange = {
+                            this.mode === 'indicator'? (wat)=>this.setWorkflowHeaderVisibility(wat.isIntersecting)
+                            : ()=>{}
+                        }
+                    >
                     <MenuSelectBlock left = 'Indicator' 
                         right = {indicator? semanticTitles[indicator].shorthand : 'Browse / search...'} 
                         multiline 
@@ -172,13 +206,19 @@ export default class MobileNav extends React.Component{
                             />
                             ): null
                         }
+                        ref = {this.indListHeaderBlock}
+                        placeholder = 'Type to search indicators...'
                     />
+                    </IntersectionObserver>
 
                     {this.mode==='indicator' &&
-                        <IndicatorList store = {store} onComplete = {(which, hasNewVal)=>{
-                            this.setMode('compact')
-                            if(hasNewVal) this.justCompleted(which)
-                        } }/>
+                        <IndicatorList store = {store} 
+                            onComplete = {(which, hasNewVal)=>{
+                                this.setMode('compact')
+                                if(hasNewVal) this.justCompleted(which)
+                            }}
+                            // onHeaderScrollChange = {this.setWorkflowHeaderVisibility}
+                        />
                     }
                     </div>
                 </ExpandBox>
@@ -188,6 +228,11 @@ export default class MobileNav extends React.Component{
             if(a.key===this.mode) return 1
             if(b.key===this.mode) return -1
         })
+
+        const indListRef = this.indList
+        const ctyListRef = this.countyList
+        const indListHeaderBlockRef = this.indListHeaderBlock
+        const ctyListHeaderBlockRef = this.ctyListHeaderBlock
 
         return(
             <FixWrap>
@@ -302,28 +347,33 @@ export default class MobileNav extends React.Component{
 
             <MaskGapBlocker />
             <Mask visible = {this.mode}/>
-            {/*
-            <FixedActionsHelper 
-                id = "fixedactions" 
-                // currentMode = {'collapsed'}
+            {(this.mode === 'county' || this.mode === 'indicator') && //eventually, indbycty table expanded...
+                <FixedActionsHelper 
+                    id = "fixedactions" 
+                    mode = {this.openWorkflowHeaderVisible? 'collapsed' : 'expanded'}
+                    offsetFromTop = {this.userScrolledDownInWorkflow? 0 : 100}
 
-
-            />
-            */}
+                    onSearch = {()=>{
+                        if(this.mode === 'county'){
+                            ctyListRef.current.forceScrollToTop()
+                            ctyListHeaderBlockRef.current.setSearching(true)
+                        }
+                        else if(this.mode === 'indicator'){
+                            indListRef.current.forceScrollToTop()
+                            indListHeaderBlockRef.current.setSearching(true)
+                        }
+                    }}
+                    onX = {()=>{
+                        this.setWorkflowScrollPos(0)
+                        this.setWorkflowHeaderVisibility(true)
+                        this.setMode('compact')
+                    }}
+                />
+            }            
             </FixWrap>
         )
     }
 }
-
-const FixedActionsHelper = styled.div`
-    position: absolute;
-    width: 48px;
-    height: 100px;
-    border: 1px solid var(--bordergrey);
-    right: 20px;
-    top: 75px;
-    z-index: 5;
-`
 
 const MaskGapBlocker = styled.div`
     position: absolute;
@@ -382,46 +432,106 @@ const YearToggle = styled(Toggle)`
     right: -32px;
 `
 
-const MenuSelectBlock = (props) => {
-    return(
-    <MSB 
-        height = {props.height} 
-        disabled = {props.disabled} 
-        multiline = {props.multiline && !props.truncateValue} 
-        onClick = {!props.open? props.onClick : ()=>{}}
-    >
-        <MSBPrompt visible = {props.open}>{props.prompt}</MSBPrompt>
-        <MSBLabel 
-            visible = {!props.open} 
-            multiline = {props.multiline && !props.truncateValue}
-        >
-            {props.left}
-        </MSBLabel>
-        <MSBValue noCaret = {props.noCaret}>
-            <Val 
-                truncate = {props.truncateValue} 
-                // multiline = {props.multiline && !props.truncateValue} 
-                visible = {!props.open} 
-                justComplete = {props.justComplete}
+@observer class MenuSelectBlock extends React.Component{
+    @observable searching = false
+    @action setSearching = (tf) =>{
+        if(tf) this.searchInput.current.focus()
+        else{
+            this.searchInput.current.blur()
+            this.searchstring = ''
+        }
+        this.searching = tf
+    }
+    @observable searchstring = ''
+    @action setSearchString = (val) => {
+        console.log(val)
+        this.searchstring = val
+    }
+    constructor(){
+        super()
+        this.searchInput = React.createRef()
+    }
+    componentWillUpdate(newProps){
+        if(!newProps.open && this.props.open && !this.props.noSearch){
+            this.setSearching(false)
+        }
+    }
+    render(){
+    const props = this.props
+        return(
+            <MSB 
+                height = {props.height} 
+                disabled = {props.disabled} 
+                multiline = {props.multiline && !props.truncateValue} 
+                onClick = {!props.open? props.onClick : ()=>{}}
             >
-                {props.right}
-                {props.yearToggle}
-            </Val>
-            {!props.noSearch && 
-                <NavSearch img = "searchzoom" color = "normtext" visible = {props.open} />
-            }
-            {!props.noCaret && 
-            <XCaret 
-                duration = {.2}
-                img = 'caretx'
-                state = {props.open? 'up' : 'down'}
-                disabled = {props.disabled}
-                onClick = {props.open? props.return : ()=>{} }
-            />
-            }
-        </MSBValue>
-    </MSB>
-    )
+                {!props.noSearch && props.open && 
+                    <NavSearchBlock
+                        active = {this.searching}
+                    >
+                        <NavSearchInput
+                            ref = {this.searchInput} 
+                            placeholder = {props.placeholder}
+                            onChange = {(e)=>this.setSearchString(e.target.value)}
+                            onBlur = {(e)=>{
+                                e.stopPropagation()
+                                if(!this.searchstring) this.setSearching(false)
+                            }}
+                            value = {this.searchstring}
+                            onKeyUp = {(e)=>{
+                                if(e.key === 'Enter'){
+                                    if(this.searchstring) this.searchInput.current.blur()
+                                    else this.setSearching(false)
+                                }  
+                            }}
+                        />
+                        <ClearCancelSearch 
+                            onClick = {()=>{ this.setSearching(false)}}
+                        >
+                            {this.searchstring && 'Clear'}
+                            {!this.searchstring && 'Cancel'}
+                        </ClearCancelSearch>
+                    </NavSearchBlock>
+                }
+                <MSBPrompt visible = {props.open && !this.searching}>{props.prompt}</MSBPrompt>
+                <MSBLabel 
+                    visible = {!props.open} 
+                    multiline = {props.multiline && !props.truncateValue}
+                >
+                    {props.left}
+                </MSBLabel>
+                <MSBValue noCaret = {props.noCaret}>
+                    <Val 
+                        truncate = {props.truncateValue} 
+                        // multiline = {props.multiline && !props.truncateValue} 
+                        visible = {!props.open} 
+                        justComplete = {props.justComplete}
+                    >
+                        {props.right}
+                        {props.yearToggle}
+                    </Val>
+                    {!props.noSearch && 
+                        <NavSearch 
+                            img = "searchzoom" 
+                            color = "normtext" 
+                            visible = {props.open} 
+                            active = {this.searching}
+                            onClick = {()=>this.setSearching(true)}
+                        />
+                    }
+                    {!props.noCaret && 
+                    <XCaret 
+                        duration = {.2}
+                        img = 'caretx'
+                        state = {props.open? 'up' : 'down'}
+                        disabled = {props.disabled}
+                        onClick = {props.open? props.return : ()=>{} }
+                    />
+                    }
+                </MSBValue>
+            </MSB>
+        )
+    }
 }
 const MSB = styled.div`
     padding: 0 25px;
@@ -447,6 +557,8 @@ const MSBPrompt = styled.span`
     position: absolute;
     margin-top: 2px;
     opacity: ${props => props.visible? 1: 0};
+    transition: opacity .35s;
+    pointer-events: none;
 `
 const MSBValue = styled.div`
     position: relative;
@@ -456,13 +568,39 @@ const MSBValue = styled.div`
     max-width: calc(88% - 80px);
     margin-right: ${props=>props.noCaret? '0':'30px'};
 `
+
 const NavSearch = styled(Icon)`
-    position: absolute;
     right: 12px; top: 2px;
+    position: absolute;
+    transform: translateX(${props => props.active? -(window.innerWidth - 110) : 0}px);
     width: 18px; height: 18px;
-    transition: opacity .35s;
+    transition: opacity .35s, transform .35s;
     opacity: ${props => props.visible? 1 : 0};
     pointer-events: ${props => props.visible? 'auto' : 'none'};
+`
+const NavSearchBlock = styled.div`
+    position: absolute;
+    top: 9.5px; left: 53px; 
+    display: flex; align-items: center;
+    z-index: 20;
+    opacity: ${props => props.active? 1 : 0};
+    transition: opacity .35s ${props => props.active? '.35s' : ''};
+    pointer-events: ${props => props.active? 'auto' : 'none'};
+`
+const NavSearchInput = styled.input`
+    /*position: absolute; top: 9px;*/
+    border: none;
+    appearance: none; outline: none; background: transparent;
+    width: 200px;
+    height: 32px;
+    font-size: 14px; letter-spacing: 0.5px;
+
+`
+const ClearCancelSearch = styled.div`
+    /*position: absolute;*/
+    /*left: 210px;*/
+    color: var(--strokepeach);
+    font-size: 14px; letter-spacing: 0.5px;
 `
 const Val = styled.div`
     font-size: 14px;
@@ -659,8 +797,10 @@ const WorkflowList = styled.ul`
     white-space: normal;
     margin: 15px 0 0 0;
     padding: 0 25px 50px 25px;
-    opacity: 0;
-    animation: .2s ease-in .2s forwards ${FadeInWorkflow};
+    &.notIndicator{
+        opacity: 0;
+        animation: .2s ease-in .2s forwards ${FadeInWorkflow};
+    }
     overscroll-behavior: contain;
 `
 const ListRow = styled.li`
@@ -690,7 +830,6 @@ const IndCats = styled.select`
     appearance: none;
     color: var(--normtext);
     background: white;
-
 `
 const SelectWrapper = styled.div`
     display: inline-flex;
@@ -708,7 +847,7 @@ const RaceList = (props) => {
     const races = ['asian','black','latinx','white','other']
     const {store} = props
     return (
-        <WorkflowList>
+        <WorkflowList className = 'notIndicator'>
             <SpecialRow onClick = {()=>{ store.completeWorkflow('race',''); props.onComplete('race') }}> 
                 <div>All races</div> 
                 <ItemInfo>{truncateNum(demopop[store.county || 'california'].population)} children in {store.county? 'county' : 'CA'}</ItemInfo>
@@ -734,7 +873,7 @@ const RaceList = (props) => {
 const CountyList = (props) => {
     const {store} = props
     return (
-        <WorkflowList>
+        <WorkflowList className = 'notIndicator'>
             <SpecialRow onClick = {()=>{
                 store.completeWorkflow('county', '')
                 props.onComplete('county')
