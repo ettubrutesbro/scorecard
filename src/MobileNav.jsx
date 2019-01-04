@@ -28,10 +28,18 @@ export default class MobileNav extends React.Component{
 
     @observable mode = false // compact, county, race, indicator
     @action setMode = (val) =>{
-        if(val==='compact') this.props.setNavStatus(true)
+        if(val==='compact'){
+            this.props.setNavStatus(true)
+            this.props.allowBodyOverflow(false)
+        }
         else if(!val){
             this.props.setNavStatus(false)
             this.justComplete.county = this.justComplete.race = this.justComplete.indicator = false
+        }
+        else if(val === 'race') this.props.allowBodyOverflow(false) //racelist doesnt need scroll
+        else{
+            //indicator and county actually do need smooth scroll
+            this.props.allowBodyOverflow(true)
         }
         this.mode = val
     }
@@ -351,11 +359,11 @@ export default class MobileNav extends React.Component{
 
             <MaskGapBlocker />
             <Mask visible = {this.mode}/>
-            {(this.mode === 'county' || this.mode === 'indicator') && //eventually, indbycty table expanded...
+            {(this.mode === 'county' || this.mode === 'indicator' || this.props.showFAH) && //eventually, indbycty table expanded...
                 <FixedActionsHelper 
                     id = "fixedactions" 
-                    mode = {this.openWorkflowHeaderVisible? 'collapsed' : 'expanded'}
-                    offsetFromTop = {this.userScrolledDownInWorkflow? 0 : 100}
+                    mode = {this.props.showFAH? 'xOnly' : this.openWorkflowHeaderVisible? 'collapsed' : 'expanded'}
+                    offsetFromTop = {this.props.showFAH? 50 : this.userScrolledDownInWorkflow? 0 : 100}
 
                     onSearch = {()=>{
                         if(this.mode === 'county'){

@@ -32,8 +32,14 @@ export default class MobileScorecard extends React.Component{
     }
     @action setNavStatus = (tf) => {
         this.navOpen = tf
-        if(tf) document.body.style.overflow = 'hidden'
-        else document.body.style.overflow = 'auto'
+        if(tf){ 
+            this.showFAH = false 
+            this.allowBodyOverflow(false)
+        }
+        else this.allowBodyOverflow(true)
+    }
+    @action allowBodyOverflow = (tf) => {
+        document.body.style.overflow = tf? 'auto' : 'hidden'
     }
 
     @observable currentSection = 'breakdown'
@@ -42,7 +48,12 @@ export default class MobileScorecard extends React.Component{
     @observable showFAH = false
     @action setFAH = (tf) => {
         console.log('FAH from body scroll actions: ', tf)
-        this.showFAH = true
+        this.showFAH = tf
+    }
+
+    constructor(){
+        super()
+        this.breakdown = React.createRef()
     }
 
     render(){
@@ -57,6 +68,7 @@ export default class MobileScorecard extends React.Component{
                     setNavStatus = {this.setNavStatus}
 
                     showFAH = {this.showFAH}
+                    allowBodyOverflow = {this.allowBodyOverflow}
                 />
 
                 <Content
@@ -64,7 +76,9 @@ export default class MobileScorecard extends React.Component{
                 >
 
                     {indicator && this.currentSection === 'breakdown' &&
-                        <Breakdown store = {store} 
+                        <Breakdown 
+                            ref = {this.breakdown}
+                            store = {store} 
                             onScrollPastReadout = {this.toggleHeaderInfo}
                             toggleFixedX = {this.setFAH}
                         />
@@ -152,7 +166,10 @@ const SourcesBtn = styled(SectionBtn)`
 
 @observer class Breakdown extends React.Component{
     @observable allCounties = false 
-    @action expandCountyList = (tf) => this.allCounties = tf
+    @action expandCountyList = (tf) => {
+        if(!tf) this.props.toggleFixedX(false)
+        this.allCounties = tf
+    }
     render(){
         const {store, toggleFixedX} = this.props
         const {indicator, race, county, year} = store
@@ -179,7 +196,7 @@ const SourcesBtn = styled(SectionBtn)`
                         }}
                         sources = {this.props.sources}
 
-                        toggleFixedX = {toggleFixedX}
+                        toggleFixedX = {this.allCounties? toggleFixedX : () => {}}
 
                     />
                     {hasRace && !this.allCounties && 
