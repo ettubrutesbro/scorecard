@@ -359,11 +359,11 @@ export default class MobileNav extends React.Component{
 
             <MaskGapBlocker />
             <Mask visible = {this.mode}/>
-            {(this.mode === 'county' || this.mode === 'indicator' || this.props.showFAH) && //eventually, indbycty table expanded...
+            {(this.mode === 'county' || this.mode === 'indicator' || !this.mode) && //eventually, indbycty table expanded...
                 <FixedActionsHelper 
                     id = "fixedactions" 
-                    mode = {this.props.showFAH? 'xOnly' : this.openWorkflowHeaderVisible? 'collapsed' : 'expanded'}
-                    offsetFromTop = {this.props.showFAH? 50 : this.userScrolledDownInWorkflow? 0 : 100}
+                    mode = {this.props.showFAH? 'xOnly' : (this.openWorkflowHeaderVisible || !this.mode)? 'collapsed' : 'expanded'}
+                    offsetFromTop = {(!this.mode || this.props.showFAH)? 50 : this.userScrolledDownInWorkflow? 0 : 100}
 
                     onSearch = {()=>{
                         if(this.mode === 'county'){
