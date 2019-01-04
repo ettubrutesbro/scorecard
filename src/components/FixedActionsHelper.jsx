@@ -9,7 +9,7 @@ const FixedActionsHelper = (props) =>{
         <Fah
             currentMode = {props.mode}
             modes = {{
-                collapsed: {width: 5, height: 5},
+                collapsed: {width: 48, height: 5},
                 expanded: {width: 48, height: 100},
                 xOnly: {width: 48, height: 48},
             }}
@@ -38,8 +38,8 @@ const FixedActionsHelper = (props) =>{
 
 const Fah = styled(ExpandBox)`
     position: absolute;
-    right: 10px; top: 15px;
-    transform: translate(${props => -props.modes[props.currentMode].width}px, ${props => props.offsetFromTop}px);
+    right: 15px; top: 20px;
+    transform: translate(0px, ${props => props.offsetFromTop}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     z-index: 20;
 `
