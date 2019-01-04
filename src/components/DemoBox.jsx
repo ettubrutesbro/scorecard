@@ -40,7 +40,7 @@ const Box = styled.div`
 
     @media ${media.mobile}{
         position: relative;
-        margin-top: 40px;
+        margin-top: 35px;
         padding: 27px 30px 45px 30px;
         width: calc(100vw - 40px);
         /*height: 500px;*/

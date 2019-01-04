@@ -100,6 +100,7 @@ export default class ZoomableMap extends React.Component {
                         store = {props.store}
                         hoveredCounty = {props.zoomTo}
                         selected = {!props.zoomTo && props.store.county? props.store.county : ''}
+                        onSelect = {props.store.completeWorkflow}
                     />
                 </TransformWrapper>
             </Container>
