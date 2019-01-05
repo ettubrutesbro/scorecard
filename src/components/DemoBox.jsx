@@ -86,7 +86,7 @@ const DemoBox = (props) => {
                         }
                         <RaceBreakdownBar 
                             store = {store} forceCA = {props.forceCA} 
-                            width = {screen === 'mobile'? window.innerWidth - 74 : 'idc'}
+                            width = {screen === 'mobile'? window.innerWidth - 72 : 'idc'}
                             height = {screen === 'optimal'? 315 : screen === 'compact'? 275 : 44}
                         />
                         {screen === 'mobile' && <DataTable store = {store} forceCA = {props.forceCA} />}
