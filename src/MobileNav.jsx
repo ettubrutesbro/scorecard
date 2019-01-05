@@ -660,6 +660,7 @@ const PickMenu = styled(ExpandBox)`
     z-index: 1;
     transform: translateY(${props => props.workflowScrollOffset? -100 : 0}px);
     transition: transform .35s;
+    pointer-events: ${props => props.currentMode === 'closed'?'none':'auto'};
 `
 const Header = styled(ExpandBox)`
     z-index: 3;

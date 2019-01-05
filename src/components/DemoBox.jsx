@@ -40,12 +40,11 @@ const Box = styled.div`
 
     @media ${media.mobile}{
         position: relative;
-        margin-top: 35px;
-        padding: 27px 30px 45px 30px;
+        padding: 0px 15px 45px 15px;
         width: calc(100vw - 40px);
         /*height: 500px;*/
         font-size: 14px;
-        border: 1px solid var(--bordergrey);
+        /*border: 1px solid var(--bordergrey);*/
     }
 `
 
@@ -69,10 +68,7 @@ const DemoBox = (props) => {
                         {screen!=='mobile' &&
                              `Current ${county? 'county' : 'state'} demographics`
                         }
-                        {screen === 'mobile' &&
-                            <React.Fragment>
-                                Demographics
-                                {(county || props.hasCountyOptionality) &&
+                        {/*screen === 'mobile' && (county || props.hasCountyOptionality) &&
                                 <DemoToggle 
                                     options = {[
                                         {label: 'County', value: 'county'},
@@ -81,9 +77,7 @@ const DemoBox = (props) => {
                                     selected = {props.forceCA?1:0}
                                     onClick = {props.onForce}
                                 />
-                                }
-                           </React.Fragment>
-                        }
+                        */}
                     </Title>
                     <Population className = 'title'> <b>{pop}</b> children live in&nbsp;{countyLabel}. </Population>
                     <Content>
@@ -92,7 +86,7 @@ const DemoBox = (props) => {
                         }
                         <RaceBreakdownBar 
                             store = {store} forceCA = {props.forceCA} 
-                            width = {screen === 'mobile'? window.innerWidth - 102 : 'idc'}
+                            width = {screen === 'mobile'? window.innerWidth - 72 : 'idc'}
                             height = {screen === 'optimal'? 315 : screen === 'compact'? 275 : 44}
                         />
                         {screen === 'mobile' && <DataTable store = {store} forceCA = {props.forceCA} />}
@@ -119,7 +113,6 @@ const DemoBox = (props) => {
 export default DemoBox
 
 const DemoToggle = styled(Toggle)`
-    margin-left: 15px;
 `
 
 const StrokeShape = styled.svg`

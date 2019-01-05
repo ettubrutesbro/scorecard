@@ -3,14 +3,16 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
+import media from '../utilities/media'
+
 import ExpandBox from './ExpandBox'
 import InteractiveMap from './InteractiveMap'
-
+import Legend from './Legend'
 
 @observer
 export default class ZoomableMap extends React.Component {
 
-    @observable zoomLevel = .91
+    @observable zoomLevel = .875
     @action setZoom = (val) => this.zoomLevel = val
     @observable containerTranslation = {x: 0, y: 0}
     @action translateContainer = (coords) => { 
@@ -44,7 +46,7 @@ export default class ZoomableMap extends React.Component {
     calcTransform = (zoomTo) => {
         console.log('going to zoomTo', zoomTo)
         if(!zoomTo){
-            this.setZoom(.91)
+            this.setZoom(.875)
             return {x: 0, y:0}
         }
 
@@ -54,14 +56,14 @@ export default class ZoomableMap extends React.Component {
         const countySize = ((county.width / this.zoomLevel) * (county.height / this.zoomLevel)) 
         const scaleAdjust = countySize < 2000? (4000 - (countySize*2)) / 2000: countySize > 9000? -.3 : 0
 
-        const zoomLevel = 2 + scaleAdjust
+        const zoomLevel = 1.5 + scaleAdjust
         const zoomDifferential = (zoomLevel / this.zoomLevel).toFixed(1)
 
         const mapbox = {
             left: map.left * zoomDifferential, 
             top: map.top * zoomDifferential,
             width: map.width * zoomDifferential,
-            height: map.height * zoomDifferential
+            height: map.height * zoomDifferential 
         }
         const countybox = {
             left: county.left * zoomDifferential, 
@@ -81,48 +83,109 @@ export default class ZoomableMap extends React.Component {
         }
 
         this.setZoom(zoomLevel)
+        console.log(deviationFromContainerCenter.y)
         return {
             x: deviationFromContainerCenter.x,
-            y: deviationFromContainerCenter.y
+            y: deviationFromContainerCenter.y - ((window.innerWidth * .75) / 3) 
         }
     }
 
     render(){
         const props = this.props
         return(
-            <Container showBorder = {props.zoomTo}>
+            <Container 
+                // zooming = {props.zoomTo}
+                currentMode = {props.zoomTo? 'zoomed' : 'tall'}
+                modes = {{
+                    tall: {width: window.innerWidth, height: window.innerWidth * 1.15},
+                    zoomed: {width: window.innerWidth, height: window.innerWidth * .75}
+                }}
+                // borderColor = 'red'
+                duration = {.5}
+                dontAlignContentsToCenter
+                noSideBorders
+            >
+                <LegendContainer 
+                    currentMode = {!props.zoomTo? 'expanded' : 'collapsed'}
+                    modes = {{collapsed: {width: 10, height: 10}, expanded: {width: 119, height: 140}}}
+                    backgroundColor = 'var(--offwhitefg)'
+                    duration = {.5}
+                >
+                    <Legend 
+                        store = {props.store}
+                    />
+                </LegendContainer>
                 <TransformWrapper
                     offset = {this.containerTranslation} 
                     zoom = {this.zoomLevel}
                 >
                     <InteractiveMap 
+                        garbMask = {!props.zoomTo}
                         data = {props.data}
                         store = {props.store}
                         hoveredCounty = {props.zoomTo}
                         selected = {!props.zoomTo && props.store.county? props.store.county : ''}
-                        onSelect = {props.store.completeWorkflow}
+                        onSelect = {(a,b)=>{
+                            props.unforceCA()
+                            props.store.completeWorkflow(a,b)
+                        }}
                     />
                 </TransformWrapper>
+                <TipText>
+                    {!props.zoomTo && !props.store.county && 
+                        <React.Fragment>
+                        Tap a county to <br />
+                        view its demographics.
+                        </React.Fragment>
+                    }
+                    {props.store.county && !props.zoomTo &&
+                        <React.Fragment>
+                        Select 'county' <br />
+                        below to zoom back in.
+                        </React.Fragment>
+                    }
+                    
+                </TipText>
             </Container>
         )
     }
 }
 
 
-const Container = styled.div`
+const Container = styled(ExpandBox)`
     position: absolute;
-    width: ${p => window.innerWidth}px;
-    height: ${p => window.innerWidth * 1.15}px;
-    overflow: hidden;
-    border-top: 1px solid ${props => props.showBorder? 'var(--bordergrey)' : 'transparent'};
-    border-bottom: 1px solid ${props => props.showBorder? 'var(--bordergrey)' : 'transparent'};
-`
+    left: -1px;
 
+`
 const TransformWrapper = styled.div`
     position: absolute;
     width: ${p => window.innerWidth}px;
     height: ${p => window.innerWidth * 1.15}px;
     transform-origin: 50% 50%;
-    transition: transform .5s;
+    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translate(${props=> props.offset.x}px, ${props=>props.offset.y}px) scale(${props => props.zoom});
+    z-index: 2;
+`
+const TipText = styled.div`
+    display: none;
+    position: absolute;
+    color: var(--fainttext);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    left: 37px; 
+    bottom: 15px;
+`
+
+const LegendContainer = styled(ExpandBox)`
+    position: absolute;
+    top: 35px; right: 45px;
+    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate(${props=>props.currentMode==='collapsed'?'0, -50px':'-109px,0'});
+    
+    @media ${media.smallphone}{
+        right: 26px;
+    }
+    /*width: 120px;*/
+    /*height: 140px;*/
+    /*border: 1px solid var(--bordergrey);*/
 `

@@ -37,16 +37,9 @@ const CountyStyle = css`
     }
 `
 
-const FullState = styled.polygon`
-    opacity: ${props => props.wire? 1 : 0};
-    transition: opacity ${props => props.wire? 1 : 0.25}s;
-    fill: black;
-    stroke: black;
-    stroke-width: 2;
-`
 
-const CountyPolygon = styled.polygon`${CountyStyle}`
-const CountyPath = styled.path`${CountyStyle}`
+
+const exemptPathIDs = ['svgMap', 'full', 'garbmask']
 
 @observer class InteractiveMap extends React.Component{
 
@@ -101,7 +94,7 @@ const CountyPath = styled.path`${CountyStyle}`
     handleClick(e, id){
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            if(id==='svgMap' || id === 'full'){
+            if(exemptPathIDs.includes(id)){
                 // this.props.clickedOutside()
                 // ^ rendered unnecessary by click outside event listener for nav
             }
@@ -208,13 +201,13 @@ const CountyPath = styled.path`${CountyStyle}`
 
                 >
                     {this.props.children.map((child,i)=>{
-                        const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
+                        const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : exemptPathIDs.includes(child.props.id)? SVGComponents.garb : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
                         const wire = !data && this.props.mode === 'offset'
                         const fill = wire? 'var(--offwhitefg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
-                        const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
+                        const foistProps = !exemptPathIDs.includes(id) && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
                             style: {
                                 fill: selected===id? 'var(--peach)' : fill,
                                 transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
@@ -225,7 +218,7 @@ const CountyPath = styled.path`${CountyStyle}`
                             // onClick: ()=> this.handleClick(id)
                         } : {}
                         
-                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && id!=='svgMap' && id!=='full'? {
+                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && !exemptPathIDs.includes(id)? {
                             onMouseEnter: ()=> this.props.onHoverCounty(id),
                             onMouseLeave: ()=> this.props.onHoverCounty(),
                         }: {}
@@ -284,9 +277,26 @@ const Tipnum = styled.h1`
 let SVGComponents = {
     InteractivePolygon: (props) => <CountyPolygon {...props} />,
     InteractivePath: (props) => <CountyPath {...props}  />,
-    full: (props) => <FullState {...props} />
-
+    full: (props) => <FullState {...props} />,
+    garb: (props) => <GarbMask {...props} />
 }
+
+const CountyPolygon = styled.polygon`${CountyStyle}`
+const CountyPath = styled.path`${CountyStyle}`
+const FullState = styled.polygon`
+    opacity: ${props => props.wire? 1 : 0};
+    transition: opacity ${props => props.wire? 1 : 0.25}s;
+    fill: black;
+    stroke: black;
+    stroke-width: 2;
+`
+const GarbMask = styled.polygon`
+    fill: var(--offwhitefg);
+    transition: opacity .5s;
+    @media ${media.smallphone}{
+        transform: translate(-10px, 10px);
+    }
+`
 
 export default class CaliforniaCountyMap extends React.Component{
     render(){
@@ -295,6 +305,12 @@ export default class CaliforniaCountyMap extends React.Component{
             <InteractiveMap
                 {...this.props}
             >
+            
+            <polygon style = {{opacity: this.props.garbMask? 1 : 0}} 
+                id = 'garbmask' 
+                points="289.3,16 289.3,194 520,398.7 520,482 240,414 118,141 118,16 "
+            />
+            
             <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
     246.6,221.4 231.5,208 231.5,207.9 226.8,199.7 226.7,199.7 226.5,184.5 226.6,184.5 226.7,176.6 226.6,176.5 226.7,159.4 
     226.8,159.3 226.8,67.6 226.8,16 20.2,16 22.3,24.6 19.5,30.4 25.8,36 29.4,49.8 24.3,58.3 28.2,60.9 24,72.8 27.2,79.3 25.7,85.2 

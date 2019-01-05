@@ -8,8 +8,10 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
 
 import indicators from './data/indicators'
+import media from './utilities/media'
 
 import Icon, {Sprite} from './components/generic/Icon'
+import {Toggle} from './components/generic'
 import ExpandBox from './components/ExpandBox'
 import Styles from './components/Styles'
 
@@ -230,6 +232,10 @@ const Tables = styled.div`
     @observable forceCA = false
     @action demoForceCA = (tf) => this.forceCA = tf 
 
+    componentWillUpdate(newProps){
+        console.log(this.props.store.county, newProps.store.county)
+    }
+
     render(){
         const {store} = this.props
         const {indicator, race, county, year} = store
@@ -239,16 +245,37 @@ const Tables = styled.div`
 
         return(
             <React.Fragment>
-                <ReadoutWrapper offset = {!county}>
+                <ReadoutWrapper>
                     <Readout tiny store = {store} />
+                    {county &&
+                    <DemoToggle 
+                        options = {[
+                            {label: 'County', value: 'county'},
+                            {label: 'CA', value: 'ca'}
+                        ]}
+                        onClick = {(val)=>{
+                            if(val === 'ca') this.demoForceCA(true)
+                            else this.demoForceCA(false)
+                        }}
+                        selected = {this.forceCA?1:0}
+                    />
+                    }
                 </ReadoutWrapper>
-                <MapContainer>
+                <MapContainer
+                    zoomedOutOffset = {(county && this.forceCA )||!county}
+                >
                     <ZoomableMap
                         data = {dataForMap}
                         store = {store}
                         zoomTo = {this.forceCA? '' : county}
+                        unforceCA = {()=>{
+                            if(this.forceCA) this.demoForceCA(false)
+                        }}
                     />
                 </MapContainer>
+                <DemoWrap
+                    zoomedOutOffset = {(county && this.forceCA )||!county}
+                >
                 <DemoBox
                     store = {store}
                     hasCountyOptionality = {county}
@@ -259,18 +286,40 @@ const Tables = styled.div`
                     }}
                     forceCA = {this.forceCA}
                 />
+                </DemoWrap>
             </React.Fragment> 
          )
     }
 }
 const ReadoutWrapper = styled.div`
-    transform: translateY(${props=>props.offset? '15px' : 0});
-    transition: transform .35s;
+    position: relative;
+    margin-top: 5px;
+    z-index: 3;
+    height: 105px; display: flex;
+    align-items: center;
 `
 const MapContainer = styled.div`
     position: relative;
-    margin-top: 10px;
+    margin-top: 15px;
     margin-left: -20px;
     /*left: 0;*/
     height: ${p => window.innerWidth * 1.15}px;
+    transform: translateY(${props=>props.zoomedOutOffset?0:35}px);
+    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    z-index: 2;
+`
+const DemoWrap = styled.div`
+    position: relative;
+    z-index: 3;
+    margin-top: 25px;
+    transform: translateY(${props=>props.zoomedOutOffset?0:-(window.innerWidth * .75)/2.75}px);
+    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+`
+
+const DemoToggle = styled(Toggle)`
+    position: absolute;
+    bottom: -35px; right: 20px;
+    @media ${media.smallphone}{
+        right:5px;
+    }
 `

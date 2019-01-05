@@ -33,7 +33,7 @@ const Content = styled.div`
     animation-name: ${props => props.animFrames};
     animation-delay: ${props=>props.delay};
     display: flex;
-    align-items: center;
+    align-items: ${props => props.dontAlignContentsToCenter? 'normal' : 'center'};
     white-space: nowrap;
 `
 
@@ -167,6 +167,7 @@ export default class ExpandTest extends React.Component{
                             animFrames = {computeAnim(this.current, this.goTo, true)}
                             duration = {this.props.duration}
                             delay = {this.props.delay}
+                            dontAlignContentsToCenter = {this.props.dontAlignContentsToCenter}
                         >
                             {this.props.children}
                         </Content>
@@ -184,9 +185,12 @@ export default class ExpandTest extends React.Component{
                     <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
                 }
                 <Bottom delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
-                <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
-                <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
-                
+                {!this.props.noSideBorders &&
+                    <React.Fragment>
+                        <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                        <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                    </React.Fragment>
+                }
                 {this.props.footer &&
                     <Footer
                         offset = {this.goTo.height}
