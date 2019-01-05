@@ -110,6 +110,7 @@ export default class ZoomableMap extends React.Component {
                     modes = {{collapsed: {width: 10, height: 10}, expanded: {width: 119, height: 140}}}
                     backgroundColor = 'var(--offwhitefg)'
                     duration = {.5}
+                    offset = {!props.store.county && !props.zoomTo? '-109px, -8px' : !props.zoomTo? '-109px, 0' : '0, -50px'}
                 >
                     <Legend 
                         store = {props.store}
@@ -180,10 +181,11 @@ const LegendContainer = styled(ExpandBox)`
     position: absolute;
     top: 35px; right: 45px;
     transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translate(${props=>props.currentMode==='collapsed'?'0, -50px':'-109px,0'});
+    transform: translate(${props=>props.offset});
     
     @media ${media.smallphone}{
         right: 26px;
+        top: 32px;
     }
     /*width: 120px;*/
     /*height: 140px;*/
