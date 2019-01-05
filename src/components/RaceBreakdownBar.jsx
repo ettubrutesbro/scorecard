@@ -471,7 +471,7 @@ const PctBlock = styled.span`
 `
 const HorizontalEndNotch = styled.div`
     position: absolute;
-    left: 0;
+    left: 1px;
     top: -20px;
     width: 0px; height: 12px;
     border-left: 2px solid ${props => props.selected? 'var(--peach)':' var(--bordergrey)'};
