@@ -927,10 +927,11 @@ const RaceList = (props) => {
                         const completion = store.completeWorkflow('county', cty)
                         if(completion) props.onComplete('county', isNewVal)
                         else if(window.confirm(store.sanityCheck.message)){
-                            store.sanityCheck.action()
-                            props.onComplete('county',true)
-                        }
-                        
+                            if(store.sanityCheck.action){
+                                store.sanityCheck.action()
+                                props.onComplete('county',true)
+                            }
+                        }                        
                     }}
                 >
                     <div>{countyLabels[cty]}</div>

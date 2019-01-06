@@ -308,12 +308,15 @@ export default class AppStore{
                         else{
                             //county doesnt even have values, disallow selection
                             console.log('county contains no info for this indicator - disallowing entirely')
-                            this.setSanityCheck(
-                                'county',
-                                value,
-                                `There's no indicator data for this county.`,
-                                ()=>{}
-                            )
+                            if(this.screen === 'mobile'){
+                                //this sanity check only happens on mobile...
+                                this.setSanityCheck(
+                                    'county',
+                                    value,
+                                    `There's no indicator data for this county.`,
+                                    false
+                                )
+                            }
                             return false
                         }
                     } //end check if theres values
