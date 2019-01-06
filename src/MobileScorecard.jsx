@@ -88,7 +88,10 @@ export default class MobileScorecard extends React.Component{
                 />
 
                 <Content
-                    offsetForNav = {this.navOpen}
+                    offsetForNav = {this.navOpen && this.currentSection === 'breakdown'? 150
+                        : this.navOpen && this.currentSection === 'demographic'? 80
+                        : 0
+                    }
                 >
 
                     {indicator && this.currentSection === 'breakdown' &&
@@ -148,7 +151,7 @@ const Content = styled.div`
     margin-top: 55px;
     padding: 10px 20px 80px 20px;
     margin-bottom: 67px;
-    transform: translateY(${props => props.offsetForNav? '150px' : 0});
+    transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const SectionChooser = styled.div`
@@ -314,7 +317,7 @@ const MapContainer = styled.div`
     margin-left: -20px;
     /*left: 0;*/
     height: ${p => window.innerWidth * 1.15}px;
-    transform: translateY(${props=>props.zoomedOutOffset?0:35}px);
+    transform: translateY(${props=>props.zoomedOutOffset?0:40}px);
     transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
     z-index: 2;
 `
