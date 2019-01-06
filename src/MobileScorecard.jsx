@@ -293,27 +293,26 @@ const Tables = styled.div`
                         store = {store} 
                         forceCA = {this.props.forceCA}
                     />
-                    {county &&
-                    <DemoTogContainer
+                    <DemoToggleWrap
                         currentMode = {county? 'show' : 'hide'}
                         modes = {{
                             hide: {width: 5, height: 37},
                             show: {width: 120, height: 37}
                         }}
+                        borderColor = 'transparent'
                     >
-                    <DemoToggle 
-                        options = {[
-                            {label: 'County', value: 'county'},
-                            {label: 'CA', value: 'ca'}
-                        ]}
-                        onClick = {(val)=>{
-                            if(val === 'ca') this.props.setForceCA(true)
-                            else this.props.setForceCA(false)
-                        }}
-                        selected = {this.props.forceCA?1:0}
-                    />
-                    </DemoTogContainer>
-                    }
+                        <Toggle 
+                            options = {[
+                                {label: 'County', value: 'county'},
+                                {label: 'CA', value: 'ca'}
+                            ]}
+                            onClick = {(val)=>{
+                                if(val === 'ca') this.props.setForceCA(true)
+                                else this.props.setForceCA(false)
+                            }}
+                            selected = {this.props.forceCA?1:0}
+                        />
+                    </DemoToggleWrap>
                 </ReadoutWrapper>
                 <MapContainer
                     zoomedOutOffset = {(county && this.props.forceCA )||!county}
@@ -369,11 +368,14 @@ const DemoWrap = styled.div`
     transform: translateY(${props=>props.zoomedOutOffset?0:-(window.innerWidth * .75)/2.75}px);
     transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
-
-const DemoToggle = styled(Toggle)`
+const DemoToggleWrap = styled(ExpandBox)`
     position: absolute;
-    bottom: -35px; right: 25px;
+    bottom: -35px; right: 140px;
+    transform: translateX(${props=>props.currentMode==='hide'? '150px' : 0});
     @media ${media.smallphone}{
-        right:5px;
-    }
+        right:120px;
+        transform: translateX(${props=>props.currentMode==='hide'? '130px' : 0});
+    }    
+    opacity: ${props => props.currentMode==='hide'?0:1};
+    transition: opacity .1s ${props=>props.currentMode==='hide'?'.25s':'0s'}, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
