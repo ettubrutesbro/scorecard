@@ -655,11 +655,10 @@ const WorkflowWrap = styled.div`
 const PickMenu = styled(ExpandBox)`
     position: absolute;
     top: -1px; left: -1px;
-    height: 83px;
+    // height: 83px;
     z-index: 1;
     transform: translateY(${props => props.workflowScrollOffset? -100 : 0}px);
     transition: transform .35s;
-    pointer-events: ${props => props.currentMode === 'closed'?'none':'auto'};
 `
 const Header = styled(ExpandBox)`
     z-index: 3;
