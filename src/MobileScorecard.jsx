@@ -294,6 +294,13 @@ const Tables = styled.div`
                         forceCA = {this.props.forceCA}
                     />
                     {county &&
+                    <DemoTogContainer
+                        currentMode = {county? 'show' : 'hide'}
+                        modes = {{
+                            hide: {width: 5, height: 37},
+                            show: {width: 120, height: 37}
+                        }}
+                    >
                     <DemoToggle 
                         options = {[
                             {label: 'County', value: 'county'},
@@ -305,6 +312,7 @@ const Tables = styled.div`
                         }}
                         selected = {this.props.forceCA?1:0}
                     />
+                    </DemoTogContainer>
                     }
                 </ReadoutWrapper>
                 <MapContainer
