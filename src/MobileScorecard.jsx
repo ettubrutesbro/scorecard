@@ -45,7 +45,11 @@ export default class MobileScorecard extends React.Component{
     }
 
     @observable currentSection = 'breakdown'
-    @action goToSection = (sec) => this.currentSection = sec
+    @observable lastSection = ''
+    @action goToSection = (sec) => {
+        this.lastSection = this.currentSection
+        this.currentSection = sec
+    }
 
     @observable showFAH = false
     @observable fixedXAction = null
@@ -118,41 +122,60 @@ export default class MobileScorecard extends React.Component{
                     <BreakdownBtn>
                         <SecSprite img = "ind"
                             width = {42} height = {42}
-                            state = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            state = {this.currentSection === 'breakdown'? 'up' : 'down'}
+                            color = {this.currentSection === 'breakdown'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('breakdown')}
                             duration = {.2}
+                        />
+                        <SecAccent
+                            active = {this.currentSection === 'breakdown'}
+                            origin = {(this.lastSection === 'sources' && this.currentSection === 'breakdown') || (this.lastSection==='breakdown' && this.currentSection==='sources')? '0%'
+                            : (this.lastSection === 'breakdown' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='breakdown')? '100%'
+                            : ''}
+                        
                         />
                     </BreakdownBtn>
                     <DemoBtn>
                         <SecSprite img = "county"
                             width = {44 } height = {44}
-                            state = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            state = {this.currentSection === 'demographic'? 'up' : 'down'}
+                            color = {this.currentSection === 'demographic'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('demographic')}
                             duration = {.2}
+                        />
+                        <SecAccent
+                            active = {this.currentSection === 'demographic'}
+                            origin = {(this.lastSection === 'breakdown' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='breakdown')? '0%'
+                            : (this.lastSection === 'demographic' && this.currentSection === 'sources') || (this.lastSection==='sources' && this.currentSection==='demographic')? '100%'
+                            : ''}
                         />
                     </DemoBtn>
                     <SourcesBtn>
                         <Bookwrap
-                            active = {this.currentSection === 'sources' && indicator && !this.navOpen}
+                            active = {this.currentSection === 'sources'}
                         >
                         <SecSprite img = "book"
                             width = {41} height = {41}
-                            state = {this.currentSection === 'sources' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'sources' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            state = {this.currentSection === 'sources'? 'up' : 'down'}
+                            color = {this.currentSection === 'sources'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('sources')}
                             duration = {.275}
                             fillMode = 'none'
                         />
                         <UnderSprite img = "underbook"
                             width = {41} height = {41}
-                            state = {this.currentSection === 'sources' && indicator && !this.navOpen? 'up' : 'down'}
-                            color = {this.currentSection === 'sources' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            state = {this.currentSection === 'sources'? 'up' : 'down'}
+                            color = {this.currentSection === 'sources'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('sources')}
                             duration = {.2}
                         />
                         </Bookwrap>
+                        <SecAccent
+                            active = {this.currentSection === 'sources'}
+                            origin = {(this.lastSection === 'sources' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='sources')? '0%'
+                            : (this.lastSection === 'breakdown' && this.currentSection === 'sources') || (this.lastSection==='sources' && this.currentSection==='breakdown')? '100%'
+                            : ''}
+                        />
                     </SourcesBtn>
                 </SectionChooser>
             </div>
@@ -168,7 +191,7 @@ const Bookwrap = styled.div`
     position: relative;
     margin-top: 6px;
     width: 41px;
-    height: 4px;
+    height: 41px;
     transform: translateY(${props=>props.active? '-3px' : '0'});
     transition: transform .2s;
 `
@@ -192,7 +215,7 @@ const Content = styled.div`
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const SectionChooser = styled.div`
-    padding: 0 10px;
+    // padding: 0 10px;
     position: fixed;
     height: 67px;
     border-top: 1px solid var(--fainttext);
@@ -207,18 +230,39 @@ const SectionChooser = styled.div`
     transition: transform .35s;
 `
 const SectionBtn = styled.div`
-    width: 45px; height: 45px;
+    position: relative;
+    width: 33%; height: 100%;
     // border: 1px solid black;
+
+    :first-of-type{
+        padding-left: 10px;
+    }
+    :last-of-type{
+        padding-right: 10px;
+    }
+
+    display: flex; align-items: center; justify-content: center;
 `
 const BreakdownBtn = styled(SectionBtn)`
-    display: flex; align-items: center; justify-content: center;
-
 `
 const DemoBtn = styled(SectionBtn)`
     padding-top: 2px;
 `
 const SourcesBtn = styled(SectionBtn)`
     
+`
+
+const SecAccent = styled.div`
+    position: absolute;
+    width: 100%;
+    height: calc(100% + 1px);
+    background: var(--faintpeach);
+    top: -1px; left: 0; z-index: -1;
+    transform: scaleX(${props => props.active?1:0});
+    transform-origin: ${props => props.origin} 50%;
+    border-top: 1px solid var(--${props=>props.active? 'strokepeach' : 'bordergrey'});
+
+    transition: transform .25s;
 `
 
 
