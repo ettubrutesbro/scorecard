@@ -146,7 +146,7 @@ export default class ExpandTest extends React.Component{
                                 style = {{
                                     width: '100%',
                                     //expanded exception hack II
-                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? this.props.modes[this.props.currentMode].height - 1
+                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? this.props.modes[this.props.currentMode].height
                                     : '100%'
                                 }}
                                 renderTrackVertical = {
