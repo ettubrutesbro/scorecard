@@ -186,7 +186,7 @@ const Content = styled.div`
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
-    padding: 10px 20px 80px 20px;
+    padding: 10px 20px 60px 20px;
     margin-bottom: 67px;
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
