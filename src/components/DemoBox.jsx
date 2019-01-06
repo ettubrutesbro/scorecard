@@ -73,16 +73,6 @@ const DemoBox = (props) => {
                         {screen!=='mobile' &&
                              `Current ${county? 'county' : 'state'} demographics`
                         }
-                        {/*screen === 'mobile' && (county || props.hasCountyOptionality) &&
-                                <DemoToggle 
-                                    options = {[
-                                        {label: 'County', value: 'county'},
-                                        {label: 'CA', value: 'ca'}
-                                    ]}
-                                    selected = {props.forceCA?1:0}
-                                    onClick = {props.onForce}
-                                />
-                        */}
                     </Title>
                     <Population className = 'title'> 
                         <b>{pop}</b> children live in&nbsp;{countyLabel}. 
@@ -175,12 +165,6 @@ const DataTable = (props) => {
 
         return(
             <RowTable> 
-                {/*     
-                <DemoRow> 
-                    <DemoValue> <CountingNumber number = {demo.population} /> </DemoValue>
-                     children live in {place}.
-                </DemoRow>
-                */}
                 <DemoRow> 
                     <DemoValue> <CountingNumber maxDuration = {0.85} number = {demo.immigrantFamilies} /> </DemoValue>
                     have one or more immigrant parent.

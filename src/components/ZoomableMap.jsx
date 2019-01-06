@@ -105,6 +105,7 @@ export default class ZoomableMap extends React.Component {
                 dontAlignContentsToCenter
                 noSideBorders
             >
+                <DotGrid />
                 <LegendContainer 
                     currentMode = {!props.zoomTo? 'expanded' : 'collapsed'}
                     modes = {{collapsed: {width: 10, height: 10}, expanded: {width: 119, height: 140}}}
@@ -156,7 +157,16 @@ export default class ZoomableMap extends React.Component {
 const Container = styled(ExpandBox)`
     position: absolute;
     left: -1px;
-
+`
+const dots = require('../assets/dots.png')
+const DotGrid = styled.div`
+    position: absolute;
+    top: 0; left: 0;
+    background-image: url(${dots});
+    width: 100%;
+    height: 100vh;
+    background-size: 20px;
+    background-position: 17px 17px;
 `
 const TransformWrapper = styled.div`
     position: absolute;

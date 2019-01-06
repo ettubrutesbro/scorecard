@@ -308,7 +308,7 @@ export default class CaliforniaCountyMap extends React.Component{
             
             <polygon style = {{opacity: this.props.garbMask? 1 : 0}} 
                 id = 'garbmask' 
-                points="289.3,16 289.3,194 520,398.7 520,482 240,414 118,141 118,16 "
+                points="289.3,16 289.3,194 520,398.7 565,482 537,600 336,622 306,548 162,495 -19,127 -19,16 "
             />
             
             <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
