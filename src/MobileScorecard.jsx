@@ -58,6 +58,12 @@ export default class MobileScorecard extends React.Component{
         else this.fixedXAction = null
     }
 
+    @observable forceCA = false
+    @action setForceCA = (tf) => {
+        this.forceCA = tf
+        console.log('forceCA:',tf)
+    }
+
     constructor(){
         super()
         this.breakdown = React.createRef()
@@ -77,6 +83,8 @@ export default class MobileScorecard extends React.Component{
                     showFAH = {this.showFAH}
                     fixedXAction = {this.fixedXAction}
                     allowBodyOverflow = {this.allowBodyOverflow}
+
+                    setForceCA = {this.setForceCA}
                 />
 
                 <Content
@@ -94,6 +102,8 @@ export default class MobileScorecard extends React.Component{
                     }
                     {indicator && this.currentSection === 'demographic' &&
                         <Demographics
+                            forceCA = {this.forceCA}
+                            setForceCA = {this.setForceCA}
                             store = {store}
                         />
                     }
@@ -229,8 +239,8 @@ const Tables = styled.div`
 
 @observer class Demographics extends React.Component{
 
-    @observable forceCA = false
-    @action demoForceCA = (tf) => this.forceCA = tf 
+    // @observable forceCA = false
+    // @action demoForceCA = (tf) => this.forceCA = tf 
 
     componentWillUpdate(newProps){
         console.log(this.props.store.county, newProps.store.county)
@@ -254,37 +264,37 @@ const Tables = styled.div`
                             {label: 'CA', value: 'ca'}
                         ]}
                         onClick = {(val)=>{
-                            if(val === 'ca') this.demoForceCA(true)
-                            else this.demoForceCA(false)
+                            if(val === 'ca') this.props.setForceCA(true)
+                            else this.props.setForceCA(false)
                         }}
-                        selected = {this.forceCA?1:0}
+                        selected = {this.props.forceCA?1:0}
                     />
                     }
                 </ReadoutWrapper>
                 <MapContainer
-                    zoomedOutOffset = {(county && this.forceCA )||!county}
+                    zoomedOutOffset = {(county && this.props.forceCA )||!county}
                 >
                     <ZoomableMap
                         data = {dataForMap}
                         store = {store}
-                        zoomTo = {this.forceCA? '' : county}
+                        zoomTo = {this.props.forceCA? '' : county}
                         unforceCA = {()=>{
-                            if(this.forceCA) this.demoForceCA(false)
+                            if(this.props.forceCA) this.props.setForceCA(false)
                         }}
                     />
                 </MapContainer>
                 <DemoWrap
-                    zoomedOutOffset = {(county && this.forceCA )||!county}
+                    zoomedOutOffset = {(county && this.props.forceCA )||!county}
                 >
                 <DemoBox
                     store = {store}
                     hasCountyOptionality = {county}
                     show
                     onForce = {(val)=>{
-                        if(val==='county') this.demoForceCA(false)
-                        else this.demoForceCA(true)
+                        if(val==='county') this.props.setForceCA(false)
+                        else this.props.setForceCA(true)
                     }}
-                    forceCA = {this.forceCA}
+                    forceCA = {this.props.forceCA}
                 />
                 </DemoWrap>
             </React.Fragment> 

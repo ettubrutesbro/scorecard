@@ -130,7 +130,10 @@ export default class MobileNav extends React.Component{
                         <CountyList store = {store} 
                             onComplete = {(which, hasNewVal)=>{
                                 this.setMode('compact')
-                                if(hasNewVal) this.justCompleted(which)
+                                if(hasNewVal){
+                                    this.justCompleted(which)
+                                    this.props.setForceCA(false) //unforce CA zoom when picking new county
+                                }
                             }}
                             // onHeaderScrollChange = {this.setWorkflowHeaderVisibility}
                         />
@@ -258,11 +261,7 @@ export default class MobileNav extends React.Component{
                         openNoInd: {width: window.innerWidth+1, height: 200},
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
-                    // backgroundColor = 'white'
-                    // borderColor = 'red'
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
-                    // delay = {(this.mode==='county'||this.mode==='race')? '.175s' : '0s'}
-                    // delay = {(!this.mode || this.mode==='indicator' || (indicator && ))? '0s' : '.175s'}
                 >
                     <FlipMove
                         // style = {{width: '100%'}}
@@ -765,6 +764,7 @@ class IndicatorList extends React.Component{
                             className = {store.indicator===ind? 'selected' : invalid? 'invalid' : ''}
                             key = {ind}
                             onClick = {()=>{ 
+                                const isNewVal = ind!==store.indicator
                                 const completion = store.completeWorkflow('indicator', ind)
                                 if(!completion){
                                     if(window.confirm(store.sanityCheck.message)){
@@ -772,7 +772,7 @@ class IndicatorList extends React.Component{
                                         this.props.onComplete('indicator', true)
                                     }
                                 }
-                                else this.props.onComplete('indicator', ind !== store.indicator)
+                                else this.props.onComplete('indicator', isNewVal)
                             }}
                         >
                             {semanticTitles[ind].label}
@@ -873,8 +873,9 @@ const RaceList = (props) => {
                     key = {r} 
                     className = {store.race===r? 'selected' : invalid? 'invalid' : ''}
                     onClick = {()=>{ 
+                        const isNewVal = r!==store.race
                         const completion = store.completeWorkflow('race',r)
-                        if(completion)  props.onComplete('race', r !== store.race)
+                        if(completion)  props.onComplete('race', isNewVal)
                         else if(window.confirm(store.sanityCheck.message)){
                             store.sanityCheck.action()
                             props.onComplete('race',true)
@@ -921,8 +922,9 @@ const RaceList = (props) => {
                     key = {cty}
                     className = {store.county===cty? 'selected' : invalid? 'invalid' : ''}
                     onClick = {()=>{ 
+                        const isNewVal = cty !== store.county
                         const completion = store.completeWorkflow('county', cty)
-                        if(completion) props.onComplete('county', cty !== store.county)
+                        if(completion) props.onComplete('county', isNewVal)
                         else if(window.confirm(store.sanityCheck.message)){
                             store.sanityCheck.action()
                             props.onComplete('county',true)
