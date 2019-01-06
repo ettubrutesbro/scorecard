@@ -76,6 +76,9 @@ export default class MobileScorecard extends React.Component{
     render(){
         const {store} = this.props
         const {indicator} = store
+
+        const current = this.currentSection
+        const last = this.lastSection
         return(
             <div>
                 <Styles />
@@ -92,13 +95,17 @@ export default class MobileScorecard extends React.Component{
                 />
 
                 <Content
-                    offsetForNav = {this.navOpen && this.currentSection === 'breakdown'? 150
-                        : this.navOpen && this.currentSection === 'demographic'? 80
+                    offsetForNav = {this.navOpen && current === 'breakdown'? 150
+                        : this.navOpen && current === 'demographic'? 80
                         : 0
                     }
                 >
 
-                    {indicator && this.currentSection === 'breakdown' &&
+                    {indicator && 
+                        <Section
+                            active = {current === 'breakdown'}
+                            origin = {-100}
+                        >
                         <Breakdown 
                             ref = {this.breakdown}
                             store = {store} 
@@ -106,13 +113,24 @@ export default class MobileScorecard extends React.Component{
                             toggleFixedX = {this.setFAH}
                             showFAH = {this.showFAH}
                         />
+                        </Section>
                     }
-                    {indicator && this.currentSection === 'demographic' &&
+                    {indicator && 
+                        <Section
+                            active = {current === 'demographic'}
+                            origin = {last === 'sources' && current === 'demographic'? -100
+                                : last === 'breakdown' && current === 'demographic'? 100
+                                : last === 'demographic' && current === 'breakdown'? 100
+                                : last === 'demographic' && current === 'sources'? -100
+                                : 0
+                            }
+                        >
                         <Demographics
                             forceCA = {this.forceCA}
                             setForceCA = {this.setForceCA}
                             store = {store}
                         />
+                        </Section>
                     }
                 </Content>
                 
@@ -122,15 +140,15 @@ export default class MobileScorecard extends React.Component{
                     <BreakdownBtn>
                         <SecSprite img = "ind"
                             width = {42} height = {42}
-                            state = {this.currentSection === 'breakdown'? 'up' : 'down'}
-                            color = {this.currentSection === 'breakdown'? 'strokepeach' : 'fainttext'}
+                            state = {current === 'breakdown'? 'up' : 'down'}
+                            color = {current === 'breakdown'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('breakdown')}
                             duration = {.2}
                         />
                         <SecAccent
-                            active = {this.currentSection === 'breakdown'}
-                            origin = {(this.lastSection === 'sources' && this.currentSection === 'breakdown') || (this.lastSection==='breakdown' && this.currentSection==='sources')? '0%'
-                            : (this.lastSection === 'breakdown' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='breakdown')? '100%'
+                            active = {current === 'breakdown'}
+                            origin = {(last === 'sources' && current === 'breakdown') || (last==='breakdown' && current==='sources')? '0%'
+                            : (last === 'breakdown' && current === 'demographic') || (last==='demographic' && current==='breakdown')? '100%'
                             : ''}
                         
                         />
@@ -138,42 +156,42 @@ export default class MobileScorecard extends React.Component{
                     <DemoBtn>
                         <SecSprite img = "county"
                             width = {44 } height = {44}
-                            state = {this.currentSection === 'demographic'? 'up' : 'down'}
-                            color = {this.currentSection === 'demographic'? 'strokepeach' : 'fainttext'}
+                            state = {current === 'demographic'? 'up' : 'down'}
+                            color = {current === 'demographic'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('demographic')}
                             duration = {.2}
                         />
                         <SecAccent
-                            active = {this.currentSection === 'demographic'}
-                            origin = {(this.lastSection === 'breakdown' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='breakdown')? '0%'
-                            : (this.lastSection === 'demographic' && this.currentSection === 'sources') || (this.lastSection==='sources' && this.currentSection==='demographic')? '100%'
+                            active = {current === 'demographic'}
+                            origin = {(last === 'breakdown' && current === 'demographic') || (last==='demographic' && current==='breakdown')? '0%'
+                            : (last === 'demographic' && current === 'sources') || (last==='sources' && current==='demographic')? '100%'
                             : ''}
                         />
                     </DemoBtn>
                     <SourcesBtn>
                         <Bookwrap
-                            active = {this.currentSection === 'sources'}
+                            active = {current === 'sources'}
                         >
                         <SecSprite img = "book"
                             width = {41} height = {41}
-                            state = {this.currentSection === 'sources'? 'up' : 'down'}
-                            color = {this.currentSection === 'sources'? 'strokepeach' : 'fainttext'}
+                            state = {current === 'sources'? 'up' : 'down'}
+                            color = {current === 'sources'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('sources')}
                             duration = {.275}
                             fillMode = 'none'
                         />
                         <UnderSprite img = "underbook"
                             width = {41} height = {41}
-                            state = {this.currentSection === 'sources'? 'up' : 'down'}
-                            color = {this.currentSection === 'sources'? 'strokepeach' : 'fainttext'}
+                            state = {current === 'sources'? 'up' : 'down'}
+                            color = {current === 'sources'? 'strokepeach' : 'fainttext'}
                             onClick = {()=> this.goToSection('sources')}
                             duration = {.2}
                         />
                         </Bookwrap>
                         <SecAccent
-                            active = {this.currentSection === 'sources'}
-                            origin = {(this.lastSection === 'sources' && this.currentSection === 'demographic') || (this.lastSection==='demographic' && this.currentSection==='sources')? '0%'
-                            : (this.lastSection === 'breakdown' && this.currentSection === 'sources') || (this.lastSection==='sources' && this.currentSection==='breakdown')? '100%'
+                            active = {current === 'sources'}
+                            origin = {(last === 'sources' && current === 'demographic') || (last==='demographic' && current==='sources')? '0%'
+                            : (last === 'breakdown' && current === 'sources') || (last==='sources' && current==='breakdown')? '100%'
                             : ''}
                         />
                     </SourcesBtn>
@@ -182,6 +200,16 @@ export default class MobileScorecard extends React.Component{
         )
     }
 }
+
+const Section = styled.section`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    padding: 10px 20px 60px 20px;
+    transform: translateX(${props=>props.active?0:props.origin}%);
+    transition: transform .5s;
+`
 
 const SecSprite = styled(Sprite)`
     transition: fill .35s;
@@ -202,14 +230,13 @@ const UnderSprite = styled(SecSprite)`
 const Content = styled.div`
     position: relative;
     top: 0;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     min-width: 100vw;
     overflow: hidden;
     background: var(--offwhitefg);
     z-index: 1;
     margin-top: 55px;
-    padding: 10px 20px 60px 20px;
     margin-bottom: 67px;
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
