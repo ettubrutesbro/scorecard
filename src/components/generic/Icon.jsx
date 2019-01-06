@@ -74,7 +74,7 @@ const SpriteSvg = styled(IconSvg)`
     width: auto;
     height: 100%;
     animation-duration: ${props => props.duration}s;
-    animation-fill-mode: forwards;
+    animation-fill-mode: ${props => props.fillMode || 'forwards'};
     animation-timing-function: steps(${props=>props.numFrames-1}, end);
     &.up{
         /*animation: spriteForward .08s steps(5) forwards;*/
@@ -133,6 +133,7 @@ export const Sprite = (props) =>{
                 ].join(' ')} 
                 numFrames = {sprites[img].frames}
                 duration = {props.duration || .35}
+                fillMode = {props.fillMode}
             >
                 {sprites[img].paths}
             </SpriteSvg>

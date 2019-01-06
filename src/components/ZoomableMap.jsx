@@ -167,6 +167,9 @@ const DotGrid = styled.div`
     height: 100vh;
     background-size: 20px;
     background-position: 17px 17px;
+    @media ${media.smallphone}{
+        background-position: 8px 10px;
+    }
 `
 const TransformWrapper = styled.div`
     position: absolute;

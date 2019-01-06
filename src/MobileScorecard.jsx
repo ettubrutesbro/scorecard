@@ -116,7 +116,7 @@ export default class MobileScorecard extends React.Component{
                     visible = {!this.navOpen}
                 >
                     <BreakdownBtn>
-                        <Sprite img = "ind"
+                        <SecSprite img = "ind"
                             width = {42} height = {42}
                             state = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'up' : 'down'}
                             color = {this.currentSection === 'breakdown' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
@@ -125,7 +125,7 @@ export default class MobileScorecard extends React.Component{
                         />
                     </BreakdownBtn>
                     <DemoBtn>
-                        <Sprite img = "county"
+                        <SecSprite img = "county"
                             width = {44 } height = {44}
                             state = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'up' : 'down'}
                             color = {this.currentSection === 'demographic' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
@@ -133,12 +133,49 @@ export default class MobileScorecard extends React.Component{
                             duration = {.2}
                         />
                     </DemoBtn>
-                    <SourcesBtn />
+                    <SourcesBtn>
+                        <Bookwrap
+                            active = {this.currentSection === 'sources' && indicator && !this.navOpen}
+                        >
+                        <SecSprite img = "book"
+                            width = {41} height = {41}
+                            state = {this.currentSection === 'sources' && indicator && !this.navOpen? 'up' : 'down'}
+                            color = {this.currentSection === 'sources' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            onClick = {()=> this.goToSection('sources')}
+                            duration = {.275}
+                            fillMode = 'none'
+                        />
+                        <UnderSprite img = "underbook"
+                            width = {41} height = {41}
+                            state = {this.currentSection === 'sources' && indicator && !this.navOpen? 'up' : 'down'}
+                            color = {this.currentSection === 'sources' && indicator && !this.navOpen? 'strokepeach' : 'fainttext'}
+                            onClick = {()=> this.goToSection('sources')}
+                            duration = {.2}
+                        />
+                        </Bookwrap>
+                    </SourcesBtn>
                 </SectionChooser>
             </div>
         )
     }
 }
+
+const SecSprite = styled(Sprite)`
+    transition: fill .35s;
+`
+
+const Bookwrap = styled.div`
+    position: relative;
+    margin-top: 6px;
+    width: 41px;
+    height: 4px;
+    transform: translateY(${props=>props.active? '-3px' : '0'});
+    transition: transform .2s;
+`
+const UnderSprite = styled(SecSprite)`
+    position: absolute;
+    top: 0; left: 0;
+`
 const Content = styled.div`
     position: relative;
     top: 0;
@@ -327,7 +364,7 @@ const DemoWrap = styled.div`
 
 const DemoToggle = styled(Toggle)`
     position: absolute;
-    bottom: -35px; right: 20px;
+    bottom: -35px; right: 25px;
     @media ${media.smallphone}{
         right:5px;
     }
