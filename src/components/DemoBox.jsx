@@ -57,7 +57,10 @@ const DemoBox = (props) => {
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
     let needsAddendum
-    if((countyLabel.length < 10 || screen==='mobile') && countyLabel!=='California') countyLabel+= '\xa0county'
+    if(screen==='mobile' && countyLabel!=='California' && countyLabel.includes(' ')){
+        countyLabel+= '\xa0county'
+    }
+    else if((countyLabel.length < 10 || screen==='mobile') && countyLabel!=='California') countyLabel+= ' county'
     else needsAddendum = true
     pop = sigFig(pop)
 
