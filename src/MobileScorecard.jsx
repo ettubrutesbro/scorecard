@@ -252,7 +252,10 @@ const Tables = styled.div`
         return(
             <React.Fragment>
                 <ReadoutWrapper>
-                    <Readout tiny store = {store} forceCA = {this.props.forceCA}/>
+                    <Readout tiny 
+                        store = {store} 
+                        forceCA = {this.props.forceCA}
+                    />
                     {county &&
                     <DemoToggle 
                         options = {[

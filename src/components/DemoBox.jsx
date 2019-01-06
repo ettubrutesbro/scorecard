@@ -56,7 +56,9 @@ const DemoBox = (props) => {
 
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
-    if(countyLabel.length < 9) countyLabel+= ' county'
+    let needsAddendum
+    if((countyLabel.length < 10 || screen==='mobile') && countyLabel!=='California') countyLabel+= '\xa0county'
+    else needsAddendum = true
     pop = sigFig(pop)
 
     return(
@@ -79,7 +81,10 @@ const DemoBox = (props) => {
                                 />
                         */}
                     </Title>
-                    <Population className = 'title'> <b>{pop}</b> children live in&nbsp;{countyLabel}. </Population>
+                    <Population className = 'title'> 
+                        <b>{pop}</b> children live in&nbsp;{countyLabel}. 
+                        {needsAddendum && screen!=='mobile'&& <CountyAddendum>(county)</CountyAddendum>}
+                    </Population>
                     <Content>
                         {screen!=='mobile' &&
                         <DataTable store = {store} />
@@ -112,6 +117,8 @@ const DemoBox = (props) => {
 
 export default DemoBox
 
+
+
 const DemoToggle = styled(Toggle)`
 `
 
@@ -126,6 +133,7 @@ const StrokeShape = styled.svg`
 `
 
 const Population = styled.h1`
+    position: relative;
     margin: 0;
     margin-top: 5px;
     text-align: center;
@@ -141,6 +149,20 @@ const Population = styled.h1`
         letter-spacing: 0.5px;
         white-space: normal;
     }
+`
+const CountyAddendum = styled.div`
+    position: absolute;
+    @media ${media.optimal}{
+        right: 25px; 
+        top: 40px;
+        font-size: 16px;
+    }
+    @media ${media.compact}{
+        right: 30px; 
+        top: 32px;
+        font-size: 13px;
+    }
+    color: var(--fainttext);
 `
 
 const DataTable = (props) => {
