@@ -99,7 +99,7 @@ export default class MobileNav extends React.Component{
                     noBorderTop = {this.mode==='compact' || !this.mode}
 
                     withScroll
-                    hideScroll = {this.mode==='indicator' || this.mode==='race'}
+                    hideScroll = {this.mode!=='county'}
                     noFade
                     onScroll = {this.mode === 'county'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
@@ -152,6 +152,7 @@ export default class MobileNav extends React.Component{
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
                             delay = {this.mode==='race'? '.175s' : 0}
+                            // hideScroll = {this.mode!=='race'}
                         >
                             <div>
                             <MenuSelectBlock left = 'Race' right = {race? capitalize(race) : 'All races'} 
@@ -177,7 +178,7 @@ export default class MobileNav extends React.Component{
                 <ExpandBox
                     ref = {this.indList}
                     withScroll
-                    hideScroll = {this.mode==='county' || this.mode==='race'}
+                    hideScroll = {this.mode!=='indicator'}
                     noFade
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
@@ -280,7 +281,8 @@ export default class MobileNav extends React.Component{
                             <div style = {{
                                 position: 'relative', zIndex: 5,
                                 display: 'flex', alignItems: 'center',
-                                padding: '12px 25px 0px 25px', height: '50px'
+                                padding: '12px 25px 0px 25px', height: '50px',
+                                background: 'white'
                             }}>
                                 What data do you want to see?
                             </div>
@@ -655,7 +657,7 @@ const WorkflowWrap = styled.div`
 const PickMenu = styled(ExpandBox)`
     position: absolute;
     top: -1px; left: -1px;
-    height: 83px;
+    // height: 83px;
     z-index: 1;
     transform: translateY(${props => props.workflowScrollOffset? -100 : 0}px);
     transition: transform .35s;
