@@ -378,4 +378,13 @@ const DemoToggleWrap = styled(ExpandBox)`
     }    
     opacity: ${props => props.currentMode==='hide'?0:1};
     transition: opacity .1s ${props=>props.currentMode==='hide'?'.25s':'0s'}, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
+    &::before{
+        content: '';
+        position: absolute;
+        width: 150px;
+        top: 18px;
+        left: -15px;
+        height: 8px;
+        background: var(--offwhitefg);
+    }
 `
