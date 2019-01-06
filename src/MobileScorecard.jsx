@@ -242,13 +242,6 @@ const Tables = styled.div`
 
 @observer class Demographics extends React.Component{
 
-    // @observable forceCA = false
-    // @action demoForceCA = (tf) => this.forceCA = tf 
-
-    componentWillUpdate(newProps){
-        console.log(this.props.store.county, newProps.store.county)
-    }
-
     render(){
         const {store} = this.props
         const {indicator, race, county, year} = store
@@ -259,7 +252,7 @@ const Tables = styled.div`
         return(
             <React.Fragment>
                 <ReadoutWrapper>
-                    <Readout tiny store = {store} />
+                    <Readout tiny store = {store} forceCA = {this.props.forceCA}/>
                     {county &&
                     <DemoToggle 
                         options = {[

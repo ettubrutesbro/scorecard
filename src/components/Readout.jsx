@@ -110,7 +110,7 @@ export default class Readout extends React.Component{
         const {county, indicator, race, year, screen} = this.props.store
 
         const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
-        const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
+        const countyString = county && !this.props.forceCA? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
         const descriptor = indicator? semanticTitles[indicator].descriptor : ''
@@ -187,9 +187,10 @@ export default class Readout extends React.Component{
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
         let displayNum
+        const cty = !this.props.forceCA? county : 'california'
         if(indicator){
-            displayNum = county && race? ind.counties[county][race][year]
-                : county && !race? ind.counties[county].totals[year]
+            displayNum = county && race? ind.counties[cty][race][year]
+                : county && !race? ind.counties[cty].totals[year]
                 : !county && race? ind.counties.california[race][year]
                 : !county && !race? ind.counties.california.totals[year]
                 : 'wat'
