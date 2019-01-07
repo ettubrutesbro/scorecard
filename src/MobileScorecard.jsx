@@ -6,6 +6,11 @@ import styled from 'styled-components'
 import {mapValues} from 'lodash'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
+import 'sync-scroll'
+
+// import SyncScroll, {SyncScrollPane} from 'react-scroll-sync'
+// import 'react-scroll-sync'
+
 
 import indicators from './data/indicators'
 import media from './utilities/media'
@@ -116,8 +121,10 @@ export default class MobileScorecard extends React.Component{
                             showFAH = {this.showFAH}
                         />
                         </Section>
-                    
+
                         <Section
+                            className = {'syncscroll'}
+                            name = {'synced'}
                             active = {current === 'demographic' || current === 'sources'}
                             isLast = {last === 'demographic' || last === 'sources'}
                             origin = {101}
@@ -125,12 +132,15 @@ export default class MobileScorecard extends React.Component{
                             <ReadoutWrapper>
                                 <Readout tiny 
                                     store = {store} 
-                                    forceCA = {this.props.forceCA}
+                                    forceCA = {this.forceCA}
                                 />
                             </ReadoutWrapper>
+                            <BullshitSpacer />
                         </Section>
 
                         <Section
+                            className = {'syncscroll'}
+                            name = {'synced'}
                             active = {current === 'demographic'}
                             isLast = {last === 'demographic'}
                             origin = {last === 'sources' && current === 'demographic'? -101
@@ -219,7 +229,7 @@ export default class MobileScorecard extends React.Component{
     }
 }
 
-const Section = styled.section`
+const Section = styled.div`
     margin-top: 55px;
     margin-bottom: 67px;
     position: absolute;
@@ -260,6 +270,9 @@ const Content = styled.div`
     z-index: 1;
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
+`
+const BullshitSpacer = styled.div`
+    height: 1400px;
 `
 const SectionChooser = styled.div`
     // padding: 0 10px;
