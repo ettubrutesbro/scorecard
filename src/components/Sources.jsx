@@ -255,9 +255,12 @@ const Redirect = (props) => {
     )
 }
 const RedirectSpan = styled.div`
-margin-top: 10px;
+    margin-top: 10px;
     color: var(--fainttext);
     font-size: 13px;
+    @media ${media.mobile}{
+        display: none;
+    }
 `
 const RedirectLink = styled.a`
     text-decoration: none;
