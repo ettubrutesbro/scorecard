@@ -202,6 +202,9 @@ export default class MobileScorecard extends React.Component{
 }
 
 const Section = styled.section`
+    
+    margin-top: 55px;
+    margin-bottom: 67px;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -209,6 +212,8 @@ const Section = styled.section`
     padding: 10px 20px 60px 20px;
     transform: translateX(${props=>props.active?0:props.origin}%);
     transition: transform .5s;
+    overflow-x: hidden;
+    overflow-y: scroll;
 `
 
 const SecSprite = styled(Sprite)`
@@ -236,8 +241,6 @@ const Content = styled.div`
     overflow: hidden;
     background: var(--offwhitefg);
     z-index: 1;
-    margin-top: 55px;
-    margin-bottom: 67px;
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
@@ -344,8 +347,9 @@ const SecAccent = styled.div`
 const Tables = styled.div`
     position: relative;
     margin-top: 25px;
+    padding-bottom: 15px;
     width: ${width}px;
-    height: ${props=>props.expanded? 1300 : 370}px;
+    height: ${props=>props.expanded? 1600 : 600}px;
 `
 
 @observer class Demographics extends React.Component{
@@ -367,8 +371,8 @@ const Tables = styled.div`
                     <DemoToggleWrap
                         currentMode = {county? 'show' : 'hide'}
                         modes = {{
-                            hide: {width: 5, height: 37},
-                            show: {width: 120, height: 37}
+                            hide: {width: 5, height: 38},
+                            show: {width: 120, height: 38}
                         }}
                         borderColor = 'transparent'
                     >
