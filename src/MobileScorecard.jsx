@@ -104,7 +104,8 @@ export default class MobileScorecard extends React.Component{
                     {indicator && 
                         <Section
                             active = {current === 'breakdown'}
-                            origin = {-100}
+                            isLast = {last === 'breakdown'}
+                            origin = {-101}
                         >
                         <Breakdown 
                             ref = {this.breakdown}
@@ -118,11 +119,12 @@ export default class MobileScorecard extends React.Component{
                     {indicator && 
                         <Section
                             active = {current === 'demographic'}
-                            origin = {last === 'sources' && current === 'demographic'? -100
-                                : last === 'breakdown' && current === 'demographic'? 100
-                                : last === 'demographic' && current === 'breakdown'? 100
-                                : last === 'demographic' && current === 'sources'? -100
-                                : 0
+                            isLast = {last === 'demographic'}
+                            origin = {last === 'sources' && current === 'demographic'? -101
+                                : last === 'breakdown' && current === 'demographic'? 101
+                                : last === 'demographic' && current === 'breakdown'? 101
+                                : last === 'demographic' && current === 'sources'? -101
+                                : 101
                             }
                         >
                         <Demographics
@@ -202,7 +204,6 @@ export default class MobileScorecard extends React.Component{
 }
 
 const Section = styled.section`
-    
     margin-top: 55px;
     margin-bottom: 67px;
     position: absolute;
@@ -211,7 +212,7 @@ const Section = styled.section`
     top: 0; left: 0;
     padding: 10px 20px 60px 20px;
     transform: translateX(${props=>props.active?0:props.origin}%);
-    transition: transform .5s;
+    transition: ${props => props.active||props.isLast? 'transform .5s' : ''};
     overflow-x: hidden;
     overflow-y: scroll;
 `
