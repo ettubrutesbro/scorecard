@@ -120,27 +120,8 @@ export default class MobileScorecard extends React.Component{
                             showFAH = {this.showFAH}
                         />
                         </Section>
-                        {/* 
+
                         <Section
-                            // className = {'syncscroll'}
-                            // name = {'synced'}
-                            active = {current === 'demographic' || current === 'sources'}
-                            isLast = {last === 'demographic' || last === 'sources'}
-                            origin = {100}
-                        >
-                            <Spacer>
-                            <ReadoutWrapper>
-                                <Readout tiny 
-                                    store = {store} 
-                                    forceCA = {this.forceCA}
-                                />
-                            </ReadoutWrapper>
-                            </Spacer>
-                        </Section>
-                        */}
-                        <Section
-                            // className = {'syncscroll'}
-                            // name = {'synced'}
                             active = {current === 'demographic'}
                             isLast = {last === 'demographic'}
                             origin = {last === 'sources' && current === 'demographic'? -100
@@ -159,8 +140,6 @@ export default class MobileScorecard extends React.Component{
                         </Section>
 
                         <Section
-                            // className = {'syncscroll'}
-                            // name = {'synced'}
                             active = {current === 'sources'}
                             isLast = {last==='sources'}
                             origin = {100}
