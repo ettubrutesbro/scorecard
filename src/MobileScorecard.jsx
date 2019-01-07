@@ -1,4 +1,5 @@
 import React from 'react'
+import {findDOMNode} from 'react-dom'
 import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
@@ -22,6 +23,7 @@ import IndicatorByRaces from '../src/components/IndicatorByRaces'
 import Readout from '../src/components/Readout'
 import ZoomableMap from '../src/components/ZoomableMap'
 import DemoBox from '../src/components/DemoBox'
+import {MobileSources} from '../src/components/Sources'
 
 const width = window.innerWidth - 50
 
@@ -126,7 +128,6 @@ export default class MobileScorecard extends React.Component{
                             origin = {101}
                         >
                             <Spacer>
-                            scrollsync
                             <ReadoutWrapper>
                                 <Readout tiny 
                                     store = {store} 
@@ -153,6 +154,20 @@ export default class MobileScorecard extends React.Component{
                             setForceCA = {this.setForceCA}
                             store = {store}
                         />
+                        </Section>
+
+                        <Section
+                            className = {'syncscroll'}
+                            name = {'synced'}
+                            active = {current === 'sources'}
+                            isLast = {last==='sources'}
+                            origin = {101}
+                        >
+                            <ReadoutWrapper />
+                            <MobileSources
+                                expand
+                                indicator = {indicator}
+                            />
                         </Section>
                         </React.Fragment>
 
@@ -270,7 +285,7 @@ const Content = styled.div`
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 const Spacer = styled.div`
-    height: 1079px;
+    height: 1000px;
 `
 const SectionChooser = styled.div`
     // padding: 0 10px;
@@ -487,7 +502,3 @@ const DemoToggleWrap = styled(ExpandBox)`
         background: var(--offwhitefg);
     }
 `
-
-const Sources = (props) => {
-
-}
