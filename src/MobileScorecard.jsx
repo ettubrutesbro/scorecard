@@ -52,6 +52,7 @@ export default class MobileScorecard extends React.Component{
     @action goToSection = (sec) => {
         this.lastSection = this.currentSection
         this.currentSection = sec
+        console.log(this.currentSection, this.lastSection)
     }
 
     @observable showFAH = false
@@ -109,7 +110,7 @@ export default class MobileScorecard extends React.Component{
                         <Section
                             active = {current === 'breakdown'}
                             isLast = {last === 'breakdown'}
-                            origin = {-101}
+                            origin = {-100}
                         >
                         <Breakdown 
                             ref = {this.breakdown}
@@ -119,13 +120,13 @@ export default class MobileScorecard extends React.Component{
                             showFAH = {this.showFAH}
                         />
                         </Section>
-                    
+                        {/* 
                         <Section
-                            className = {'syncscroll'}
-                            name = {'synced'}
+                            // className = {'syncscroll'}
+                            // name = {'synced'}
                             active = {current === 'demographic' || current === 'sources'}
                             isLast = {last === 'demographic' || last === 'sources'}
-                            origin = {101}
+                            origin = {100}
                         >
                             <Spacer>
                             <ReadoutWrapper>
@@ -136,17 +137,18 @@ export default class MobileScorecard extends React.Component{
                             </ReadoutWrapper>
                             </Spacer>
                         </Section>
-
+                        */}
                         <Section
-                            className = {'syncscroll'}
-                            name = {'synced'}
+                            // className = {'syncscroll'}
+                            // name = {'synced'}
                             active = {current === 'demographic'}
                             isLast = {last === 'demographic'}
-                            origin = {last === 'sources' && current === 'demographic'? -101
-                                : last === 'breakdown' && current === 'demographic'? 101
-                                : last === 'demographic' && current === 'breakdown'? 101
-                                : last === 'demographic' && current === 'sources'? -101
-                                : 101
+                            origin = {last === 'sources' && current === 'demographic'? -100
+                                : last === 'breakdown' && current === 'demographic'? 100
+                                : last === 'demographic' && current === 'breakdown'? 100
+                                : last === 'demographic' && current === 'sources'? -100
+                                : current === 'sources' && last === 'breakdown'? -100
+                                : 100
                             }
                         >
                         <Demographics
@@ -157,13 +159,15 @@ export default class MobileScorecard extends React.Component{
                         </Section>
 
                         <Section
-                            className = {'syncscroll'}
-                            name = {'synced'}
+                            // className = {'syncscroll'}
+                            // name = {'synced'}
                             active = {current === 'sources'}
                             isLast = {last==='sources'}
-                            origin = {101}
+                            origin = {100}
                         >
-                            <ReadoutWrapper />
+                            <SourceNoteTitle>
+                                Sources & notes
+                            </SourceNoteTitle>
                             <MobileSources
                                 expand
                                 indicator = {indicator}
@@ -194,6 +198,7 @@ export default class MobileScorecard extends React.Component{
                         
                         />
                     </BreakdownBtn>
+
                     <DemoBtn>
                         <SecSprite img = "county"
                             width = {44 } height = {44}
@@ -254,6 +259,11 @@ const Section = styled.section`
     transition: ${props => props.active||props.isLast? 'transform .5s' : ''};
     overflow-x: hidden;
     overflow-y: scroll;
+    // background: var(--offwhitefg);
+`
+const SourceNoteTitle = styled.h1`
+    font-weight: normal; font-size: 18px;
+    margin: 12px 0 17px 15px;
 `
 
 const SecSprite = styled(Sprite)`
@@ -407,6 +417,10 @@ const Tables = styled.div`
         return(
             <React.Fragment>
                 <ReadoutWrapper>
+                    <Readout tiny 
+                        store = {store} 
+                        forceCA = {this.props.forceCA}
+                    />
                     <DemoToggleWrap
                         currentMode = {county? 'show' : 'hide'}
                         modes = {{
@@ -472,7 +486,7 @@ const MapContainer = styled.div`
     /*left: 0;*/
     height: ${p => window.innerWidth * 1.15}px;
     transform: translateY(${props=>props.zoomedOutOffset?0:40}px);
-    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform .5s ;
     z-index: 2;
 `
 const DemoWrap = styled.div`
@@ -480,7 +494,7 @@ const DemoWrap = styled.div`
     z-index: 3;
     margin-top: 25px;
     transform: translateY(${props=>props.zoomedOutOffset?0:-(window.innerWidth * .75)/2.75}px);
-    transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform .5s ;
 `
 const DemoToggleWrap = styled(ExpandBox)`
     position: absolute;

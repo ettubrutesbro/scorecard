@@ -202,7 +202,7 @@ export default class Readout extends React.Component{
 
         return(
             <ReadoutBlock
-                className = 'title'
+                className = {['title', this.props.className].join(' ')}
                 compact = {this.props.store.activeWorkflow}
                 tiny = {tiny}
             >
