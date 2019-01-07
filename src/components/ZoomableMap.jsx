@@ -97,8 +97,8 @@ export default class ZoomableMap extends React.Component {
                 // zooming = {props.zoomTo}
                 currentMode = {props.zoomTo? 'zoomed' : 'tall'}
                 modes = {{
-                    tall: {width: window.innerWidth+1, height: window.innerWidth * 1.15},
-                    zoomed: {width: window.innerWidth+1, height: window.innerWidth * .75}
+                    tall: {width: window.innerWidth-1, height: window.innerWidth * 1.15},
+                    zoomed: {width: window.innerWidth-1, height: window.innerWidth * .75}
                 }}
                 // borderColor = 'red'
                 duration = {.5}
@@ -156,7 +156,10 @@ export default class ZoomableMap extends React.Component {
 
 const Container = styled(ExpandBox)`
     position: absolute;
-    left: -2px;
+    // left: -2px;
+    left: -1px;
+
+
 `
 const dots = require('../assets/dots.png')
 const DotGrid = styled.div`

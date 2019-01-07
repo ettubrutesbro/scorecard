@@ -213,7 +213,7 @@ const Section = styled.section`
     padding: 10px 20px 60px 20px;
     transform: translateX(${props=>props.active?0:props.origin}%);
     transition: ${props => props.active||props.isLast? 'transform .5s' : ''};
-    overflow-x: hidden;
+    overflow-x: ${props => props.active? 'hidden' : 'visible'};
     overflow-y: scroll;
 `
 
