@@ -102,6 +102,7 @@ export default class MobileScorecard extends React.Component{
                 >
 
                     {indicator && 
+                        <React.Fragment>
                         <Section
                             active = {current === 'breakdown'}
                             isLast = {last === 'breakdown'}
@@ -115,8 +116,20 @@ export default class MobileScorecard extends React.Component{
                             showFAH = {this.showFAH}
                         />
                         </Section>
-                    }
-                    {indicator && 
+                    
+                        <Section
+                            active = {current === 'demographic' || current === 'sources'}
+                            isLast = {last === 'demographic' || last === 'sources'}
+                            origin = {101}
+                        >
+                            <ReadoutWrapper>
+                                <Readout tiny 
+                                    store = {store} 
+                                    forceCA = {this.props.forceCA}
+                                />
+                            </ReadoutWrapper>
+                        </Section>
+
                         <Section
                             active = {current === 'demographic'}
                             isLast = {last === 'demographic'}
@@ -133,6 +146,9 @@ export default class MobileScorecard extends React.Component{
                             store = {store}
                         />
                         </Section>
+                        </React.Fragment>
+
+
                     }
                 </Content>
                 
@@ -213,7 +229,7 @@ const Section = styled.section`
     padding: 10px 20px 60px 20px;
     transform: translateX(${props=>props.active?0:props.origin}%);
     transition: ${props => props.active||props.isLast? 'transform .5s' : ''};
-    overflow-x: ${props => props.active? 'hidden' : 'visible'};
+    overflow-x: hidden;
     overflow-y: scroll;
 `
 
@@ -365,10 +381,6 @@ const Tables = styled.div`
         return(
             <React.Fragment>
                 <ReadoutWrapper>
-                    <Readout tiny 
-                        store = {store} 
-                        forceCA = {this.props.forceCA}
-                    />
                     <DemoToggleWrap
                         currentMode = {county? 'show' : 'hide'}
                         modes = {{
@@ -464,3 +476,7 @@ const DemoToggleWrap = styled(ExpandBox)`
         background: var(--offwhitefg);
     }
 `
+
+const Sources = (props) => {
+
+}
