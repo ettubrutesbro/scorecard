@@ -6,10 +6,6 @@ import styled from 'styled-components'
 import {mapValues} from 'lodash'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
-import 'sync-scroll'
-
-// import SyncScroll, {SyncScrollPane} from 'react-scroll-sync'
-// import 'react-scroll-sync'
 
 
 import indicators from './data/indicators'
@@ -121,7 +117,7 @@ export default class MobileScorecard extends React.Component{
                             showFAH = {this.showFAH}
                         />
                         </Section>
-
+                    
                         <Section
                             className = {'syncscroll'}
                             name = {'synced'}
@@ -129,13 +125,15 @@ export default class MobileScorecard extends React.Component{
                             isLast = {last === 'demographic' || last === 'sources'}
                             origin = {101}
                         >
+                            <Spacer>
+                            scrollsync
                             <ReadoutWrapper>
                                 <Readout tiny 
                                     store = {store} 
                                     forceCA = {this.forceCA}
                                 />
                             </ReadoutWrapper>
-                            <BullshitSpacer />
+                            </Spacer>
                         </Section>
 
                         <Section
@@ -229,7 +227,7 @@ export default class MobileScorecard extends React.Component{
     }
 }
 
-const Section = styled.div`
+const Section = styled.section`
     margin-top: 55px;
     margin-bottom: 67px;
     position: absolute;
@@ -271,8 +269,8 @@ const Content = styled.div`
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
-const BullshitSpacer = styled.div`
-    height: 1400px;
+const Spacer = styled.div`
+    height: 1079px;
 `
 const SectionChooser = styled.div`
     // padding: 0 10px;
