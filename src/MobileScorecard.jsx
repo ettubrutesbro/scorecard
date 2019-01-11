@@ -90,7 +90,6 @@ export default class MobileScorecard extends React.Component{
         return(
             <div>
                 <Styles />
-                {!this.init && 
                 <MobileNav 
                     store = {store}
                     showShorthand = {this.showShorthand}
@@ -105,7 +104,13 @@ export default class MobileScorecard extends React.Component{
                 />
                 }
                 {!indicator && this.init &&
-                    <button value = 'init' onClick = {()=>{
+                    <button value = 'init' 
+                    style = {{
+                        position: 'absolute',
+                        top: '200px',
+                        zIndex: 1300
+                    }}
+                    onClick = {()=>{
                         this.setInit(false)
                         this.setNavStatus(true)
                     }}> huh </button>

@@ -80,6 +80,12 @@ export default class MobileNav extends React.Component{
         this.indListHeaderBlock = React.createRef()
     }
 
+    componentDidUpdate(prevProps){
+        if(this.props.init !== prevProps.init && !this.props.init){
+            this.setMode('indicator')
+        }
+    }
+
     render(){ 
         const props = this.props
         const {open, store} = props
