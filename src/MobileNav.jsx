@@ -333,8 +333,19 @@ export default class MobileNav extends React.Component{
 
                     <Btn active = {this.mode} superwide = {this.mode && !indicator}>
                         {!indicator && 'Choose an indicator.'}
-                        {!this.justComplete.county && !this.justComplete.race && !this.justComplete.indicator && indicator && 'Back to view'}
-                        {(this.justComplete.county || this.justComplete.race || this.justComplete.indicator) && indicator && 'View new data'}
+                        {!this.justComplete.county && !this.justComplete.race && !this.justComplete.indicator && indicator && 
+                            <React.Fragment>
+                                Back to view
+                                <CollapseHeaderIcon img = "chevup" color = 'white' />
+                            </React.Fragment>
+                        }
+                        {(this.justComplete.county || this.justComplete.race || this.justComplete.indicator) && indicator && 
+                            <React.Fragment>
+                                See results
+                                <SaveHeaderIcon img = "check" color = 'white' />
+                            </React.Fragment>
+                        }
+                        
                     </Btn>
                 </HeaderContent>
             </Header>
@@ -952,3 +963,12 @@ const ItemInfo = styled.div`
     font-size: 12px;
     color: var(--fainttext);
 `
+
+const HeaderBtnIcon = styled(Icon)`
+    width: 18px; height: 18px;
+`
+const CollapseHeaderIcon = styled(HeaderBtnIcon)`
+    width: 25px; height: 25px;
+    margin-left: 15px;
+`
+const SaveHeaderIcon = styled(HeaderBtnIcon)``
