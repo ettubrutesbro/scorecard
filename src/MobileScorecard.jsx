@@ -32,6 +32,10 @@ export default class MobileScorecard extends React.Component{
 
     @observable navOpen = false
     @observable showShorthand = false
+
+    @observable init = true
+    @action setInit = (tf) => this.init = tf
+
     @action toggleHeaderInfo = (tf) => {
         this.showShorthand = tf
     }
@@ -86,6 +90,7 @@ export default class MobileScorecard extends React.Component{
         return(
             <div>
                 <Styles />
+                {!this.init && 
                 <MobileNav 
                     store = {store}
                     showShorthand = {this.showShorthand}
@@ -96,7 +101,15 @@ export default class MobileScorecard extends React.Component{
                     allowBodyOverflow = {this.allowBodyOverflow}
 
                     setForceCA = {this.setForceCA}
+                    init = {this.init}
                 />
+                }
+                {!indicator && this.init &&
+                    <button value = 'init' onClick = {()=>{
+                        this.setInit(false)
+                        this.setNavStatus(true)
+                    }}> huh </button>
+                }
 
                 <Content
                     offsetForNav = {this.navOpen && current === 'breakdown'? 150
@@ -159,7 +172,7 @@ export default class MobileScorecard extends React.Component{
                 </Content>
                 
                 <SectionChooser
-                    visible = {!this.navOpen}
+                    visible = {!this.navOpen && !this.init}
                 >
                     <BreakdownBtn>
                         <SecSprite img = "ind"
