@@ -22,6 +22,12 @@ import ExpandBox from './components/ExpandBox'
 import FixedActionsHelper from './components/FixedActionsHelper'
 
 
+const peachBGAnim = keyframes`
+    from{
+        background-color: var(--faintestpeach);
+    }
+    to{ background-color: white; }
+`
 
 @observer
 export default class MobileNav extends React.Component{
@@ -49,6 +55,9 @@ export default class MobileNav extends React.Component{
     @action justCompleted = (what) => {
         this.workflowScrollPos = 0
         this.userScrolledDownInWorkflow = false
+        Object.keys(this.justComplete).map((wat)=>{
+            if(wat!==what) this.justComplete[wat] = false
+        })
         this.justComplete[what] = true
     }
 
@@ -174,8 +183,12 @@ export default class MobileNav extends React.Component{
                         </ExpandBox>
             </div>,
 
-            <div key = 'indicator' style = {{height: this.mode==='compact'?'117px':'50px', marginLeft: '-1px',zIndex: this.mode==='indicator'?0:1}}>
-                <ExpandBox
+            <div key = 'indicator' style = {{
+                height: this.mode==='compact'?'117px':'50px', 
+                marginLeft: '-1px',
+                zIndex: this.mode==='indicator'?0:1,
+            }}>
+                <IndExpandBox
                     ref = {this.indList}
                     withScroll
                     hideScroll = {this.mode!=='indicator'}
@@ -187,11 +200,17 @@ export default class MobileNav extends React.Component{
                         compactTruncated: {width: window.innerWidth+1, height: 50},
                         fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
-                    backgroundColor = {this.mode==='indicator'? 'var(--offwhitefg)' : 'white'}
+                    backgroundColor = {
+                        this.mode==='indicator'? 'var(--offwhitefg)' 
+                        : 'transparent'
+                    }
+                    boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 2s' : ''}
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
                     } : ()=>{} }
+
+                    justComplete = {this.justComplete.indicator}
                 >
                     <div>
                     <IntersectionObserver
@@ -208,7 +227,7 @@ export default class MobileNav extends React.Component{
                         prompt = 'Choose an indicator.'
                         return = {()=>this.setMode('compact')}
                         truncateValue = {this.mode==='county' || this.mode==='race'}
-                        justComplete = {this.justComplete.indicator}
+                        justComplete = {this.mode === 'compact' && this.justComplete.indicator}
 
                         yearToggle = {this.mode!=='race' && this.mode !== 'county' && indicator? (
                             <YearToggle
@@ -239,7 +258,7 @@ export default class MobileNav extends React.Component{
                         />
                     }
                     </div>
-                </ExpandBox>
+                </IndExpandBox>
             </div>,
             
         ].sort((a,b)=>{
@@ -324,7 +343,7 @@ export default class MobileNav extends React.Component{
                     <BarContent active = {!this.mode}>
                         <SearchIcon img = "searchzoom" color = 'white'/>
                         <Prompt visible = {!this.props.showShorthand}>
-                            Refine / restart your search...
+                            Search data...
                         </Prompt>
                         <Shorthand visible = {this.props.showShorthand}>
                             {indicator && semanticTitles[indicator].shorthand}
@@ -335,14 +354,14 @@ export default class MobileNav extends React.Component{
                         {!indicator && 'Choose an indicator.'}
                         {!this.justComplete.county && !this.justComplete.race && !this.justComplete.indicator && indicator && 
                             <React.Fragment>
-                                Back to view
+                                Cancel
                                 <CollapseHeaderIcon img = "chevup" color = 'white' />
                             </React.Fragment>
                         }
                         {(this.justComplete.county || this.justComplete.race || this.justComplete.indicator) && indicator && 
                             <React.Fragment>
                                 See results
-                                <SaveHeaderIcon img = "check" color = 'white' />
+                                <SaveHeaderIcon img = "check" color = 'peach' />
                             </React.Fragment>
                         }
                         
@@ -493,6 +512,7 @@ const YearToggle = styled(Toggle)`
                 disabled = {props.disabled} 
                 multiline = {props.multiline && !props.truncateValue} 
                 onClick = {!props.open? props.onClick : ()=>{}}
+                justComplete = {props.justComplete}
             >
                 {!props.noSearch && props.open && 
                     <NavSearchBlock
@@ -553,6 +573,7 @@ const YearToggle = styled(Toggle)`
                         duration = {.2}
                         img = 'caretx'
                         state = {props.open? 'up' : 'down'}
+                        color = {props.justComplete? 'fainttext' : 'normtext'}
                         disabled = {props.disabled}
                         onClick = {props.open? props.return : ()=>{} }
                     />
@@ -562,6 +583,7 @@ const YearToggle = styled(Toggle)`
         )
     }
 }
+
 const MSB = styled.div`
     padding: 0 25px;
     display: flex;
@@ -572,7 +594,8 @@ const MSB = styled.div`
         `
         : `align-items: center;`}
     justify-content: space-between;
-    background: ${props => props.disabled? 'var(--disabledgrey)' : 'transparent'};
+    background: ${props => props.justComplete? 'var(--faintestpeach)' :  props.disabled? 'var(--disabledgrey)' : 'transparent'};
+    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 2s; 
 
 `
 const MSBLabel = styled.div`
@@ -617,7 +640,7 @@ const NavSearchBlock = styled.div`
     pointer-events: ${props => props.active? 'auto' : 'none'};
 `
 const NavSearchInput = styled.input`
-    /*position: absolute; top: 9px;*/
+    /*position: absolute; top: 9px;*/animat
     border: none;
     appearance: none; outline: none; background: transparent;
     width: calc(100vw - 160px);
@@ -631,6 +654,10 @@ const ClearCancelSearch = styled.div`
     color: var(--strokepeach);
     font-size: 14px; letter-spacing: 0.5px;
 `
+const textPeachToBlack = keyframes`
+    0% { color: var(--strokepeach);}
+    100% { color: var(--normtext);}
+`
 const Val = styled.div`
     font-size: 14px;
     flex-shrink: 1;
@@ -641,7 +668,8 @@ const Val = styled.div`
     opacity: ${props=>props.visible? 1 : 0};
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
-    color: ${props => props.justComplete? 'var(--normtext)' : 'var(--fainttext)'};
+    color: ${props => props.justComplete? 'var(--strokepeach)': 'var(--fainttext)'};
+    animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 2s;
     ${props => props.multiline? `
         // height: 21px;
     ` : ''}
@@ -813,6 +841,7 @@ const WorkflowList = styled.ul`
     overscroll-behavior: contain;
 `
 const ListRow = styled.li`
+    position: relative;
     list-style-type: none;    
     font-size: 14px;
     line-height: 21px;
@@ -826,7 +855,9 @@ const ListRow = styled.li`
     align-items: center;
     justify-content: space-between;
     &.selected{
-        background: var(--faintpeach);
+        background: var(--faintestpeach);
+        border-color: var(--peach);
+        z-index: 3;
     }
     &.invalid{
         background: var(--offwhitefg);
@@ -966,9 +997,15 @@ const ItemInfo = styled.div`
 
 const HeaderBtnIcon = styled(Icon)`
     width: 18px; height: 18px;
+    margin-left: 8px;
+    flex-shrink: 0;
 `
 const CollapseHeaderIcon = styled(HeaderBtnIcon)`
-    width: 25px; height: 25px;
-    margin-left: 15px;
+    // width: 25px; height: 25px;
 `
 const SaveHeaderIcon = styled(HeaderBtnIcon)``
+
+const IndExpandBox = styled(ExpandBox)`
+    background-color: ${props => props.justComplete? 'var(--faintestpeach)' : 'transparent'};
+    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 2s;
+`
