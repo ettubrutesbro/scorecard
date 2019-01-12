@@ -82,7 +82,7 @@ export default class MobileNav extends React.Component{
 
     componentDidUpdate(prevProps){
         if(this.props.init !== prevProps.init && !this.props.init){
-            this.setMode('indicator')
+            this.setMode('compact')
         }
     }
 
@@ -279,15 +279,15 @@ export default class MobileNav extends React.Component{
 
         return(
             <FixWrap>
-                {!this.props.init &&
                 <PickMenu
-                    currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
+                    currentMode = {!this.mode || this.props.init? 'closed' : (this.mode==='compact' && !indicator)? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
                         closed: {width: window.innerWidth+1, height: 25},
                         fullsize: {width: window.innerWidth+1, height: store.mobileDeviceHeight+100},
                         openNoInd: {width: window.innerWidth+1, height: 200},
                         open: {width: window.innerWidth+1, height: 267}    
                     }}
+                    init = {this.props.init}
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
                 >
                     <FlipMove
@@ -303,7 +303,7 @@ export default class MobileNav extends React.Component{
                             to: {transform: 'translateY(-100%)'}
                         }}
                     >
-                        {(!this.mode || this.mode==='compact') &&
+                        {(!this.mode || this.mode==='compact') && 
                             <div style = {{
                                 position: 'relative', zIndex: 5,
                                 display: 'flex', alignItems: 'center',
@@ -318,9 +318,11 @@ export default class MobileNav extends React.Component{
                         })}
                     </FlipMove>
                 </PickMenu>
-            }
+            
             <HeaderGroup
-                offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
+                offset = {
+                    this.props.init? `0, -80px`
+                    : this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
                     : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${store.mobileDeviceHeight+25}px`
                     : !this.mode? '0,0' 
                     : this.mode==='compact' && !indicator? `${window.innerWidth - 175}px,215px`
@@ -708,7 +710,7 @@ const PickMenu = styled(ExpandBox)`
     top: -1px; left: -1px;
     // height: 83px;
     z-index: 1;
-    transform: translateY(${props => props.workflowScrollOffset? -100 : 0}px);
+    transform: translateY(${props => props.init? -25 : props.workflowScrollOffset? -100 : 0}px);
     transition: transform .35s;
 `
 const Header = styled(ExpandBox)`
