@@ -24,6 +24,7 @@ import Readout from '../src/components/Readout'
 import ZoomableMap from '../src/components/ZoomableMap'
 import DemoBox from '../src/components/DemoBox'
 import {MobileSources} from '../src/components/Sources'
+import InitBox from '../src/components/InitBox'
 
 const width = window.innerWidth - 50
 
@@ -104,7 +105,9 @@ export default class MobileScorecard extends React.Component{
                         : 0
                     }
                 >
-
+                    {!indicator && 
+                        <InitBox store = {store} />
+                    }
                     {indicator && 
                         <React.Fragment>
                         <Section
@@ -159,7 +162,7 @@ export default class MobileScorecard extends React.Component{
                 </Content>
                 
                 <SectionChooser
-                    visible = {!this.navOpen}
+                    visible = {!this.navOpen && indicator}
                 >
                     <BreakdownBtn>
                         <SecSprite img = "ind"
