@@ -178,7 +178,7 @@ const SourceBlock = styled.div`
         a {font-size: 12px; margin-top: 8px;}
         h3 { 
             position: absolute;
-            top: -20px; left: -5px;
+            top: -20px; left: -5px; 
             transform: translateY(-50%);
             font-size: 12px;
             padding: 0 15px;
@@ -351,6 +351,7 @@ const MobSources = styled.div`
     // height: 1000px;
     // border: 1px solid red;
     background: var(--offwhitefg);
+    margin-bottom: 100px;
 `
 
 export {MobileSources}
