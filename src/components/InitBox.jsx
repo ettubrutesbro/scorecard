@@ -142,9 +142,10 @@ export default class InitBox extends React.Component{
                     <p>{copy.firstpara}</p>
                     <p>{copy.secondpara}</p>
                     <aside>{copy.compatibility}</aside>
-                    <MobileStartButton>
-                        Get started
-                    </MobileStartButton>
+                    <MobileStartButton 
+                        className = {'negative'}
+                        label = 'Get started'
+                    />
                 </article>
 
             </MobileVer>
@@ -162,7 +163,7 @@ const MobileVer = styled.div`
     article {
         position: relative;
         border: 1px solid var(--bordergrey);
-        padding: 30px 20px 30px 20px;
+        padding: 30px 20px 45px 20px;
         font-size: 14px; letter-spacing: 0.5px;
         h1{
             font-size: 16px;
@@ -180,12 +181,24 @@ const MobileVer = styled.div`
             font-size: 12px;
             color: var(--fainttext);
         }
+        &::before{
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: 15px;
+            width: 150px;
+            height: 1px;
+            background: var(--offwhitefg);
+            margin-top: 1;
+        }
     }
 `
 const MobileStartButton = styled(Button)`
     position: absolute; bottom: 0;
     right: 30px;
     transform: translateY(50%);
+    z-index: 2;
+
 `
 
 const Start = styled.div`
