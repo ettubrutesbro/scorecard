@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import {mapValues} from 'lodash'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
-
+import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
 import media from './utilities/media'
@@ -73,9 +73,18 @@ export default class MobileScorecard extends React.Component{
         console.log('forceCA:',tf)
     }
 
+    @observable init = true
+    @action setInit = (tf) => {
+        this.init = tf
+    }
+
     constructor(){
         super()
         this.breakdown = React.createRef()
+    }
+
+    componentWillMount(){
+        if(this.props.store.indicator) this.setInit(false)
     }
 
     render(){
@@ -88,6 +97,7 @@ export default class MobileScorecard extends React.Component{
             <div>
                 <Styles />
                 <MobileNav 
+                    hide = {this.init}
                     store = {store}
                     showShorthand = {this.showShorthand}
                     setNavStatus = {this.setNavStatus}
@@ -105,9 +115,24 @@ export default class MobileScorecard extends React.Component{
                         : 0
                     }
                 >
-                    {!indicator && 
-                        <InitBox store = {store} />
+                    <FlipMove
+                        typeName = {null}
+                        enterAnimation = {{
+                            from: {opacity: 0, transform: 'translateY(-70px)'},
+                            to: {opacity: 1, transform: 'translateY(0)'}
+                        }}
+                        leaveAnimation = {{
+                            from: {opacity: 1, transform: 'translateY(0px)'},
+                            to: {opacity: 0, transform: 'translateY(70px)'}
+                        }}
+                    >
+                    {this.init && 
+                        <InitBox 
+                            store = {store} 
+                            closeSplash = {()=>this.setInit(false)}
+                        />
                     }
+                    </FlipMove>
                     {indicator && 
                         <React.Fragment>
                         <Section

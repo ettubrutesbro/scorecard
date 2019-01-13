@@ -6,8 +6,12 @@ import {Button} from './generic'
 import media from '../utilities/media'
 import {capitalize} from '../utilities/toLowerCase'
 
+import Ricon from './generic/Icon'
+
 import browserCompatibility from '../data/browserCompatibility'
 import copy from './InitCopy'
+
+
 
 const Box = styled.div`
 
@@ -144,7 +148,15 @@ export default class InitBox extends React.Component{
                     <aside>{copy.compatibility}</aside>
                     <MobileStartButton 
                         className = {'negative'}
-                        label = 'Get started'
+                        onClick = {this.props.closeSplash}
+                        label = {
+                            <React.Fragment>
+                                Browse data
+                                <SearchIcon img = 'searchzoom'
+                                    color = 'white'
+                                />
+                            </React.Fragment>
+                        }
                     />
                 </article>
 
@@ -163,8 +175,9 @@ const MobileVer = styled.div`
     article {
         position: relative;
         border: 1px solid var(--bordergrey);
-        padding: 30px 20px 45px 20px;
+        padding: 30px 20px 50px 20px;
         font-size: 14px; letter-spacing: 0.5px;
+            margin-bottom: 50px;
         h1{
             font-size: 16px;
             top: 0; left: 0;
@@ -186,7 +199,7 @@ const MobileVer = styled.div`
             position: absolute;
             bottom: -1px;
             right: 15px;
-            width: 150px;
+            width: 183px;
             height: 1px;
             background: var(--offwhitefg);
             margin-top: 1;
@@ -198,7 +211,12 @@ const MobileStartButton = styled(Button)`
     right: 30px;
     transform: translateY(50%);
     z-index: 2;
+    padding: 15px 20px;
 
+`
+const SearchIcon = styled(Ricon)`
+    height: 18px; width: 18px;
+    margin-left: 10px;
 `
 
 const Start = styled.div`

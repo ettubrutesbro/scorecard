@@ -80,6 +80,12 @@ export default class MobileNav extends React.Component{
         this.indListHeaderBlock = React.createRef()
     }
 
+    componentWillUpdate(newProps){
+        if(this.props.hide && !newProps.hide){
+            this.setMode('compact')
+        }
+    }    
+
     render(){ 
         const props = this.props
         const {open, store} = props
@@ -272,7 +278,10 @@ export default class MobileNav extends React.Component{
         const ctyListHeaderBlockRef = this.ctyListHeaderBlock
 
         return(
-            <FixWrap>
+            <FixWrap
+                hide = {this.props.hide}
+                // className = {this.props.className}
+            >
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
@@ -687,6 +696,9 @@ const FixWrap = styled.div`
     top: -1px; left: -1px;
     z-index: 10;
     width: calc(100% + 1px);
+
+    transform: translateY(${props=>props.hide? -75: 0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);   
 `
 const WorkflowWrap = styled.div`
     border: 1px solid red;
