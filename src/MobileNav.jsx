@@ -110,7 +110,6 @@ export default class MobileNav extends React.Component{
                         fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
-                    delay = {this.mode==='county'? '.175s' : 0}
                     noBorderTop = {this.mode==='compact' || !this.mode}
 
                     withScroll
@@ -166,7 +165,6 @@ export default class MobileNav extends React.Component{
                                 fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
-                            delay = {this.mode==='race'? '.175s' : 0}
                             // hideScroll = {this.mode!=='race'}
                         >
                             <div>
@@ -332,14 +330,14 @@ export default class MobileNav extends React.Component{
                 // delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             > 
              <Header 
-                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
+                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact' || this.props.hide? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
                     button: {width: 160, height: 55},
                     offscreen: {width: 160, height: 55},
                     noIndicator: {width: 215, height: 55}
                 }}
-                backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
+                backgroundColor = {this.props.hide || (this.mode && !indicator)? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
                 borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
                 duration = {.425}
             >
@@ -445,7 +443,6 @@ const HeaderGroup = styled.div`
 
     transform: translate(${props=>props.offset});
     transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-delay: ${props => props.delay === '.175s'? '.175s' : '0s'};
 `
 
 
@@ -846,10 +843,6 @@ const WorkflowList = styled.ul`
     white-space: normal;
     margin: 15px 0 0 0;
     padding: 0 25px 50px 25px;
-    &.notIndicator{
-        opacity: 0;
-        animation: .2s ease-in .2s forwards ${FadeInWorkflow};
-    }
     overscroll-behavior: contain;
 `
 const ListRow = styled.li`
