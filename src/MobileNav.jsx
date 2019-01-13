@@ -398,7 +398,9 @@ export default class MobileNav extends React.Component{
         </HeaderGroup>
 
             <MaskGapBlocker />
-            <Mask visible = {this.mode}/>
+            <Mask visible = {this.mode}
+                onClick = {()=>this.setMode(false)}
+            />
             {(this.mode === 'county' || this.mode === 'indicator' || !this.mode) && //eventually, indbycty table expanded...
                 <FixedActionsHelper 
                     id = "fixedactions" 
