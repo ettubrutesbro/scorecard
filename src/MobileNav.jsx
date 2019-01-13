@@ -208,7 +208,7 @@ export default class MobileNav extends React.Component{
                         this.mode==='indicator'? 'var(--offwhitefg)' 
                         : 'transparent'
                     }
-                    boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 2s' : ''}
+                    boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 1.5s' : ''}
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
@@ -276,10 +276,7 @@ export default class MobileNav extends React.Component{
         const ctyListHeaderBlockRef = this.ctyListHeaderBlock
 
         return(
-            <FixWrap
-                hide = {this.props.hide}
-                // className = {this.props.className}
-            >
+            <FixWrap  hide = {this.props.hide}>
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
@@ -318,6 +315,7 @@ export default class MobileNav extends React.Component{
                         })}
                     </FlipMove>
                 </PickMenu>
+            
             <HeaderGroup
                 offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
                     : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${store.mobileDeviceHeight+25}px`
@@ -327,7 +325,6 @@ export default class MobileNav extends React.Component{
                     : `${window.innerWidth - 175}px,${store.mobileDeviceHeight+25}px`
                 }
                 duration = {.425}
-                // delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             > 
              <Header 
                 currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact' || this.props.hide? 'button' : 'offscreen'}
@@ -441,7 +438,7 @@ const MaskGapBlocker = styled.div`
 const HeaderGroup = styled.div`
     position: absolute; top: 0; left: 0;
     height: 55px; width: 100%;
-    z-index: 3;
+    z-index: 13;
 
     transform: translate(${props=>props.offset});
     transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -459,6 +456,7 @@ const ResetButton = styled.div`
     transform: translateX(${props=>props.show? 0 : 129}px);
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     transition-delay: ${props=>props.show? .425 : 0}s;
+    opacity: ${props => props.show? 1 : 0};
     display: flex; align-items: center;
     justify-content: center;
 `
@@ -469,8 +467,9 @@ const ResetIcon = styled(Icon)`
 
 const Mask = styled.div`
     width: 100vw;
-    height: ${props => props.visible? 'calc(100vh + 2px)' : '0px'};
+    height: calc(100vh + 2px);
     background: linear-gradient(180deg, var(--offwhitefg) 300px, rgba(252, 253, 255, 0.725) 100%);
+    pointer-events: ${props => props.visible? 'auto' : 'none'};
     /*background: var(--offwhitefg);*/
     /*background: linear-gradient(180deg, var(--offwhitebg) 53%, rgba(0, 0, 0, 0.5) 100%);*/
     opacity: ${props => props.visible? 1 : 0};
@@ -603,7 +602,7 @@ const MSB = styled.div`
         : `align-items: center;`}
     justify-content: space-between;
     background: ${props => props.justComplete? 'var(--faintestpeach)' :  props.disabled? 'var(--disabledgrey)' : 'transparent'};
-    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 2s; 
+    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s; 
 
 `
 const MSBLabel = styled.div`
@@ -677,7 +676,7 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
     color: ${props => props.justComplete? 'var(--strokepeach)': 'var(--fainttext)'};
-    animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 2s;
+    animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 1.5s;
     ${props => props.multiline? `
         // height: 21px;
     ` : ''}
@@ -1014,5 +1013,5 @@ const SaveHeaderIcon = styled(HeaderBtnIcon)``
 
 const IndExpandBox = styled(ExpandBox)`
     background-color: ${props => props.justComplete? 'var(--faintestpeach)' : 'transparent'};
-    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 2s;
+    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;
 `

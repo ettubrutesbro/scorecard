@@ -33,6 +33,10 @@ export default class MobileScorecard extends React.Component{
 
     @observable navOpen = false
     @observable showShorthand = false
+
+    @observable init = true
+    @action setInit = (tf) => this.init = tf
+
     @action toggleHeaderInfo = (tf) => {
         this.showShorthand = tf
     }
@@ -107,8 +111,8 @@ export default class MobileScorecard extends React.Component{
                     allowBodyOverflow = {this.allowBodyOverflow}
 
                     setForceCA = {this.setForceCA}
+                    init = {this.init}
                 />
-
                 <Content
                     offsetForNav = {this.navOpen && current === 'breakdown'? 150
                         : this.navOpen && current === 'demographic'? 80
