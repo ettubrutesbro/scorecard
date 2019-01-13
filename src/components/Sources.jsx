@@ -111,6 +111,7 @@ const Indicator = styled.div`
         margin-bottom: 0;
         border-bottom: 0px solid transparent;
         padding-bottom: 0;
+        margin: 25px 0 35px 0;
         padding: 20px;
         border: 1px solid var(--bordergrey);
     }
@@ -125,7 +126,7 @@ const FadeCropper = styled.div`
 
 `
 const SourceBlock = styled.div`
-
+    position: relative;
     
     &:first-of-type{
         margin-top: 0;
@@ -175,7 +176,14 @@ const SourceBlock = styled.div`
             font-size: 14px; letter-spacing: 0.5px;
         }
         a {font-size: 12px; margin-top: 8px;}
-        h3 { display: none;}
+        h3 { 
+            position: absolute;
+            top: -20px; left: -5px; 
+            transform: translateY(-50%);
+            font-size: 12px;
+            padding: 0 15px;
+            background: var(--offwhitefg);
+        }
 
     }
 
@@ -343,6 +351,7 @@ const MobSources = styled.div`
     // height: 1000px;
     // border: 1px solid red;
     background: var(--offwhitefg);
+    margin-bottom: 100px;
 `
 
 export {MobileSources}

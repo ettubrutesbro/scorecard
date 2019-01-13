@@ -29,7 +29,8 @@ const icons = {
         <path d="M29.5,17.4v1.5h-17v-1.5H29.5 M30.5,16.4h-19v3.5h19V16.4L30.5,16.4z"/>
     </g>,
     check: <polygon points="29.5,7.5 14.9,24.7 8,17.1 4.6,17.1 14.9,28.5 31.4,9.2 "/>,
-        
+    getstartedarrow: <polygon points="24.8,10 23.6,11 28.2,16.2 6,16.2 6,17.8 28.2,17.8 23.6,23 24.8,24 31.1,17 "/>,
+
 }
 
 const IconWrapper = styled.div`

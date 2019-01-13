@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import {mapValues} from 'lodash'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
-
+import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
 import media from './utilities/media'
@@ -24,6 +24,7 @@ import Readout from '../src/components/Readout'
 import ZoomableMap from '../src/components/ZoomableMap'
 import DemoBox from '../src/components/DemoBox'
 import {MobileSources} from '../src/components/Sources'
+import InitBox from '../src/components/InitBox'
 
 const width = window.innerWidth - 50
 
@@ -76,9 +77,18 @@ export default class MobileScorecard extends React.Component{
         console.log('forceCA:',tf)
     }
 
+    @observable init = true
+    @action setInit = (tf) => {
+        this.init = tf
+    }
+
     constructor(){
         super()
         this.breakdown = React.createRef()
+    }
+
+    componentWillMount(){
+        if(this.props.store.indicator) this.setInit(false)
     }
 
     render(){
@@ -91,6 +101,7 @@ export default class MobileScorecard extends React.Component{
             <div>
                 <Styles />
                 <MobileNav 
+                    hide = {this.init}
                     store = {store}
                     showShorthand = {this.showShorthand}
                     setNavStatus = {this.setNavStatus}
@@ -102,27 +113,30 @@ export default class MobileScorecard extends React.Component{
                     setForceCA = {this.setForceCA}
                     init = {this.init}
                 />
-                }
-                {!indicator && this.init &&
-                    <button value = 'init' 
-                    style = {{
-                        position: 'absolute',
-                        top: '200px',
-                        zIndex: 1300
-                    }}
-                    onClick = {()=>{
-                        this.setInit(false)
-                        this.setNavStatus(true)
-                    }}> huh </button>
-                }
-
                 <Content
                     offsetForNav = {this.navOpen && current === 'breakdown'? 150
                         : this.navOpen && current === 'demographic'? 80
                         : 0
                     }
                 >
-
+                    <FlipMove
+                        typeName = {null}
+                        enterAnimation = {{
+                            from: {opacity: 0, transform: 'translateY(-70px)'},
+                            to: {opacity: 1, transform: 'translateY(0)'}
+                        }}
+                        leaveAnimation = {{
+                            from: {opacity: 1, transform: 'translateY(0px)'},
+                            to: {opacity: 0, transform: 'translateY(70px)'}
+                        }}
+                    >
+                    {this.init && 
+                        <InitBox 
+                            store = {store} 
+                            closeSplash = {()=>this.setInit(false)}
+                        />
+                    }
+                    </FlipMove>
                     {indicator && 
                         <React.Fragment>
                         <Section
@@ -177,7 +191,7 @@ export default class MobileScorecard extends React.Component{
                 </Content>
                 
                 <SectionChooser
-                    visible = {!this.navOpen && !this.init}
+                    visible = {!this.navOpen && indicator}
                 >
                     <BreakdownBtn>
                         <SecSprite img = "ind"

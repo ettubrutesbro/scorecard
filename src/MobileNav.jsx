@@ -80,11 +80,11 @@ export default class MobileNav extends React.Component{
         this.indListHeaderBlock = React.createRef()
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.init !== prevProps.init && !this.props.init){
-            this.setMode('indicator')
+    componentWillUpdate(newProps){
+        if(this.props.hide && !newProps.hide){
+            this.setMode('compact')
         }
-    }
+    }    
 
     render(){ 
         const props = this.props
@@ -110,7 +110,6 @@ export default class MobileNav extends React.Component{
                         fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
-                    delay = {this.mode==='county'? '.175s' : 0}
                     noBorderTop = {this.mode==='compact' || !this.mode}
 
                     withScroll
@@ -166,7 +165,6 @@ export default class MobileNav extends React.Component{
                                 fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
-                            delay = {this.mode==='race'? '.175s' : 0}
                             // hideScroll = {this.mode!=='race'}
                         >
                             <div>
@@ -278,8 +276,7 @@ export default class MobileNav extends React.Component{
         const ctyListHeaderBlockRef = this.ctyListHeaderBlock
 
         return(
-            <FixWrap>
-                {!this.props.init &&
+            <FixWrap  hide = {this.props.hide}>
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
@@ -318,7 +315,7 @@ export default class MobileNav extends React.Component{
                         })}
                     </FlipMove>
                 </PickMenu>
-            }
+            
             <HeaderGroup
                 offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
                     : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${store.mobileDeviceHeight+25}px`
@@ -328,17 +325,16 @@ export default class MobileNav extends React.Component{
                     : `${window.innerWidth - 175}px,${store.mobileDeviceHeight+25}px`
                 }
                 duration = {.425}
-                // delay = {(this.mode==='county' || this.mode==='race')? '.175s' : '0s' }
             > 
              <Header 
-                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact'? 'button' : 'offscreen'}
+                currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact' || this.props.hide? 'button' : 'offscreen'}
                 modes = {{
                     bar: {width: window.innerWidth, height: 55},
                     button: {width: 160, height: 55},
                     offscreen: {width: 160, height: 55},
                     noIndicator: {width: 215, height: 55}
                 }}
-                backgroundColor = {this.mode && !indicator? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
+                backgroundColor = {this.props.hide || (this.mode && !indicator)? 'var(--offwhitefg)' : 'var(--offwhitebg)'}
                 borderColor = {this.mode && !indicator? 'var(--bordergrey)' : 'var(--offwhitebg)'}
                 duration = {.425}
             >
@@ -399,7 +395,9 @@ export default class MobileNav extends React.Component{
         </HeaderGroup>
 
             <MaskGapBlocker />
-            <Mask visible = {this.mode}/>
+            <Mask visible = {this.mode}
+                onClick = {()=>this.setMode(false)}
+            />
             {(this.mode === 'county' || this.mode === 'indicator' || !this.mode) && //eventually, indbycty table expanded...
                 <FixedActionsHelper 
                     id = "fixedactions" 
@@ -444,7 +442,6 @@ const HeaderGroup = styled.div`
 
     transform: translate(${props=>props.offset});
     transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition-delay: ${props => props.delay === '.175s'? '.175s' : '0s'};
 `
 
 
@@ -697,6 +694,9 @@ const FixWrap = styled.div`
     top: -1px; left: -1px;
     z-index: 10;
     width: calc(100% + 1px);
+
+    transform: translateY(${props=>props.hide? -75: 0}px);
+    transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);   
 `
 const WorkflowWrap = styled.div`
     border: 1px solid red;
@@ -844,10 +844,6 @@ const WorkflowList = styled.ul`
     white-space: normal;
     margin: 15px 0 0 0;
     padding: 0 25px 50px 25px;
-    &.notIndicator{
-        opacity: 0;
-        animation: .2s ease-in .2s forwards ${FadeInWorkflow};
-    }
     overscroll-behavior: contain;
 `
 const ListRow = styled.li`
