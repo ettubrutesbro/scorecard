@@ -666,7 +666,7 @@ const NavSearchBlock = styled.div`
     pointer-events: ${props => props.active? 'auto' : 'none'};
 `
 const NavSearchInput = styled.input`
-    /*position: absolute; top: 9px;*/animat
+    /*position: absolute; top: 9px;*/
     border: none;
     appearance: none; outline: none; background: transparent;
     width: calc(100vw - 160px);
