@@ -11,7 +11,6 @@ import HorizontalBarGraph from './HorizontalBarGraph'
 import {capitalize} from '../utilities/toLowerCase'
 import media from '../utilities/media'
 
-const width = window.innerWidth - 50
 
 const races = [
     'asian', 'black', 'latinx', 'white', 'other'
@@ -48,7 +47,8 @@ export default class IndicatorByRaces extends React.Component{
         if(this.props.expand) this.hover(false)
     }
     render(){
-        const {indicator, year, county, colorScale, screen, setHover, hoveredRace} = this.props.store
+        const store = this.props.store
+        const {indicator, year, county, colorScale, screen, setHover, hoveredRace} = store
         const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
 
@@ -96,8 +96,8 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: screen==='mobile'? 170: 150},
-                        collapsed: {width: screen==='mobile'?width : screen==='optimal'?610:480, height: 50},
+                        expanded: {width: screen==='mobile'?store.mobileDeviceWidth -50 : screen==='optimal'?610:480, height: screen==='mobile'? 170: 150},
+                        collapsed: {width: screen==='mobile'?store.mobileDeviceWidth -50 : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}

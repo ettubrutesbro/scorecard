@@ -225,7 +225,7 @@ export default class IndicatorByCounties extends React.Component{
 
         let maxNumRows = !race? performance.length : 0
 
-        const width = window.innerWidth - 50
+        const width = store.mobileDeviceWidth - 50
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{

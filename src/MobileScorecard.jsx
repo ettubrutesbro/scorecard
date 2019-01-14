@@ -26,7 +26,6 @@ import DemoBox from '../src/components/DemoBox'
 import {MobileSources} from '../src/components/Sources'
 import InitBox from '../src/components/InitBox'
 
-const width = window.innerWidth - 50
 
 @observer
 export default class MobileScorecard extends React.Component{
@@ -321,7 +320,7 @@ const Content = styled.div`
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
-const dots = require('./assets/dots.png')
+
 const DotLyfe = styled.div`
     width: 100%; height: 100%;
     background-image: url(${dots});
@@ -482,6 +481,7 @@ const Tables = styled.div`
                     </DemoToggleWrap>
                 </ReadoutWrapper>
                 <MapContainer
+                    devicewidth = {store.mobileDeviceWidth}
                     zoomedOutOffset = {(county && this.props.forceCA )||!county}
                 >
                     <ZoomableMap
@@ -494,6 +494,7 @@ const Tables = styled.div`
                     />
                 </MapContainer>
                 <DemoWrap
+                    devicewidth = {store.mobileDeviceWidth}
                     zoomedOutOffset = {(county && this.props.forceCA )||!county}
                 >
                 <DemoBox
@@ -523,7 +524,7 @@ const MapContainer = styled.div`
     margin-top: 15px;
     margin-left: -20px;
     /*left: 0;*/
-    height: ${p => window.innerWidth * 1.15}px;
+    height: ${p => p.devicewidth * 1.15}px;
     transform: translateY(${props=>props.zoomedOutOffset?0:40}px);
     transition: transform .5s ;
     z-index: 2;
@@ -532,7 +533,7 @@ const DemoWrap = styled.div`
     position: relative;
     z-index: 3;
     margin-top: 25px;
-    transform: translateY(${props=>props.zoomedOutOffset?0:-(window.innerWidth * .75)/2.75}px);
+    transform: translateY(${props=>props.zoomedOutOffset?0:-(props.devicewidth * .75)/2.75}px);
     transition: transform .5s ;
 `
 const DemoToggleWrap = styled(ExpandBox)`

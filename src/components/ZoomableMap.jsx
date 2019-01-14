@@ -44,6 +44,7 @@ export default class ZoomableMap extends React.Component {
     }
 
     calcTransform = (zoomTo) => {
+        const store = this.props.store
         console.log('going to zoomTo', zoomTo)
         if(!zoomTo){
             this.setZoom(.875)
@@ -86,19 +87,20 @@ export default class ZoomableMap extends React.Component {
         console.log(deviationFromContainerCenter.y)
         return {
             x: deviationFromContainerCenter.x,
-            y: deviationFromContainerCenter.y - ((window.innerWidth * .75) / 3) 
+            y: deviationFromContainerCenter.y - ((store.mobileDeviceWidth * .75) / 3) 
         }
     }
 
     render(){
         const props = this.props
+        const {store} = props
         return(
             <Container 
                 // zooming = {props.zoomTo}
                 currentMode = {props.zoomTo? 'zoomed' : 'tall'}
                 modes = {{
-                    tall: {width: window.innerWidth-1, height: window.innerWidth * 1.15},
-                    zoomed: {width: window.innerWidth-1, height: window.innerWidth * .75}
+                    tall: {width: store.mobileDeviceWidth-1, height: store.mobileDeviceWidth * 1.15},
+                    zoomed: {width: store.mobileDeviceWidth-1, height: store.mobileDeviceWidth * .75}
                 }}
                 // borderColor = 'red'
                 duration = {.5}
@@ -120,6 +122,7 @@ export default class ZoomableMap extends React.Component {
                 <TransformWrapper
                     offset = {this.containerTranslation} 
                     zoom = {this.zoomLevel}
+                    devicewidth = {store.mobileDeviceWidth}
                 >
                     <InteractiveMap 
                         garbMask = {!props.zoomTo}
@@ -176,8 +179,8 @@ const DotGrid = styled.div`
 `
 const TransformWrapper = styled.div`
     position: absolute;
-    width: ${p => window.innerWidth}px;
-    height: ${p => window.innerWidth * 1.15}px;
+    width: ${p => p.devicewidth}px;
+    height: ${p => p.devicewidth * 1.15}px;
     transform-origin: 50% 50%;
     transition: transform .5s cubic-bezier(0.215, 0.61, 0.355, 1);
     transform: translate(${props=> props.offset.x}px, ${props=>props.offset.y}px) scale(${props => props.zoom});

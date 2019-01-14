@@ -111,8 +111,8 @@ export default class MobileNav extends React.Component{
                     duration = {this.mode === 'county'? .5 : 0 }
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
+                        compact: {width: store.mobileDeviceWidth+1, height: 50},
+                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
                     noBorderTop = {this.mode==='compact' || !this.mode}
@@ -133,7 +133,10 @@ export default class MobileNav extends React.Component{
                             : () => {}
                         }
                     >
-                        <MenuSelectBlock left = 'County' right = {county? countyLabels[county] : 'California (all)'} 
+                        <MenuSelectBlock
+                            width = {store.mobileDeviceWidth}
+                             left = 'County' right = {county? countyLabels[county] : 'California (all)'} 
+                            
                             onClick = {()=> this.setMode('county') }
                             open = {this.mode === 'county'}
                             prompt = 'Pick a county.'
@@ -166,14 +169,17 @@ export default class MobileNav extends React.Component{
                             duration = {this.mode === 'race'? .5 : 0 }
                             currentMode = {this.mode==='race'? 'fullscreen' : 'compact'}
                             modes = {{
-                                compact: {width: window.innerWidth+1, height: 50},
-                                fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
+                                compact: {width: store.mobileDeviceWidth+1, height: 50},
+                                fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
                             // hideScroll = {this.mode!=='race'}
                         >
                             <div>
-                            <MenuSelectBlock left = 'Race' right = {race? capitalize(race) : 'All races'} 
+                            <MenuSelectBlock
+                                width = {store.mobileDeviceWidth}
+                                 left = 'Race' right = {race? capitalize(race) : 'All races'} 
+                                
                                 disabled = {ind && !ind.categories.includes('hasRace')}
                                 onClick = {(ind && ind.categories.includes('hasRace')) || !ind?()=> this.setMode('race'):()=>{alert('The indicator you picked doesn\'t have any race-specific data.')} }
                                 open = {this.mode === 'race'}
@@ -205,9 +211,9 @@ export default class MobileNav extends React.Component{
                     duration = {this.mode === 'indicator'? .5 : 0 }
                     currentMode = {this.mode==='indicator'? 'fullscreen' : this.mode === 'county' || this.mode==='race'? 'compactTruncated': 'compact'}
                     modes = {{
-                        compact: {width: window.innerWidth+1, height: 117},
-                        compactTruncated: {width: window.innerWidth+1, height: 50},
-                        fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
+                        compact: {width: store.mobileDeviceWidth+1, height: 117},
+                        compactTruncated: {width: store.mobileDeviceWidth+1, height: 50},
+                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {
                         this.mode==='indicator'? 'var(--offwhitefg)'
@@ -228,7 +234,10 @@ export default class MobileNav extends React.Component{
                             : ()=>{}
                         }
                     >
-                    <MenuSelectBlock left = 'Indicator' 
+                    <MenuSelectBlock
+                        width = {store.mobileDeviceWidth}
+                         left = 'Indicator' 
+                        
                         right = {indicator? semanticTitles[indicator].shorthand : 'Browse / search...'} 
                         multiline 
                         onClick = {()=> this.setMode('indicator') }
@@ -285,10 +294,10 @@ export default class MobileNav extends React.Component{
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
-                        closed: {width: window.innerWidth+1, height: 25},
-                        fullsize: {width: window.innerWidth+1, height: store.mobileDeviceHeight+100},
-                        openNoInd: {width: window.innerWidth+1, height: 200},
-                        open: {width: window.innerWidth+1, height: 267}    
+                        closed: {width: store.mobileDeviceWidth+1, height: 25},
+                        fullsize: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight+100},
+                        openNoInd: {width: store.mobileDeviceWidth+1, height: 200},
+                        open: {width: store.mobileDeviceWidth+1, height: 267}    
                     }}
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
                 >
@@ -322,19 +331,19 @@ export default class MobileNav extends React.Component{
                 </PickMenu>
             
             <HeaderGroup
-                offset = {this.mode==='compact' && !indicator? `${window.innerWidth-230}px,215px` 
-                    : this.mode && this.mode!=='compact' && !indicator? `${window.innerWidth-230}px,${store.mobileDeviceHeight+25}px`
+                offset = {this.mode==='compact' && !indicator? `${store.mobileDeviceWidth-230}px,215px` 
+                    : this.mode && this.mode!=='compact' && !indicator? `${store.mobileDeviceWidth-230}px,${store.mobileDeviceHeight+25}px`
                     : !this.mode? '0,0' 
-                    : this.mode==='compact' && !indicator? `${window.innerWidth - 175}px,215px`
-                    : this.mode==='compact' && indicator? `${window.innerWidth - 175}px,282px`
-                    : `${window.innerWidth - 175}px,${store.mobileDeviceHeight+25}px`
+                    : this.mode==='compact' && !indicator? `${store.mobileDeviceWidth - 175}px,215px`
+                    : this.mode==='compact' && indicator? `${store.mobileDeviceWidth - 175}px,282px`
+                    : `${store.mobileDeviceWidth - 175}px,${store.mobileDeviceHeight+25}px`
                 }
                 duration = {.425}
             > 
              <Header 
                 currentMode = {this.mode && !indicator? 'noIndicator' : !this.mode? 'bar' : this.mode === 'compact' || this.props.hide? 'button' : 'offscreen'}
                 modes = {{
-                    bar: {width: window.innerWidth, height: 55},
+                    bar: {width: store.mobileDeviceWidth, height: 55},
                     button: {width: 160, height: 55},
                     offscreen: {width: 160, height: 55},
                     noIndicator: {width: 215, height: 55}
@@ -520,6 +529,7 @@ const YearToggle = styled(Toggle)`
         const searchstring = this.props.searchString
         return(
             <MSB 
+                devicewidth = {props.width}
                 height = {props.height} 
                 disabled = {props.disabled} 
                 multiline = {props.multiline && !props.truncateValue} 
@@ -573,6 +583,7 @@ const YearToggle = styled(Toggle)`
                     </Val>
                     {!props.noSearch && 
                         <NavSearch 
+                            devicewidth = {}
                             img = "searchzoom" 
                             color = "normtext" 
                             visible = {props.open} 
@@ -599,7 +610,7 @@ const YearToggle = styled(Toggle)`
 const MSB = styled.div`
     padding: 0 25px;
     display: flex;
-    width: ${window.innerWidth}px;
+    width: ${props => props.devicewidth}px;
     height: ${props => props.height? props.height : '50px'};
     ${props => props.multiline? `
         padding-top: 14px;
@@ -639,7 +650,7 @@ const MSBValue = styled.div`
 const NavSearch = styled(Icon)`
     right: 12px; top: 2px;
     position: absolute;
-    transform: translateX(${props => props.active? -(window.innerWidth - 110) : 0}px);
+    transform: translateX(${props => props.active? -(props.devicewidth - 110) : 0}px);
     width: 18px; height: 18px;
     transition: opacity .35s, transform .35s;
     opacity: ${props => props.visible? 1 : 0};
