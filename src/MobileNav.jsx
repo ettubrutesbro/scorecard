@@ -208,7 +208,8 @@ export default class MobileNav extends React.Component{
                         this.mode==='indicator'? 'var(--offwhitefg)' 
                         : 'transparent'
                     }
-                    boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 1.5s' : ''}
+                    // boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 1.5s' : ''}
+                    boxAnimation = {`${this.justComplete.indicator? peachBGAnim : ''} 1.25s formards 1.5s`}
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
@@ -602,7 +603,7 @@ const MSB = styled.div`
         : `align-items: center;`}
     justify-content: space-between;
     background: ${props => props.justComplete? 'var(--faintestpeach)' :  props.disabled? 'var(--disabledgrey)' : 'transparent'};
-    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s; 
+    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;    
 
 `
 const MSBLabel = styled.div`
