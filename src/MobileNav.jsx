@@ -210,8 +210,9 @@ export default class MobileNav extends React.Component{
                         fullscreen: {width: window.innerWidth+1, height: store.mobileDeviceHeight}
                     }}
                     backgroundColor = {
-                        this.mode==='indicator'? 'var(--offwhitefg)' 
-                        : 'transparent'
+                        this.mode==='indicator'? 'var(--offwhitefg)'
+                        : this.mode==='compact' && this.justComplete.indicator? 'transparent'
+                        : 'white'
                     }
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
@@ -280,7 +281,7 @@ export default class MobileNav extends React.Component{
         const ctyListHeaderBlockRef = this.ctyListHeaderBlock
 
         return(
-            <FixWrap  hide = {this.props.hide}>
+            <FixWrap mid = {!this.props.hide && !indicator && this.mode==='compact'} hide = {this.props.hide}>
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
@@ -399,7 +400,7 @@ export default class MobileNav extends React.Component{
         </HeaderGroup>
 
             <MaskGapBlocker />
-            <Mask visible = {this.mode}
+            <Mask visible = {this.mode && indicator}
                 onClick = {()=>this.setMode(false)}
             />
             {(this.mode === 'county' || this.mode === 'indicator' || !this.mode) && //eventually, indbycty table expanded...
@@ -702,7 +703,7 @@ const FixWrap = styled.div`
     z-index: 10;
     width: calc(100% + 1px);
 
-    transform: translateY(${props=>props.hide? -75: 0}px);
+    transform: translateY(${props=>props.mid? '25vh' : props.hide? '-75px': 0});
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);   
 `
 const WorkflowWrap = styled.div`

@@ -1,10 +1,12 @@
 import {createGlobalStyle} from 'styled-components'
 import media from '../utilities/media'
 
+const dots = require('../assets/dots.png')
+
 const GlobalStyle = createGlobalStyle`
     html{
         @media ${media.mobile}{
-            background: var(--offwhitefg);
+            // background: var(--offwhitefg);
         }
     }
     @media ${media.optimal}, ${media.compact}{
@@ -62,6 +64,14 @@ const GlobalStyle = createGlobalStyle`
             @media ${media.compact}{
                 font-size: 20px;
             }
+        }
+    }
+    @media ${media.mobile}{
+        body{
+            // background: transparent;
+            background-image: url(${dots});
+            background-size: 20px;
+            background-position: 17px 17px;
         }
     }
 

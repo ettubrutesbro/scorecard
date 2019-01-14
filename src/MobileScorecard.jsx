@@ -127,6 +127,7 @@ export default class MobileScorecard extends React.Component{
                         : this.navOpen && current === 'demographic'? 80
                         : 0
                     }
+                    hide = {!indicator}
                 >
                     <FlipMove
                         typeName = {null}
@@ -315,10 +316,17 @@ const Content = styled.div`
     width: 100%;
     min-width: 100vw;
     overflow: hidden;
-    background: var(--offwhitefg);
+    background: ${props => props.hide? 'transparent' : 'var(--offwhitefg)'};
     z-index: 1;
     transform: translateY(${props => props.offsetForNav}px);
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
+`
+const dots = require('./assets/dots.png')
+const DotLyfe = styled.div`
+    width: 100%; height: 100%;
+    background-image: url(${dots});
+    background-size: 20px;
+    background-position: 17px 17px;
 `
 const Spacer = styled.div`
     height: 1000px;
