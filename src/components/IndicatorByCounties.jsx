@@ -192,8 +192,8 @@ export default class IndicatorByCounties extends React.Component{
             this.condensed = []
         }
         this.distribution = distribution
-        console.log(indicator, entries)
-        console.log(distribution)
+        // console.log(indicator, entries)
+        // console.log(distribution)
 
     }
 
@@ -350,8 +350,8 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        console.log('indbycounties max:')
-        console.log(maxNumRows)
+        // console.log('indbycounties max:')
+        // console.log(maxNumRows)
 
         // const modes = {
         //     collapsed: collapseDims,
@@ -360,7 +360,7 @@ export default class IndicatorByCounties extends React.Component{
         //     noracecollapsed: noRaceCollapseDims,
         //     sources: {width: 370, height: 50}
         // }
-        console.log(modes)
+        // console.log(modes)
         return (
             <React.Fragment>
             <Wrapper offset = {this.props.sources}>

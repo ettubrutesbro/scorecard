@@ -321,12 +321,6 @@ const Content = styled.div`
     transition: transform .45s cubic-bezier(0.215, 0.61, 0.355, 1);
 `
 
-const DotLyfe = styled.div`
-    width: 100%; height: 100%;
-    background-image: url(${dots});
-    background-size: 20px;
-    background-position: 17px 17px;
-`
 const Spacer = styled.div`
     height: 1000px;
 `
@@ -402,7 +396,7 @@ const SecAccent = styled.div`
                 >
                     <Readout store = {store} />
                 </IntersectionObserver>
-                <Tables expanded = {this.allCounties} >
+                <Tables expanded = {this.allCounties} devicewidth = {store.mobileDeviceWidth} >
                     <IndicatorByCounties
                         entries = {hasRace? 9 : 12}
                         store = {store}
@@ -434,7 +428,7 @@ const Tables = styled.div`
     position: relative;
     margin-top: 25px;
     padding-bottom: 15px;
-    width: ${width}px;
+    width: ${props=>props.devicewidth}px;
     height: ${props=>props.expanded? 1600 : 600}px;
 `
 

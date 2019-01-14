@@ -583,7 +583,7 @@ const YearToggle = styled(Toggle)`
                     </Val>
                     {!props.noSearch && 
                         <NavSearch 
-                            devicewidth = {}
+                            devicewidth = {props.width}
                             img = "searchzoom" 
                             color = "normtext" 
                             visible = {props.open} 
