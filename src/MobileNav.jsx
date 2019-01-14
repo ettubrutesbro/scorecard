@@ -28,6 +28,11 @@ const peachBGAnim = keyframes`
     }
     to{ background-color: white; }
 `
+const textPeachToBlack = keyframes`
+    0% { color: var(--strokepeach);}
+    100% { color: var(--normtext);}
+`
+
 
 @observer
 export default class MobileNav extends React.Component{
@@ -208,8 +213,6 @@ export default class MobileNav extends React.Component{
                         this.mode==='indicator'? 'var(--offwhitefg)' 
                         : 'transparent'
                     }
-                    // boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 1.5s' : ''}
-                    // boxAnimation = {`${this.justComplete.indicator? peachBGAnim : ''} 1.25s formards 1.5s`}
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
@@ -603,7 +606,10 @@ const MSB = styled.div`
         : `align-items: center;`}
     justify-content: space-between;
     background: ${props => props.justComplete? 'var(--faintestpeach)' :  props.disabled? 'var(--disabledgrey)' : 'transparent'};
-    // animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;    
+    animation-name: ${props=>props.justComplete? peachBGAnim : ''};
+    animation-fill-mode: forwards;
+    animation-duration: 1.25s;
+    animation-delay: 1.5s;
 
 `
 const MSBLabel = styled.div`
@@ -662,10 +668,7 @@ const ClearCancelSearch = styled.div`
     color: var(--strokepeach);
     font-size: 14px; letter-spacing: 0.5px;
 `
-const textPeachToBlack = keyframes`
-    0% { color: var(--strokepeach);}
-    100% { color: var(--normtext);}
-`
+
 const Val = styled.div`
     font-size: 14px;
     flex-shrink: 1;
@@ -1014,5 +1017,8 @@ const SaveHeaderIcon = styled(HeaderBtnIcon)``
 
 const IndExpandBox = styled(ExpandBox)`
     background-color: ${props => props.justComplete? 'var(--faintestpeach)' : 'transparent'};
-    // animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;
+    animation-name: ${props=>props.justComplete? peachBGAnim : ''};
+    animation-fill-mode: forwards;
+    animation-duration: 1.25s;
+    animation-delay: 1.5s;
 `
