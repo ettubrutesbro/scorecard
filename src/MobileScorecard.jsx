@@ -38,12 +38,13 @@ export default class MobileScorecard extends React.Component{
     @action setInit = (tf) => this.init = tf
 
     @action toggleHeaderInfo = (tf) => {
+        console.log('toggling sharthand')
         this.showShorthand = tf
     }
     @action setNavStatus = (tf) => {
         this.navOpen = tf
         if(tf){ 
-            this.showFAH = false 
+            this.setFAH(false) 
             this.allowBodyOverflow(false)
         }
         else this.allowBodyOverflow(true)
@@ -58,6 +59,11 @@ export default class MobileScorecard extends React.Component{
         this.lastSection = this.currentSection
         this.currentSection = sec
         console.log(this.currentSection, this.lastSection)
+        if(sec === 'demographic' || sec === 'sources'){
+            this.setFAH(false)
+            if(sec==='sources') this.showShorthand = true
+        }
+        this[sec+'Section'].current.scrollTop = 0
     }
 
     @observable showFAH = false
@@ -85,6 +91,9 @@ export default class MobileScorecard extends React.Component{
     constructor(){
         super()
         this.breakdown = React.createRef()
+        this.breakdownSection = React.createRef()
+        this.sourcesSection = React.createRef()
+        this.demographicSection = React.createRef()
     }
 
     componentWillMount(){
@@ -140,20 +149,23 @@ export default class MobileScorecard extends React.Component{
                     {indicator && 
                         <React.Fragment>
                         <Section
+                            ref = {this.breakdownSection}
                             active = {current === 'breakdown'}
                             isLast = {last === 'breakdown'}
                             origin = {-100}
                         >
-                        <Breakdown 
-                            ref = {this.breakdown}
-                            store = {store} 
-                            onScrollPastReadout = {this.toggleHeaderInfo}
-                            toggleFixedX = {this.setFAH}
-                            showFAH = {this.showFAH}
-                        />
+                            <Breakdown 
+                                ref = {this.breakdown}
+                                store = {store} 
+                                onScrollPastReadout = {current === 'breakdown'? this.toggleHeaderInfo : ()=>{}}
+                                toggleFixedX = {this.setFAH}
+                                showFAH = {this.showFAH}
+                                isActive = {current === 'breakdown'}
+                            />
                         </Section>
 
                         <Section
+                            ref = {this.demographicSection}
                             active = {current === 'demographic'}
                             isLast = {last === 'demographic'}
                             origin = {last === 'sources' && current === 'demographic'? -100
@@ -168,10 +180,13 @@ export default class MobileScorecard extends React.Component{
                             forceCA = {this.forceCA}
                             setForceCA = {this.setForceCA}
                             store = {store}
+
+                            onScrollPastReadout = {current === 'demographic'? this.toggleHeaderInfo : ()=>{}}
                         />
                         </Section>
 
                         <Section
+                            ref = {this.sourcesSection}
                             active = {current === 'sources'}
                             isLast = {last==='sources'}
                             origin = {100}
@@ -368,7 +383,7 @@ const SecAccent = styled.div`
         this.allCounties = tf
     }
     render(){
-        const {store, toggleFixedX, showFAH} = this.props
+        const {store, toggleFixedX, showFAH, isActive} = this.props
         const {indicator, race, county, year} = store
         const hasRace = indicators[indicator].categories.includes('hasRace')
 
@@ -393,7 +408,7 @@ const SecAccent = styled.div`
                         }}
                         sources = {this.props.sources}
 
-                        toggleFixedX = {this.allCounties? toggleFixedX : () => {}}
+                        toggleFixedX = {this.allCounties && isActive? toggleFixedX : () => {}}
                     />
                     {hasRace && !this.allCounties && 
                         <IndicatorByRaces
@@ -428,10 +443,15 @@ const Tables = styled.div`
         return(
             <React.Fragment>
                 <ReadoutWrapper>
-                    <Readout tiny 
-                        store = {store} 
-                        forceCA = {this.props.forceCA}
-                    />
+                    <IntersectionObserver
+                        onChange = {(wat)=>this.props.onScrollPastReadout(!wat.isIntersecting)}
+                        rootMargin = '-75px 0% 0% 0%'
+                    >
+                        <Readout tiny 
+                            store = {store} 
+                            forceCA = {this.props.forceCA}
+                        />
+                    </IntersectionObserver>
                     <DemoToggleWrap
                         currentMode = {county? 'show' : 'hide'}
                         modes = {{
