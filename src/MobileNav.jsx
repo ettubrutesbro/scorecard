@@ -209,7 +209,7 @@ export default class MobileNav extends React.Component{
                         : 'transparent'
                     }
                     // boxAnimation = {this.justComplete.indicator? peachBGAnim + ' 1.25s forwards 1.5s' : ''}
-                    boxAnimation = {`${this.justComplete.indicator? peachBGAnim : ''} 1.25s formards 1.5s`}
+                    // boxAnimation = {`${this.justComplete.indicator? peachBGAnim : ''} 1.25s formards 1.5s`}
                 
                     onScroll = {this.mode === 'indicator'? (e)=> {
                         this.setWorkflowScrollPos(e.top)
@@ -603,7 +603,7 @@ const MSB = styled.div`
         : `align-items: center;`}
     justify-content: space-between;
     background: ${props => props.justComplete? 'var(--faintestpeach)' :  props.disabled? 'var(--disabledgrey)' : 'transparent'};
-    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;    
+    // animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;    
 
 `
 const MSBLabel = styled.div`
@@ -677,7 +677,7 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
     color: ${props => props.justComplete? 'var(--strokepeach)': 'var(--fainttext)'};
-    animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 1.5s;
+    // animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 1.5s;
     ${props => props.multiline? `
         // height: 21px;
     ` : ''}
@@ -1014,5 +1014,5 @@ const SaveHeaderIcon = styled(HeaderBtnIcon)``
 
 const IndExpandBox = styled(ExpandBox)`
     background-color: ${props => props.justComplete? 'var(--faintestpeach)' : 'transparent'};
-    animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;
+    // animation: ${props => props.justComplete? peachBGAnim : ''} 1.25s forwards 1.5s;
 `
