@@ -680,7 +680,10 @@ const Val = styled.div`
     transition: opacity .35s;
     transition-delay: ${props => props.visible && props.justComplete? '.425s' : '0s'};
     color: ${props => props.justComplete? 'var(--strokepeach)': 'var(--fainttext)'};
-    // animation: ${props => props.justComplete? textPeachToBlack: ''} 1.25s forwards 1.5s;
+    animation-name: ${props=>props.justComplete? textPeachToBlack : ''};
+    animation-fill-mode: forwards;
+    animation-duration: 1.25s;
+    animation-delay: 1.5s;
     ${props => props.multiline? `
         // height: 21px;
     ` : ''}
