@@ -6,14 +6,17 @@ import media from '../utilities/media'
 import {capitalize} from '../utilities/toLowerCase'
 import demopop from '../data/demographicsAndPopulation'
 
+import CountingNumber from './CountingNumber'
 
 const races = ['asian','black','latinx','white','other']
 
 @observer class RaceBreakdownBar extends React.Component{
     render(){
     const {props} = this
-    const {height, store} = props
-    const {county, screen, hoveredRace} = store
+    const {height, store, width} = props
+    const {screen, hoveredRace} = store
+
+    const county = this.props.forceCA? '' : store.county
 
     const clt = screen === 'compact'? 9 : 8//compressed label threshold (% below which label becomes compressed)
     const est = screen === 'compact'? 22: 24//exception segment threshold (% below which the last non-compressed seg has its label offset)
@@ -33,8 +36,11 @@ const races = ['asian','black','latinx','white','other']
     const compressedLabels = racePercentages.filter((r)=>{return r.percentage <= clt && r.percentage > 0})
 
     return(
-        <RaceBreakdown height = {height} >
+        <React.Fragment>
+        <RaceBreakdown width = {width} height = {height} horizontal = {screen==='mobile'} >
         <RaceBar
+            width = {width}
+            horizontal = {screen==='mobile'}
             lastSegSelected = {racePercentages[racePercentages.length-1].label === store.race}
         >
         {racePercentages.map((race,i,arr)=>{
@@ -45,16 +51,27 @@ const races = ['asian','black','latinx','white','other']
 
             const pct = totalOfPcts!==100? race.percentage * 100 / totalOfPcts : race.percentage
             console.log(race.label, race.label===hoveredRace)
+
+            const hoverProps = store.screen !== 'mobile'? {
+                onMouseEnter: ()=>{store.setHover('race',race.label)},
+                onMouseLeave: ()=>{store.setHover('race',null)},
+                hoverable: store.indicator? ()=>{store.setHover('race',race.label,true)} : () => {}
+            } : {}
+
             return (
-                <React.Fragment>
+                <React.Fragment
+                    key = {'racefrag'+i}
+                >
                 <Backing 
+                    horizontal = {screen==='mobile'}
                     key = {'backing'+i}
-                    offset = {(offset/100) * height}
+                    offset = {(offset/100) * (screen==='mobile'? width : height)}
                     selected = {race.label === store.race}
                 />
                 <RaceSegment
+                    horizontal = {screen==='mobile'}
                     key = {i}
-                    offset = {(offset/100) * height}
+                    offset = {(offset/100) * (screen==='mobile'? width : height)}
                     // className = {race.label}
                     style = {{
                         position: 'absolute',
@@ -67,16 +84,22 @@ const races = ['asian','black','latinx','white','other']
                     selected = {race.label === store.race}
                     hovered = {race.label === hoveredRace}
 
-                    onMouseEnter = {()=>store.setHover('race',race.label)}
-                    onMouseLeave = {()=>store.setHover('race',null)} 
-                    onClick = {()=>store.completeWorkflow('race',race.label)}
-                    hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
+
+                    onClick = {race.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',race.label)}
+
+                    {...hoverProps}
                 />
+
+
+
                 <EndNotch 
+                    id = 'endnotch'
                     key = {'hatch'+i} 
-                    offset = {(offset/100) * height} 
+                    offset = {(offset/100) * (screen==='mobile'? width: height)} 
                     infinitesimal = {pct < 3}
                     hide = {i===0}
+                    // hide
+                    horizontal = {screen==='mobile'}
                     selected = {race.label === store.race || (i>0 && arr[i-1].label === store.race) }
 
                 />
@@ -84,7 +107,9 @@ const races = ['asian','black','latinx','white','other']
             )
         })
         }
+
         </RaceBar>
+        {screen !== 'mobile' &&
         <LabelBar>
             {racePercentages.map((race,i,arr)=>{
                 const previousSegs = arr.slice(0,i)
@@ -105,7 +130,7 @@ const races = ['asian','black','latinx','white','other']
 
                         onMouseEnter = {()=>store.setHover('race',race.label)} 
                         onMouseLeave = {()=>store.setHover('race',null)} 
-                        onClick = {()=>store.completeWorkflow('race',race.label)}
+                        onClick = {race.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',race.label)}
                         hoverable = {store.indicator? store.setHover('race',race.label,true) : ()=>{}}
                 
                     >
@@ -131,33 +156,34 @@ const races = ['asian','black','latinx','white','other']
                                 || (numOfCompressedLabels ===2 && racePercentages[2].percentage < est)
                             }
                             onMouseEnter = {()=>store.setHover('race',r.label)} 
-                            onClick = {()=>store.completeWorkflow('race',r.label)}
+                            onClick = {r.label===store.race?()=>{store.completeWorkflow('race')}:()=>store.completeWorkflow('race',r.label)}
                             onMouseLeave = {()=>store.setHover('race',null)} 
                             hoverable = {store.indicator? store.setHover('race',r.label,true) : ()=>{}}
                 
                         >
-                            <Label> {capitalize(r.label)} </Label>
-                            <Percentage> {r.percentage}%</Percentage>
+                            <Label selected = {r.label===store.race}> {capitalize(r.label)} </Label>
+                            <Percentage selected = {r.label===store.race}> {r.percentage}%</Percentage>
                         </Compressed>
                     )
                 })}
             </CompressedLabels>
         </LabelBar>
+        }
         </RaceBreakdown>
+        {screen === 'mobile' && 
+            <PercentageTable percentages = {racePercentages} store = {store} />
+        }
+        </React.Fragment>
     )
 }
 }
 
 const RaceBreakdown = styled.div`
     height: ${props=>props.height}px;
+    width: ${props => props.horizontal? props.width+'px' : '175px'};
     position: relative;
     display: flex;
-    @media ${media.optimal}{
-        width: 175px;
-    }
-    @media ${media.screen}{
-        width: 175px;
-    }
+
     flex-shrink: 0;
 `
 const Bar = styled.div`
@@ -166,12 +192,8 @@ const Bar = styled.div`
 
 `
 const RaceBar = styled(Bar)`
-    width: 50px;
-    /*outline: 2px solid var(--bordergrey);*/
-    /*border-left: 2px solid var(--bordergrey); */
-    /*border-right: 2px solid var(--bordergrey); */
-    /*border-bottom: 2px solid var(--bordergrey); */
-    box-shadow: 0 2px 0 var(${props=>props.lastSegSelected?'--peach':'--bordergrey'});
+    width: ${props=>props.horizontal? props.width+'px' : '50px'};
+    box-shadow: ${props=>props.horizontal? '2px 0 0 0' : '0 2px 0 0'} var(${props=>props.lastSegSelected?'--peach':'--bordergrey'});
     overflow: hidden;
 `
 const LabelBar = styled(Bar)`
@@ -181,12 +203,12 @@ const Positioned = styled.div`
     position: absolute;
     top: 0; left: 0;
     transition: transform .35s;
-    transform: translateY(${props=>props.offset}px);    
+    transform: translate${props=>props.horizontal? 'X' : 'Y'}(${props=>props.offset}px);    
 `
 const Backing = styled(Positioned)`
     background: white;
     width: 100%;
-    height: 500px;
+    height: ${props => props.horizontal? '100%' : '500px'};
     border: 1.5px solid var(${props=>props.selected?'--peach': '--bordergrey'});
 
 `
@@ -194,10 +216,25 @@ const EndNotch = styled(Positioned)`
     height: 0;
     left: 2px;
     width: calc(100% - 4px);
+    border-width: 0.5px;
+    border-style: solid;
     border-top: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
     border-bottom: .5px solid var(${props => props.selected? '--peach': props.infinitesimal? '--offwhitefg' : '--bordergrey'});
+
+    border-color: var(--${props => props.selected? 'peach' : props.infinitesimal? 'offwhitefg' : 'bordergrey'});
     display: ${props=>props.hide?'none':'block'};
+    ${props => props.horizontal? `
+        left: 0;
+        width: 1px;
+        height: 100%;
+        border-top-width: 0;
+        border-bottom-width: 0;
+    `: `
+        border-left-width: 0px;
+        border-right-width: 0px;
+    `}
 `
+
 const Segment = styled(Positioned)`
     /*outline: 2px solid var(--bordergrey);*/
 `
@@ -279,10 +316,11 @@ const Percentage = styled.div`
         }
     }
     render(){
-        const {race, infinitesimal, zero, selected, hovered, hoverable, ...restOfProps} = this.props
+        const {race, infinitesimal, zero, selected, hovered, hoverable, horizontal, ...restOfProps} = this.props
         return(
             <Segment
                 selected = {selected}
+                horizontal = {horizontal}
                 {...restOfProps}
             >
                 <Hatches 
@@ -295,6 +333,8 @@ const Percentage = styled.div`
                     selected = {selected}
                     hovered = {hovered}
                     hoverable = {hoverable}
+
+                    horizontal = {horizontal}
                     // onAnimationEnd = {()=}
 
                 />
@@ -309,6 +349,8 @@ const Percentage = styled.div`
                     selected = {selected}
                     hovered = {hovered}
                     hoverable = {hoverable}
+
+                    horizontal = {horizontal}
                 />
             </Segment>
         )
@@ -327,6 +369,15 @@ const animateIn = keyframes`
 const animateOut = keyframes`
     from{ transform: translateX(0%);}
     to{ transform: translateX(-100%);}
+`
+
+const vertanimateIn = keyframes`
+    from{ transform: translateY(100%);}
+    to{ transform: translateY(0%);}
+`
+const vertanimateOut = keyframes`
+    from{ transform: translateY(0%);}
+    to{ transform: translateY(-100%);}
 `
 const Hatches = styled.div`
     position: absolute;
@@ -357,19 +408,73 @@ const Hatches = styled.div`
     animation-duration: .25s;
     animation-fill-mode: forwards;
     &.animating{
-        animation-name: ${animateOut}
+        animation-name: ${props => props.horizontal? vertanimateOut : animateOut}
     }
     cursor: ${props => props.hoverable? 'pointer' : 'auto'};
 `
 
 const NewHatches = styled(Hatches)`
-    transform: translateX(100%);
+    transform: translate${props=>props.horizontal?'Y':'X'}(100%);
     &.animating{
-        animation-name: ${animateIn}
+        animation-name: ${props => props.horizontal? vertanimateIn : animateIn}
     }
 `
 
 
+const PercentageTable = (props) => {
+    const store = props.store
+    const pcts = props.percentages
+    return(
+        <PctTable>
+            <HorizontalEndNotch selected = {store.race===pcts[0].label}/>
+            <PctBlock key = {'pcttable-'+pcts[0].label} selected = {store.race === pcts[0].label}
+                onClick = {store.race===pcts[0].label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pcts[0].label)}
+            >
+            <b><CountingNumber number={pcts[0].percentage}/>%</b>&nbsp;of&nbsp;them&nbsp;are&nbsp;{capitalize(pcts[0].label)}, 
+            </PctBlock>
+            {pcts.slice(1).map((pct,i)=>{
+                return i+1<pcts.length-1?(
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}
+                        onClick = {store.race===pct.label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pct.label)}
+                    >
+                        <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;{capitalize(pct.label)},
+                    </PctBlock>
+                ) : (
+                    <PctBlock key = {'pcttable-'+pct.label} selected = {pct.label === store.race}
+                        onClick = {store.race===pct.label? ()=>{store.completeWorkflow('race')} : ()=> store.completeWorkflow('race',pct.label)}
+                    >
+                        and <b><CountingNumber number = {pct.percentage}/>%</b>&nbsp;are&nbsp;{capitalize(pct.label)}.
+                    </PctBlock>
+                )
+            })}
+        </PctTable>
+    )
+}
 
+const PctTable = styled.div`
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+    line-height: 23px;
+    letter-spacing: 0.5px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bordergrey);
+`
+const PctBlock = styled.span`
+    margin-right: 6px;
+    b {
+        font-weight: 600;
+    }
+    color: ${props => props.selected? 'var(--strokepeach)' : 'var(--normtext)'};
+`
+const HorizontalEndNotch = styled.div`
+    position: absolute;
+    left: 1px;
+    top: -20px;
+    width: 0px; height: 12px;
+    border-left: 2px solid ${props => props.selected? 'var(--peach)':' var(--bordergrey)'};
+`
 
 export default RaceBreakdownBar

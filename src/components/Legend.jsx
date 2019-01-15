@@ -18,7 +18,7 @@ export default class Legend extends React.Component{
 
     render(){
         const {store} = this.props
-        const {indicator, race, colorScale, colorOptions,year} = store
+        const {indicator, race, colorScale, colorOptions,year,screen} = store
 
         if(indicator){
         const ind = indicators[indicator]
@@ -46,7 +46,7 @@ export default class Legend extends React.Component{
         })
 
 
-        return(
+        return screen !== 'mobile'? (
             <Lgd
                 onMouseEnter = {()=>this.handleHover(true)}
                 onMouseLeave = {()=>this.handleHover(false)}
@@ -102,6 +102,23 @@ export default class Legend extends React.Component{
                 }
                 </Swatches>
             </Lgd>
+        ):(
+            <MobileLgd>
+                {breaks.map((ele,i,arr)=>{
+                    const numCountiesInClass = nums[i]
+                    const pctCountiesInClass = pcts[i]
+                    const prevPctsOffset = i>0? pcts.slice(0,i).reduce((a,b)=>{return Number(a)+Number(b)}) : 0
+                    const fill = colorScale((breaks[i] + breaks[i+1]) / 2)
+                    return i < arr.length - 1?(
+                        <MobSwatchSect key = {'swatch'+i}>
+                            <MobLabel>
+                                 {Math.ceil(breaks[i])}-{Math.floor(breaks[i+1])}%
+                            </MobLabel>
+                            <MobSwatch fill = {fill} />
+                        </MobSwatchSect>
+                    ):''
+                })}
+            </MobileLgd>
         )
         }
         else {
@@ -111,6 +128,40 @@ export default class Legend extends React.Component{
         }
     }
 }
+
+const MobileLgd = styled.div`
+    position: absolute;
+    top: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    width: 119px;
+    height: 140px;
+    padding: 20px;
+    @media ${media.smallphone}{
+        padding: 15px;
+        /*height: 130px;*/
+    }
+`
+const MobSwatchSect = styled.div`
+    display: flex; align-items: center;
+`
+const MobLabel = styled.div `
+    font-size: 12px; color: var(--fainttext);
+    margin-right: 15px; letter-spacing: 0.5px;
+`
+const MobSwatch = styled.div`
+    width: 16px; 
+    height: 24px;
+    background: ${props => props.fill};
+    &:not(:first-of-type){
+        margin-top: 2px;
+    }
+    @media ${media.smallphone}{
+        /*width: 12px;*/
+    }
+`
 
 const Lgd = styled.div`
     display: flex;

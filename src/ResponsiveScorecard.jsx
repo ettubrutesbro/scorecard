@@ -19,6 +19,7 @@ import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
 import {DemoSources} from './components/Sources'
 import DemoBox from './components/DemoBox'
+import MobileScorecard from './MobileScorecard'
 
 import {Button} from './components/generic'
 
@@ -264,12 +265,13 @@ export default class ResponsiveScorecard extends React.Component{
     @action blockUserBrowser = (why) => this.browserBlock = why
 
     @action setInit = (tf) => {
-        if(!tf){ 
-            this.setRandomIndicatorCycle(false)
+        if(store.screen !== 'mobile'){
+            if(!tf){ 
+                this.setRandomIndicatorCycle(false)
+            }
+            else if(tf) this.setRandomIndicatorCycle(true)
         }
-        else if(tf) this.setRandomIndicatorCycle(true)
         store.init = tf
-
     }
     @action closeSplash = () => {
         this.setInit(false)
@@ -367,16 +369,14 @@ export default class ResponsiveScorecard extends React.Component{
                 }
             }
         }else{
-            this.setRandomIndicatorCycle(true)   
+            if(store.screen !== 'mobile') this.setRandomIndicatorCycle(true)   
         }
     }
 
     componentDidMount(){
         window.setTimeout(this.setDisplay, 10)
-        // this.setDisplay()
     }
-
-    // @observable randInd = 0 
+    
     @observable alreadyDisplayedRandomIndicators = []
     @action foistRandomIndicator = () => {
         let availableInds
@@ -416,7 +416,9 @@ export default class ResponsiveScorecard extends React.Component{
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
+        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) 
+        : store.screen==='mobile'? ( <MobileScorecard store = {store} /> )
+        : (
             <React.Fragment>
             <Styles />
             <App

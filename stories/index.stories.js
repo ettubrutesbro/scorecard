@@ -16,11 +16,13 @@ import {withKnobs, select, color, number, text} from '@storybook/addon-knobs'
 import { linkTo } from '@storybook/addon-links';
 
 
-import counties from '../src/data/counties'
+import counties from '../src/assets/counties'
+import countyLabels from '../src/assets/countyLabels'
 import indicators from '../src/data/indicators'
 
 
 import CAMap from '../src/components/InteractiveMap'
+import ZoomableMap from '../src/components/ZoomableMap'
 
 
 import { Button, Welcome } from '@storybook/react/demo';
@@ -28,7 +30,7 @@ import { Button, Welcome } from '@storybook/react/demo';
 import '../src/global.css'
 
   addDecorator(withKnobs)
-// addDecorator(withViewport('iphone6'))
+addDecorator(withViewport('iphone6'))
 
 class AppStore{
     @observable indicator = null
@@ -162,6 +164,7 @@ storiesOf('Scorecard Prototypes', module)
 
 storiesOf('Maps',module)
 .add('CAMap', ()=>{
+    // const zoomCounty = select(`zoom county: `, ['imperial', 'sanFrancisco', 'delNorte', 'modoc', 'losAngeles'])
     const selectCounty = select('select county: ', ['sanLuisObispo', 'alameda', 'siskiyou', 'napa', 'losAngeles'], 'sanLuisObispo')
     return(
     <div style = {{width: '100vw', height: '100vh'}}>
@@ -173,6 +176,17 @@ storiesOf('Maps',module)
             // selected = {store.county}
         />
     </div>
+    )
+})
+.add('ZoomableMap (for mobile)', ()=>{
+    const zoomCounty = select(`zoom county: `, [null,'alameda','imperial', 'inyo', 'kern', 'sanFrancisco', 'sanBernardino' ,'delNorte', 'modoc', 'losAngeles'])
+    
+    return(
+        <ZoomableMap
+            data = ''
+            store = {store}
+            zoomTo = {zoomCounty}
+        />
     )
 })
 

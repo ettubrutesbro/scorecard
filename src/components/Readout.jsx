@@ -19,17 +19,21 @@ import media, {getMedia} from '../utilities/media'
 const ReadoutBlock = styled.div`
     display: flex;
     align-items: center;
+    padding-right: 30px;
     @media ${media.optimal}{
         width: 950px;   
     }
     @media ${media.compact}{
         width: 850px;   
     }
+    @media ${media.mobile}{
+        width: 100%;
+        padding: 15px;
+    }
     left: 0;
     top: 0;
     transform-origin: 50% 0%;
     /*position: absolute;*/
-    padding-right: 30px;
     /*flex-grow: ${props=> props.compact? 0: 1};*/
     b{
         font-weight: 600;
@@ -43,8 +47,17 @@ const ReadoutBlock = styled.div`
         @media ${media.compact}{
             font-size: 42px;
         }
+        @media ${media.mobile}{
+            font-size: 32px;
+        }
         font-weight: 600;
     }
+    ${props => props.tiny? `
+        h1{
+            font-size: 18px;
+        }
+    `: ''}
+
 `
 const IndentedTitle = styled.div`
     
@@ -55,6 +68,16 @@ const IndentedTitle = styled.div`
     @media ${media.compact}{
         padding-top: 12px;
         line-height: 34px;
+    }
+    @media ${media.mobile}{
+        padding-top: 9px;
+        line-height: 25px;
+        ${props => props.tiny? `
+            font-size: 14px;
+            line-height: 21px;
+            margin-top: -2px;
+            padding-top: 0;
+        `: ''}
     }
 `
 const Crumb = styled.span`
@@ -87,7 +110,7 @@ export default class Readout extends React.Component{
         const {county, indicator, race, year, screen} = this.props.store
 
         const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
-        const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
+        const countyString = county && !this.props.forceCA? `${find(counties,{id:county}).label} county` : 'California'
         const who = indicator? semanticTitles[indicator].who : 'children'
         const what = indicator? semanticTitles[indicator].what : ''
         const descriptor = indicator? semanticTitles[indicator].descriptor : ''
@@ -147,6 +170,7 @@ export default class Readout extends React.Component{
         // this.props.offsetBreakdown(v)
     }
     render(){
+        const {tiny} = this.props
         const {county, indicator, race, year} = this.props.store
 
 
@@ -163,9 +187,10 @@ export default class Readout extends React.Component{
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
         let displayNum
+        const cty = !this.props.forceCA? county : 'california'
         if(indicator){
-            displayNum = county && race? ind.counties[county][race][year]
-                : county && !race? ind.counties[county].totals[year]
+            displayNum = county && race? ind.counties[cty][race][year]
+                : county && !race? ind.counties[cty].totals[year]
                 : !county && race? ind.counties.california[race][year]
                 : !county && !race? ind.counties.california.totals[year]
                 : 'wat'
@@ -177,15 +202,11 @@ export default class Readout extends React.Component{
 
         return(
             <ReadoutBlock
-                className = 'title'
+                className = {['title', this.props.className].join(' ')}
                 compact = {this.props.store.activeWorkflow}
+                tiny = {tiny}
             >
-                {/*!indicator && (county || race) && 
-                    <React.Fragment>
-                    <b>{commaNumber(popCount)} </b> 
-                    {computedString}.
-                    </React.Fragment>
-                */}
+
                 {indicator && 
                     <div style = {{position: 'relative'}}>
                         <h1 ref = {(h1)=>{this.bigNumber = h1}}>
@@ -195,11 +216,13 @@ export default class Readout extends React.Component{
                                 suffix = '%'
                                 absolute
                             />
+
                             
                         </h1>
                         <IndentedTitle
+                            tiny = {tiny}
                             style = {{
-                                textIndent: this.bigNumberWidth+8 + 'px'
+                                textIndent: this.bigNumberWidth+(tiny? 5: 8)+ 'px'
                             }}
                         > 
                             {this.firstLine}

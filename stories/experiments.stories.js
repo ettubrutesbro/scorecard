@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { storiesOf, addDecorator } from '@storybook/react';
 import {withKnobs, select, color, number, text, boolean} from '@storybook/addon-knobs'
 
-import ReactTooltip from 'react-tooltip'
 import CountUp from 'react-countup'
 
 import demopop from '../src/data/demographicsAndPopulation'
@@ -17,7 +16,6 @@ import RaceBreakdownBar from '../src/components/RaceBreakdownBar'
 import SearchInput from '../src/components/SearchInput.jsx'
 
 import media from '../src/utilities/media'
-import combo from '../src/utilities/trungCombo'
 
 addDecorator(withKnobs)
 
@@ -103,6 +101,27 @@ storiesOf('Experiments', module)
             color = "strokepeach"
             state = {tog?'up':'down'}
         />
+        <Sprite 
+            img = "caretx" 
+            color = "normtext"
+            state = {tog?'up':'down'}
+            duration = {.2}
+            width = {25} height = {25}
+        />
+        <Sprite
+            img = 'ind'
+            color = 'normtext'
+            state = {tog?'up':'down'}
+            duration = {.25}
+            width = {30} height = {30}
+        />
+        <Sprite
+            img = 'county'
+            color = 'normtext'
+            state = {tog?'up':'down'}
+            duration = {.25}
+            width = {30} height = {30}
+        />
         </Iono>
     )
 })
@@ -148,15 +167,5 @@ storiesOf('Experiments', module)
         <CountingNumber 
             number = {num}
         />
-    )
-})
-.add('ReactTooltip',()=>{
-    return(
-        <div>
-            <div data-tip = "hi"> Normal target? </div>
-            <ReactTooltip />
-            <AbsTarget data-tip = "Hello world"> Absolutely positioned</AbsTarget>
-
-        </div>
     )
 })

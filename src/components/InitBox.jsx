@@ -6,7 +6,12 @@ import {Button} from './generic'
 import media from '../utilities/media'
 import {capitalize} from '../utilities/toLowerCase'
 
+import Ricon from './generic/Icon'
+
 import browserCompatibility from '../data/browserCompatibility'
+import copy from './InitCopy'
+
+
 
 const Box = styled.div`
 
@@ -83,22 +88,14 @@ export default class InitBox extends React.Component{
 
     render(){
         const {store, show} = this.props
-        return(
+        return store.screen!=='mobile'?(
             <Box show = {show}>
-                <h1>
-                    2018-19 California County Scorecard of Children’s Well-Being
-                </h1>
-                <FirstPara show = {show}>
-                Welcome! This tool aims to provide a comprehensive look at how children are doing in California’s 58 counties, with data viewable by year and race/ethnicity. 
-                </FirstPara>
-                <SecondPara show = {show}>
-                    Some data is unreported, incomplete or unavailable due to small sample size and/or a high margin of error.
-                </SecondPara>
+                <h1> {copy.title}</h1>
+                <FirstPara show = {show}> {copy.firstpara} </FirstPara>
+                <SecondPara show = {show}> {copy.secondpara} </SecondPara>
 
                 <Start show = {show}>
-                    <CompatibilityNote show = {show}> 
-                        This tool supports Chrome (65 and newer), Safari (10+), and Firefox (54+).
-                    </CompatibilityNote>
+                    <CompatibilityNote show = {show}>{copy.compatibility}</CompatibilityNote>
                     {!this.browserBlock &&
                     <StartButton
                         show = {show}
@@ -142,9 +139,89 @@ export default class InitBox extends React.Component{
                 </Start>
                 
             </Box>
+        ):(
+            <MobileVer>
+                <article>
+                    <h1>{copy.title}</h1>
+                    <p>{copy.firstpara}</p>
+                    <p>{copy.secondpara}</p>
+                    <aside>{copy.compatibility}</aside>
+                    <MobileStartButton 
+                        className = {'negative'}
+                        onClick = {this.props.closeSplash}
+                        label = {
+                            <React.Fragment>
+                                Browse data
+                                <SearchIcon img = 'searchzoom'
+                                    color = 'white'
+                                />
+                            </React.Fragment>
+                        }
+                    />
+                </article>
+
+            </MobileVer>
         )
     }
 }
+
+const dots = require('../assets/dots.png')
+
+const MobileVer = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    article {
+        position: relative;
+        border: 1px solid var(--bordergrey);
+        padding: 30px 20px 50px 20px;
+        font-size: 14px; letter-spacing: 0.5px;
+        background: var(--offwhitefg);
+        margin-bottom: 50px;
+        h1{
+            font-size: 16px;
+            top: 0; left: 0;
+            position: absolute;
+            transform: translateY(-50%);
+            margin: 0 15px;
+            padding: 0 15px;
+            background: var(--offwhitefg);
+        }
+        aside{
+            // display: block;
+            // text-align: left;
+            // width: 100%;
+            font-size: 12px;
+            color: var(--fainttext);
+        }
+        &::before{
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: 15px;
+            width: 183px;
+            height: 1px;
+            background: var(--offwhitefg);
+            margin-top: 1;
+        }
+    }
+`
+const MobileStartButton = styled(Button)`
+    position: absolute; bottom: 0;
+    right: 30px;
+    transform: translateY(50%);
+    z-index: 2;
+    padding: 15px 20px;
+
+`
+const SearchIcon = styled(Ricon)`
+    height: 18px; width: 18px;
+    margin-left: 10px;
+`
 
 const Start = styled.div`
     opacity: ${props => props.show? 1 : 0};

@@ -5,13 +5,13 @@ const semanticTitles = {
         who: 'women',
         what: 'received prenatal care beginning the first trimester',
         label: 'Pregnant women who received prenatal care beginning the first trimester',
-        shorthand: 'Prenatal care in 1st trimester'
+        shorthand: 'Early prenatal care'
     },
     'notFoodInsecure': {
         who: 'children',
         what: 'were not food insecure',
         label: 'Children who were not food insecure',
-        shorthand: 'Food insecurity'
+        shorthand: 'Not food insecure'
     },
     'registeredToVote': {
         who: '18-25-year-olds',
@@ -24,7 +24,7 @@ const semanticTitles = {
         who: 'students',
         what: 'were college- or career-ready',
         label: 'Students who were college- or career-ready',
-        shorthand: 'College and career readiness'
+        shorthand: 'College / career readiness'
     },
     'lowIncomeDental': {
         descriptor: 'Low-income',
@@ -32,7 +32,7 @@ const semanticTitles = {
         shortWho: '0-5 y/o\'s',
         what: ', ages birth-5, had visited a dentist in the last year',
         label: 'Children, ages birth-5, of low-income families, who had visited a dentist in the last year',
-        shorthand: 'Children dental visits'
+        shorthand: 'Low-income families\' dental visits'
     },
     'upToDateImmunizations': {
         who: 'Kindergarteners',
@@ -45,13 +45,13 @@ const semanticTitles = {
         who: 'students',
         what: 'reported feeling connected to their school',
         label: 'Students who reported feeling connected to their school',
-        shorthand: 'Connection to school'
+        shorthand: 'Feeling connected to school'
     },
     'difference':{
         who: 'students',
         what: 'reported feeling like they did things at school that made a difference',
         label: 'Students who reported feeling like they do things at school that make a difference',
-        shorthand: 'Making a difference at school'
+        shorthand: 'Feeling school makes a difference'
     },
     'breastFeeding': {
         who: 'newborns',
@@ -63,7 +63,7 @@ const semanticTitles = {
         who: 'children',
         what: 'with parents in the labor force for whom a licensed child care slot was available',
         label: 'Children with parents in the labor force for whom a licensed child care slot was available',
-        shorthand: 'Child care slots'
+        shorthand: 'Child care slots for working parents'
     },
     'collegeLevelMath': {
         who: 'students',
@@ -96,7 +96,7 @@ const semanticTitles = {
         who: 'youth in foster care',
         what: 'graduated high school on time',
         label: 'Youth in foster care who graduated high school on time',
-        shorthand: 'Youth in foster care graduation'
+        shorthand: 'Graduating youth in foster care'
     },
     'FRPMSchoolYear': {
         descriptor: 'eligible',
@@ -117,14 +117,14 @@ const semanticTitles = {
         shortWho: 'children',
         what: 'in the child welfare system had a timely dental exam',
         label: 'Children in the child welfare system who had a timely dental exam',
-        shorthand: 'Dental exams for children in child welfare'
+        shorthand: 'Dental exams in child welfare'
     },
     'FYTimelyMedical': {
         who: 'children',
         shortWho: 'children',
         what: 'in the child welfare system had a timely medical exam',
         label: 'Children in the child welfare system who had a timely medical exam',
-        shorthand: 'Medical exams for children in child welfare'
+        shorthand: 'Medical exams in child welfare'
     },
     'graduation': {
         who: '12th-graders',
@@ -160,7 +160,7 @@ const semanticTitles = {
         who: '7th-graders',
         what: 'were not overweight or obese',
         label: '7th-graders who were not overweight or obese',
-        shorthand: '7th grade overweight/obesity'
+        shorthand: '7th grade overweight / obesity'
     },
     'permanency': {
         who: 'children',

@@ -12,9 +12,6 @@ import {capitalize} from './utilities/toLowerCase'
 import {pickBy, findIndex, debounce, findKey} from 'lodash'
 import {isValid} from './utilities/isValid'
 
-
-import combo from '../src/utilities/trungCombo'
-
 import stopwords from './utilities/stopwords'
 
 const {detect} = require('detect-browser')
@@ -32,12 +29,22 @@ export default class AppStore{
     }
 
     @observable screen = getMedia()
+    @observable mobileDeviceWidth = this.screen === 'mobile'? window.innerWidth : 0
+    @observable mobileDeviceHeight = this.screen === 'mobile'? window.innerHeight : 0
+        //so that ht changes due to keyboard dont mess up positions that depend on innerheight
 
     @action resize = debounce(() => { 
         const size = getMedia()
+
         if(this.screen!==size){
-            this.screen = size 
+            // this.screen = size 
             window.location.reload()
+        }
+        if(this.screen==='mobile' && size === 'mobile'){
+            if(window.innerWidth !== this.mobileDeviceWidth){
+                console.log('width changed for mobile; refresh')
+                window.location.reload()
+            }
         }
         else return
 
@@ -70,7 +77,7 @@ export default class AppStore{
 
         const classes = chroma.limits(allNums, opts.breakAlgorithm, opts.classes)
 
-        return chroma.scale(this.init? ['#f4f4f4','#bbbbbb'] : opts.scheme) 
+        return chroma.scale(this.init && this.screen!=='mobile'? ['#f4f4f4','#bbbbbb'] : opts.scheme) 
             .domain([0,100])
             .padding([opts.padLo, opts.padHi])
             .classes(classes)
@@ -301,6 +308,15 @@ export default class AppStore{
                         else{
                             //county doesnt even have values, disallow selection
                             console.log('county contains no info for this indicator - disallowing entirely')
+                            if(this.screen === 'mobile'){
+                                //this sanity check only happens on mobile...
+                                this.setSanityCheck(
+                                    'county',
+                                    value,
+                                    `There's no indicator data for this county.`,
+                                    false
+                                )
+                            }
                             return false
                         }
                     } //end check if theres values
@@ -349,7 +365,7 @@ export default class AppStore{
                 if(this.county && indicators[this.indicator].counties.california[value||'totals'].filter((v)=>{return isValid(v)}).length > 0){
                     console.log('race selection can be sanity checked: county')
                     this.setSanityCheck('race',value,
-                        `This indicator doesn't have value for this race for the county you have selected, but you can continue without the county selection...`, 
+                        `This indicator doesn't have data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county}, but you can see statewide data.`, 
                         ()=>{
                             this.completeWorkflow('county',null)
                             this.completeWorkflow('race',value)
@@ -359,7 +375,7 @@ export default class AppStore{
                 }
 
                 console.log('got to the end of the invalid race selection check without another solution...uh oh')
-
+                alert('Sorry, an error occurred - please refresh the app.')
                 
             }
         }
@@ -587,7 +603,7 @@ export default class AppStore{
         }
 
         this.indicatorSearchResults = finalMatches
-        this.setIndicatorPages()
+        if(this.screen !== 'mobile') this.setIndicatorPages()
     },150)
 
     @action modifySearchString = (which, str) => {

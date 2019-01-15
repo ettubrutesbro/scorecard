@@ -11,6 +11,7 @@ import HorizontalBarGraph from './HorizontalBarGraph'
 import {capitalize} from '../utilities/toLowerCase'
 import media from '../utilities/media'
 
+
 const races = [
     'asian', 'black', 'latinx', 'white', 'other'
 ]
@@ -28,11 +29,15 @@ const Wrapper = styled.div`
     
     width: 100%;
     bottom: 0;
-    z-index: 1;
+    z-index: 11;
     transform: translate(${props => props.offset});
     transition: transform ${props=>props.hide? .5 : .35}s  cubic-bezier(0.215, 0.61, 0.355, 1), opacity ${props=>props.hide? '.2s .15s' : '.1s'};
     opacity: ${props => props.hide? 0 : 1};
     cursor: ${props=>props.clickable?'pointer':'auto'};
+
+    @media ${media.mobile}{
+        top: 490px;
+    }
 `
 @observer
 export default class IndicatorByRaces extends React.Component{
@@ -42,7 +47,8 @@ export default class IndicatorByRaces extends React.Component{
         if(this.props.expand) this.hover(false)
     }
     render(){
-        const {indicator, year, county, colorScale, screen, setHover, hoveredRace} = this.props.store
+        const store = this.props.store
+        const {indicator, year, county, colorScale, screen, setHover, hoveredRace} = store
         const selectedRace = this.props.store.race
         const ind =  county? indicators[indicator].counties[county] : indicators[indicator].counties.california
 
@@ -57,7 +63,7 @@ export default class IndicatorByRaces extends React.Component{
             else{
                 //trueValue is N/A
                 val = 0
-                isSomeBullshit = ind[race][year]==='*'? 'Data too small or unstable' : 'No data'
+                isSomeBullshit = ind[race][year]==='*' && screen==='mobile'? 'Small/unstable' :ind[race][year]==='*'? 'Data too small or unstable' : 'No data'
                 isSomeBullshit = (<Label invalid>{isSomeBullshit}</Label>)
             }
             const who = semanticTitles[indicator].shortWho || semanticTitles[indicator].who
@@ -71,9 +77,16 @@ export default class IndicatorByRaces extends React.Component{
                 fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
         })
+
+        const vertOffsets = [-150, -50]
+
         return(
             <Wrapper
-                offset = {this.props.hideForSources? '0, -150px' : !this.props.expand? '0, -50px' : '0, -150px'}
+                offset = {
+                    this.props.hideForSources? `0, ${vertOffsets[0]}px` 
+                    : !this.props.expand? `0, ${vertOffsets[1]}px` 
+                    : `0, ${vertOffsets[0]}px`
+                }
                 clickable = {!this.props.expand}
                 onClick = {!this.props.expand? this.props.onClick: ()=>{}}
                 onMouseEnter = {this.props.expand? ()=>{}: ()=>this.hover(true)}
@@ -83,8 +96,8 @@ export default class IndicatorByRaces extends React.Component{
                 <HorizontalBarGraph
                     expandable
                     modes = {{
-                        expanded: {width: screen==='optimal'?610:480, height: 150},
-                        collapsed: {width: screen==='optimal'?610:480, height: 50},
+                        expanded: {width: screen==='mobile'?store.mobileDeviceWidth -50 : screen==='optimal'?610:480, height: screen==='mobile'? 170: 150},
+                        collapsed: {width: screen==='mobile'?store.mobileDeviceWidth -50 : screen==='optimal'?610:480, height: 50},
                         sources: {width: 100, height: 150}
                     }}
                     currentMode = {this.props.hideForSources? 'sources' : !this.props.expand? 'collapsed' : 'expanded'}
@@ -101,15 +114,22 @@ export default class IndicatorByRaces extends React.Component{
                     header = {
                         <Header 
                             hovered = {!this.props.expand? this.hovered : false} 
-                            offset = {!this.props.expand}
+                            offset = {!this.props.expand? true : 0}
                             buttonMode = {!this.props.expand}
                         >
+                            {screen !== 'mobile' && <React.Fragment>
                             <span>Indicator breakdown</span> by race
+                            </React.Fragment>
+                            }
+                            {screen === 'mobile' && <React.Fragment>
+                                Race breakdown
+                                </React.Fragment>
+                            }
                         </Header>
                     }
                     bars = {this.props.expand? indicatorPerformanceByRace : []}
-                    labelWidth = {150}
-                    selectBar = {(val)=>this.props.store.completeWorkflow('race', val)}
+                    labelWidth = {screen === 'mobile'? 125 : 150}
+                    selectBar = {(val)=>this.props.store.completeWorkflow('race', this.props.store.race===val? '' : val)}
                 />
             </Wrapper>
         )
@@ -119,6 +139,9 @@ export default class IndicatorByRaces extends React.Component{
 const Header = styled.div`
     margin: 0 20px;
     padding: 0 15px;
+    @media ${media.mobile}{
+        margin: 0 15px;
+    }
     background: var(--offwhitefg);
     transform: translate(${props=>props.offset?'0, 25px':'0,0'});
     transition: transform ${props=>props.hide? .2 : .35}s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .2s;
