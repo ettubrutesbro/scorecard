@@ -9,12 +9,20 @@ import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
-import {findIndex, debounce} from 'lodash'
+import {pickBy, findIndex, debounce, findKey} from 'lodash'
 import {isValid} from './utilities/isValid'
 
 
+import combo from '../src/utilities/trungCombo'
+
+import stopwords from './utilities/stopwords'
+
 const {detect} = require('detect-browser')
 const browserInfo = detect()
+
+var values = require('object.values')
+var assert = require('assert')
+if(!Object.values) values.shim()
 
 export default class AppStore{
     browser = {
@@ -120,7 +128,7 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                            `This indicator has no race data; picking it will deselect your currently selected race (${capitalize(race)}) and show data for all races instead.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('indicator',value)
@@ -132,7 +140,7 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), but you can view its statewide data for all races.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('county',null)
@@ -146,7 +154,7 @@ export default class AppStore{
                     this.setSanityCheck(
                         'indicator',
                         value, 
-                        `This indicator has no race data -- picking it will deselect your currently selected race (${capitalize(race)}).`,
+                        `This indicator has no race data; picking it will deselect your currently selected race (${capitalize(race)}) and show data for all races instead.`,
                         ()=>{
                             this.completeWorkflow('race',null)
                             this.completeWorkflow('indicator',value)
@@ -169,7 +177,7 @@ export default class AppStore{
                          this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), so picking it will deselect both.`,
+                            `This indicator has no data for your selected race (${capitalize(race)}) or county (${countyLabels[county]}), but you can view its statewide data for all races.`,
                             ()=>{
                                 this.completeWorkflow('race',null)
                                 this.completeWorkflow('county',null)
@@ -182,7 +190,8 @@ export default class AppStore{
                         this.setSanityCheck(
                             'indicator',
                             value, 
-                            `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            // `This indicator has no data for ${countyLabels[county]} county, so picking it will revert your selection to all counties.`,
+                            `This indicator has no data for ${countyLabels[county]} county, but you can view statewide data.`,
                             ()=>{
                                 this.completeWorkflow('county',null)
                                 this.completeWorkflow('indicator',value)
@@ -469,9 +478,16 @@ export default class AppStore{
         else if(screen==='compact'){
             this.indicatorPageSize = 9
         }
+
         const indKeys = Object.keys(indicators).filter((ind)=>{
             const cats = indicators[ind].categories
-            return this.indicatorFilter === 'all'? true : cats.includes(this.indicatorFilter)
+            if(this.indicatorSearchString && this.indicatorFilter === 'all'){
+                return this.indicatorSearchResults.includes(ind)
+            }
+            else if(this.indicatorSearchString){
+                return this.indicatorSearchResults.includes(ind) && cats.includes(this.indicatorFilter)
+            }
+            else return this.indicatorFilter === 'all'? true : cats.includes(this.indicatorFilter)
         })
         console.log('total inds:', indKeys.length)
         for(var i = 0; i<indKeys.length/this.indicatorPageSize; i++){
@@ -482,11 +498,19 @@ export default class AppStore{
         console.log(this.indicatorPages.toJS())
     }
 
+
+
     @observable indicatorPages = null
     @observable indicatorListPage = 0
     @observable indicatorFilter = 'all'
+    @observable indicatorSearchString = ''
+    @observable indicatorSearchResults = []
     @action setIndicatorFilter = (val) =>{
         console.log('setting indicator filter to ', val)
+        if(this.indicatorSearchString && this.indicatorSearchResults.length === 0){
+            //clear an empty search if user is changing topic
+            this.modifySearchString('indicator','')
+        }
         this.indicatorListPage = 0
         this.indicatorFilter = val
         this.setIndicatorPages()
@@ -534,4 +558,59 @@ export default class AppStore{
         this['hovered'+capitalize(which)] = value
         console.log('hovered', which, ':', this['hovered'+capitalize(which)])
     }
+
+
+    @action searchIndicator = debounce((str) => {        
+        if(str){
+            this.indicatorFilter = 'all'
+            this.indicatorListPage = 0
+        }
+        const searchWords = str.split(' ').filter((word)=>{
+            return !stopwords.includes(word)
+        })
+        let matches = []
+
+        searchWords.forEach((word,i)=>{
+            matches[i] = Object.keys(pickBy(indicators, (ind)=>{
+                return ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
+                    return keyword.toLowerCase().startsWith(word)
+                })
+            }))
+        })
+        let finalMatches = matches[0]
+        if(matches.length > 1){
+            for(let i = 1; i<matches.length; i++){
+                finalMatches = finalMatches.filter((match)=>{
+                    return matches[i].includes(match)
+                })
+            }
+        }
+
+        this.indicatorSearchResults = finalMatches
+        this.setIndicatorPages()
+    },150)
+
+    @action modifySearchString = (which, str) => {
+        this[which+'SearchString'] = str
+        if(which === 'indicator'){
+            this.searchIndicator(this.indicatorSearchString.toLowerCase())
+        }
+        if(which === 'county'){
+            this.searchCounty(this.countySearchString.toLowerCase())
+        }
+    }
+
+    @observable countySearchString = ''
+    @observable countySearchResults = []
+    @action searchCounty = debounce((str)=>{
+        const matches = Object.values(countyLabels).filter((cty)=>{
+            return cty.toLowerCase().split(' ').some((word)=>{ 
+                return word.startsWith(str)
+            })
+        }).map((cty)=>{
+            return findKey(countyLabels, (o)=>{return o===cty})
+        })
+        console.log(matches)
+        this.countySearchResults = matches
+    }, 150)
 }

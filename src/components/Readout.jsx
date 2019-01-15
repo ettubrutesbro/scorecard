@@ -199,7 +199,7 @@ export default class Readout extends React.Component{
                         </h1>
                         <IndentedTitle
                             style = {{
-                                textIndent: this.bigNumberWidth+10 + 'px'
+                                textIndent: this.bigNumberWidth+8 + 'px'
                             }}
                         > 
                             {this.firstLine}

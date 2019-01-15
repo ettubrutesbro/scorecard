@@ -1,5 +1,6 @@
 {
   "indicator": "notLowBirthWeight",
+  "keywords": ["birthweight","weight","birth","baby","babies","newborns","low", "infants"],
   "years": [
     "2015",
     "2016"

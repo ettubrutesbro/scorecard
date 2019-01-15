@@ -8,10 +8,10 @@ import {find} from 'lodash'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
-import ReactTooltip from 'react-tooltip'
 
-import {Search, Tooltip, Button} from './generic'
+import {Tooltip, Button} from './generic'
 import SanityCheckTooltip from './generic/SanityCheckTip'
+import Icon from './generic/Icon'
 
 import media, {getMedia} from '../utilities/media'
 import {isValid} from '../utilities/isValid'
@@ -19,6 +19,7 @@ import {isValid} from '../utilities/isValid'
 
 
 const GridList = styled.ul`
+    flex-grow: 1;
     transition: opacity .5s;
     opacity: ${p => p.muted? 0.4 : 1};
     display: grid;
@@ -77,6 +78,7 @@ const GridItem = styled.li`
 const Titleblock = styled.div`
     opacity: ${props => props.raceDropdown? 0.4 : props.muted? 0.2 : 1};
     transition: opacity .5s;
+    flex-shrink: 0; flex-grow: 0;
     h1{
         margin: 0;
         font-weight: 400;
@@ -111,12 +113,10 @@ const Faint = styled.span`
 const TitleSide = styled.div`
     display: flex;
     align-items: center;
+    position: relative;
 `
 @observer
 class CountyList extends React.Component{
-
-    @observable searchString = ''
-    @action search = (e) => this.searchString = e.target.value
 
     @action handleSelection = (cty, column, row) => {
         if(this.props.store.sanityCheck.county) return
@@ -129,43 +129,73 @@ class CountyList extends React.Component{
         }
     }
 
+    constructor(){
+        super()
+        this.searchInput = React.createRef()
+    }
+
     componentDidMount(){
         if(this.props.store.sanityCheck.county){
             this.props.store.clearSanityCheck('county')
         }
     }
+    componentDidUpdate(){
+        if(this.props.focusInput){
+            this.searchInput.current.focus()
+            window.onkeyup = (e) => {
+                if(e.key==='Escape'||e.key==='Esc'){
+                    this.props.onSearch('') //clears string
+                    this.searchInput.current.blur()
+                }
+            }
+        }
+        else{
+            this.searchInput.current.blur()
+        }
+    }
     render(){
-        const {indicator, county, race, year, sanityCheck} = this.props.store
+        const store = this.props.store
+        const {indicator, county, race, year, sanityCheck} = store
         const ctyLabel = county? find(counties, (c)=>{return c.id === county}).label : ''
         const screen = getMedia()
         const sideChangeThreshold = screen === 'optimal'? 20 : 10
-
+        const searchActive = this.props.focusInput || this.props.searchString
         return(
             <Workflow>
                 <Titleblock raceDropdown = {this.props.muted} muted = {sanityCheck.county}>
                     <TitleSide>
-                    <h1>Pick a county.</h1>
-                   
-                    </TitleSide>
-                    <TitleSide>
-                        {/*
-                        <Search 
-                            placeholder = "Search counties..." 
-                            value = {this.searchString}
-                            onChange = {this.search} 
-                        /> 
-                        */}
-                    </TitleSide>
-                </Titleblock>
+                    <PickPrompt hide = {searchActive}>Pick a county.</PickPrompt>
+                    <Search
+                        active = {searchActive} 
+                        inputFocused = {this.props.focusInput}
+                        onClick = {()=> this.props.setSearchFocus(true)}
+                    >
+                        <SearchIcon img = "searchzoom" />
+                        {!this.props.searchString && 
+                            <SearchPrompt>Type to search...</SearchPrompt>
+                        }
+                        <SearchInput 
+                            ref = {this.searchInput}
+                            onFocus = {()=> this.props.setSearchFocus(true)}
+                            onBlur = {()=> this.props.setSearchFocus(false)}
+                            value = {this.props.searchString}
+                            onChange = {(e)=> this.props.onSearch(e.target.value)}
+                        />
+                        <CancelSearch 
+                            hide = {!this.props.searchString}
+                            onClick = {()=>this.props.onSearch('')}
+                        >
+                            Cancel
+                        </CancelSearch>
 
+                    </Search>
+                    </TitleSide>
+
+                </Titleblock>
+                {((store.countySearchResults.length!==0 && store.countySearchString) || !store.countySearchString) && 
                 <GridList
                     raceDropdown = {this.props.muted}
                 >
-                    {/*
-                    <ReactTooltip effect = "solid" 
-                        className = 'reactTooltipOverride'
-                    />
-                    */}
                     <GridItem 
                         className = 'allctys'
                         selected = {!county}
@@ -174,12 +204,14 @@ class CountyList extends React.Component{
                     >
                         California
                     </GridItem>
+
                     {counties.sort((a,b)=>{
                         if(a.id < b.id) return -1
                         else if (a.id > b.id) return 1
                         else return 0
                     }).filter((cty)=>{
-                        return !this.searchString? true : cty.id.includes(this.searchString.toLowerCase())
+                        return !store.countySearchString? true 
+                        : store.countySearchResults.includes(cty.id)
                     }).map((cty, i)=>{
                         let dataHasIssue = false 
                         let straightUpNoData = false
@@ -195,7 +227,7 @@ class CountyList extends React.Component{
                             else if(!isValid(value)) dataHasIssue = true
                         }
 
-                    //finding column and row numbers in order to position sanity check
+                    //brute force/static finding column and row numbers in order to position sanity check
                     let colNum, rowNum
                     if(i+2 < 6){ //row 0
                         colNum = i+2
@@ -229,7 +261,6 @@ class CountyList extends React.Component{
                                 onMouseEnter = {()=>this.props.store.setHover('county',cty.id)}
                                 onMouseLeave = {()=>this.props.store.setHover('county',null)}
                                 hovered = {this.props.store.hoveredCounty === cty.id}
-                                // data-tip = {disabled? `There's no data on ${cty.label} county for this indicator.` : null}
                             > 
                                 {sanityChecking && 
                                     <SanityCheckTooltip 
@@ -252,13 +283,136 @@ class CountyList extends React.Component{
                     })
                     }
                 </GridList>
+                }
+                {store.countySearchResults.length===0 && store.countySearchString && 
+                    <EmptyPage>
+                        <h1>Your search for &ldquo;{store.countySearchString}&rdquo; doesn't match any counties.</h1>
+                    </EmptyPage>
+                }
             </Workflow>
         )
     }
 }
 
 const Workflow = styled.div`
-    
+    display: flex; flex-direction: column;
+    height: 100%;
+`
+const PickPrompt = styled.h1`
+    opacity: ${props => props.hide? 0: 1};
+    transform: translateX(${props => props.hide?-20:0}px);
+    transition: opacity .35s, transform .35s;
+    transition-delay: ${props=>props.hide?0:.125}s;
+`
+const Search = styled.div`
+    display: flex;
+    position: relative;
+    align-items: center;
+    font-size: 13px;
+    color: var(--fainttext);
+    fill: var(--bordergrey);
+    cursor: text;
+    position: absolute;
+    transition: transform .4s, fill .2s;
+    height: 36px;
+    &::after{
+        position: absolute;
+        bottom: 0;
+        border-bottom: 1px solid var(--bordergrey);
+        content: '';
+        transform-origin: 0% 50%;
+        transform: scaleX(${props=>props.active?1:0});
+        transition: transform .4s, border-color .2s;
+    }
+    ${props => props.inputFocused? `
+        fill: var(--fainttext);
+        &::after{
+            border-bottom-color: var(--fainttext);
+        }
+    ` : !props.active? `
+        &:hover{
+            color: var(--strokepeach);
+            fill: var(--peach);
+        }
+    `: ''}
+    @media ${media.optimal}{
+        left: 175px;
+        width: 175px;
+        transform: translateX(${props=>props.active?-175:0}px);
+        &::after{ width: 175px; }
+    }
+    @media ${media.compact}{
+        left: 175px;
+        width: 175px;
+        transform: translateX(${props=>props.active?-175:0}px);
+        &::after{ width: 175px; }
+    }
+
+`
+const SearchIcon = styled(Icon)`
+    width: 18px; 
+    height: 18px;
+    /*margin-right: 6px;*/
+`
+const SearchPrompt = styled.span`
+    margin-left: 6px;
+`
+const SearchInput = styled.input`
+    position: absolute;
+    border: none;
+    left: 20px;
+    appearance: none;
+    outline: none;
+    font-size: 16px;
+    background: none;
+    margin-left: 5px;
+    padding-left: 0px;
+    letter-spacing: 0.7px;
+    width: calc(100% - 20px);
+    /*padding: 10px;*/
+    /*border: 1px solid var(--fainttext);*/
+    /*opacity: 0;*/
+    /*pointer-events: none;*/
+`
+const CancelSearch = styled.div`
+    position: absolute;
+    right: -10px;
+    color: var(--strokepeach);
+    font-size: 13px;
+    letter-spacing: .5px;
+    margin-left: 20px;
+    transition: opacity .25s, transform .25s;
+    transform: ${props => props.hide? 'translateX(0)' : 'translateX(100%)'};
+    transition-delay: ${props => props.hide? 0 : 0.25}s;
+    opacity: ${props => props.hide? 0 : 1};
+    pointer-events: ${props => props.hide? 'none' : 'auto'};
+    cursor: pointer;
+    z-index: 4;
+`
+
+
+const EmptyPage = styled.div`
+    left: 0; 
+    position: absolute;
+    text-align: center;
+    @media ${media.optimal}{
+        top: 275px;
+    }
+    @media ${media.compact}{
+        top: 240px;
+    }
+    width: 100%;
+    height: 100%;
+    color: var(--fainttext);
+    h1{
+        font-weight: 500;
+        font-size: 24px;
+        letter-spacing: .92px;
+        margin: 0;
+        text-align: center;
+    }
+    margin-bottom: 25px;
+
 `
 
 export default CountyList

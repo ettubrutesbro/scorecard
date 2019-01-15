@@ -22,7 +22,7 @@ const Box = styled.div`
         right: 0;
         @media ${media.optimal}{
             width: 550px;
-            height: 450px;
+            height: 475px;
             padding: 35px;
         }
         @media ${media.compact}{
@@ -121,11 +121,11 @@ const DataTable = (props) => {
                 </DemoRow>
                 <DemoRow> 
                     <DemoValue> {demo.poverty}% </DemoValue>
-                    are living at or below 2X the poverty&nbsp;level.
+                    are living at or below 2X the&nbsp;poverty&nbsp;level.
                 </DemoRow>
                 <DemoRow className = 'last'> 
-                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {demo.homeless} /> </DemoValue>
-                    students experience homelessness.
+                    <DemoValue> <CountingNumber maxDuration = {0.85} number = {rawSigFig(demo.homeless)} /> </DemoValue>
+                    students&nbsp;experience homelessness.
                 </DemoRow>
             </RowTable>
         )

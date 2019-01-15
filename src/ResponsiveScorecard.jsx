@@ -152,7 +152,7 @@ const BottomRow = styled(Row)`
 
 const GreyMask = styled.div`
     position: absolute;
-    pointer-events: none;
+    pointer-events: ${props => props.show? 'auto' : 'none'};
     left: 0;
     top: 0;
     width: 100%;
@@ -255,7 +255,6 @@ const SourcesButton = styled(Button)`
             }
         }
     `}
-    
 `
 
 @observer
@@ -317,6 +316,9 @@ export default class ResponsiveScorecard extends React.Component{
     }
     @observable screen = getMedia()
 
+    @observable displayApp = false
+    @action setDisplay = () => this.displayApp = true
+
     componentWillMount(){
         store.setIndicatorPages()
         // window.addEventListener('resize', this.resizeRefresh, false)
@@ -367,14 +369,12 @@ export default class ResponsiveScorecard extends React.Component{
         }else{
             this.setRandomIndicatorCycle(true)   
         }
-
-        
-
-
-
-        
     }
 
+    componentDidMount(){
+        window.setTimeout(this.setDisplay, 10)
+        // this.setDisplay()
+    }
 
     // @observable randInd = 0 
     @observable alreadyDisplayedRandomIndicators = []
@@ -419,7 +419,9 @@ export default class ResponsiveScorecard extends React.Component{
         return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
             <React.Fragment>
             <Styles />
-            <App>
+            <App
+                style = {{visibility: this.displayApp? 'visible' : 'hidden'}}
+            >
                 <Nav> 
                     <NavComponent 
                         init = {store.init}
@@ -627,7 +629,7 @@ const LegendContainer = styled.div`
         height: 80px;
     }
     @media ${media.compact}{
-        height: 40px;
+        height: 64px;
     }
 
 `
