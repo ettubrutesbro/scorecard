@@ -495,10 +495,7 @@ const Tables = styled.div`
                     store = {store}
                     hasCountyOptionality = {county}
                     show
-                    onForce = {(val)=>{
-                        if(val==='county') this.props.setForceCA(false)
-                        else this.props.setForceCA(true)
-                    }}
+                    
                     forceCA = {this.props.forceCA}
                 />
                 </DemoWrap>

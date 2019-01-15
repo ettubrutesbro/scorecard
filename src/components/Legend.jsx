@@ -110,7 +110,7 @@ export default class Legend extends React.Component{
                     const prevPctsOffset = i>0? pcts.slice(0,i).reduce((a,b)=>{return Number(a)+Number(b)}) : 0
                     const fill = colorScale((breaks[i] + breaks[i+1]) / 2)
                     return i < arr.length - 1?(
-                        <MobSwatchSect>
+                        <MobSwatchSect key = {'swatch'+i}>
                             <MobLabel>
                                  {Math.ceil(breaks[i])}-{Math.floor(breaks[i+1])}%
                             </MobLabel>

@@ -49,10 +49,10 @@ const Box = styled.div`
 `
 
 const DemoBox = (props) => {
-    const store = props.store
+    const {store, forceCA, ...restOfProps} = props
     const {screen} = store
 
-    const county = props.forceCA? '' : store.county
+    const county = forceCA? '' : store.county
 
     let pop = county? demopop[county].population : demopop.california.population
     let countyLabel = county? countyLabels[county] : 'California'
@@ -67,7 +67,7 @@ const DemoBox = (props) => {
     return(
         <Box
             id = "demobox"
-            {...props}
+            {...restOfProps}
         >
                     <Title>
                         {screen!=='mobile' &&

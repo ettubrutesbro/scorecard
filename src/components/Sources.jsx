@@ -299,7 +299,9 @@ export class DemographicSourceInfo extends React.Component{
             <DemoSources>
                 {Object.keys(srcs).map((src, i, arr)=>{
                     return(
-                        <Indicator last = {i===arr.length-1}>
+                        <Indicator 
+                        key = {'src'+i}
+                        last = {i===arr.length-1}>
                             <SourceBlock>
                                 <h3>{blockTitles[src]}</h3>
                                 <h1>{srcs[src].source}</h1>
