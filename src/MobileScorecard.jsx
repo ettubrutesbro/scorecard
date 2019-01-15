@@ -63,6 +63,7 @@ export default class MobileScorecard extends React.Component{
             if(sec==='sources') this.showShorthand = true
         }
         this[sec+'Section'].current.scrollTop = 0
+        this.sectionVisibility[sec] = true
     }
 
     @observable showFAH = false
@@ -85,6 +86,13 @@ export default class MobileScorecard extends React.Component{
     @observable init = true
     @action setInit = (tf) => {
         this.init = tf
+    }
+
+    @observable sectionVisibility = {breakdown: true, demographic: false, sources: false}
+    @action setSectionVisibility = (which, tf) => {
+        console.log('setting',which,'to',tf)
+        this.sectionVisibility[which] = tf
+
     }
 
     constructor(){
@@ -153,6 +161,8 @@ export default class MobileScorecard extends React.Component{
                             active = {current === 'breakdown'}
                             isLast = {last === 'breakdown'}
                             origin = {-100}
+                            onTransitionEnd = {current !== 'breakdown'? ()=>{this.setSectionVisibility('breakdown',false)} : ()=>{}}
+                            visible = {this.sectionVisibility.breakdown}
                         >
                             <Breakdown 
                                 ref = {this.breakdown}
@@ -175,6 +185,8 @@ export default class MobileScorecard extends React.Component{
                                 : current === 'sources' && last === 'breakdown'? -100
                                 : 100
                             }
+                            onTransitionEnd = {current !== 'demographic'? ()=>{this.setSectionVisibility('demographic',false)} : ()=>{}}
+                            visible = {this.sectionVisibility.demographic}
                         >
                         <Demographics
                             forceCA = {this.forceCA}
@@ -190,6 +202,8 @@ export default class MobileScorecard extends React.Component{
                             active = {current === 'sources'}
                             isLast = {last==='sources'}
                             origin = {100}
+                            onTransitionEnd = {current !== 'sources'? ()=>{this.setSectionVisibility('sources',false)} : ()=>{}}
+                            visible = {this.sectionVisibility.sources}
                         >
                             <SourceNoteTitle>
                                 Sources & notes
@@ -286,6 +300,8 @@ const Section = styled.section`
     overflow-x: hidden;
     overflow-y: scroll;
     // background: var(--offwhitefg);
+    visibility: ${props => props.visible? 'visible' : 'hidden'};
+
 `
 const SourceNoteTitle = styled.h1`
     font-weight: normal; font-size: 18px;
@@ -495,7 +511,7 @@ const Tables = styled.div`
                     store = {store}
                     hasCountyOptionality = {county}
                     show
-                    
+
                     forceCA = {this.props.forceCA}
                 />
                 </DemoWrap>
