@@ -770,15 +770,14 @@ const BarInfo = styled.div`
     opacity: ${props => props.visible? 1: 0};
 `
 const Prompt = styled(BarInfo)`
+    transform: translateY(${props => props.visible? 0 : -100}%);
 `
 const Shorthand = styled(BarInfo)`
+    transform: translateY(${props => props.visible? 0 : 100}%);
     max-width: calc(100% - 75px);
     overflow: hidden;
     text-overflow: ellipsis;
 `
-
-    // transform: translateY(${props => props.visible? 0 : -100}%);
-    // transform: translateY(${props => props.visible? 0 : 100}%);
 
 const SearchIcon = styled(Icon)`
     width: 18px; height: 18px;
