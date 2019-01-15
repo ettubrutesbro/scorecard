@@ -120,9 +120,10 @@ export default class ExpandTest extends React.Component{
                 {this.props.withScroll && !this.props.noFade &&
                     <FadeCropper 
                         id = 'fadecropper'
+                        width = {Math.max(...Object.keys(this.props.modes).map((mode)=>{return this.props.modes[mode].width}))}
                         // a hack...
                         show = {this.props.currentMode.toLowerCase().includes('expanded')} 
-                        // width = {this.props.modes.expanded.width}
+                        // width = {1000}
                     />
                 }
                 <Box
@@ -175,6 +176,7 @@ export default class ExpandTest extends React.Component{
                 </Box>
                 {this.props.withScroll && !this.props.noFade &&
                     <FadeCropperBottom
+                        width = {Math.max(...Object.keys(this.props.modes).map((mode)=>{return this.props.modes[mode].width}))}
                         // width = {this.props.modes.expanded.width}
                         // expanded exception hack.III
                         show = {this.props.currentMode.toLowerCase().includes('expanded')}
@@ -278,8 +280,7 @@ const FadeCropper = styled.div`
     z-index: 1;
     position: absolute;
     left: 1px;
-    /*width: ${props=>props.width}px;*/
-    width: 100%;
+    width: ${props=>props.width}px;
     height: 45px;
     background: linear-gradient(var(--offwhitefg) 30%, rgba(252,253,255,0) 80%);
     opacity: ${props => props.show? 1 : 0};
