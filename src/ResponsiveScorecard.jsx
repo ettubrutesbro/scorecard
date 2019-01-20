@@ -22,6 +22,7 @@ import DemoBox from './components/DemoBox'
 import MobileScorecard from './MobileScorecard'
 
 import {Button} from './components/generic'
+import Icon, {Sprite} from './components/generic/Icon'
 
 import indicators, {featuredInds} from './data/indicators'
 import {counties} from './assets/counties'
@@ -199,29 +200,41 @@ const ShareSources = styled.div`
         /*height: 150px;*/
     }
 `
-const pdfIcon = require('./assets/export.svg')
-const sourcesIcon = require('./assets/sources.svg')
+// const pdfIcon = require('./assets/export.svg')
+// const sourcesIcon = require('./assets/sources.svg')
 
-const Icon = styled.figure`
+// const Icon = styled.figure`
+//     position: absolute;
+//     right: 10px;
+//     /*outline: 1px solid black;*/
+//     width: 30px;
+//     height: 30px;
+//     background-repeat: no-repeat;
+//     margin-right: 12px;
+//     flex-shrink: 0;
+//     background-size: cover;
+// `
+// const BtnLabel = styled.div`
+//     display: flex;
+//     align-items: center;
+// `
+// const SourcesIcon = styled(Icon)`
+//     background-image: url(${sourcesIcon});
+// `
+// const PDFIcon = styled(Icon)`
+//     background-image: url(${pdfIcon});
+// `
+
+const Bookwrap = styled.div`
+    position: relative;
+    width: 30px; height: 30px;
+`
+const BookSprite = styled(Sprite)`
     position: absolute;
-    right: 10px;
-    /*outline: 1px solid black;*/
-    width: 30px;
-    height: 30px;
-    background-repeat: no-repeat;
-    margin-right: 12px;
-    flex-shrink: 0;
-    background-size: cover;
-`
-const BtnLabel = styled.div`
-    display: flex;
-    align-items: center;
-`
-const SourcesIcon = styled(Icon)`
-    background-image: url(${sourcesIcon});
+    top: 0; left: 0;
 `
 const PDFIcon = styled(Icon)`
-    background-image: url(${pdfIcon});
+    width: 30px; height: 30px;
 `
 
 
@@ -439,6 +452,47 @@ export default class ResponsiveScorecard extends React.Component{
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
+                        <Button
+                            className = {store.sourcesMode? 'negative' : ''}
+                            label = {
+                                <React.Fragment>
+                                    Hide sources and notes 
+                                    <Bookwrap>
+                                    <BookSprite img = "book" 
+                                        width = {30} height = {30}
+                                        state = {store.sourcesMode? 'up' : 'down'}
+                                        color = {store.sourcesMode? 'white' : 'normtext'}
+                                        fillMode = 'none'
+                                    />
+                                    <BookSprite img = "underbook"
+                                        width = {30} height = {30}
+                                        state = {store.sourcesMode? 'up' : 'down'}
+                                        color = {store.sourcesMode? 'white' : 'normtext'}
+                                    />
+                                    </Bookwrap>
+                                </React.Fragment>
+                            }
+                            onClick = {()=>{store.setSourcesMode(!store.sourcesMode)}}
+                        />
+                        <Button 
+                            label = {
+                                <React.Fragment>
+                                    Download PDF 
+                                    <PDFIcon 
+                                        img = 'document' 
+                                        color = {store.sourcesMode? 'white' : 'normtext'}
+                                    />
+                                </React.Fragment>
+                            }
+                            onClick = {()=>{
+                                if(pdfmanifest[store.county||'california']){
+                                    window.location.assign(pdfmanifest[store.county||'california'])
+                                }
+                                else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
+                                
+                            } }
+                        />
+                        {/*
                         <SourcesButton
                             dark = {store.sourcesMode} 
                             label = {store.sourcesMode? 
@@ -460,6 +514,7 @@ export default class ResponsiveScorecard extends React.Component{
                                 
                             } }
                         />
+                        */}
                     </ShareSources>
                     }
                 </TopRow>
