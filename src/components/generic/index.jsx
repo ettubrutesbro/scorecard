@@ -321,6 +321,12 @@ const Btn = styled.div`
         padding: 10px 21px;
     }
     cursor: pointer;
+    background: white;
+    color: var(--normtext);
+    border: 1px solid var(--fainttext);
+    &:hover{
+        color: var(--strokepeach);
+    }
     &.default, &.compact{
         background: white;
         color: var(--normtext);

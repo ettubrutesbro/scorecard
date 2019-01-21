@@ -228,6 +228,9 @@ const ShareSources = styled.div`
 const Bookwrap = styled.div`
     position: relative;
     width: 30px; height: 30px;
+    margin-left: 10px;
+    transform: translateY(${props=>props.active? '0px' : '3px'});
+    transition: transform .2s;
 `
 const BookSprite = styled(Sprite)`
     position: absolute;
@@ -235,42 +238,21 @@ const BookSprite = styled(Sprite)`
 `
 const PDFIcon = styled(Icon)`
     width: 30px; height: 30px;
+    margin-left: 8px;
 `
-
-
-const BtnWithRightIco = styled(Button)`
-    padding-right: 60px;
-    position: relative;
+const SourceButton = styled(Button)`
+    fill: ${props => props.active? 'white' : 'var(--normtext)'};
     &:hover{
-        figure{
-            background-position: 100% 50%;
-        }
+        fill: ${props => props.active? 'var(--peach)' : 'var(--strokepeach)'};    
+    }
+    margin-right: 15px;
+`
+const PDFButton = styled(Button)`
+    fill: var(--normtext);
+    &:hover{
+        fill: var(--strokepeach); 
     }
 `
-const SourcesButton = styled(Button)`
-    padding-right: 60px;
-    position: relative;
-    ${props => props.dark? `
-        figure{
-            background-position: 66.6666% 50%;
-        }
-        &:hover{
-            figure{
-                background-position: 100% 50%;
-            }
-        }
-    `: `
-        figure{
-            background-position: 0% 50%;
-        }
-        &:hover{
-            figure{
-                background-position: 33.3333% 50%;
-            }
-        }
-    `}
-`
-
 @observer
 export default class ResponsiveScorecard extends React.Component{
 
@@ -452,36 +434,37 @@ export default class ResponsiveScorecard extends React.Component{
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
-                        <Button
+                        <SourceButton
                             className = {store.sourcesMode? 'negative' : ''}
+                            active = {store.sourcesMode}
                             label = {
                                 <React.Fragment>
                                     Hide sources and notes 
-                                    <Bookwrap>
+                                    <Bookwrap
+                                        active = {store.sourcesMode}
+                                    >
                                     <BookSprite img = "book" 
                                         width = {30} height = {30}
+                                        duration = {.275}
                                         state = {store.sourcesMode? 'up' : 'down'}
-                                        color = {store.sourcesMode? 'white' : 'normtext'}
+                                        // color = {store.sourcesMode? 'white' : 'normtext'}
                                         fillMode = 'none'
                                     />
                                     <BookSprite img = "underbook"
+                                        duration = {.2}
                                         width = {30} height = {30}
                                         state = {store.sourcesMode? 'up' : 'down'}
-                                        color = {store.sourcesMode? 'white' : 'normtext'}
+                                        // color = {store.sourcesMode? 'white' : 'normtext'}
                                     />
                                     </Bookwrap>
                                 </React.Fragment>
                             }
                             onClick = {()=>{store.setSourcesMode(!store.sourcesMode)}}
                         />
-                        <Button 
+                        <PDFButton 
                             label = {
                                 <React.Fragment>
-                                    Download PDF 
-                                    <PDFIcon 
-                                        img = 'document' 
-                                        color = {store.sourcesMode? 'white' : 'normtext'}
-                                    />
+                                    Download PDF <PDFIcon img = 'document' />
                                 </React.Fragment>
                             }
                             onClick = {()=>{
