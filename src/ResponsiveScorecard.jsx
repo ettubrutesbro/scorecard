@@ -241,6 +241,7 @@ const PDFIcon = styled(Icon)`
     margin-left: 8px;
 `
 const SourceButton = styled(Button)`
+    height: 48px;
     fill: ${props => props.active? 'white' : 'var(--normtext)'};
     &:hover{
         fill: ${props => props.active? 'var(--peach)' : 'var(--strokepeach)'};    
@@ -248,6 +249,7 @@ const SourceButton = styled(Button)`
     margin-right: 15px;
 `
 const PDFButton = styled(Button)`
+    height: 48px;
     fill: var(--normtext);
     &:hover{
         fill: var(--strokepeach); 
@@ -447,14 +449,12 @@ export default class ResponsiveScorecard extends React.Component{
                                         width = {30} height = {30}
                                         duration = {.275}
                                         state = {store.sourcesMode? 'up' : 'down'}
-                                        // color = {store.sourcesMode? 'white' : 'normtext'}
                                         fillMode = 'none'
                                     />
                                     <BookSprite img = "underbook"
                                         duration = {.2}
                                         width = {30} height = {30}
                                         state = {store.sourcesMode? 'up' : 'down'}
-                                        // color = {store.sourcesMode? 'white' : 'normtext'}
                                     />
                                     </Bookwrap>
                                 </React.Fragment>
