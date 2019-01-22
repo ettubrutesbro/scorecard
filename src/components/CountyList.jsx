@@ -32,8 +32,8 @@ const GridList = styled.ul`
     }
     @media ${media.compact}{
         grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: 36px;
-        grid-auto-rows: 36px;
+        grid-template-rows: 33px;
+        grid-auto-rows: 33px;
         grid-gap: 5px;
         font-size: 13px;
 
