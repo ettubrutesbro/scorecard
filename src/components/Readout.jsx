@@ -89,18 +89,21 @@ const Crumb = styled.span`
     margin: ${props => props.active? '0 .5rem' : '0 0 0 0.4rem'};   
 `
 
-const ShadowNum = styled.div`
+const ShadowNum = styled.h1`
     opacity: 0;
 `
 @observer
 export default class Readout extends React.Component{
     constructor(props){
         super(props)
+        this.bigNumber = React.createRef()
     }
     @observable bigNumberWidth = 0
     @action setBigNumberWidth = () => {
-        const width = findDOMNode(this.bigNumber).offsetWidth
+        const width = findDOMNode(this.bigNumber.current).offsetWidth
         this.bigNumberWidth = width
+        console.log('set big number widcth: ', width)
+        console.log(this.bigNumber.current.offsetWidth)
     }
     @observable firstLine = ''
     @observable subsequentLines = ``
@@ -159,6 +162,7 @@ export default class Readout extends React.Component{
     componentDidMount = () => {
         if(this.props.store.indicator) this.setBigNumberWidth() 
         this.computeLineBreaks()
+        // document.fonts.ready.then(()=>this.setBigNumberWidth())
     }
     componentDidUpdate = (newProps) => {
         if(this.props.store.indicator) this.setBigNumberWidth()
@@ -208,9 +212,10 @@ export default class Readout extends React.Component{
             >
 
                 {indicator && 
-                    <div style = {{position: 'relative'}}>
-                        <h1 ref = {(h1)=>{this.bigNumber = h1}}>
-                            <ShadowNum>{displayNum}%</ShadowNum>
+                    <div style = {{position: 'relative', display: 'inline-flex'}}>
+                        
+                            <ShadowNum ref = {this.bigNumber} >{displayNum}%</ShadowNum>
+                            <h1 >
                             <CountingNumber
                                 number = {displayNum}
                                 suffix = '%'

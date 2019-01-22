@@ -112,7 +112,7 @@ export default class MobileNav extends React.Component{
                     currentMode = {this.mode==='county'? 'fullscreen' : 'compact'}
                     modes = {{
                         compact: {width: store.mobileDeviceWidth+1, height: 50},
-                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
+                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight+100}
                     }}
                     backgroundColor = {this.mode==='county'? 'var(--offwhitefg)' : 'white'}
                     noBorderTop = {this.mode==='compact' || !this.mode}
@@ -170,7 +170,7 @@ export default class MobileNav extends React.Component{
                             currentMode = {this.mode==='race'? 'fullscreen' : 'compact'}
                             modes = {{
                                 compact: {width: store.mobileDeviceWidth+1, height: 50},
-                                fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
+                                fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight+100}
                             }}
                             backgroundColor = {this.mode==='race'? 'var(--offwhitefg)' : 'white'}
                             // hideScroll = {this.mode!=='race'}
@@ -213,7 +213,7 @@ export default class MobileNav extends React.Component{
                     modes = {{
                         compact: {width: store.mobileDeviceWidth+1, height: 117},
                         compactTruncated: {width: store.mobileDeviceWidth+1, height: 50},
-                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight}
+                        fullscreen: {width: store.mobileDeviceWidth+1, height: store.mobileDeviceHeight+100}
                     }}
                     backgroundColor = {
                         this.mode==='indicator'? 'var(--offwhitefg)'
@@ -332,11 +332,11 @@ export default class MobileNav extends React.Component{
             
             <HeaderGroup
                 offset = {this.mode==='compact' && !indicator? `${store.mobileDeviceWidth-230}px,215px` 
-                    : this.mode && this.mode!=='compact' && !indicator? `${store.mobileDeviceWidth-230}px,${store.mobileDeviceHeight+25}px`
+                    : this.mode && this.mode!=='compact' && !indicator? `${store.mobileDeviceWidth-230}px,${store.mobileDev1iceHeight+25}px`
                     : !this.mode? '0,0' 
                     : this.mode==='compact' && !indicator? `${store.mobileDeviceWidth - 175}px,215px`
                     : this.mode==='compact' && indicator? `${store.mobileDeviceWidth - 175}px,282px`
-                    : `${store.mobileDeviceWidth - 175}px,${store.mobileDeviceHeight+25}px`
+                    : `${store.mobileDeviceWidth - 175}px,${store.mobileDeviceHeight+125}px`
                 }
                 duration = {.425}
             > 
@@ -862,7 +862,7 @@ const WorkflowList = styled.ul`
     width: 100%;
     white-space: normal;
     margin: 15px 0 0 0;
-    padding: 0 25px 50px 25px;
+    padding: 0 25px 150px 25px;
     overscroll-behavior: contain;
 `
 const ListRow = styled.li`
