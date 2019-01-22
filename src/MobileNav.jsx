@@ -714,7 +714,7 @@ const FixWrap = styled.div`
     z-index: 10;
     width: calc(100% + 1px);
 
-    transform: translateY(${props=>props.mid? '25vh' : props.hide? '-75px': 0});
+    transform: translateY(${props=>props.mid? '20vh' : props.hide? '-75px': 0});
     transition: transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);   
 `
 const WorkflowWrap = styled.div`
