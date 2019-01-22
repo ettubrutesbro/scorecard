@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import {find, findIndex} from 'lodash'
 import commaNumber from 'comma-number'
+import IntersectionObserver from '@researchgate/react-intersection-observer'
+import 'intersection-observer'
 
 import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
@@ -15,6 +17,7 @@ import semanticTitles from '../assets/semanticTitles'
 
 import {capitalize} from '../utilities/toLowerCase'
 import {truncateNum} from '../utilities/sigFig'
+import media from '../utilities/media'
 
 import ordinal from 'ordinal'
 
@@ -54,6 +57,20 @@ export default class IndicatorByCounties extends React.Component{
         console.log('setting sort for overview')
         this.sortOverviewBy = v
     }
+
+
+    @action toggleFixedX = (tf) =>{
+        if(this.props.store.screen !== 'mobile') return
+        // if(this.distribute) this.props.toggleFixedX(false)
+        else this.props.toggleFixedX(tf)
+     }
+     @observable headerVisible = false
+     @observable footerVisible = false
+     @action onHeaderFooterIntersect = (which, tf) => {
+        this[which+'Visible'] = tf
+        if(this.headerVisible || this.footerVisible) this.toggleFixedX(false)
+        else if(!this.headerVisible && !this.footerVisible) this.toggleFixedX(true)
+     }
 
     @action calculatePerformance = () => {
         // console.log('calculating performance')
@@ -175,8 +192,8 @@ export default class IndicatorByCounties extends React.Component{
             this.condensed = []
         }
         this.distribution = distribution
-        console.log(indicator, entries)
-        console.log(distribution)
+        // console.log(indicator, entries)
+        // console.log(distribution)
 
     }
 
@@ -187,6 +204,7 @@ export default class IndicatorByCounties extends React.Component{
         const wtf = autorun(()=>{
             const {indicator, race, county, year} = this.props.store
             // console.log(indicator, race, county, year)
+            if(!indicator) return
             this.calculatePerformance()
             this.generateDistribution()
         })
@@ -197,13 +215,17 @@ export default class IndicatorByCounties extends React.Component{
 
 
     render(){
-
-        const {county, race, year, indicator, completeWorkflow, colorScale, screen, setHover, hoveredCounty} = this.props.store
+        const {store} = this.props
+        const {county, race, year, indicator, completeWorkflow, colorScale, screen, setHover, hoveredCounty} = store
         let {performance} = this 
         const ind = indicators[indicator]
         const unstable = ind.categories.includes('unstable')
 
         const distribute = !this.props.expand
+
+        let maxNumRows = !race? performance.length : 0
+
+        const width = store.mobileDeviceWidth - 50
 
         if(this.sortOverviewBy === 'pop'){
             performance = performance.sort((a,b)=>{
@@ -270,6 +292,7 @@ export default class IndicatorByCounties extends React.Component{
                 return a.value>b.value? -1: a.value<b.value? 1 : 0
             })
         if(race){
+            maxNumRows = withRace.length
             withRace = withRace.slice(0,distribute?this.props.entries:withRace.length) 
             .map((cty)=>{
                 const val = indicators[indicator].counties[cty.id][race][year]
@@ -297,82 +320,137 @@ export default class IndicatorByCounties extends React.Component{
             }
         }
 
-        let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        // let expandDims, collapseDims, noRaceExpandDims, noRaceCollapseDims
+        let modes
         if(screen==='optimal'){
-            expandDims = {width: 610, height: 515}
-            collapseDims = {width: 610, height: 390}
-            noRaceExpandDims = {width: 610, height: 575}
-            noRaceCollapseDims = {width: 610, height: 575}
-            
+            modes = {
+                optimalExpanded: {width: 610, height: 515},
+                optimalCollapsed: {width: 610, height: 390},
+                optimalNoRaceExpanded: {width: 610, height: 575},
+                optimalNoRaceCollapsed: {width: 610, height: 575},
+                optimalsources: {width: 370, height: 50}
+            }
         }
         else if(screen==='compact'){
-            expandDims = {width: 480, height: 390}
-            collapseDims = {width: 480, height: 280}
-            noRaceExpandDims = {width: 480, height: 450}
-            noRaceCollapseDims = {width: 480, height: 450}
-            
+            modes = {
+                compactExpanded: {width: 480, height: 390},
+                compactCollapsed: {width: 480, height: 280},
+                compactNoRaceExpanded: {width: 480, height: 450},
+                compactNoRaceCollapsed: {width: 480, height: 450},
+                compactsources: {width: 370, height: 50}
+            }
+        }
+        else if(screen==='mobile'){
+            modes = {
+                mobileExpanded: {width:width, height: 100+(maxNumRows*23)},
+                mobileCollapsed: {width:width, height: 285},
+                mobileNoRaceExpanded: {width:width, height: 100+(maxNumRows*23)},
+                mobileNoRaceCollapsed: {width:width, height: 360},
+                mobilesources: {width:width, height: 50}
+            }
         }
 
-        const modes = {
-            collapsed: collapseDims,
-            expanded: expandDims,
-            noraceexpanded: noRaceExpandDims,
-            noracecollapsed: noRaceCollapseDims,
-            sources: {width: 370, height: 50}
-        }
-        console.log(modes)
+        // console.log('indbycounties max:')
+        // console.log(maxNumRows)
+
+        // const modes = {
+        //     collapsed: collapseDims,
+        //     expanded: expandDims,
+        //     noraceexpanded: noRaceExpandDims,
+        //     noracecollapsed: noRaceCollapseDims,
+        //     sources: {width: 370, height: 50}
+        // }
+        // console.log(modes)
         return (
+            <React.Fragment>
             <Wrapper offset = {this.props.sources}>
 
             <Graph
                 expandable
-                withScroll
-                currentMode = {
-                    this.props.sources? 'sources' : 
-                    !this.props.hasRace && this.props.expand? 'noraceexpanded' :
-                    !this.props.hasRace && !this.props.expand? 'noracecollapsed' :
-                    this.props.expand? 'expanded' : 
-                    'collapsed'
+                withScroll = {screen!=='mobile'}
+                noFade = {screen==='mobile'}
+
+                hideScroll = {distribute || this.props.sources}
+                currentMode = { 
+                    this.props.sources? screen + 'sources' : 
+                    !this.props.hasRace && this.props.expand? screen + 'NoRaceExpanded' :
+                    !this.props.hasRace && !this.props.expand? screen + 'NoRaceCollapsed' :
+                    this.props.expand? screen + 'Expanded' : 
+                    screen + 'Collapsed'
                 }
                 modes = {modes}
-                duration = {this.props.sources? .5 : .35}
+                duration = {screen==='mobile'? 0 : this.props.sources? .5 : .35}
 
-                onHoverRow = {(val)=>{setHover('county',val)}}
-                hovered = {hoveredCounty}
+                onHoverRow = {screen!=='mobile'? (val)=>{setHover('county',val)} : ()=>{} }
+                hovered = {screen==='mobile'? null : hoveredCounty}
 
                 borderColor = {this.props.sources? 'var(--fainttext)':''}
                 
                 selected = {county}
                 selectable
                 beefyPadding
-                header = {(<HeaderComponent 
-                    sources = {this.props.sources}
-                    race = {race} 
-                    distribute = {distribute}
-                    setOverviewSort = {this.setOverviewSort}
-                    sortOverviewBy = {this.sortOverviewBy}
-                    setSourcesMode = {this.props.store.setSourcesMode}
-                />)}
+                header = {(
+                    <HeaderComponent 
+                        screen = {screen}
+                        sources = {this.props.sources}
+                        race = {race} 
+                        distribute = {distribute}
+                        setOverviewSort = {this.setOverviewSort}
+                        sortOverviewBy = {this.sortOverviewBy}
+                        setSourcesMode = {this.props.store.setSourcesMode}
+                        toggleDistribute = {this.props.toggleDistribute}
+
+                        //mobile intersect stuff
+                        onIntersect = {(tf)=>this.onHeaderFooterIntersect('header',tf)}
+                        
+                    />
+                )}
 
                 hideGraph = {this.props.sources}
 
-                labelWidth = {this.sortOverviewBy==='pop'? 180 : 150}
+                labelWidth = {screen === 'mobile' && this.sortOverviewBy === 'pop'? 145 : screen === 'mobile'? 125 : this.sortOverviewBy==='pop'? 180 : 150}
                 bars = {race? withRace : performance}
                 average = {ind.counties.california[race||'totals'][year]}
-                selectBar = {(id)=>{console.log(id); this.props.store.completeWorkflow('county',id)}}
+                selectBar = {(id)=>{completeWorkflow('county',store.county===id?'':id)}}
                 footer = {(
                     <FooterComponent
+                        mobile = {screen==='mobile'}
                         offset = {this.props.expand}
                         onClick = {this.props.toggleDistribute}
                         hide = {this.props.sources}
+
+                        onIntersect = {(tf)=>this.onHeaderFooterIntersect('footer',tf)}
                     />
                 )}
                 fullHeight = {this.props.expand}
             />
+
             </Wrapper>
+            </React.Fragment>
         )
     }
 }
+const MobileX = styled.div`
+    position: absolute;
+    display: flex; align-items: center; justify-content: center;
+    /*right: -45px;*/
+    left: calc(100vw - 85px);
+    height: 35px;
+    width: 35px;
+    background: var(--offwhitefg);
+    opacity: ${props => props.visible? 1 : 0};
+    transition: transform .2s, opacity .125s;
+`
+const XIcon = styled(Icon)`
+    width: 18px; height: 18px;
+`
+const FixedMobileX = styled(MobileX)`
+    position: fixed;
+    top: 90px; right: 18px;
+    transform: scale(${props => props.visible? 1 : 0.6});
+
+    z-index: 1000;
+`
 
 const Wrapper = styled.div`
     position: relative;
@@ -382,8 +460,22 @@ const Wrapper = styled.div`
     //this needs z-index adjustment to sit atop demo when it's in btn mode
 `
 
-const HeaderComponent = (props) => {
+@observer class HeaderComponent extends React.Component{
+    constructor(props){
+        super(props)
+        if(props.screen === 'mobile'){
+            this.mobileX = React.createRef()
+        }
+    }
+    render(){
+        const props = this.props
     return(
+        <IntersectionObserver
+            onChange = {props.screen === 'mobile'? (wat)=>{
+                this.props.onIntersect(wat.isIntersecting)
+            }: ()=>{}}
+            // rootMargin = '75px 0% 0% 0%'
+        >
         <Header
             offset = {props.sources}
             buttonMode = {props.sources}
@@ -399,14 +491,17 @@ const HeaderComponent = (props) => {
             />
             <HeaderTitle hasRace = {props.race} sources = {props.sources}>
                 <FadeTitle show = {((props.sources && props.distribute) || (!props.race && props.distribute))}>
-                    County overview
+                    {props.screen !== 'mobile' && 'County overview'}
+                    {props.screen==='mobile' && 'By counties'}
                 </FadeTitle>
                 <FadeTitle show = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}>
                     All counties
                 </FadeTitle>
-                <FadeTitle show = {!props.sources && props.race}>
-                    {props.race === 'other' && 'In counties with the most children of other races'}
-                    {!props.sources && props.race && props.race !== 'other' && `In counties with the most ${capitalize(props.race)} children`}
+                <FadeTitle show = {!props.sources && props.race} superLong>
+                    {props.race === 'other' && props.screen !== 'mobile' && 'In counties with the most children of other races'}
+                    {props.screen === 'mobile' && props.race === 'other' && 'By most children of other races'}
+                    {!props.sources && props.race && props.race !== 'other' && props.screen!== 'mobile' && `In counties with the most ${capitalize(props.race)} children`}
+                    {props.screen === 'mobile' && !props.sources && props.race && props.race !== 'other' && `Counties w/ most ${capitalize(props.race)} children`}
                 </FadeTitle> 
             </HeaderTitle>
             <SourceString show = {props.sources}>
@@ -418,17 +513,33 @@ const HeaderComponent = (props) => {
                     hide = {props.sources}
                     offset = {!props.distribute}
                     options = {[
-                        {label: 'by %', value: 'pct'},
-                        {label: 'by Child Population', value: 'pop'}
+                        {label: props.screen==='mobile'? '%' : 'by %', value: 'pct'},
+                        {label: props.screen === 'mobile'? 'pop.' :  'by Child Population', value: 'pop'}
                     ]}
                     theme = "bw"
                     onClick = {props.setOverviewSort}
                     selected = {props.sortOverviewBy === 'pct'? 0 : 1}
                 />
-        }
+            }
+            {props.screen==='mobile' &&
+                <MobileX 
+                    ref = {this.mobileX}
+                    visible = {((props.sources && !props.distribute) || (!props.race && !props.distribute))}
+                > 
+                    <XIcon img = "x" color = "bordergrey" onClick = {this.props.toggleDistribute} /> 
+                </MobileX>
+            }
         </Header>
+        </IntersectionObserver>
     )
 }
+}
+
+//on mode change, get boundingclientrect and use it to build a keyframe transition...?
+
+
+
+
 const SourceString = styled.div`
     position: absolute;
     display: flex;
@@ -437,6 +548,7 @@ const SourceString = styled.div`
     left: 158px;
     z-index: 10;
     opacity: ${props=>props.show? 1 : 0};
+    pointer-events: ${props => props.show? 'auto' : 'none'};
     transition: opacity .2s;
     transition-delay: ${props=>props.show? '.15s' : '0s'};
 `
@@ -444,17 +556,28 @@ const Minigraph = styled(Icon)`
     width: 30px; height: 30px;
     margin-left: 10px;
 `
-const FooterComponent = (props) => {
+class FooterComponent extends React.Component{
+
+    render(){
+    const props = this.props
     return(
+        <IntersectionObserver
+            onChange = {(wat)=>{
+                if(props.mobile){ props.onIntersect(wat.isIntersecting)}
+            }}
+            // rootMargin = '0px 0px -100px 0px'
+        >
         <Footer 
-            offset = {props.offset}
+            offset = {!props.mobile? props.offset : 0}
             hide = {props.hide}
         >
             <ExpandBox
-                currentMode = {!props.offset? 'expanded' : 'collapsed'}
+                currentMode = {(props.mobile? 'mobile' : '')+(!props.offset? 'expanded' : 'collapsed')}
                 modes = {{
                     expanded: {width: 160, height: 33},
+                    mobileexpanded: {width: 100, height: 33},
                     collapsed: {width: 112, height: 33},
+                    mobilecollapsed: {width: 112, height: 33},
                 }}
                 borderColor = 'var(--fainttext)'
             >
@@ -462,7 +585,8 @@ const FooterComponent = (props) => {
                     onClick = {props.onClick} 
                     label = {(
                         <React.Fragment>
-                            {!props.offset && 'See all counties'}
+                            {!props.offset && !props.mobile && 'See all counties'}
+                            {!props.offset && props.mobile && 'See all'}
                             {props.offset && 'See less'}
                             <Sprite 
                                 style = {{
@@ -480,7 +604,9 @@ const FooterComponent = (props) => {
                 />
             </ExpandBox>
         </Footer> 
+        </IntersectionObserver>
     )
+    }
 }
 const ExpandButton = styled(Button)`
     margin-top: 1px;
@@ -494,6 +620,9 @@ const headerfooter = styled.div`
     display: inline-flex; align-items: center; 
     height: 3px;
     margin: 0 20px;
+    @media ${media.mobile}{
+        margin: 0 15px;
+    }
     /*background: var(--offwhitefg);*/
 `
 const Header = styled(headerfooter)`
@@ -533,6 +662,9 @@ const BackArrow = styled(Icon)`
 `
 const HeaderTitle = styled.div`
     width: ${props => props.sources || !props.hasRace? '130px' : '315px'};
+    @media ${media.mobile}{
+         width: ${props => props.sources || !props.hasRace? '90px' : '212px'};
+    }
     position: relative;
     height: 10px;
     padding: 0 15px;
@@ -550,6 +682,10 @@ const FadeTitle = styled.span`
     transition: opacity .15s;
     transition-delay: ${props=>props.show?'.15s':'0s'};
     white-space: nowrap;
+    @media ${media.mobile}{
+        font-size: ${props => props.superLong? '14px' : '16px'};
+        letter-spacing: ${props => props.superLong? '0.4' : '0.6'}px;
+    }
 `
 
 const HeaderToggle = styled(Toggle)`
@@ -565,6 +701,9 @@ const HeaderToggle = styled(Toggle)`
         background-color: var(--offwhitefg);
     }
     transform: translateX(${props=> props.offset? -35 : 0}px);
+    @media ${media.mobile}{
+        transform: translateX(${props=> props.offset? 0 : 0}px);
+    }
     transition: opacity .35s, transform .35s cubic-bezier(0.215, 0.61, 0.355, 1);
     opacity: ${props =>props.hide? 0 : 1};
     transition-delay: ${props => props.hide? '0s' : '0.15s'};
@@ -575,6 +714,9 @@ const Footer = styled(headerfooter)`
     /*bottom: -1px; right: 182px;*/
     position: absolute;
     width: 192px;
+    @media ${media.mobile}{
+        width: 130px;
+    }
     right: 0px;
     padding: 0 15px;
     opacity: ${props => props.hide? 0 : 1};

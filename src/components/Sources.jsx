@@ -13,9 +13,10 @@ import indicators from '../data/indicators'
 import media from '../utilities/media'
 
 
+
+
+
 export default class Sources extends React.Component{
-
-
     render(){
         const expandWidth = this.props.screen === 'optimal'? 608 : 478
         return(
@@ -82,7 +83,11 @@ const AllSources = styled.div`
 `
 const Contents = styled.div`
     padding: 35px;
-
+    @media ${media.mobile}{
+        padding: 20px;
+        // margin-top: 15px;
+        border: 1px solid var(--bordergrey);
+    }
 `
 const Header = styled.div`
     position: absolute;
@@ -102,6 +107,14 @@ const Indicator = styled.div`
     border-bottom: 1px solid ${props => props.last? 'transparent' : 'var(--bordergrey)'};
     margin-bottom: ${props=>props.last?0:25}px;
     justify-content: space-between;
+    @media ${media.mobile}{
+        margin-bottom: 0;
+        border-bottom: 0px solid transparent;
+        padding-bottom: 0;
+        margin: 25px 0 35px 0;
+        padding: 20px;
+        border: 1px solid var(--bordergrey);
+    }
 `
 const FadeCropper = styled.div`
     z-index: 2;
@@ -113,7 +126,7 @@ const FadeCropper = styled.div`
 
 `
 const SourceBlock = styled.div`
-
+    position: relative;
     
     &:first-of-type{
         margin-top: 0;
@@ -125,13 +138,15 @@ const SourceBlock = styled.div`
         font-size: 13px;
         font-weight: bold;
         /*letter-spacing: 0.3px;*/
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     h1{
         font-size: 16px;
         font-weight: normal;
         margin: 0;
         margin-top: 10px;
-        /*letter-spacing: 0.25px;*/
     }
     h3{
         margin: 0;
@@ -155,13 +170,39 @@ const SourceBlock = styled.div`
         /*width: calc(50% - 10px);*/
         h1{ font-size: 13px; }
     }
+    @media ${media.mobile}{
+        h1 {
+            margin-top: 0;
+            font-size: 14px; letter-spacing: 0.5px;
+        }
+        a {font-size: 12px; margin-top: 8px;}
+        h3 { 
+            position: absolute;
+            top: -20px; left: -5px; 
+            transform: translateY(-50%);
+            font-size: 12px;
+            padding: 0 15px;
+            background: var(--offwhitefg);
+        }
+
+    }
 
 `
 
 const NotesBlock = styled(SourceBlock)`
     /*font-size: 13px;*/
-    p{ font-size: 13px; }
+    p{ 
+        font-size: 13px; 
+    }
     margin-top: 15px;
+
+    @media ${media.mobile}{ 
+        p{
+            font-size: 12px; 
+        }
+        margin-top: 8px;
+
+    }
 `
 
 
@@ -222,9 +263,12 @@ const Redirect = (props) => {
     )
 }
 const RedirectSpan = styled.div`
-margin-top: 10px;
+    margin-top: 10px;
     color: var(--fainttext);
     font-size: 13px;
+    @media ${media.mobile}{
+        display: none;
+    }
 `
 const RedirectLink = styled.a`
     text-decoration: none;
@@ -255,7 +299,9 @@ export class DemographicSourceInfo extends React.Component{
             <DemoSources>
                 {Object.keys(srcs).map((src, i, arr)=>{
                     return(
-                        <Indicator last = {i===arr.length-1}>
+                        <Indicator 
+                        key = {'src'+i}
+                        last = {i===arr.length-1}>
                             <SourceBlock>
                                 <h3>{blockTitles[src]}</h3>
                                 <h1>{srcs[src].source}</h1>
@@ -288,3 +334,28 @@ const DemoBlock = styled.div`
     
 
 `
+
+
+const MobileSources = (props) => {
+    return (
+
+        <MobSources>
+            <IndicatorSourceInfo indicator = {props.indicator} />    
+
+            <DemographicSourceInfo />
+        </MobSources>
+
+    ) 
+}
+
+const MobSources = styled.div`
+    width: 100%;
+    // height: 1000px;
+    // border: 1px solid red;
+    background: var(--offwhitefg);
+    margin-bottom: 100px;
+`
+
+export {MobileSources}
+
+

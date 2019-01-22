@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@researchgate/react-intersection-observer": "^0.7.4",
     "array-includes": "^3.0.3",
     "array.prototype.flat": "^1.2.1",
     "babel-plugin-styled-components": "^1.8.0",
@@ -13,6 +14,7 @@
     "detect-browser": "^3.0.1",
     "file-loader": "^2.0.0",
     "fs": "0.0.1-security",
+    "intersection-observer": "^0.5.1",
     "lodash-move": "^1.1.1",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
@@ -23,8 +25,10 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.4.0",
     "react-flip-move": "^3.0.2",
+    "react-scroll-sync": "^0.7.0",
     "simplify-js": "^1.2.3",
-    "styled-components": "^4.0.0"
+    "styled-components": "^4.0.0",
+    "sync-scroll": "^1.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

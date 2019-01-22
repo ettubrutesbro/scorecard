@@ -19,8 +19,10 @@ import RaceBreakdownBar from './components/RaceBreakdownBar'
 import InitBox from './components/InitBox'
 import {DemoSources} from './components/Sources'
 import DemoBox from './components/DemoBox'
+import MobileScorecard from './MobileScorecard'
 
 import {Button} from './components/generic'
+import Icon, {Sprite} from './components/generic/Icon'
 
 import indicators, {featuredInds} from './data/indicators'
 import {counties} from './assets/counties'
@@ -198,65 +200,61 @@ const ShareSources = styled.div`
         /*height: 150px;*/
     }
 `
-const pdfIcon = require('./assets/export.svg')
-const sourcesIcon = require('./assets/sources.svg')
+// const pdfIcon = require('./assets/export.svg')
+// const sourcesIcon = require('./assets/sources.svg')
 
-const Icon = styled.figure`
+// const Icon = styled.figure`
+//     position: absolute;
+//     right: 10px;
+//     /*outline: 1px solid black;*/
+//     width: 30px;
+//     height: 30px;
+//     background-repeat: no-repeat;
+//     margin-right: 12px;
+//     flex-shrink: 0;
+//     background-size: cover;
+// `
+// const BtnLabel = styled.div`
+//     display: flex;
+//     align-items: center;
+// `
+// const SourcesIcon = styled(Icon)`
+//     background-image: url(${sourcesIcon});
+// `
+// const PDFIcon = styled(Icon)`
+//     background-image: url(${pdfIcon});
+// `
+
+const Bookwrap = styled.div`
+    position: relative;
+    width: 30px; height: 30px;
+    margin-left: 10px;
+    transform: translateY(${props=>props.active? '0px' : '3px'});
+    transition: transform .2s;
+`
+const BookSprite = styled(Sprite)`
     position: absolute;
-    right: 10px;
-    /*outline: 1px solid black;*/
-    width: 30px;
-    height: 30px;
-    background-repeat: no-repeat;
-    margin-right: 12px;
-    flex-shrink: 0;
-    background-size: cover;
-`
-const BtnLabel = styled.div`
-    display: flex;
-    align-items: center;
-`
-const SourcesIcon = styled(Icon)`
-    background-image: url(${sourcesIcon});
+    top: 0; left: 0;
 `
 const PDFIcon = styled(Icon)`
-    background-image: url(${pdfIcon});
+    width: 30px; height: 30px;
+    margin-left: 8px;
 `
-
-
-const BtnWithRightIco = styled(Button)`
-    padding-right: 60px;
-    position: relative;
+const SourceButton = styled(Button)`
+    height: 48px;
+    fill: ${props => props.active? 'white' : 'var(--normtext)'};
     &:hover{
-        figure{
-            background-position: 100% 50%;
-        }
+        fill: ${props => props.active? 'var(--peach)' : 'var(--strokepeach)'};    
+    }
+    margin-right: 15px;
+`
+const PDFButton = styled(Button)`
+    height: 48px;
+    fill: var(--normtext);
+    &:hover{
+        fill: var(--strokepeach); 
     }
 `
-const SourcesButton = styled(Button)`
-    padding-right: 60px;
-    position: relative;
-    ${props => props.dark? `
-        figure{
-            background-position: 66.6666% 50%;
-        }
-        &:hover{
-            figure{
-                background-position: 100% 50%;
-            }
-        }
-    `: `
-        figure{
-            background-position: 0% 50%;
-        }
-        &:hover{
-            figure{
-                background-position: 33.3333% 50%;
-            }
-        }
-    `}
-`
-
 @observer
 export default class ResponsiveScorecard extends React.Component{
 
@@ -264,12 +262,13 @@ export default class ResponsiveScorecard extends React.Component{
     @action blockUserBrowser = (why) => this.browserBlock = why
 
     @action setInit = (tf) => {
-        if(!tf){ 
-            this.setRandomIndicatorCycle(false)
+        if(store.screen !== 'mobile'){
+            if(!tf){ 
+                this.setRandomIndicatorCycle(false)
+            }
+            else if(tf) this.setRandomIndicatorCycle(true)
         }
-        else if(tf) this.setRandomIndicatorCycle(true)
         store.init = tf
-
     }
     @action closeSplash = () => {
         this.setInit(false)
@@ -367,16 +366,14 @@ export default class ResponsiveScorecard extends React.Component{
                 }
             }
         }else{
-            this.setRandomIndicatorCycle(true)   
+            if(store.screen !== 'mobile') this.setRandomIndicatorCycle(true)   
         }
     }
 
     componentDidMount(){
         window.setTimeout(this.setDisplay, 10)
-        // this.setDisplay()
     }
-
-    // @observable randInd = 0 
+    
     @observable alreadyDisplayedRandomIndicators = []
     @action foistRandomIndicator = () => {
         let availableInds
@@ -416,7 +413,9 @@ export default class ResponsiveScorecard extends React.Component{
         const dataForMap = indicator? mapValues(indicators[indicator].counties, (county)=>{
             return county[race||'totals'][year]
         }): ''
-        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) : store.screen==='mobile'? (<MobileBlocker/>): (
+        return this.browserBlock? (<BrowserBlocker store = {store} why = {this.browserBlock}/>) 
+        : store.screen==='mobile'? ( <MobileScorecard store = {store} /> )
+        : (
             <React.Fragment>
             <Styles />
             <App
@@ -437,6 +436,46 @@ export default class ResponsiveScorecard extends React.Component{
                     <ReadoutComponent store = {store} setBreakdownOffset = {this.setBreakdownOffset} /> 
                     {store.indicator &&
                     <ShareSources>
+                        <SourceButton
+                            className = {store.sourcesMode? 'negative' : ''}
+                            active = {store.sourcesMode}
+                            label = {
+                                <React.Fragment>
+                                    Hide sources and notes 
+                                    <Bookwrap
+                                        active = {store.sourcesMode}
+                                    >
+                                    <BookSprite img = "book" 
+                                        width = {30} height = {30}
+                                        duration = {.275}
+                                        state = {store.sourcesMode? 'up' : 'down'}
+                                        fillMode = 'none'
+                                    />
+                                    <BookSprite img = "underbook"
+                                        duration = {.2}
+                                        width = {30} height = {30}
+                                        state = {store.sourcesMode? 'up' : 'down'}
+                                    />
+                                    </Bookwrap>
+                                </React.Fragment>
+                            }
+                            onClick = {()=>{store.setSourcesMode(!store.sourcesMode)}}
+                        />
+                        <PDFButton 
+                            label = {
+                                <React.Fragment>
+                                    Download PDF <PDFIcon img = 'document' />
+                                </React.Fragment>
+                            }
+                            onClick = {()=>{
+                                if(pdfmanifest[store.county||'california']){
+                                    window.location.assign(pdfmanifest[store.county||'california'])
+                                }
+                                else alert(`Sorry -- PDF for ${countyLabels[store.county]} county coming soon.`)
+                                
+                            } }
+                        />
+                        {/*
                         <SourcesButton
                             dark = {store.sourcesMode} 
                             label = {store.sourcesMode? 
@@ -458,6 +497,7 @@ export default class ResponsiveScorecard extends React.Component{
                                 
                             } }
                         />
+                        */}
                     </ShareSources>
                     }
                 </TopRow>

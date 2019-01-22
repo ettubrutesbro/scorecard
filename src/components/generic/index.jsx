@@ -46,14 +46,25 @@ const Option = styled.div`
     @media ${media.compact}{
         padding: ${props => props.size==='big'? '10px 20px' : '6px 15px'};    
     }
+
     color: ${props => props.selected? 'var(--strokepeach)' : props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
     background-color: ${props => props.selected? 'var(--faintpeach)' : props.disabled? 'var(--disabledgrey)' : 'white'};
-    white-space: nowrap;
-    &:hover{
-        color: var(--strokepeach);
-        outline-color: var(--strokepeach);
-        /*z-index: 1;*/
+    
+    @media ${media.mobile}{
+        font-size: 12px;
+        padding: 8.5px 15px;
     }
+    &.muted{
+        border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
+        color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
+        background-color: white;
+        &::hover{
+            border: 1px solid ${props => props.selected? 'var(--normtext)':'var(--bordergrey)'};
+            color: ${props => props.disabled? 'var(--fainttext)' : 'var(--normtext)'};
+        }
+    }
+    white-space: nowrap;
+
     &:not(:first-of-type){
         transform: translateX(-${props => props.index}px);
     }
@@ -116,7 +127,10 @@ export class Toggle extends React.Component {
                     size = {this.props.size}
                     key = {this.hash+'option'+i}
                     ref = {(option)=> this['option'+i] = option}
-                    onClick = {!option.disabled? ()=>this.props.onClick(option.value) : ()=>console.log('this option is disabled.')}
+                    onClick = {!option.disabled? (e)=>{
+                        if(this.props.stopPropagation) e.stopPropagation()
+                        this.props.onClick(option.value)
+                    } : ()=>console.log('this option is disabled.')}
                     selected = {i===this.props.selected}
                     disabled = {option.disabled}
                 > 
@@ -307,6 +321,12 @@ const Btn = styled.div`
         padding: 10px 21px;
     }
     cursor: pointer;
+    background: white;
+    color: var(--normtext);
+    border: 1px solid var(--fainttext);
+    &:hover{
+        color: var(--strokepeach);
+    }
     &.default, &.compact{
         background: white;
         color: var(--normtext);

@@ -25,13 +25,18 @@ const GridList = styled.ul`
     display: grid;
     @media ${media.optimal}{
         grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 48px;
+        grid-auto-rows: 48px;
         grid-gap: 5px;
         font-size: 16px;
     }
     @media ${media.compact}{
         grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 33px;
+        grid-auto-rows: 33px;
         grid-gap: 5px;
         font-size: 13px;
+
     }
     list-style-type: none;
     margin: 0;

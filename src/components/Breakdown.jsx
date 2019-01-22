@@ -37,6 +37,9 @@ export default class Breakdown extends React.Component{
     @observable allCounties = false
     @action expandCountyList = (tf) => this.allCounties = tf 
 
+    @observable fixedMobileX = false
+    @action setMobileX = (tf) => this.fixedMobileX = tf 
+
     componentDidUpdate(oldProps){
         if(this.props.sources !== oldProps.sources){
             this.expandCountyList(false)

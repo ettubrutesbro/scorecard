@@ -21,6 +21,7 @@ const Box = styled.div`
     animation-delay: ${props=>props.delay};
     top: 0;
     left: 0;
+    transition: background-color .35s;
 `
 
 const Content = styled.div`
@@ -32,7 +33,7 @@ const Content = styled.div`
     animation-name: ${props => props.animFrames};
     animation-delay: ${props=>props.delay};
     display: flex;
-    align-items: center;
+    align-items: ${props => props.dontAlignContentsToCenter? 'normal' : 'center'};
     white-space: nowrap;
 `
 
@@ -78,7 +79,10 @@ export default class ExpandTest extends React.Component{
         this[which].width = dims.width
         this[which].height = dims.height
     }
-
+    forceScrollToTop = () => {
+        //method to be called from outside to force scroll to top
+        findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
+    }
     constructor(props){
         super(props)
         if(props.withScroll) this.scrollbar = React.createRef()
@@ -93,7 +97,7 @@ export default class ExpandTest extends React.Component{
     componentWillUpdate(newProps){
         if(newProps.currentMode !== this.props.currentMode){
             console.log('setting mode to', newProps.currentMode, {...this.props.modes[newProps.currentMode]})
-            this.setDims('goTo', this.props.modes[newProps.currentMode])
+            this.setDims('goTo', newProps.modes[newProps.currentMode])
             if(this.props.withScroll){
                 findDOMNode(this.scrollbar.current).firstChild.scrollTop = 0
             }
@@ -113,11 +117,13 @@ export default class ExpandTest extends React.Component{
                         {this.props.header}
                     </Header>
                 }
-                {this.props.withScroll &&
+                {this.props.withScroll && !this.props.noFade &&
                     <FadeCropper 
+                        id = 'fadecropper'
+                        width = {Math.max(...Object.keys(this.props.modes).map((mode)=>{return this.props.modes[mode].width}))}
                         // a hack...
-                        show = {this.props.currentMode.includes('expanded')} 
-                        width = {this.props.modes.expanded.width}
+                        show = {this.props.currentMode.toLowerCase().includes('expanded')} 
+                        // width = {1000}
                     />
                 }
                 <Box
@@ -128,19 +134,31 @@ export default class ExpandTest extends React.Component{
                     }}
                     duration = {this.props.duration}
                     delay = {this.props.delay}
+                    style = {{
+                        backgroundColor: this.props.backgroundColor || 'transparent'
+                    }}
                 >
                     <ScrollbarWrap
                         withScroll = {this.props.withScroll}
                         wrap = {children => 
                             <Scrollbars 
+                                id = 'scrollbar'
                                 ref = {this.scrollbar} 
                                 style = {{
                                     width: '100%',
                                     //expanded exception hack II
-                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? 3000 
+                                    height: !this.props.currentMode.includes('expanded') && this.props.withScroll? this.props.modes[this.props.currentMode].height
                                     : '100%'
                                 }}
+                                renderTrackVertical = {
+                                    (props) => <div {...props} style = {
+                                        this.props.hideScroll? {display: 'none'} : {position: 'absolute', width: '6px', right: '2px', bottom: '2px', top: '2px', borderRadius: '0px'}} 
+                                        className = 'track-vertical' 
+                                    />
+
+                                }
                                 renderTrackHorizontal = {props => <div {...props} style = {{display: 'none'}} className = 'track-horizontal' />}
+                                onScrollFrame = {this.props.onScroll? (e)=>this.props.onScroll(e) : ()=>{} }
                             > 
                                 {children}
                             </Scrollbars>
@@ -150,24 +168,31 @@ export default class ExpandTest extends React.Component{
                             animFrames = {computeAnim(this.current, this.goTo, true)}
                             duration = {this.props.duration}
                             delay = {this.props.delay}
+                            dontAlignContentsToCenter = {this.props.dontAlignContentsToCenter}
                         >
                             {this.props.children}
                         </Content>
                     </ScrollbarWrap>
                 </Box>
-                {this.props.withScroll && 
+                {this.props.withScroll && !this.props.noFade &&
                     <FadeCropperBottom
-                        width = {this.props.modes.expanded.width}
+                        width = {Math.max(...Object.keys(this.props.modes).map((mode)=>{return this.props.modes[mode].width}))}
+                        // width = {this.props.modes.expanded.width}
                         // expanded exception hack.III
-                        show = {this.props.currentMode.includes('expanded')}
+                        show = {this.props.currentMode.toLowerCase().includes('expanded')}
                         offset = {this.goTo.height}
                     />
                 }
-                <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                {!this.props.noBorderTop &&
+                    <Top delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo}/>
+                }
                 <Bottom delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleX} current = {this.goTo} offset = {this.goTo.height}/>
-                <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
-                <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
-                
+                {!this.props.noSideBorders &&
+                    <React.Fragment>
+                        <Left delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo}/>
+                        <Right delay = {this.props.delay} duration = {this.props.duration} borderColor = {this.props.borderColor} scale = {scaleY} current = {this.goTo} offset = {this.goTo.width}/>
+                    </React.Fragment>
+                }
                 {this.props.footer &&
                     <Footer
                         offset = {this.goTo.height}

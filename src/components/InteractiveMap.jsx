@@ -14,6 +14,7 @@ import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
 import semanticTitles from '../assets/semanticTitles'
 import {capitalize} from '../utilities/toLowerCase'
+import media from '../utilities/media'
 
 const Wrapper = styled.div`
     position: relative;
@@ -23,24 +24,22 @@ const Wrapper = styled.div`
 const TheMap = styled.svg`
     position: absolute;
     right: 0;
+    /*transition: transform .5s;*/
+    /*transform-origin: 50% 50%;*/
 `
 
 const CountyStyle = css`
     cursor: pointer;
     stroke: ${props => props.highlighted?'var(--peach)': 'transparent'};
     stroke-width: ${props => props.selected? 3.5 : 3.5};
+    @media ${media.mobile}{
+        stroke-width: 2.25;
+    }
 `
 
-const FullState = styled.polygon`
-    opacity: ${props => props.wire? 1 : 0};
-    transition: opacity ${props => props.wire? 1 : 0.25}s;
-    fill: black;
-    stroke: black;
-    stroke-width: 2;
-`
 
-const CountyPolygon = styled.polygon`${CountyStyle}`
-const CountyPath = styled.path`${CountyStyle}`
+
+const exemptPathIDs = ['svgMap', 'full', 'garbmask']
 
 @observer class InteractiveMap extends React.Component{
 
@@ -54,6 +53,7 @@ const CountyPath = styled.path`${CountyStyle}`
         @action setDefaultTooltip = (val) => this.defaultTooltip = val
 
     componentDidUpdate(prevProps){
+
         if(!isEqual(this.props.colorStops, prevProps.colorStops) || this.props.colorInterpolation !== prevProps.colorInterpolation){
             console.log('color stop or colorinterp changed')
             this.updateColors()   
@@ -63,7 +63,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 this.toggleTooltip(false)
             }
             else if(this.props.hoveredCounty){
-                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                const svgRect = document.getElementById('svgMap').getBoundingClientRect()
                 this.toggleTooltip(true)
                 const bbox = document.getElementById(this.props.hoveredCounty).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
@@ -75,7 +75,7 @@ const CountyPath = styled.path`${CountyStyle}`
                 console.log('hello')
                 // this.defaultTooltip = indicators[indicator].highlight
                 this.setDefaultTooltip(this.props.defaultHighlight)
-                const svgRect = document.getElementById('svg').getBoundingClientRect()
+                const svgRect = document.getElementById('svgMap').getBoundingClientRect()
                 const bbox = document.getElementById(this.props.defaultHighlight).getBoundingClientRect()
                 const newX = (bbox.left + (bbox.width/2)) - svgRect.left
                 const newY = (bbox.top) - svgRect.top
@@ -94,7 +94,7 @@ const CountyPath = styled.path`${CountyStyle}`
     handleClick(e, id){
         if(this.props.onSelect){ 
             console.log('made county selection from map:',id)
-            if(id==='svg' || id === 'full'){
+            if(exemptPathIDs.includes(id)){
                 // this.props.clickedOutside()
                 // ^ rendered unnecessary by click outside event listener for nav
             }
@@ -109,7 +109,7 @@ const CountyPath = styled.path`${CountyStyle}`
 
     render(){
         const {store, colorStops, quantile, selected, hoveredCounty, ...domProps} = this.props
-        const {indicator, colorScale, race} = store
+        const {indicator, colorScale, race, screen} = store
 
         const tooltipCty = hoveredCounty? hoveredCounty : this.defaultTooltip? this.defaultTooltip : ''
 
@@ -144,7 +144,7 @@ const CountyPath = styled.path`${CountyStyle}`
             <Wrapper 
                 onClick = {(e)=>this.handleClick(e, e.target.id)}
             >
-                {this.props.data && this.defaultTooltip && !this.tooltip && !selected && 
+                {this.props.data && this.defaultTooltip && !this.tooltip && !selected && store.screen!=='mobile' &&
                     <Tooltip 
                         key = {this.defaultTooltip}
                         pos = {this.defaultCoords}
@@ -163,7 +163,7 @@ const CountyPath = styled.path`${CountyStyle}`
                         </Tip>
                     </Tooltip>
                 }
-                {this.tooltip && 
+                {this.tooltip && store.screen!=='mobile' &&
                     <Tooltip
                         key = {hoveredCounty}
                         pos = {this.targetCoords}
@@ -189,32 +189,39 @@ const CountyPath = styled.path`${CountyStyle}`
                     }
                     </Tooltip>
                 }
-                
                 <TheMap 
-                    id = "svg"
+                    id = "svgMap"
                     viewBox = '5 14 510 615'
                     {...domProps}
                     version="1.1"
+
+                    // zoomable = {this.props.zoomable}
+                    // zoomOrigin = {this.zoomOrigin}
+                    // zoomed = {this.props.zoom}
+
                 >
                     {this.props.children.map((child,i)=>{
-                        const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
+                        const InteractivePolygonOrPath = child.props.id === 'full'? SVGComponents.full : exemptPathIDs.includes(child.props.id)? SVGComponents.garb : SVGComponents['Interactive'+child.type.charAt(0).toUpperCase() + child.type.slice(1)]
                         const {data} = this.props
                         const { points, d, id, ...childProps } = child.props
                         const wire = !data && this.props.mode === 'offset'
                         const fill = wire? 'var(--offwhitefg)' : data[id]!=='' && data[id]!=='*'? store.colorScale(data[id]) : 'var(--inactivegrey)' // TODO
 
+                        const foistProps = !exemptPathIDs.includes(id) && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
+                            style: {
+                                fill: selected===id? 'var(--peach)' : fill,
+                                transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
+                            },
+                            // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
+                            selected: selected===id,
+                            highlighted: this.highlighted===id || this.props.hoveredCounty===id || (!selected && !this.props.hoveredCounty && this.defaultTooltip === id),
+                            // onClick: ()=> this.handleClick(id)
+                        } : {}
                         
-                            const foistProps = id!=='full' && child.type !== 'polyline'? { //props that don't apply to full or outlinebox
-                                style: {
-                                    fill: selected===id? 'var(--peach)' : fill,
-                                    transition: selected===id? 'fill 0.1s' : data? `fill ${0.1+i*0.02}s, stroke 0s` : 'fill .25s'
-                                },
-                                // 'data-tip': data[id]==='*'? `${countyLabels[id]} county's data set is too small or unstable.` : !data[id]? `${countyLabels[id]} has no data` : `${countyLabels[id]}: ${data[id]}%`,
-                                selected: selected===id,
-                                highlighted: this.highlighted===id || this.props.hoveredCounty===id || (!selected && !this.props.hoveredCounty && this.defaultTooltip === id),
-                                // onClick: ()=> this.handleClick(id)
-                            } : {}
-                        
+                        const hoverActions = screen!=='mobile' && this.props.onHoverCounty && !exemptPathIDs.includes(id)? {
+                            onMouseEnter: ()=> this.props.onHoverCounty(id),
+                            onMouseLeave: ()=> this.props.onHoverCounty(),
+                        }: {}
 
                         return(
                             <InteractivePolygonOrPath
@@ -228,8 +235,7 @@ const CountyPath = styled.path`${CountyStyle}`
                                 offset = {this.props.mode === 'offset'}
 
                                 onTransitionEnd = {i===this.props.children.length-1? ()=>{console.log('end of transitions')} : ()=>{}}
-                                onMouseEnter = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty(id) : ''}
-                                onMouseLeave = {id!=='svg' && id!=='full'? ()=> this.props.onHoverCounty() : ''}
+                                {...hoverActions}
                             />
                         )
                     })}
@@ -271,9 +277,26 @@ const Tipnum = styled.h1`
 let SVGComponents = {
     InteractivePolygon: (props) => <CountyPolygon {...props} />,
     InteractivePath: (props) => <CountyPath {...props}  />,
-    full: (props) => <FullState {...props} />
-
+    full: (props) => <FullState {...props} />,
+    garb: (props) => <GarbMask {...props} />
 }
+
+const CountyPolygon = styled.polygon`${CountyStyle}`
+const CountyPath = styled.path`${CountyStyle}`
+const FullState = styled.polygon`
+    opacity: ${props => props.wire? 1 : 0};
+    transition: opacity ${props => props.wire? 1 : 0.25}s;
+    fill: black;
+    stroke: black;
+    stroke-width: 2;
+`
+const GarbMask = styled.polygon`
+    fill: var(--offwhitefg);
+    transition: opacity .5s;
+    @media ${media.smallphone}{
+        transform: translate(-10px, 10px);
+    }
+`
 
 export default class CaliforniaCountyMap extends React.Component{
     render(){
@@ -282,6 +305,12 @@ export default class CaliforniaCountyMap extends React.Component{
             <InteractiveMap
                 {...this.props}
             >
+            
+            <polygon style = {{opacity: this.props.garbMask? 1 : 0}} 
+                id = 'garbmask' 
+                points="289.3,16 289.3,194 520,398.7 565,482 537,600 336,622 306,548 162,495 -19,127 -19,16 "
+            />
+            
             <polygon id = "full" points="505.2,481.5 496.9,475 490.7,459.8 483,450.4 483,443 434.6,395.8 331.5,298.4 246.6,221.5 
     246.6,221.4 231.5,208 231.5,207.9 226.8,199.7 226.7,199.7 226.5,184.5 226.6,184.5 226.7,176.6 226.6,176.5 226.7,159.4 
     226.8,159.3 226.8,67.6 226.8,16 20.2,16 22.3,24.6 19.5,30.4 25.8,36 29.4,49.8 24.3,58.3 28.2,60.9 24,72.8 27.2,79.3 25.7,85.2 
