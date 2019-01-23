@@ -485,7 +485,7 @@ const Info = styled(ExpandBox)`
     z-index: 20;
     transform: translateX(${props => props.offset}px);    
     opacity: ${props => props.currentMode==='expanded'?1:0};
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .025s ${props=>props.currentMode==='expanded'? '0s' : '.4'};
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .025s ${props=>props.currentMode==='expanded'? '0s' : '.4s'};
 `
 const InfoIcon = styled(Icon)`
     width: 24px; height: 24px;
