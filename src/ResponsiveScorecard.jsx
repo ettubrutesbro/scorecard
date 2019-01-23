@@ -581,9 +581,8 @@ export default class ResponsiveScorecard extends React.Component{
                     </Feedback>
                     </FeedbackLink>
                     <FooterContent>
-                        <FooterLink href = 'https://www.childrennow.org/about-us/'>About us</FooterLink>
-                        <FooterLink href = 'https://www.childrennow.org/about-us/contact/'>Contact</FooterLink>
-                        <FooterLink href = 'https://www.childrennow.org/reports-research/scorecard/'>Credits & Acknowledgments</FooterLink>
+                        <FooterLink href = 'https://www.childrennow.org/about/'>About us</FooterLink>
+                        <FooterLink href = 'http://ccnstaging.childrennow.webfactional.com/portfolio-posts/2018scorecard/'>Credits & Acknowledgments</FooterLink>
                         <a href = "https://www.childrennow.org"><CNLogo /></a>
                     </FooterContent>
                 </Footer>

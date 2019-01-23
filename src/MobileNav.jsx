@@ -304,13 +304,14 @@ export default class MobileNav extends React.Component{
                     currentMode = {this.links? 'expanded' : 'collapsed'}
                     modes = {{
                         collapsed: {width: 1, height: 1},
-                        expanded: {width: 210, height: 165}
+                        expanded: {width: 210, height: 222}
                     }}
                     backgroundColor = 'white'
                     offset = {this.links? -235 : -25}
                 >
                     <Links>
                         <Link onClick = {()=>window.location.href='https://www.childrennow.org/'}>Children Now</Link>
+                        <Link onClick = {()=>window.location.href='https://www.childrennow.org/about'}>About us</Link>
                         <Link onClick = {()=>window.location.href='http://ccnstaging.childrennow.webfactional.com/portfolio-posts/2018scorecard/'}>Acknowledgments</Link>
                         <Link onClick = {()=>window.location.href='mailto:research@childrennow.org?subject=Scorecard%20Feedback'}>Provide feedback <FeedbackIcon img = "strokefeedback" /></Link>
                     </Links>
