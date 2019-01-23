@@ -306,7 +306,8 @@ export default class MobileNav extends React.Component{
                         collapsed: {width: 1, height: 1},
                         expanded: {width: 210, height: 222}
                     }}
-                    backgroundColor = 'white'
+                    borderColor = {this.links? 'var(--bordergrey)' : 'transparent'}
+                    backgroundColor = {this.links? 'white' : 'transparent'}
                     offset = {this.links? -235 : -25}
                 >
                     <Links>
@@ -483,7 +484,8 @@ const Info = styled(ExpandBox)`
     right: 0;
     z-index: 20;
     transform: translateX(${props => props.offset}px);    
-    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity: ${props => props.currentMode==='expanded'?1:0};
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1), opacity .025s ${props=>props.currentMode==='expanded'? '0s' : '.4'};
 `
 const InfoIcon = styled(Icon)`
     width: 24px; height: 24px;
