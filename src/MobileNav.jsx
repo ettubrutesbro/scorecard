@@ -39,6 +39,7 @@ export default class MobileNav extends React.Component{
 
     @observable mode = false // compact, county, race, indicator
     @action setMode = (val) =>{
+        if(this.links) this.setInfo(false)
         if(val==='compact'){
             this.props.setNavStatus(true)
             this.props.allowBodyOverflow(false)
@@ -76,6 +77,12 @@ export default class MobileNav extends React.Component{
 
     @observable openWorkflowHeaderVisible = true
     @action setWorkflowHeaderVisibility = (tf) => {this.openWorkflowHeaderVisible = tf}
+
+    @observable links = false
+    @action setInfo = (tf) =>{ 
+        if(this.mode!=='compact') return
+        this.links = tf
+    }
 
     constructor(){
         super()
@@ -291,6 +298,29 @@ export default class MobileNav extends React.Component{
 
         return(
             <FixWrap mid = {!this.props.hide && !indicator && this.mode==='compact'} hide = {this.props.hide}>
+                
+                <Info 
+                    duration = {.425}
+                    currentMode = {this.links? 'expanded' : 'collapsed'}
+                    modes = {{
+                        collapsed: {width: 1, height: 1},
+                        expanded: {width: 210, height: 165}
+                    }}
+                    backgroundColor = 'white'
+                    offset = {this.links? -235 : -25}
+                >
+                    <Links>
+                        <Link onClick = {()=>window.location.href='https://www.childrennow.org/'}>Children Now</Link>
+                        <Link onClick = {()=>window.location.href='http://ccnstaging.childrennow.webfactional.com/portfolio-posts/2018scorecard/'}>Acknowledgments</Link>
+                        <Link onClick = {()=>window.location.href='mailto:research@childrennow.org?subject=Scorecard%20Feedback'}>Provide feedback <FeedbackIcon img = "strokefeedback" /></Link>
+                    </Links>
+                </Info>
+                {this.links &&
+                    <React.Fragment>
+                        <InfoMask onClick = {()=>this.setInfo(false)}/>
+                        <CloseInfo onClick = {()=>this.setInfo(false)} img = "x_thin" color = "normtext" />
+                    </React.Fragment>
+                }
                 <PickMenu
                     currentMode = {!this.mode? 'closed' : this.mode==='compact' && !indicator? 'openNoInd' : this.mode === 'compact'? 'open' : 'fullsize'}
                     modes = {{
@@ -302,7 +332,7 @@ export default class MobileNav extends React.Component{
                     workflowScrollOffset = {this.userScrolledDownInWorkflow}
                 >
                     <FlipMove
-                        // style = {{width: '100%'}}
+                        style = {{width: '100%'}}
                         easing = 'cubic-bezier(0.215, 0.61, 0.355, 1)'
                         duration = {350}
                         enterAnimation = {{
@@ -319,9 +349,16 @@ export default class MobileNav extends React.Component{
                                 position: 'relative', zIndex: 5,
                                 display: 'flex', alignItems: 'center',
                                 padding: '12px 25px 0px 25px', height: '50px',
+                                width: '100%',
                                 background: 'white'
                             }}>
                                 What data do you want to see?
+                                <InfoIcon
+                                    img = "info"
+                                    onClick = {()=>{
+                                        this.setInfo(true)
+                                    }}
+                                />
                             </div>
                         }
                         {NavItems.map((item)=>{
@@ -439,6 +476,64 @@ export default class MobileNav extends React.Component{
         )
     }
 }
+const Info = styled(ExpandBox)`
+    position: absolute;
+    top: 25px; 
+    right: 0;
+    z-index: 20;
+    transform: translateX(${props => props.offset}px);    
+    transition: transform .425s cubic-bezier(0.215, 0.61, 0.355, 1);
+`
+const InfoIcon = styled(Icon)`
+    width: 24px; height: 24px;
+    position: absolute;
+    right: 15px;
+`
+const InfoMask = styled.div`
+    position: absolute;
+    top: -18vh; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 19;
+    background: var(--offwhitefg);
+    opacity: 0.4;
+`
+const CloseInfo = styled(Icon)`
+    width: 24px; height: 24px;
+    position: absolute;
+    top: 17px;
+    right: 15px;
+    z-index: 30;
+    &::before{
+        content: '';
+        position: absolute;
+        background: var(--offwhitefg);
+        width: 35px;
+        height: 35px;
+        top: -5px; right: -5px;
+    }
+`
+const Links = styled.ul`
+    width: 100%; margin: 0; padding: 0;
+    list-style-type: none;
+`
+const Link = styled.li`
+    border: 1px solid var(--bordergrey);
+    border-left: none; border-right: none;
+    padding: 15px;
+    &:not(:first-of-type){
+        margin-top: -1px;
+    }
+    display: flex; align-items: center;
+    justify-content: flex-end;
+`
+const FeedbackIcon = styled(Icon)`
+    width: 28px; height: 28px;
+    margin-left: 7px;
+    fill: none;
+    stroke: var(--normtext);
+    stroke-width: 1.5px;
+`
 
 const MaskGapBlocker = styled.div`
     position: absolute;
