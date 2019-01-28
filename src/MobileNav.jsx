@@ -490,7 +490,7 @@ const Info = styled(ExpandBox)`
 const InfoIcon = styled(Icon)`
     width: 24px; height: 24px;
     position: absolute;
-    right: 15px;
+    right: 15px; top: 19px;
 `
 const InfoMask = styled.div`
     position: absolute;
