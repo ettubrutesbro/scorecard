@@ -320,6 +320,7 @@ const RowComponent = styled.div`
     margin-top: 3px;
     @media ${media.mobile}{
         margin-top: 5.5px;
+        height: 18px;
     }
 `
 const AverageLine = styled.div`
