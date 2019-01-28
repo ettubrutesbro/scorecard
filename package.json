@@ -26,6 +26,7 @@
     "react-dom": "^16.4.0",
     "react-flip-move": "^3.0.2",
     "react-scroll-sync": "^0.7.0",
+    "requestidlecallback": "^0.3.0",
     "simplify-js": "^1.2.3",
     "styled-components": "^4.0.0",
     "sync-scroll": "^1.0.3"

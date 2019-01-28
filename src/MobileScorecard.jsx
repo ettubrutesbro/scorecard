@@ -26,6 +26,8 @@ import DemoBox from '../src/components/DemoBox'
 import {MobileSources} from '../src/components/Sources'
 import InitBox from '../src/components/InitBox'
 
+import 'requestidlecallback'
+
 
 @observer
 export default class MobileScorecard extends React.Component{
@@ -407,7 +409,7 @@ const SecAccent = styled.div`
         return(
             <React.Fragment>
                 <IntersectionObserver
-                    onChange = {(wat)=>this.props.onScrollPastReadout(!wat.isIntersecting)}
+                    onChange = {(wat)=>requestIdleCallback(()=>this.props.onScrollPastReadout(!wat.isIntersecting))}
                     rootMargin = '-75px 0% 0% 0%'
                 >
                     <Readout store = {store} />
@@ -461,7 +463,7 @@ const Tables = styled.div`
             <React.Fragment>
                 <ReadoutWrapper>
                     <IntersectionObserver
-                        onChange = {(wat)=>this.props.onScrollPastReadout(!wat.isIntersecting)}
+                        onChange = {(wat)=>requestIdleCallback(()=>this.props.onScrollPastReadout(!wat.isIntersecting))}
                         rootMargin = '-75px 0% 0% 0%'
                     >
                         <Readout tiny 
