@@ -13,7 +13,7 @@ import Icon from './components/generic/Icon'
 import indicators from './data/indicators'
 import { counties } from './assets/counties'
 import countyLabels from './assets/countyLabels'
-import semanticTitles from './assets/semanticTitles'
+// import semanticTitles from './assets/semanticTitles'
 
 import CountyList from './components/CountyList'
 import IndicatorList from './components/IndicatorList'
