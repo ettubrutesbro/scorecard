@@ -6,16 +6,16 @@ import semanticTitles from '../assets/semanticTitles.mjs'
 import jsonFile from 'jsonFile'
 
 Object.keys(indicators).forEach((ind)=>{
-	const indObj = indicators[ind]
+	const {indicator, ...indObj} = indicators[ind]
 	const semanticTitle = semanticTitles[ind]
 
 	const mergedObj = {
+		indicator: indicator,
+		semantics: {...semanticTitle},
 		...indObj,
-		semantics: {...semanticTitle}
 	}
 
-	console.log(mergedObj)
-	const file = `./newData/${indObj.indicator}.json`
+	const file = `./newData/${indicator}.json`
 	console.log(file)
 	jsonFile.writeFile(file, mergedObj, (error)=>{console.log(error)})
 })
