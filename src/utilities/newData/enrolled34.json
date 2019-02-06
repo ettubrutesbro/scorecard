@@ -1,1 +1,546 @@
-{"indicator":"enrolled34","semantics":{"who":"3- and 4-year-olds","shortWho":"3-4 y/o's","what":"enrolled in preschool or transitional kindergarten","label":"3- and 4-year-olds enrolled in preschool or transitional kindergarten","shorthand":"Preschool/transitional kindergarten"},"keywords":["enrolled","3-4","preschool","transitional","kindergarten"],"years":["2011","2016"],"categories":["hasRace","education","earlyChildhood"],"counties":{"california":{"ranks":["",""],"black":[53,52],"white":[59,56],"asian":[56,56],"latinx":[43,42],"other":[59,58],"totals":[50,49]},"alameda":{"ranks":[4,5],"black":["*","*"],"white":[67,65],"asian":[68,61],"latinx":[47,45],"other":["*","*"],"totals":[59,56]},"alpine":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"amador":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"butte":{"ranks":["",""],"black":[0,"*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"calaveras":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"colusa":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"contraCosta":{"ranks":[3,4],"black":["*","*"],"white":[68,72],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[59,58]},"delNorte":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"elDorado":{"ranks":["",""],"black":[0,"*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"fresno":{"ranks":[16,19],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[40,34],"other":["*","*"],"totals":[41,36]},"glenn":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"humboldt":{"ranks":["",""],"black":[100,100],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"imperial":{"ranks":["",""],"black":["*",100],"white":["*","*"],"asian":[100,"*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"inyo":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"kern":{"ranks":[23,21],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[30,34],"other":["*","*"],"totals":[35,35]},"kings":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"lake":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*",100],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"lassen":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"losAngeles":{"ranks":[6,6],"black":[61,55],"white":[70,69],"asian":[62,62],"latinx":[48,48],"other":[67,64],"totals":[55,54]},"madera":{"ranks":["",""],"black":[0,0],"white":["*","*"],"asian":[100,"*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"marin":{"ranks":["",""],"black":[0,"*"],"white":[91,"*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"mariposa":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"mendocino":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*",100],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"merced":{"ranks":[22,12],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[36,44]},"modoc":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"mono":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"monterey":{"ranks":[18,17],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[36,33],"other":["*","*"],"totals":[39,36]},"napa":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"nevada":{"ranks":["*",""],"black":["*","*"],"white":["*",""],"asian":["*",""],"latinx":["*",""],"other":["*",""],"totals":["*",""]},"orange":{"ranks":[9,7],"black":["*","*"],"white":[63,61],"asian":[58,63],"latinx":[39,44],"other":["*","*"],"totals":[50,53]},"placer":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"plumas":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"riverside":{"ranks":[21,20],"black":["*","*"],"white":[50,42],"asian":["*","*"],"latinx":[30,32],"other":["*","*"],"totals":[38,35]},"sacramento":{"ranks":[12,10],"black":["*","*"],"white":[53,44],"asian":["*",42],"latinx":[44,45],"other":["*","*"],"totals":[47,45]},"sanBenito":{"ranks":[18,17],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[36,33],"other":["*","*"],"totals":[39,36]},"sanBernardino":{"ranks":[17,16],"black":["*","*"],"white":[46,41],"asian":["*","*"],"latinx":[38,36],"other":["*","*"],"totals":[40,38]},"sanDiego":{"ranks":[8,8],"black":["*","*"],"white":[59,56],"asian":[49,"*"],"latinx":[46,47],"other":["*","*"],"totals":[52,51]},"sanFrancisco":{"ranks":[1,1],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[62,70]},"sanJoaquin":{"ranks":[14,14],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[40,37],"other":["*","*"],"totals":[42,39]},"sanLuisObispo":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"sanMateo":{"ranks":[2,2],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[60,63]},"santaBarbara":{"ranks":[11,""],"black":[0,"*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[49,"*"]},"santaClara":{"ranks":[5,3],"black":["*","*"],"white":[66,69],"asian":[65,65],"latinx":[43,43],"other":["*","*"],"totals":[57,58]},"santaCruz":{"ranks":["",""],"black":["*",0],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"shasta":{"ranks":["",""],"black":["*",100],"white":["*","*"],"asian":["*",0],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"sierra":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"siskiyou":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"solano":{"ranks":[13,11],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[44,44]},"sonoma":{"ranks":[10,""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":[50,"*"]},"stanislaus":{"ranks":[20,13],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*",35],"other":["*","*"],"totals":[39,40]},"sutter":{"ranks":["",""],"black":[100,"*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"tehama":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"trinity":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"tulare":{"ranks":[15,15],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":[40,40],"other":["*","*"],"totals":[41,38]},"tuolumne":{"ranks":["",""],"black":["*","*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"ventura":{"ranks":[7,9],"black":["*","*"],"white":[69,"*"],"asian":["*","*"],"latinx":[41,"*"],"other":["*","*"],"totals":[52,51]},"yolo":{"ranks":["",""],"black":["*",0],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]},"yuba":{"ranks":["",""],"black":[100,"*"],"white":["*","*"],"asian":["*","*"],"latinx":["*","*"],"other":["*","*"],"totals":["*","*"]}}}
+{
+  "indicator": "enrolled34",
+  "semantics": {
+    "who": "3- and 4-year-olds",
+    "shortWho": "3-4 y/o's",
+    "what": "enrolled in preschool or transitional kindergarten",
+    "label": "3- and 4-year-olds enrolled in preschool or transitional kindergarten",
+    "shorthand": "Preschool/transitional kindergarten"
+  },
+  "keywords": ["enrolled", "3-4", "preschool", "transitional", "kindergarten"],
+  "years": ["2011", "2016"],
+  "categories": ["hasRace", "education", "earlyChildhood"],
+  "counties": {
+    "california": {
+      "ranks": ["", ""],
+      "black": [53, 52],
+      "white": [59, 56],
+      "asian": [56, 56],
+      "latinx": [43, 42],
+      "other": [59, 58],
+      "totals": [50, 49]
+    },
+    "alameda": {
+      "ranks": [4, 5],
+      "black": ["*", "*"],
+      "white": [67, 65],
+      "asian": [68, 61],
+      "latinx": [47, 45],
+      "other": ["*", "*"],
+      "totals": [59, 56]
+    },
+    "alpine": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "amador": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "butte": {
+      "ranks": ["", ""],
+      "black": [0, "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "calaveras": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "colusa": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "contraCosta": {
+      "ranks": [3, 4],
+      "black": ["*", "*"],
+      "white": [68, 72],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [59, 58]
+    },
+    "delNorte": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "elDorado": {
+      "ranks": ["", ""],
+      "black": [0, "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "fresno": {
+      "ranks": [16, 19],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [40, 34],
+      "other": ["*", "*"],
+      "totals": [41, 36]
+    },
+    "glenn": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "humboldt": {
+      "ranks": ["", ""],
+      "black": [100, 100],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "imperial": {
+      "ranks": ["", ""],
+      "black": ["*", 100],
+      "white": ["*", "*"],
+      "asian": [100, "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "inyo": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "kern": {
+      "ranks": [23, 21],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [30, 34],
+      "other": ["*", "*"],
+      "totals": [35, 35]
+    },
+    "kings": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "lake": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", 100],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "lassen": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "losAngeles": {
+      "ranks": [6, 6],
+      "black": [61, 55],
+      "white": [70, 69],
+      "asian": [62, 62],
+      "latinx": [48, 48],
+      "other": [67, 64],
+      "totals": [55, 54]
+    },
+    "madera": {
+      "ranks": ["", ""],
+      "black": [0, 0],
+      "white": ["*", "*"],
+      "asian": [100, "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "marin": {
+      "ranks": ["", ""],
+      "black": [0, "*"],
+      "white": [91, "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "mariposa": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "mendocino": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", 100],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "merced": {
+      "ranks": [22, 12],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [36, 44]
+    },
+    "modoc": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "mono": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "monterey": {
+      "ranks": [18, 17],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [36, 33],
+      "other": ["*", "*"],
+      "totals": [39, 36]
+    },
+    "napa": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "nevada": {
+      "ranks": ["*", ""],
+      "black": ["*", "*"],
+      "white": ["*", ""],
+      "asian": ["*", ""],
+      "latinx": ["*", ""],
+      "other": ["*", ""],
+      "totals": ["*", ""]
+    },
+    "orange": {
+      "ranks": [9, 7],
+      "black": ["*", "*"],
+      "white": [63, 61],
+      "asian": [58, 63],
+      "latinx": [39, 44],
+      "other": ["*", "*"],
+      "totals": [50, 53]
+    },
+    "placer": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "plumas": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "riverside": {
+      "ranks": [21, 20],
+      "black": ["*", "*"],
+      "white": [50, 42],
+      "asian": ["*", "*"],
+      "latinx": [30, 32],
+      "other": ["*", "*"],
+      "totals": [38, 35]
+    },
+    "sacramento": {
+      "ranks": [12, 10],
+      "black": ["*", "*"],
+      "white": [53, 44],
+      "asian": ["*", 42],
+      "latinx": [44, 45],
+      "other": ["*", "*"],
+      "totals": [47, 45]
+    },
+    "sanBenito": {
+      "ranks": [18, 17],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [36, 33],
+      "other": ["*", "*"],
+      "totals": [39, 36]
+    },
+    "sanBernardino": {
+      "ranks": [17, 16],
+      "black": ["*", "*"],
+      "white": [46, 41],
+      "asian": ["*", "*"],
+      "latinx": [38, 36],
+      "other": ["*", "*"],
+      "totals": [40, 38]
+    },
+    "sanDiego": {
+      "ranks": [8, 8],
+      "black": ["*", "*"],
+      "white": [59, 56],
+      "asian": [49, "*"],
+      "latinx": [46, 47],
+      "other": ["*", "*"],
+      "totals": [52, 51]
+    },
+    "sanFrancisco": {
+      "ranks": [1, 1],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [62, 70]
+    },
+    "sanJoaquin": {
+      "ranks": [14, 14],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [40, 37],
+      "other": ["*", "*"],
+      "totals": [42, 39]
+    },
+    "sanLuisObispo": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "sanMateo": {
+      "ranks": [2, 2],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [60, 63]
+    },
+    "santaBarbara": {
+      "ranks": [11, ""],
+      "black": [0, "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [49, "*"]
+    },
+    "santaClara": {
+      "ranks": [5, 3],
+      "black": ["*", "*"],
+      "white": [66, 69],
+      "asian": [65, 65],
+      "latinx": [43, 43],
+      "other": ["*", "*"],
+      "totals": [57, 58]
+    },
+    "santaCruz": {
+      "ranks": ["", ""],
+      "black": ["*", 0],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "shasta": {
+      "ranks": ["", ""],
+      "black": ["*", 100],
+      "white": ["*", "*"],
+      "asian": ["*", 0],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "sierra": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "siskiyou": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "solano": {
+      "ranks": [13, 11],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [44, 44]
+    },
+    "sonoma": {
+      "ranks": [10, ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": [50, "*"]
+    },
+    "stanislaus": {
+      "ranks": [20, 13],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", 35],
+      "other": ["*", "*"],
+      "totals": [39, 40]
+    },
+    "sutter": {
+      "ranks": ["", ""],
+      "black": [100, "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "tehama": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "trinity": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "tulare": {
+      "ranks": [15, 15],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": [40, 40],
+      "other": ["*", "*"],
+      "totals": [41, 38]
+    },
+    "tuolumne": {
+      "ranks": ["", ""],
+      "black": ["*", "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "ventura": {
+      "ranks": [7, 9],
+      "black": ["*", "*"],
+      "white": [69, "*"],
+      "asian": ["*", "*"],
+      "latinx": [41, "*"],
+      "other": ["*", "*"],
+      "totals": [52, 51]
+    },
+    "yolo": {
+      "ranks": ["", ""],
+      "black": ["*", 0],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    },
+    "yuba": {
+      "ranks": ["", ""],
+      "black": [100, "*"],
+      "white": ["*", "*"],
+      "asian": ["*", "*"],
+      "latinx": ["*", "*"],
+      "other": ["*", "*"],
+      "totals": ["*", "*"]
+    }
+  }
+}
