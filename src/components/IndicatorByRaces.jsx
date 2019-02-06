@@ -4,7 +4,7 @@ import {observable, action} from 'mobx'
 import {observer} from 'mobx-react'
 import styled from 'styled-components'
 import indicators from '../data/indicators'
-import semanticTitles from '../assets/semanticTitles'
+// import semanticTitles from '../assets/semanticTitles'
 
 import HorizontalBarGraph from './HorizontalBarGraph'
 
@@ -66,7 +66,7 @@ export default class IndicatorByRaces extends React.Component{
                 isSomeBullshit = ind[race][year]==='*' && screen==='mobile'? 'Small/unstable' :ind[race][year]==='*'? 'Data too small or unstable' : 'No data'
                 isSomeBullshit = (<Label invalid>{isSomeBullshit}</Label>)
             }
-            const who = semanticTitles[indicator].shortWho || semanticTitles[indicator].who
+            const who = indicators[indicator].semantics.shortWho || indicators[indicator].semantics.who
             const selected = race===selectedRace
             return {
                 id: race,

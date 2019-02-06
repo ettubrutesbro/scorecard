@@ -5,7 +5,7 @@ import chroma from 'chroma-js'
 import indicators from './data/indicators'
 import {counties} from './assets/counties'
 import countyLabels from './assets/countyLabels'
-import semanticTitles from './assets/semanticTitles'
+// import semanticTitles from './assets/semanticTitles'
 import demopop from './data/demographicsAndPopulation'
 import {getMedia} from './utilities/media'
 import {capitalize} from './utilities/toLowerCase'
@@ -349,9 +349,10 @@ export default class AppStore{
                 console.log('race selection invalid, determining....')
                 if(arr.filter((v)=>{return isValid(v)}).length > 0){
                     const otherYear = this.year===0? 1 : 0
+                    const sem = indicators[this.indicator].semantics
                     console.log('race selection can be sanity checked: year')
                     this.setSanityCheck('race',value,
-                        `This indicator has no data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county? countyLabels[this.county] : 'California'} for the year ${indicators[this.indicator].years[this.year]}, but you can view ${indicators[this.indicator].years[otherYear]}.`,
+                        `This indicator has no data for ${value!=='other'?capitalize(value):''} ${sem.who} ${value==='other'?'of other races':''} in ${this.county? countyLabels[this.county] : 'California'} for the year ${indicators[this.indicator].years[this.year]}, but you can view ${indicators[this.indicator].years[otherYear]}.`,
                         ()=>{
                             this.completeWorkflow('year',otherYear)
                             this.completeWorkflow('race', value)
@@ -364,8 +365,9 @@ export default class AppStore{
                 
                 if(this.county && indicators[this.indicator].counties.california[value||'totals'].filter((v)=>{return isValid(v)}).length > 0){
                     console.log('race selection can be sanity checked: county')
+                    const sem = indicators[this.indicator].semantics
                     this.setSanityCheck('race',value,
-                        `This indicator doesn't have data for ${value!=='other'?capitalize(value):''} ${semanticTitles[this.indicator].who} ${value==='other'?'of other races':''} in ${this.county}, but you can see statewide data.`, 
+                        `This indicator doesn't have data for ${value!=='other'?capitalize(value):''} ${sem.who} ${value==='other'?'of other races':''} in ${this.county}, but you can see statewide data.`, 
                         ()=>{
                             this.completeWorkflow('county',null)
                             this.completeWorkflow('race',value)
@@ -389,7 +391,7 @@ export default class AppStore{
 
 
         this[which] = value
-
+        //query string logic
         let queryString = []
         if(this.indicator && !this.init) queryString.push(`ind=${this.indicator}`)
         if(this.county) queryString.push(`cty=${this.county}`)
@@ -588,7 +590,7 @@ export default class AppStore{
 
         searchWords.forEach((word,i)=>{
             matches[i] = Object.keys(pickBy(indicators, (ind)=>{
-                return ind.keywords.concat(ind.categories, semanticTitles[ind.indicator].label.split(' ')).some((keyword)=>{
+                return ind.keywords.concat(ind.categories, indicators[ind.indicator].semantics.label.split(' ')).some((keyword)=>{
                     return keyword.toLowerCase().startsWith(word)
                 })
             }))

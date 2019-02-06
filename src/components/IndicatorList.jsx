@@ -16,7 +16,7 @@ import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
 import {capitalize} from '../utilities/toLowerCase'
 import {isValid} from '../utilities/isValid'
-import semanticTitles from '../assets/semanticTitles'
+// import semanticTitles from '../assets/semanticTitles'
 
 import media, {getMedia} from '../utilities/media'
 import Icon from './generic/Icon'
@@ -492,7 +492,7 @@ export default class IndicatorList extends React.Component{
                                 }}
                             > 
                                 <IndLeft muted = {showSanityCheck && !isolated}>
-                                        <IndLabel>{semanticTitles[ind].label}</IndLabel>
+                                        <IndLabel>{indicator.semantics.label}</IndLabel>
                                         {noRace &&
                                             <NoRaceBadge needRace = {noRaceNeedRace}> No Race Data </NoRaceBadge>
                                         }

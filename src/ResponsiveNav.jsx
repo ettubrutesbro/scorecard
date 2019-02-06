@@ -243,7 +243,7 @@ export default class ResponsiveNav extends React.Component{
                         hasValue = {!init? indicator : ''} 
                         isOpen = {open==='indicator'}
                     />
-                    <SelectionValue>{!init && store.indicator? semanticTitles[store.indicator].shorthand : 'Indicator' }</SelectionValue>
+                    <SelectionValue>{!init && store.indicator? indicators[store.indicator].semantics.shorthand : 'Indicator' }</SelectionValue>
                 </IndicatorSelect>
                 <CountySelect 
                     // disabled = {!indicator}

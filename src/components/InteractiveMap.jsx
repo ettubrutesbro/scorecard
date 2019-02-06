@@ -12,7 +12,8 @@ import {Tooltip} from './generic/'
 
 import demopop from '../data/demographicsAndPopulation'
 import countyLabels from '../assets/countyLabels'
-import semanticTitles from '../assets/semanticTitles'
+import indicators from '../data/indicators'
+// import semanticTitles from '../assets/semanticTitles'
 import {capitalize} from '../utilities/toLowerCase'
 import media from '../utilities/media'
 
@@ -121,11 +122,12 @@ const exemptPathIDs = ['svgMap', 'full', 'garbmask']
 
         let cty = countyLabels[tooltipCty]
 
+        const semanticTitle = indicators[indicator].semantics
 
         if(!tipData && tipData!==0){
             if(race){
-                if(race==='other') `There's no data on ${semanticTitles[indicator].who} of other races in ${cty} for this indicator.`
-                else tipData = `There's no data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} for this indicator.`
+                if(race==='other') `There's no data on ${semanticTitle.who} of other races in ${cty} for this indicator.`
+                else tipData = `There's no data on ${capitalize(race)} ${semanticTitle.who} in ${cty} for this indicator.`
             }
             else tipData = `There's no data on ${cty} county for this indicator.`
             noData = true
@@ -133,8 +135,8 @@ const exemptPathIDs = ['svgMap', 'full', 'garbmask']
         else if(tipData === '*'){
             noData = true
             if(race){
-                if(race==='other') tipData = `Indicator data on ${semanticTitles[indicator].who} of other races in ${cty} is too small or unstable to display.`
-                else tipData = `Indicator data on ${capitalize(race)} ${semanticTitles[indicator].who} in ${cty} is too small or unstable to display.`
+                if(race==='other') tipData = `Indicator data on ${semanticTitle.who} of other races in ${cty} is too small or unstable to display.`
+                else tipData = `Indicator data on ${capitalize(race)} ${semanticTitle.who} in ${cty} is too small or unstable to display.`
             }
             else tipData = `Indicator data on ${cty} is too small or unstable to display.`
         }

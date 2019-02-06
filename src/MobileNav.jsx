@@ -9,7 +9,7 @@ import FlipMove from 'react-flip-move'
 
 import indicators from './data/indicators'
 import demopop from './data/demographicsAndPopulation'
-import semanticTitles from './assets/semanticTitles'
+// import semanticTitles from './assets/semanticTitles'
 import countyLabels from './assets/countyLabels'
 import {counties} from './assets/counties'
 
@@ -104,6 +104,7 @@ export default class MobileNav extends React.Component{
         const {indicator, county, race, year} = store
 
         const ind = indicators[indicator]
+        const sem = ind.semantics
 
         const yearOptions = indicator? ind.years.map((yr,i)=>{
             const val = ind.counties[county||'california'][race||'totals'][i]
@@ -245,7 +246,7 @@ export default class MobileNav extends React.Component{
                         width = {store.mobileDeviceWidth}
                          left = 'Indicator' 
                         
-                        right = {indicator? semanticTitles[indicator].shorthand : 'Browse / search...'} 
+                        right = {indicator? sem.shorthand : 'Browse / search...'} 
                         multiline 
                         onClick = {()=> this.setMode('indicator') }
                         open = {this.mode === 'indicator'}
@@ -403,7 +404,7 @@ export default class MobileNav extends React.Component{
                             Search data...
                         </Prompt>
                         <Shorthand visible = {this.props.showShorthand}>
-                            {indicator && semanticTitles[indicator].shorthand}
+                            {indicator && sem.shorthand}
                         </Shorthand>
                     </BarContent>
 
@@ -926,6 +927,7 @@ class IndicatorList extends React.Component{
                     const v = indicators[ind].counties[county||'california']
                     const needsRaceHasRace = ((race && indicators[ind].categories.includes('hasRace')) || !race)
                     const invalid = !needsRaceHasRace? true : (v[race||'totals'][year] === '*' || v[race||'totals'][year] === '')
+                    const sem = indicators[ind].semantics
                     return (
                         <ListRow
                             className = {store.indicator===ind? 'selected' : invalid? 'invalid' : ''}
@@ -942,7 +944,7 @@ class IndicatorList extends React.Component{
                                 else this.props.onComplete('indicator', isNewVal)
                             }}
                         >
-                            {semanticTitles[ind].label}
+                            {sem.label}
                         </ListRow>
                         )
                     })}

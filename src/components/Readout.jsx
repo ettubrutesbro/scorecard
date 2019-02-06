@@ -11,7 +11,7 @@ import CountingNumber from './CountingNumber'
 
 import indicators from '../data/indicators'
 import {counties} from '../assets/counties'
-import semanticTitles from '../assets/semanticTitles'
+// import semanticTitles from '../assets/semanticTitles'
 import demopop from '../data/demographicsAndPopulation.json'
 
 import media, {getMedia} from '../utilities/media'
@@ -114,9 +114,10 @@ export default class Readout extends React.Component{
 
         const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
         const countyString = county && !this.props.forceCA? `${find(counties,{id:county}).label} county` : 'California'
-        const who = indicator? semanticTitles[indicator].who : 'children'
-        const what = indicator? semanticTitles[indicator].what : ''
-        const descriptor = indicator? semanticTitles[indicator].descriptor : ''
+        const semanticTitle = indicators[indicator].semantics
+        const who = indicator? semanticTitle.who : 'children'
+        const what = indicator? semanticTitle.what : ''
+        const descriptor = indicator? semanticTitle.descriptor : ''
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
 
@@ -180,9 +181,10 @@ export default class Readout extends React.Component{
 
         const raceString = race? `${race!=='white'? race.charAt(0).toUpperCase() + race.substr(1):race}` : ''
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
-        const who = indicator? semanticTitles[indicator].who : 'children'
-        const what = indicator? semanticTitles[indicator].what : ''
-        const descriptor = indicator? semanticTitles[indicator].descriptor : ''
+        const semanticTitle = indicators[indicator].semantics
+        const who = indicator? semanticTitle.who : 'children'
+        const what = indicator? semanticTitle.what : ''
+        const descriptor = indicator? semanticTitle.descriptor : ''
 
         const popCount = county&&race? ((demopop[county][race] / 100) * demopop[county].population).toFixed(0)
         : county? demopop[county].population 

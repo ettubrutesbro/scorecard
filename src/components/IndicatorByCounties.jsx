@@ -13,7 +13,7 @@ import {counties} from '../assets/counties'
 import countyLabels from '../assets/countyLabels'
 import indicators from '../data/indicators'
 import demopop from '../data/demographicsAndPopulation'
-import semanticTitles from '../assets/semanticTitles'
+// import semanticTitles from '../assets/semanticTitles'
 
 import {capitalize} from '../utilities/toLowerCase'
 import {truncateNum} from '../utilities/sigFig'
@@ -270,7 +270,7 @@ export default class IndicatorByCounties extends React.Component{
             else return true
         })
 
-        const sem = semanticTitles[indicator]
+        const sem = ind.semantics
         let expandedHeader = `${sem.descriptor||''} ${race?capitalize(race):''} ${sem.who} who ${sem.what}`
         expandedHeader = expandedHeader.slice(0,1).toUpperCase() + expandedHeader.substr(1)
 

@@ -29,7 +29,7 @@ import {counties} from './assets/counties'
 import demopop from './data/demographicsAndPopulation'
 import countyLabels from './assets/countyLabels'
 import pdfmanifest from './assets/pdfmanifest'
-import semanticTitles from './assets/semanticTitles'
+// import semanticTitles from './assets/semanticTitles'
 
 import media, {getMedia} from './utilities/media'
 import {camelLower} from './utilities/toLowerCase'
@@ -546,8 +546,8 @@ export default class ResponsiveScorecard extends React.Component{
                             // mode = 'wire'
                         />
                         <RandomIndicatorLabel show = {store.init}>
-                            {indicator&& semanticTitles[indicator].shorthand} 
-                            {!store.init && !indicator&& this.alreadyDisplayedRandomIndicators.length>0&& semanticTitles[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].shorthand} 
+                            {indicator&& indicators[indicator].semantics.shorthand} 
+                            {!store.init && !indicator&& this.alreadyDisplayedRandomIndicators.length>0&& indicators[this.alreadyDisplayedRandomIndicators[this.alreadyDisplayedRandomIndicators.length-1]].semantics.shorthand} 
                             <SubRandLabel show = {store.init}>
                                 {!race && 'All races'}, {indicator && indicators[indicator].years[year]}{!indicator && '2018'}
                             </SubRandLabel>
