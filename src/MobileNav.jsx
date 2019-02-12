@@ -104,7 +104,7 @@ export default class MobileNav extends React.Component{
         const {indicator, county, race, year} = store
 
         const ind = indicators[indicator]
-        const sem = ind.semantics
+        const sem = indicator? ind.semantics : ''
 
         const yearOptions = indicator? ind.years.map((yr,i)=>{
             const val = ind.counties[county||'california'][race||'totals'][i]
