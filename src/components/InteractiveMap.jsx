@@ -122,7 +122,7 @@ const exemptPathIDs = ['svgMap', 'full', 'garbmask']
 
         let cty = countyLabels[tooltipCty]
 
-        const semanticTitle = indicators[indicator].semantics
+        const semanticTitle = indicator? indicators[indicator].semantics : ''
 
         if(!tipData && tipData!==0){
             if(race){

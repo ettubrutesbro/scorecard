@@ -114,7 +114,7 @@ export default class Readout extends React.Component{
 
         const raceString = race === 'other'? 'of other races' : race? race.charAt(0).toUpperCase() + race.substr(1): ''
         const countyString = county && !this.props.forceCA? `${find(counties,{id:county}).label} county` : 'California'
-        const semanticTitle = indicators[indicator].semantics
+        const semanticTitle = indicator? indicators[indicator].semantics : ''
         const who = indicator? semanticTitle.who : 'children'
         const what = indicator? semanticTitle.what : ''
         const descriptor = indicator? semanticTitle.descriptor : ''
@@ -181,7 +181,7 @@ export default class Readout extends React.Component{
 
         const raceString = race? `${race!=='white'? race.charAt(0).toUpperCase() + race.substr(1):race}` : ''
         const countyString = county? `${find(counties,{id:county}).label} county` : 'California'
-        const semanticTitle = indicators[indicator].semantics
+        const semanticTitle = indicator? indicators[indicator].semantics : ''
         const who = indicator? semanticTitle.who : 'children'
         const what = indicator? semanticTitle.what : ''
         const descriptor = indicator? semanticTitle.descriptor : ''
