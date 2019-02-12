@@ -441,7 +441,7 @@ export default class ResponsiveScorecard extends React.Component{
                             active = {store.sourcesMode}
                             label = {
                                 <React.Fragment>
-                                    Hide sources and notes 
+                                    {store.sourcesMode?'Hide':'View'} sources and notes 
                                     <Bookwrap
                                         active = {store.sourcesMode}
                                     >
