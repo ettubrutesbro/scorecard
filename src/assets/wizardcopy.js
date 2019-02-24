@@ -3,6 +3,7 @@ import indicators from '../data/indicators'
 const flows = {
 		init: {
 			title: 'What would you like to modify in the Scorecard?',
+			shorthand: 'Choose data to edit',
 			options: [
 				{goTo: 'indicator', label: 'an Indicator', context: 'Data, copy, or sources/notes pertaining to any indicator.'},
 				{goTo: 'demographics', label: 'Demographic data', context: 'Population counts or race percentages for California or any county.'},
@@ -12,6 +13,7 @@ const flows = {
 		},
 		indicator: {
 			title: 'Pick an indicator.',
+			shorthand: 'Indicators', 
 			options: Object.keys(indicators).map((indicator)=>{
 				const ind = indicators[indicator]
 				return {
@@ -25,16 +27,28 @@ const flows = {
 
 			// />),
 		},
-		indicatorOptions: {
-			title: 'What would you like to change about this indicator?',
-			options: [
-				{goTo: 'indicatorData', label: 'Data', context: 'Percentage numbers, categories, or years.'},
-				{goTo: 'indicatorSemantics', label: 'Language', context: 'Any labels or copy that refer to or describe indicators.'},
-				{goTo: 'indicatorSources', label: 'Sources / notes', context: 'Citations, links, and notes for this indicator.'},
-			]
-		},
+			indicatorOptions: {
+				title: 'What would you like to change about this indicator?',
+				dynamicShorthand: (value)=>{ return value },
+				shorthand: 'Data / Language / Sources',
+				options: [
+					{goTo: 'indicatorData', label: 'Data', context: 'Percentage numbers, categories, or years.'},
+					{goTo: 'indicatorSemantics', label: 'Language', context: 'Any labels or copy that refer to or describe indicators.'},
+					{goTo: 'indicatorSources', label: 'Sources / notes', context: 'Citations, links, and notes for this indicator.'},
+				]
+			},
+				indicatorData: {
+					title: 'How do you want to edit this indicator\'s data?',
+					shorthand: 'Data',
+					options: [
+						{goTo: 'indicatorLine', label: 'Line'},
+						{goTo: 'indicatorSheet', label: 'Sheet'}
+					]
+				},
+
 		demographics: {
 			title: 'How do you want to edit the demographic data?',
+			shorthand: 'Demographics',
 			options: [
 				{goTo: 'demographicsLine', label: 'Modify specific counties / numbers', context: 'Navigate to a specific county\'s (or CA) and edit the data one value at a time.'},
 				{goTo: 'demographicsBatch', label: 'Rewrite large swaths or all of the data', context: 'Use a Google Sheets link to generate a new demographic data file, which you\'ll replace the current file with.'},
