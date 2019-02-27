@@ -4,7 +4,7 @@ import cssVars from 'css-vars-ponyfill'
 import './global.css';
 import ResponsiveScorecard from './ResponsiveScorecard';
 
-import CSVTool from './csvTool'
+import Wizard from './Wizard'
 import registerServiceWorker from './registerServiceWorker';
 import {createGlobalStyle} from 'styled-components'
 
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'development') {
   console.error = noop;
 }
 
-ReactDOM.render(<CSVTool />, document.getElementById('root'));
+ReactDOM.render(<Wizard />, document.getElementById('root'));
 // ReactDOM.render(<ResponsiveScorecard />, document.getElementById('root'));
 registerServiceWorker();
 cssVars()
