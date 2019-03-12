@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import cssVars from 'css-vars-ponyfill'
 import './global.css';
-import ResponsiveScorecard from './ResponsiveScorecard';
+// import ResponsiveScorecard from './ResponsiveScorecard';
+import SheetTest from './GoogSheetTest'
 import registerServiceWorker from './registerServiceWorker';
 import {createGlobalStyle} from 'styled-components'
 
@@ -14,6 +15,6 @@ if (process.env.NODE_ENV !== 'development') {
   console.error = noop;
 }
 
-ReactDOM.render(<ResponsiveScorecard />, document.getElementById('root'));
+ReactDOM.render(<SheetTest />, document.getElementById('root'));
 registerServiceWorker();
 cssVars()

@@ -42,6 +42,32 @@ import {capitalize} from './utilities/toLowerCase'
 import browserCompatibility from './data/browserCompatibility'
 
 
+import Tabletop from 'tabletop'
+console.log(Tabletop.init)
+var tabletest = Tabletop.init({
+    key: 'https://docs.google.com/spreadsheets/d/1Dsk_ca9U0XOnyZnmiE4MHSS-4ifyZxxjrju4q-omiRI/edit?usp=sharing',
+    callback: (data) => {
+        let indicatorsFromManifest = []
+        let inds = data.Sheet1.elements.map((e)=>{
+            return {indicator: e.Indicator, show: e['Show?'], url: e.URL, ready: false}
+        })
+        console.log(inds)
+        inds.forEach((ele,i,arr)=>{
+            if(ele.show) indicatorsFromManifest.push(ele)
+            console.log('wat')
+            Tabletop.init({
+                key: ele.key, 
+                callback: (sheet) => {
+                    console.log(ele.indicator, 'ready')
+
+                }
+            })
+        })
+
+
+
+    }
+})
 
 const store = new ScorecardStore()
 window.store = store
