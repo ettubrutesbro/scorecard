@@ -1,553 +1,1784 @@
 {
   "indicator": "mathStandards8",
-  "semantics": {
-    "who": "8th-graders",
-    "what": "met or exceeded grade-level standards in math",
-    "label": "8th-graders who met or exceeded grade-level standards in math",
-    "shorthand": "8th grade math standards"
-  },
-  "keywords": [
-    "8th",
-    "grade",
-    "math",
-    "standards",
-    "grade",
-    "level",
-    "arithmetic"
+  "keywords": ["8th","grade","math","standards","grade","level","arithmetic"],
+  "years": [
+    "2016",
+    "2017"
   ],
-  "years": ["2016", "2017"],
-  "categories": ["hasRace", "education"],
+  "categories": [
+    "hasRace",
+    "education"
+  ],
   "counties": {
     "california": {
-      "ranks": ["", ""],
-      "black": [17, 18],
-      "white": [51, 51],
-      "asian": [53, 53],
-      "latinx": [23, 23],
-      "other": [37, 37],
-      "totals": [36, 36]
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [
+        17,
+        18
+      ],
+      "white": [
+        51,
+        51
+      ],
+      "asian": [
+        53,
+        53
+      ],
+      "latinx": [
+        23,
+        23
+      ],
+      "other": [
+        37,
+        37
+      ],
+      "totals": [
+        36,
+        36
+      ]
     },
     "alameda": {
-      "ranks": [10, 9],
-      "black": [14, 15],
-      "white": [59, 59],
-      "asian": [50, 53],
-      "latinx": [22, 23],
-      "other": [44, 41],
-      "totals": [46, 46]
+      "ranks": [
+        10,
+        9
+      ],
+      "black": [
+        14,
+        15
+      ],
+      "white": [
+        59,
+        59
+      ],
+      "asian": [
+        50,
+        53
+      ],
+      "latinx": [
+        22,
+        23
+      ],
+      "other": [
+        44,
+        41
+      ],
+      "totals": [
+        46,
+        46
+      ]
     },
     "alpine": {
-      "ranks": ["", ""],
-      "black": ["", ""],
-      "white": ["", "*"],
-      "asian": ["", ""],
-      "latinx": ["*", "*"],
-      "other": ["*", "*"],
-      "totals": ["*", "*"]
+      "ranks": [
+        "",
+        ""
+      ],
+      "black": [
+        "",
+        ""
+      ],
+      "white": [
+        "",
+        "*"
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "*",
+        "*"
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        "*",
+        "*"
+      ]
     },
     "amador": {
-      "ranks": [54, 47],
-      "black": ["*", "*"],
-      "white": [20, 30],
-      "asian": ["*", "*"],
-      "latinx": [6, 15],
-      "other": [24, 15],
-      "totals": [18, 25]
+      "ranks": [
+        54,
+        47
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        20,
+        30
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        6,
+        15
+      ],
+      "other": [
+        24,
+        15
+      ],
+      "totals": [
+        18,
+        25
+      ]
     },
     "butte": {
-      "ranks": [28, 31],
-      "black": [14, 19],
-      "white": [39, 36],
-      "asian": [55, 49],
-      "latinx": [23, 20],
-      "other": [26, 22],
-      "totals": [34, 30]
+      "ranks": [
+        28,
+        31
+      ],
+      "black": [
+        14,
+        19
+      ],
+      "white": [
+        39,
+        36
+      ],
+      "asian": [
+        55,
+        49
+      ],
+      "latinx": [
+        23,
+        20
+      ],
+      "other": [
+        26,
+        22
+      ],
+      "totals": [
+        34,
+        30
+      ]
     },
     "calaveras": {
-      "ranks": [16, 26],
-      "black": ["*", "*"],
-      "white": [43, 37],
-      "asian": ["*", "*"],
-      "latinx": [29, 36],
-      "other": [33, 10],
-      "totals": [39, 35]
+      "ranks": [
+        16,
+        26
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        43,
+        37
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        29,
+        36
+      ],
+      "other": [
+        33,
+        10
+      ],
+      "totals": [
+        39,
+        35
+      ]
     },
     "colusa": {
-      "ranks": [35, 43],
-      "black": ["*", "*"],
-      "white": [54, 48],
-      "asian": ["*", "*"],
-      "latinx": [26, 22],
-      "other": ["*", "*"],
-      "totals": [32, 27]
+      "ranks": [
+        35,
+        43
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        54,
+        48
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        26,
+        22
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        32,
+        27
+      ]
     },
     "contraCosta": {
-      "ranks": [12, 10],
-      "black": [13, 14],
-      "white": [58, 60],
-      "asian": [51, 53],
-      "latinx": [22, 23],
-      "other": [47, 47],
-      "totals": [43, 45]
+      "ranks": [
+        12,
+        10
+      ],
+      "black": [
+        13,
+        14
+      ],
+      "white": [
+        58,
+        60
+      ],
+      "asian": [
+        51,
+        53
+      ],
+      "latinx": [
+        22,
+        23
+      ],
+      "other": [
+        47,
+        47
+      ],
+      "totals": [
+        43,
+        45
+      ]
     },
     "delNorte": {
-      "ranks": [53, 52],
-      "black": ["*", "*"],
-      "white": [23, 30],
-      "asian": ["*", 37],
-      "latinx": [14, 13],
-      "other": [18, 16],
-      "totals": [20, 23]
+      "ranks": [
+        53,
+        52
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        23,
+        30
+      ],
+      "asian": [
+        "*",
+        37
+      ],
+      "latinx": [
+        14,
+        13
+      ],
+      "other": [
+        18,
+        16
+      ],
+      "totals": [
+        20,
+        23
+      ]
     },
     "elDorado": {
-      "ranks": [3, 6],
-      "black": [26, 40],
-      "white": [56, 54],
-      "asian": [65, 64],
-      "latinx": [33, 31],
-      "other": [42, 56],
-      "totals": [52, 50]
+      "ranks": [
+        3,
+        6
+      ],
+      "black": [
+        26,
+        40
+      ],
+      "white": [
+        56,
+        54
+      ],
+      "asian": [
+        65,
+        64
+      ],
+      "latinx": [
+        33,
+        31
+      ],
+      "other": [
+        42,
+        56
+      ],
+      "totals": [
+        52,
+        50
+      ]
     },
     "fresno": {
-      "ranks": [38, 38],
-      "black": [13, 15],
-      "white": [50, 49],
-      "asian": [53, 47],
-      "latinx": [21, 22],
-      "other": [33, 37],
-      "totals": [29, 30]
+      "ranks": [
+        38,
+        38
+      ],
+      "black": [
+        13,
+        15
+      ],
+      "white": [
+        50,
+        49
+      ],
+      "asian": [
+        53,
+        47
+      ],
+      "latinx": [
+        21,
+        22
+      ],
+      "other": [
+        33,
+        37
+      ],
+      "totals": [
+        29,
+        30
+      ]
     },
     "glenn": {
-      "ranks": [54, 53],
-      "black": ["*", "*"],
-      "white": [27, 37],
-      "asian": [29, "*"],
-      "latinx": [13, 14],
-      "other": ["*", "*"],
-      "totals": [18, 23]
+      "ranks": [
+        54,
+        53
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        27,
+        37
+      ],
+      "asian": [
+        29,
+        "*"
+      ],
+      "latinx": [
+        13,
+        14
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        18,
+        23
+      ]
     },
     "humboldt": {
-      "ranks": [30, 20],
-      "black": [12, 29],
-      "white": [42, 43],
-      "asian": [29, 40],
-      "latinx": [22, 27],
-      "other": [20, 24],
-      "totals": [33, 37]
+      "ranks": [
+        30,
+        20
+      ],
+      "black": [
+        12,
+        29
+      ],
+      "white": [
+        42,
+        43
+      ],
+      "asian": [
+        29,
+        40
+      ],
+      "latinx": [
+        22,
+        27
+      ],
+      "other": [
+        20,
+        24
+      ],
+      "totals": [
+        33,
+        37
+      ]
     },
     "imperial": {
-      "ranks": [35, 37],
-      "black": [17, 17],
-      "white": [45, 48],
-      "asian": ["*", 50],
-      "latinx": [31, 29],
-      "other": [25, 23],
-      "totals": [32, 30]
+      "ranks": [
+        35,
+        37
+      ],
+      "black": [
+        17,
+        17
+      ],
+      "white": [
+        45,
+        48
+      ],
+      "asian": [
+        "*",
+        50
+      ],
+      "latinx": [
+        31,
+        29
+      ],
+      "other": [
+        25,
+        23
+      ],
+      "totals": [
+        32,
+        30
+      ]
     },
     "inyo": {
-      "ranks": [19, 13],
-      "black": ["", "*"],
-      "white": [50, 52],
-      "asian": ["*", ""],
-      "latinx": [29, 37],
-      "other": [24, 19],
-      "totals": [38, 41]
+      "ranks": [
+        19,
+        13
+      ],
+      "black": [
+        "",
+        "*"
+      ],
+      "white": [
+        50,
+        52
+      ],
+      "asian": [
+        "*",
+        ""
+      ],
+      "latinx": [
+        29,
+        37
+      ],
+      "other": [
+        24,
+        19
+      ],
+      "totals": [
+        38,
+        41
+      ]
     },
     "kern": {
-      "ranks": [46, 46],
-      "black": [13, 12],
-      "white": [34, 33],
-      "asian": [46, 46],
-      "latinx": [21, 21],
-      "other": [26, 31],
-      "totals": [25, 25]
+      "ranks": [
+        46,
+        46
+      ],
+      "black": [
+        13,
+        12
+      ],
+      "white": [
+        34,
+        33
+      ],
+      "asian": [
+        46,
+        46
+      ],
+      "latinx": [
+        21,
+        21
+      ],
+      "other": [
+        26,
+        31
+      ],
+      "totals": [
+        25,
+        25
+      ]
     },
     "kings": {
-      "ranks": [38, 34],
-      "black": [24, 13],
-      "white": [42, 48],
-      "asian": [51, 48],
-      "latinx": [24, 25],
-      "other": [14, 17],
-      "totals": [29, 30]
+      "ranks": [
+        38,
+        34
+      ],
+      "black": [
+        24,
+        13
+      ],
+      "white": [
+        42,
+        48
+      ],
+      "asian": [
+        51,
+        48
+      ],
+      "latinx": [
+        24,
+        25
+      ],
+      "other": [
+        14,
+        17
+      ],
+      "totals": [
+        29,
+        30
+      ]
     },
     "lake": {
-      "ranks": [50, 56],
-      "black": [0, "*"],
-      "white": [28, 26],
-      "asian": ["*", "*"],
-      "latinx": [15, 11],
-      "other": [16, 11],
-      "totals": [21, 19]
+      "ranks": [
+        50,
+        56
+      ],
+      "black": [
+        0,
+        "*"
+      ],
+      "white": [
+        28,
+        26
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        15,
+        11
+      ],
+      "other": [
+        16,
+        11
+      ],
+      "totals": [
+        21,
+        19
+      ]
     },
     "lassen": {
-      "ranks": [22, 28],
-      "black": ["*", "*"],
-      "white": [40, 40],
-      "asian": ["*", "*"],
-      "latinx": [35, 28],
-      "other": [12, 8],
-      "totals": [36, 34]
+      "ranks": [
+        22,
+        28
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        40,
+        40
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        35,
+        28
+      ],
+      "other": [
+        12,
+        8
+      ],
+      "totals": [
+        36,
+        34
+      ]
     },
     "losAngeles": {
-      "ranks": [30, 29],
-      "black": [16, 18],
-      "white": [54, 54],
-      "asian": [56, 58],
-      "latinx": [24, 25],
-      "other": [37, 45],
-      "totals": [33, 34]
+      "ranks": [
+        30,
+        29
+      ],
+      "black": [
+        16,
+        18
+      ],
+      "white": [
+        54,
+        54
+      ],
+      "asian": [
+        56,
+        58
+      ],
+      "latinx": [
+        24,
+        25
+      ],
+      "other": [
+        37,
+        45
+      ],
+      "totals": [
+        33,
+        34
+      ]
     },
     "madera": {
-      "ranks": [54, 55],
-      "black": [9, 14],
-      "white": [33, 38],
-      "asian": [36, 45],
-      "latinx": [12, 16],
-      "other": [29, 19],
-      "totals": [18, 21]
+      "ranks": [
+        54,
+        55
+      ],
+      "black": [
+        9,
+        14
+      ],
+      "white": [
+        33,
+        38
+      ],
+      "asian": [
+        36,
+        45
+      ],
+      "latinx": [
+        12,
+        16
+      ],
+      "other": [
+        29,
+        19
+      ],
+      "totals": [
+        18,
+        21
+      ]
     },
     "marin": {
-      "ranks": [1, 1],
-      "black": [29, 18],
-      "white": [72, 72],
-      "asian": [68, 62],
-      "latinx": [26, 25],
-      "other": [70, 70],
-      "totals": [59, 57]
+      "ranks": [
+        1,
+        1
+      ],
+      "black": [
+        29,
+        18
+      ],
+      "white": [
+        72,
+        72
+      ],
+      "asian": [
+        68,
+        62
+      ],
+      "latinx": [
+        26,
+        25
+      ],
+      "other": [
+        70,
+        70
+      ],
+      "totals": [
+        59,
+        57
+      ]
     },
     "mariposa": {
-      "ranks": [21, 25],
-      "black": ["", "*"],
-      "white": [35, 41],
-      "asian": ["*", ""],
-      "latinx": [43, 21],
-      "other": [36, 31],
-      "totals": [37, 36]
+      "ranks": [
+        21,
+        25
+      ],
+      "black": [
+        "",
+        "*"
+      ],
+      "white": [
+        35,
+        41
+      ],
+      "asian": [
+        "*",
+        ""
+      ],
+      "latinx": [
+        43,
+        21
+      ],
+      "other": [
+        36,
+        31
+      ],
+      "totals": [
+        37,
+        36
+      ]
     },
     "mendocino": {
-      "ranks": [50, 51],
-      "black": ["*", "*"],
-      "white": [30, 28],
-      "asian": ["*", 50],
-      "latinx": [12, 20],
-      "other": [13, 13],
-      "totals": [21, 24]
+      "ranks": [
+        50,
+        51
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        30,
+        28
+      ],
+      "asian": [
+        "*",
+        50
+      ],
+      "latinx": [
+        12,
+        20
+      ],
+      "other": [
+        13,
+        13
+      ],
+      "totals": [
+        21,
+        24
+      ]
     },
     "merced": {
-      "ranks": [50, 56],
-      "black": [5, 9],
-      "white": [28, 30],
-      "asian": [33, 32],
-      "latinx": [18, 16],
-      "other": [32, 23],
-      "totals": [21, 19]
+      "ranks": [
+        50,
+        56
+      ],
+      "black": [
+        5,
+        9
+      ],
+      "white": [
+        28,
+        30
+      ],
+      "asian": [
+        33,
+        32
+      ],
+      "latinx": [
+        18,
+        16
+      ],
+      "other": [
+        32,
+        23
+      ],
+      "totals": [
+        21,
+        19
+      ]
     },
     "modoc": {
-      "ranks": [57, 54],
-      "black": ["*", "*"],
-      "white": [15, 26],
-      "asian": ["*", "*"],
-      "latinx": [15, 18],
-      "other": ["*", "*"],
-      "totals": [17, 23]
+      "ranks": [
+        57,
+        54
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        15,
+        26
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        15,
+        18
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        17,
+        23
+      ]
     },
     "mono": {
-      "ranks": [11, 19],
-      "black": ["", ""],
-      "white": [72, 66],
-      "asian": ["*", "*"],
-      "latinx": [26, 21],
-      "other": ["*", "*"],
-      "totals": [45, 37]
+      "ranks": [
+        11,
+        19
+      ],
+      "black": [
+        "",
+        ""
+      ],
+      "white": [
+        72,
+        66
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        26,
+        21
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        45,
+        37
+      ]
     },
     "monterey": {
-      "ranks": [49, 50],
-      "black": [22, 16],
-      "white": [49, 43],
-      "asian": [45, 47],
-      "latinx": [17, 18],
-      "other": [33, 46],
-      "totals": [23, 24]
+      "ranks": [
+        49,
+        50
+      ],
+      "black": [
+        22,
+        16
+      ],
+      "white": [
+        49,
+        43
+      ],
+      "asian": [
+        45,
+        47
+      ],
+      "latinx": [
+        17,
+        18
+      ],
+      "other": [
+        33,
+        46
+      ],
+      "totals": [
+        23,
+        24
+      ]
     },
     "napa": {
-      "ranks": [30, 32],
-      "black": [19, 13],
-      "white": [50, 46],
-      "asian": [56, 56],
-      "latinx": [19, 18],
-      "other": [41, 45],
-      "totals": [33, 30]
+      "ranks": [
+        30,
+        32
+      ],
+      "black": [
+        19,
+        13
+      ],
+      "white": [
+        50,
+        46
+      ],
+      "asian": [
+        56,
+        56
+      ],
+      "latinx": [
+        19,
+        18
+      ],
+      "other": [
+        41,
+        45
+      ],
+      "totals": [
+        33,
+        30
+      ]
     },
     "nevada": {
-      "ranks": [14, 18],
-      "black": ["*", "*"],
-      "white": [43, 39],
-      "asian": ["*", "*"],
-      "latinx": [30, 37],
-      "other": [33, 24],
-      "totals": [41, 38]
+      "ranks": [
+        14,
+        18
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        43,
+        39
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        30,
+        37
+      ],
+      "other": [
+        33,
+        24
+      ],
+      "totals": [
+        41,
+        38
+      ]
     },
     "orange": {
-      "ranks": [8, 8],
-      "black": [31, 27],
-      "white": [62, 62],
-      "asian": [60, 62],
-      "latinx": [27, 26],
-      "other": [52, 50],
-      "totals": [48, 48]
+      "ranks": [
+        8,
+        8
+      ],
+      "black": [
+        31,
+        27
+      ],
+      "white": [
+        62,
+        62
+      ],
+      "asian": [
+        60,
+        62
+      ],
+      "latinx": [
+        27,
+        26
+      ],
+      "other": [
+        52,
+        50
+      ],
+      "totals": [
+        48,
+        48
+      ]
     },
     "placer": {
-      "ranks": [3, 4],
-      "black": [29, 24],
-      "white": [55, 55],
-      "asian": [59, 57],
-      "latinx": [34, 34],
-      "other": [44, 46],
-      "totals": [52, 51]
+      "ranks": [
+        3,
+        4
+      ],
+      "black": [
+        29,
+        24
+      ],
+      "white": [
+        55,
+        55
+      ],
+      "asian": [
+        59,
+        57
+      ],
+      "latinx": [
+        34,
+        34
+      ],
+      "other": [
+        44,
+        46
+      ],
+      "totals": [
+        52,
+        51
+      ]
     },
     "plumas": {
-      "ranks": [22, 30],
-      "black": ["*", "*"],
-      "white": [39, 35],
-      "asian": ["*", "*"],
-      "latinx": [18, 17],
-      "other": ["*", "*"],
-      "totals": [36, 31]
+      "ranks": [
+        22,
+        30
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        39,
+        35
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        18,
+        17
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        36,
+        31
+      ]
     },
     "riverside": {
-      "ranks": [38, 36],
-      "black": [19, 18],
-      "white": [42, 45],
-      "asian": [51, 52],
-      "latinx": [22, 22],
-      "other": [34, 32],
-      "totals": [29, 30]
+      "ranks": [
+        38,
+        36
+      ],
+      "black": [
+        19,
+        18
+      ],
+      "white": [
+        42,
+        45
+      ],
+      "asian": [
+        51,
+        52
+      ],
+      "latinx": [
+        22,
+        22
+      ],
+      "other": [
+        34,
+        32
+      ],
+      "totals": [
+        29,
+        30
+      ]
     },
     "sacramento": {
-      "ranks": [25, 22],
-      "black": [16, 16],
-      "white": [44, 46],
-      "asian": [45, 44],
-      "latinx": [22, 24],
-      "other": [28, 33],
-      "totals": [35, 36]
+      "ranks": [
+        25,
+        22
+      ],
+      "black": [
+        16,
+        16
+      ],
+      "white": [
+        44,
+        46
+      ],
+      "asian": [
+        45,
+        44
+      ],
+      "latinx": [
+        22,
+        24
+      ],
+      "other": [
+        28,
+        33
+      ],
+      "totals": [
+        35,
+        36
+      ]
     },
     "sanBenito": {
-      "ranks": [38, 16],
-      "black": ["*", ""],
-      "white": [38, 48],
-      "asian": [54, 75],
-      "latinx": [25, 33],
-      "other": ["*", "*"],
-      "totals": [29, 38]
+      "ranks": [
+        38,
+        16
+      ],
+      "black": [
+        "*",
+        ""
+      ],
+      "white": [
+        38,
+        48
+      ],
+      "asian": [
+        54,
+        75
+      ],
+      "latinx": [
+        25,
+        33
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        29,
+        38
+      ]
     },
     "sanBernardino": {
-      "ranks": [45, 41],
-      "black": [14, 17],
-      "white": [40, 39],
-      "asian": [56, 53],
-      "latinx": [21, 22],
-      "other": [28, 29],
-      "totals": [26, 28]
+      "ranks": [
+        45,
+        41
+      ],
+      "black": [
+        14,
+        17
+      ],
+      "white": [
+        40,
+        39
+      ],
+      "asian": [
+        56,
+        53
+      ],
+      "latinx": [
+        21,
+        22
+      ],
+      "other": [
+        28,
+        29
+      ],
+      "totals": [
+        26,
+        28
+      ]
     },
     "sanDiego": {
-      "ranks": [15, 14],
-      "black": [23, 23],
-      "white": [56, 56],
-      "asian": [56, 56],
-      "latinx": [25, 26],
-      "other": [37, 36],
-      "totals": [40, 41]
+      "ranks": [
+        15,
+        14
+      ],
+      "black": [
+        23,
+        23
+      ],
+      "white": [
+        56,
+        56
+      ],
+      "asian": [
+        56,
+        56
+      ],
+      "latinx": [
+        25,
+        26
+      ],
+      "other": [
+        37,
+        36
+      ],
+      "totals": [
+        40,
+        41
+      ]
     },
     "sanFrancisco": {
-      "ranks": [8, 5],
-      "black": [15, 17],
-      "white": [65, 71],
-      "asian": [45, 46],
-      "latinx": [23, 21],
-      "other": [52, 45],
-      "totals": [48, 50]
+      "ranks": [
+        8,
+        5
+      ],
+      "black": [
+        15,
+        17
+      ],
+      "white": [
+        65,
+        71
+      ],
+      "asian": [
+        45,
+        46
+      ],
+      "latinx": [
+        23,
+        21
+      ],
+      "other": [
+        52,
+        45
+      ],
+      "totals": [
+        48,
+        50
+      ]
     },
     "sanJoaquin": {
-      "ranks": [42, 40],
-      "black": [12, 15],
-      "white": [37, 39],
-      "asian": [42, 38],
-      "latinx": [20, 20],
-      "other": [26, 24],
-      "totals": [27, 28]
+      "ranks": [
+        42,
+        40
+      ],
+      "black": [
+        12,
+        15
+      ],
+      "white": [
+        37,
+        39
+      ],
+      "asian": [
+        42,
+        38
+      ],
+      "latinx": [
+        20,
+        20
+      ],
+      "other": [
+        26,
+        24
+      ],
+      "totals": [
+        27,
+        28
+      ]
     },
     "sanLuisObispo": {
-      "ranks": [13, 12],
-      "black": [20, 20],
-      "white": [52, 51],
-      "asian": [63, 63],
-      "latinx": [25, 27],
-      "other": [52, 39],
-      "totals": [42, 41]
+      "ranks": [
+        13,
+        12
+      ],
+      "black": [
+        20,
+        20
+      ],
+      "white": [
+        52,
+        51
+      ],
+      "asian": [
+        63,
+        63
+      ],
+      "latinx": [
+        25,
+        27
+      ],
+      "other": [
+        52,
+        39
+      ],
+      "totals": [
+        42,
+        41
+      ]
     },
     "sanMateo": {
-      "ranks": [6, 7],
-      "black": [22, 19],
-      "white": [68, 66],
-      "asian": [55, 53],
-      "latinx": [25, 26],
-      "other": [47, 45],
-      "totals": [50, 50]
+      "ranks": [
+        6,
+        7
+      ],
+      "black": [
+        22,
+        19
+      ],
+      "white": [
+        68,
+        66
+      ],
+      "asian": [
+        55,
+        53
+      ],
+      "latinx": [
+        25,
+        26
+      ],
+      "other": [
+        47,
+        45
+      ],
+      "totals": [
+        50,
+        50
+      ]
     },
     "santaBarbara": {
-      "ranks": [22, 24],
-      "black": [30, 22],
-      "white": [59, 59],
-      "asian": [59, 58],
-      "latinx": [26, 25],
-      "other": [49, 44],
-      "totals": [36, 36]
+      "ranks": [
+        22,
+        24
+      ],
+      "black": [
+        30,
+        22
+      ],
+      "white": [
+        59,
+        59
+      ],
+      "asian": [
+        59,
+        58
+      ],
+      "latinx": [
+        26,
+        25
+      ],
+      "other": [
+        49,
+        44
+      ],
+      "totals": [
+        36,
+        36
+      ]
     },
     "santaClara": {
-      "ranks": [2, 2],
-      "black": [32, 36],
-      "white": [69, 69],
-      "asian": [58, 56],
-      "latinx": [25, 24],
-      "other": [52, 56],
-      "totals": [55, 55]
+      "ranks": [
+        2,
+        2
+      ],
+      "black": [
+        32,
+        36
+      ],
+      "white": [
+        69,
+        69
+      ],
+      "asian": [
+        58,
+        56
+      ],
+      "latinx": [
+        25,
+        24
+      ],
+      "other": [
+        52,
+        56
+      ],
+      "totals": [
+        55,
+        55
+      ]
     },
     "santaCruz": {
-      "ranks": [28, 33],
-      "black": [29, 17],
-      "white": [54, 51],
-      "asian": [62, 50],
-      "latinx": [19, 15],
-      "other": [48, 51],
-      "totals": [34, 30]
+      "ranks": [
+        28,
+        33
+      ],
+      "black": [
+        29,
+        17
+      ],
+      "white": [
+        54,
+        51
+      ],
+      "asian": [
+        62,
+        50
+      ],
+      "latinx": [
+        19,
+        15
+      ],
+      "other": [
+        48,
+        51
+      ],
+      "totals": [
+        34,
+        30
+      ]
     },
     "shasta": {
-      "ranks": [16, 11],
-      "black": [28, 22],
-      "white": [40, 45],
-      "asian": [52, 53],
-      "latinx": [30, 33],
-      "other": [38, 36],
-      "totals": [39, 43]
+      "ranks": [
+        16,
+        11
+      ],
+      "black": [
+        28,
+        22
+      ],
+      "white": [
+        40,
+        45
+      ],
+      "asian": [
+        52,
+        53
+      ],
+      "latinx": [
+        30,
+        33
+      ],
+      "other": [
+        38,
+        36
+      ],
+      "totals": [
+        39,
+        43
+      ]
     },
     "sierra": {
-      "ranks": [6, 15],
-      "black": ["", ""],
-      "white": [33, 40],
-      "asian": ["", ""],
-      "latinx": ["*", "*"],
-      "other": ["*", "*"],
-      "totals": [50, 39]
+      "ranks": [
+        6,
+        15
+      ],
+      "black": [
+        "",
+        ""
+      ],
+      "white": [
+        33,
+        40
+      ],
+      "asian": [
+        "",
+        ""
+      ],
+      "latinx": [
+        "*",
+        "*"
+      ],
+      "other": [
+        "*",
+        "*"
+      ],
+      "totals": [
+        50,
+        39
+      ]
     },
     "siskiyou": {
-      "ranks": [19, 27],
-      "black": ["*", "*"],
-      "white": [44, 36],
-      "asian": ["*", "*"],
-      "latinx": [30, 39],
-      "other": [28, 30],
-      "totals": [38, 35]
+      "ranks": [
+        19,
+        27
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        44,
+        36
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        30,
+        39
+      ],
+      "other": [
+        28,
+        30
+      ],
+      "totals": [
+        38,
+        35
+      ]
     },
     "solano": {
-      "ranks": [30, 35],
-      "black": [15, 13],
-      "white": [46, 42],
-      "asian": [45, 39],
-      "latinx": [23, 21],
-      "other": [38, 34],
-      "totals": [33, 30]
+      "ranks": [
+        30,
+        35
+      ],
+      "black": [
+        15,
+        13
+      ],
+      "white": [
+        46,
+        42
+      ],
+      "asian": [
+        45,
+        39
+      ],
+      "latinx": [
+        23,
+        21
+      ],
+      "other": [
+        38,
+        34
+      ],
+      "totals": [
+        33,
+        30
+      ]
     },
     "sonoma": {
-      "ranks": [25, 23],
-      "black": [18, 20],
-      "white": [46, 47],
-      "asian": [40, 47],
-      "latinx": [22, 23],
-      "other": [35, 31],
-      "totals": [35, 36]
+      "ranks": [
+        25,
+        23
+      ],
+      "black": [
+        18,
+        20
+      ],
+      "white": [
+        46,
+        47
+      ],
+      "asian": [
+        40,
+        47
+      ],
+      "latinx": [
+        22,
+        23
+      ],
+      "other": [
+        35,
+        31
+      ],
+      "totals": [
+        35,
+        36
+      ]
     },
     "stanislaus": {
-      "ranks": [46, 45],
-      "black": [15, 14],
-      "white": [36, 35],
-      "asian": [48, 44],
-      "latinx": [19, 19],
-      "other": [25, 26],
-      "totals": [25, 25]
+      "ranks": [
+        46,
+        45
+      ],
+      "black": [
+        15,
+        14
+      ],
+      "white": [
+        36,
+        35
+      ],
+      "asian": [
+        48,
+        44
+      ],
+      "latinx": [
+        19,
+        19
+      ],
+      "other": [
+        25,
+        26
+      ],
+      "totals": [
+        25,
+        25
+      ]
     },
     "sutter": {
-      "ranks": [37, 39],
-      "black": [5, 6],
-      "white": [33, 33],
-      "asian": [45, 42],
-      "latinx": [27, 21],
-      "other": [30, 32],
-      "totals": [31, 29]
+      "ranks": [
+        37,
+        39
+      ],
+      "black": [
+        5,
+        6
+      ],
+      "white": [
+        33,
+        33
+      ],
+      "asian": [
+        45,
+        42
+      ],
+      "latinx": [
+        27,
+        21
+      ],
+      "other": [
+        30,
+        32
+      ],
+      "totals": [
+        31,
+        29
+      ]
     },
     "tehama": {
-      "ranks": [42, 42],
-      "black": ["*", "*"],
-      "white": [33, 33],
-      "asian": ["*", "*"],
-      "latinx": [16, 19],
-      "other": [28, 25],
-      "totals": [27, 28]
+      "ranks": [
+        42,
+        42
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        33,
+        33
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        16,
+        19
+      ],
+      "other": [
+        28,
+        25
+      ],
+      "totals": [
+        27,
+        28
+      ]
     },
     "trinity": {
-      "ranks": [5, 3],
-      "black": ["", "*"],
-      "white": [58, 48],
-      "asian": ["*", "*"],
-      "latinx": [33, 71],
-      "other": [27, "*"],
-      "totals": [51, 52]
+      "ranks": [
+        5,
+        3
+      ],
+      "black": [
+        "",
+        "*"
+      ],
+      "white": [
+        58,
+        48
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        33,
+        71
+      ],
+      "other": [
+        27,
+        "*"
+      ],
+      "totals": [
+        51,
+        52
+      ]
     },
     "tulare": {
-      "ranks": [42, 48],
-      "black": [26, 20],
-      "white": [40, 40],
-      "asian": [49, 39],
-      "latinx": [23, 20],
-      "other": [21, 23],
-      "totals": [27, 24]
+      "ranks": [
+        42,
+        48
+      ],
+      "black": [
+        26,
+        20
+      ],
+      "white": [
+        40,
+        40
+      ],
+      "asian": [
+        49,
+        39
+      ],
+      "latinx": [
+        23,
+        20
+      ],
+      "other": [
+        21,
+        23
+      ],
+      "totals": [
+        27,
+        24
+      ]
     },
     "tuolumne": {
-      "ranks": [30, 44],
-      "black": ["*", "*"],
-      "white": [34, 28],
-      "asian": ["*", "*"],
-      "latinx": [28, 17],
-      "other": [50, 28],
-      "totals": [33, 27]
+      "ranks": [
+        30,
+        44
+      ],
+      "black": [
+        "*",
+        "*"
+      ],
+      "white": [
+        34,
+        28
+      ],
+      "asian": [
+        "*",
+        "*"
+      ],
+      "latinx": [
+        28,
+        17
+      ],
+      "other": [
+        50,
+        28
+      ],
+      "totals": [
+        33,
+        27
+      ]
     },
     "ventura": {
-      "ranks": [25, 21],
-      "black": [23, 25],
-      "white": [54, 57],
-      "asian": [53, 55],
-      "latinx": [19, 20],
-      "other": [52, 40],
-      "totals": [35, 36]
+      "ranks": [
+        25,
+        21
+      ],
+      "black": [
+        23,
+        25
+      ],
+      "white": [
+        54,
+        57
+      ],
+      "asian": [
+        53,
+        55
+      ],
+      "latinx": [
+        19,
+        20
+      ],
+      "other": [
+        52,
+        40
+      ],
+      "totals": [
+        35,
+        36
+      ]
     },
     "yolo": {
-      "ranks": [16, 17],
-      "black": [22, 16],
-      "white": [56, 54],
-      "asian": [63, 52],
-      "latinx": [20, 21],
-      "other": [39, 52],
-      "totals": [39, 38]
+      "ranks": [
+        16,
+        17
+      ],
+      "black": [
+        22,
+        16
+      ],
+      "white": [
+        56,
+        54
+      ],
+      "asian": [
+        63,
+        52
+      ],
+      "latinx": [
+        20,
+        21
+      ],
+      "other": [
+        39,
+        52
+      ],
+      "totals": [
+        39,
+        38
+      ]
     },
     "yuba": {
-      "ranks": [46, 49],
-      "black": [6, 13],
-      "white": [35, 31],
-      "asian": [26, 29],
-      "latinx": [13, 16],
-      "other": [32, 19],
-      "totals": [25, 24]
+      "ranks": [
+        46,
+        49
+      ],
+      "black": [
+        6,
+        13
+      ],
+      "white": [
+        35,
+        31
+      ],
+      "asian": [
+        26,
+        29
+      ],
+      "latinx": [
+        13,
+        16
+      ],
+      "other": [
+        32,
+        19
+      ],
+      "totals": [
+        25,
+        24
+      ]
     }
   }
 }

@@ -7,6 +7,7 @@ import registeredToVote from './indicators/registeredToVote.json'
 import upToDateImmunizations from './indicators/upToDateImmunizations.json'
 import lowIncomeDental from './indicators/lowIncomeDental.json'
 import collegeCareerReady from './indicators/collegeCareerReady.json'
+import allegations from './indicators/allegations.json'
 
 
 //formatting issues
@@ -28,10 +29,10 @@ import childCareSlots from './indicators/childCareSlots.json'
 import englishLearners from './indicators/englishLearners.json'
 import enrolled34 from './indicators/enrolled34.json'
 import FosterYouthGraduation from './indicators/fosterYouthGraduation.json'
-import FRPMSchoolYear from './indicators/FRPMSchoolYear.json'
-import FRPMSummer from './indicators/FRPMSummer.json'
-import FYTimelyDental from './indicators/FYTimelyDental.json'
-import FYTimelyMedical from './indicators/FYTimelyMedical.json'
+import FRPMSchoolYear from './indicators/fRPMSchoolYear.json'
+import FRPMSummer from './indicators/fRPMSummer.json'
+import FYTimelyDental from './indicators/fYTimelyDental.json'
+import FYTimelyMedical from './indicators/fYTimelyMedical.json'
 
 import Graduation from './indicators/graduation.json'
 import HealthInsurance from './indicators/healthInsurance.json'
@@ -47,6 +48,7 @@ import connected from './indicators/connected'
 import difference from './indicators/difference'
 
 const indicators = {
+    // allegations: allegations,
     earlyPrenatalCare: earlyPrenatalCare,   
     breastFeeding: breastFeeding,
     notLowBirthWeight: NotLowBirthWeight,
