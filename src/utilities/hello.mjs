@@ -28,7 +28,7 @@ Object.keys(indicators).forEach((ind, i)=>{
 			...propertiesMappedByYear
 
 		]
-	})
+	}).join('\n')
 
 	if(i===0){
 		// console.log(indicator)
