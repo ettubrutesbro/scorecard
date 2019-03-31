@@ -15,6 +15,7 @@
     "file-loader": "^2.0.0",
     "fs": "0.0.1-security",
     "intersection-observer": "^0.5.1",
+    "json2csv": "^4.4.1",
     "lodash-move": "^1.1.1",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
@@ -29,8 +30,7 @@
     "requestidlecallback": "^0.3.0",
     "sheetsy": "^2.2.0",
     "simplify-js": "^1.2.3",
-    "styled-components": "^4.0.0",
-    "sync-scroll": "^1.0.3",
+    "styled-components": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

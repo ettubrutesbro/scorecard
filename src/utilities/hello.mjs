@@ -30,11 +30,11 @@ Object.keys(indicators).forEach((ind, i)=>{
 		]
 	})
 
-	console.log(foo)
-
 	if(i===0){
 		// console.log(indicator)
 		// console.log(json2csv.parse({indicator}))
+
+		console.log(foo)
 	}
 	// const {indicator, ...indObj} = indicators[ind]
 	// const semanticTitle = semanticTitles[ind]
