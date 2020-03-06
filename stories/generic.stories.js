@@ -10,10 +10,10 @@ import {Toggle, DropdownToggle, Tooltip, Button} from '../src/components/generic
 import {Icon} from '../src/components/generic/Icon'
 
 storiesOf('Generic components', module)
-.add('visual comparison (all)', ()=>{
+.add('Toggle', ()=>{
     return(
         <Void>
-            <Note> Toggles </Note>
+            <Note> size = "small" </Note> <br />
         <Toggle
             options = {[
                 {label: 'hello', value: 'hello'},    
@@ -22,6 +22,8 @@ storiesOf('Generic components', module)
                 {label: 'blablabla', value: 'blablabla'},    
             ]}
         />
+        <br />
+        <Note> size = "big" </Note> <br />
         <Toggle
             size = "big"
             options = {[
@@ -52,9 +54,11 @@ storiesOf('Generic components', module)
 .add('Button', ()=>{
     return(
         <Void>
-            <Button label = 'View Sources & Notes'/>
-            <Button label = 'Previous page'/>
-            <Button label = 'View Sources & Notes'/>
+            <Note> default </Note>
+            <Button label = 'View Sources & Notes'/> <br />
+            <Button label = 'Previous page'/> <br />
+            <Button label = 'View Sources & Notes'/> <br />
+            <Note> className = 'dark' </Note><br />
             <Button className = 'dark' label = 'Export PDF'/>
         </Void>
     )

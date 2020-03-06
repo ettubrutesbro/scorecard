@@ -20,10 +20,11 @@ const Label = styled.span`
     }
 `
 const Wrapper = styled.div`
-    // margin-top: 45px;
-    position: absolute;
+    margin-top: 25px;
+    // position: absolute;ß
     width: 100%;
-    bottom: 0;
+    // bottom: 0;
+    // top: 30px;
     z-index: 1;
 
 `

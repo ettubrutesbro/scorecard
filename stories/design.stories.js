@@ -132,9 +132,12 @@ storiesOf('Design Tooling', module)
         />
         </MapContainer>
         <br />
+        <div style = {{position: 'absolute', right: '100px', width: '450px', height: '150px', top: '350px'}}>
         <IndicatorByCounties
             store = {computedStore}
+            entries = {8}
         />
+        </div>
         </ColorMocks>
         </AllShit>
     )

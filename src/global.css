@@ -28,7 +28,7 @@ html{
 
     /*overflow: hidden;*/
 
-    background: var(--offwhitebg, #1e1e1e);
+    /*background: var(--offwhitebg, #1e1e1e);*/
 }
 
 body{
@@ -38,6 +38,7 @@ body{
     letter-spacing: 0.7px;
     user-select: none;
     margin: 0;
+    margin: 10px 50px;
 
     background: var(--offwhitefg);
 }

@@ -85,8 +85,8 @@ storiesOf('Breakdowns', module)
     const indicator = select('indicator',['earlyPrenatalCare','collegeCareerReady'], 'earlyPrenatalCare')
     const county = select('county',[null, 'sanLuisObispo', 'alameda'], null)
     return(
-        <div>
-            <Note></Note>
+        <div style = {{marginTop: '50px'}}>
+            <div style = {{width: '550px', height: '150px', position: 'relative',}}>
             <IndicatorByRaces 
                 store = {{
                     year: 0,
@@ -94,6 +94,8 @@ storiesOf('Breakdowns', module)
                     county: county
                 }}    
             />
+            </div>
+            <div style = {{width: '550px', height: '150px', position: 'relative',}}>
             <Note>sometimes an indicator at county level doesnt have race data</Note>
             <IndicatorByRaces 
                 store = {{
@@ -102,6 +104,7 @@ storiesOf('Breakdowns', module)
                     county: 'mono'
                 }}    
             />
+            </div>
         </div>
     )
 })
@@ -110,6 +113,7 @@ storiesOf('Breakdowns', module)
     const race = select('race', ['asian','black','latinx','white','other',null],'black')
     const year = select('year(index)', [0,1], 0)
     return(
+        <div style = {{width: '550px', marginTop: '50px'}}>
         <CountiesByRacePopulation
             store = {{
                 race: race,
@@ -118,10 +122,12 @@ storiesOf('Breakdowns', module)
                 // county: county
             }}  
         />
+        </div>
     )
 })
 .add('HorizontalBarGraph', ()=>{
     return(
+    <div style = {{width: '550px', marginTop: '50px'}}>
         <HorizontalBarGraph 
             header = 'My Bar Graph'
             average = {50}
@@ -133,6 +139,7 @@ storiesOf('Breakdowns', module)
                 {label: 'ytnoh', value: 10},    
             ]}
         />
+        </div>
     )
 })
 // .add('VerticalBreakdownBar', ()=>{
