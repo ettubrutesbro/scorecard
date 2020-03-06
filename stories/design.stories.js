@@ -102,9 +102,10 @@ storiesOf('Design Tooling', module)
     const computedStore = {indicator: indicator, race: race, year: year, colorScale: scale}
     return(
         <AllShit>
+        <div style = {{display: 'flex'}}>
         <Note> Data lowest number: {Math.min(...allNums)} Highest: {Math.max(...allNums)} </Note> <br />
-        <Note> Data pad: {padLeft} Right: {padRight} </Note> <br />
-        <Note> Reporting counties: {allNums.length} (invalid: {invalids}) </Note> <br />
+        <Note> Data pad: {padLeft} Right: {padRight} </Note> 
+        </div>
         <Swatches>
             {classBreaks.map((ele,i,arr)=>{
                 const range = i===0? `0-${ele.toFixed(1)}` : `${arr[i-1].toFixed(1)} - ${ele.toFixed(1)}` 
@@ -132,7 +133,7 @@ storiesOf('Design Tooling', module)
         />
         </MapContainer>
         <br />
-        <div style = {{position: 'absolute', right: '100px', width: '450px', height: '150px', top: '350px'}}>
+        <div style = {{position: 'absolute', right: '100px', width: '450px', height: '150px', top: '200px'}}>
         <IndicatorByCounties
             store = {computedStore}
             entries = {8}

@@ -45,6 +45,24 @@ allCounties.push('')
 addDecorator(withKnobs)
 
 storiesOf('Breakdowns', module)
+.add('HorizontalBarGraph', ()=>{
+    return(
+    <div style = {{width: '550px', marginTop: '50px'}}>
+        <HorizontalBarGraph 
+            header = 'My Bar Graph'
+            average = {50}
+            labelWidth = {100}
+            bars = {[
+                {label: 'hi', value: 100},    
+                {label: 'oeu', value: 50},    
+                {label: '.py', value: 20},    
+                {label: 'ytnoh', value: 10},    
+            ]}
+        />
+        </div>
+    )
+})
+
 .add('IndicatorByCounties (I, LI)', ()=>{
     const indicator = select('indicator',allIndicators, 'earlyPrenatalCare')
     const county = select('county', allCounties, null)
@@ -125,23 +143,7 @@ storiesOf('Breakdowns', module)
         </div>
     )
 })
-.add('HorizontalBarGraph', ()=>{
-    return(
-    <div style = {{width: '550px', marginTop: '50px'}}>
-        <HorizontalBarGraph 
-            header = 'My Bar Graph'
-            average = {50}
-            labelWidth = {100}
-            bars = {[
-                {label: 'hi', value: 100},    
-                {label: 'oeu', value: 50},    
-                {label: '.py', value: 20},    
-                {label: 'ytnoh', value: 10},    
-            ]}
-        />
-        </div>
-    )
-})
+
 // .add('VerticalBreakdownBar', ()=>{
 //     const options = {
 //          hellaAzns: [
