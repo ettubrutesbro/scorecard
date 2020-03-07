@@ -6,7 +6,6 @@ import styled, {css} from 'styled-components'
 import {findDOMNode} from 'react-dom'
 
 import {find, findIndex} from 'lodash'
-import FlipMove from 'react-flip-move'
 
 @observer
 export default class HorizontalBarGraph extends React.Component{
@@ -33,13 +32,7 @@ export default class HorizontalBarGraph extends React.Component{
                     {this.props.header} {this.selectedIndex}
                 </Header>
                 <Content>
-                <FlipMove
-                    duration = {250}
-                    typeName = {null}
-                    enterAnimation = {null}
-                    leaveAnimation = {null}
-                    disableAllAnimations = {this.props.disableAnim}
-                >
+
                     {this.props.bars.map((item,i,bars)=>{
                         const invalidValue = item.value !==0 && (!item.value || item.value==='*')
                         const condensed = item.condensed
@@ -90,7 +83,6 @@ export default class HorizontalBarGraph extends React.Component{
                             </Row>
                         )
                     })}
-                </FlipMove>
                 </Content>
                 {this.props.average &&
                     <AverageLine 
