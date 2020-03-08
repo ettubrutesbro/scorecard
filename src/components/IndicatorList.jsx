@@ -6,7 +6,7 @@ import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 import {find, findIndex} from 'lodash'
 
-import FlipMove from 'react-flip-move'
+// import FlipMove from 'react-flip-move'
 import Toggle from './Toggle'
 
 import indicators from '../data/indicators'
@@ -144,12 +144,7 @@ export default class IndicatorList extends React.Component{
 
             </IndicatorListHeader>
             <ColumnList>
-                <FlipMove
-                    typeName = {null}
-                    staggerDelayBy = {15}
-                    enterAnimation = 'fade'
-                    leaveAnimation = {null}
-                >
+
                     {Object.keys(indicators).filter((ind)=>{
                         const cats = indicators[ind].categories
                         return this.filter === 'all'? true : cats.includes(this.filter)
@@ -194,7 +189,6 @@ export default class IndicatorList extends React.Component{
                             </IndRight>
                         </ColumnItem>
                     })}
-                </FlipMove>
             </ColumnList>
             </React.Fragment>
         )
