@@ -94,7 +94,7 @@ const Titleblock = styled.div`
     align-items: center;
     justify-content: space-between;
     @media ${media.optimal}{
-        margin-bottom: 25px;   
+        margin-bottom: 15px;   
     }
     @media ${media.compact}{
         margin-bottom: 18px;

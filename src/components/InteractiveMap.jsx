@@ -144,7 +144,7 @@ const exemptPathIDs = ['svgMap', 'full', 'garbmask']
         
         return(
             <Wrapper 
-                onClick = {(e)=>this.handleClick(e, e.target.id)}
+                onClick = {(e)=>this.handleClick(e, store.county === e.target.id? null : e.target.id)}
             >
                 {this.props.data && this.defaultTooltip && !this.tooltip && !selected && store.screen!=='mobile' &&
                     <Tooltip 
