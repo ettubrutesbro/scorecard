@@ -74,6 +74,7 @@ export default class IndicatorByRaces extends React.Component{
                 value: val,
                 hoverable: isSomeBullshit? false : true,
                 trueValue: isSomeBullshit || false,
+                noTransition: isSomeBullshit,
                 fill: race===selectedRace? 'var(--peach)' : colorScale? colorScale(ind[race][year]) : ''
             }
         })

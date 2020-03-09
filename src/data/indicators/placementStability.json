@@ -3,11 +3,11 @@
   "semantics": {
     "who": "children",
     "shortWho": "children",
-    "what": "in the child welfare system had been in one placement after 24 months in care",
+    "what": "in the child welfare system were in stable (2+ years) placements",
     "label": "Children in the child welfare system who had been in one placement after 24 months in care",
     "shorthand": "Child welfare placement stability"
   },
-  "keywords": ["placement", "welfare", "care", "child", "welfare"],
+  "keywords": ["placement", "welfare", "care", "child", "welfare", "out-of-home", "home", "foster", "neglect", "orphan"],
   "years": ["2014", "2015"],
   "categories": ["hasRace", "welfare"],
   "counties": {

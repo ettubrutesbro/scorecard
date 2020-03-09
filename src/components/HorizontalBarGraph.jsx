@@ -169,6 +169,7 @@ const Header = styled.div`
                                             hovered = {item.id === this.props.hovered}
                                             selected = {item.id === this.props.selected}
                                             percentage = {item.value}
+                                            noTransition = {item.noTransition}
                                             height = {100/bars.length} 
                                             fill = {item.fill || ''}
                                             onMouseEnter = {()=>{this.handleHoverRow(item.id)}}
@@ -184,6 +185,7 @@ const Header = styled.div`
                                             selected = {item.id === this.props.selected}
                                             alignValue = {this.props.alignValue}
                                             offset = {this.props.labelWidth + (((this.width-labelLineOffset) - this.props.labelWidth) * (item.value/100) ) }
+                                            noTransition = {item.noTransition}
                                         >
                                             {item.trueValue && item.trueValue}
                                             {!item.trueValue && item.value.toFixed(2).replace(/[.,]00$/, "")}
@@ -394,7 +396,7 @@ const Bar = styled.div`
     width: 100%;
     height: ${props => props.condensed? '6px' : '13px'};
     transform-origin: 0% 0%;
-    transition: transform .25s, background-color ${props=>props.selected? 0 : .25}s;
+    transition: transform ${p => p.noTransition? 0 : .25}s, background-color ${props=>props.selected? 0 : .25}s;
     transform: scaleX(${props=> props.percentage/100});
 
     background: ${props => props.selected? 'var(--peach)': props.condensed? 'var(--inactivegrey)': props.fill? props.fill : 'green'};
@@ -410,7 +412,7 @@ const Value = styled.div`
     position: absolute;
     // right: 0;
     ${props => props.alignValue==='outside'? css`left: 0;` : css`right: 0;` }
-    transition: transform .25s;
+    transition: transform ${p => p.noTransition? 0 : .25}s;
     transform: translateX(${props => props.alignValue === 'outside'? props.offset : -props.offset}px);
     margin-left: ${props => props.percentage===0? 0 : 5}px;
     @media ${media.mobile}{
