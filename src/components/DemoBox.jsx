@@ -62,6 +62,7 @@ const DemoBox = (props) => {
     }
     else if((countyLabel.length < 10 || screen==='mobile') && countyLabel!=='California') countyLabel+= ' county'
     else needsAddendum = true
+    if(countyLabel==='California') needsAddendum = false
     pop = sigFig(pop)
 
     return(

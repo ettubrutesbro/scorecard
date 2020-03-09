@@ -610,7 +610,7 @@ export class PickingWorkflow extends React.Component{
 
         const modeSizes = screen === 'optimal'? {
             closed: {width: 95, height: 72},
-            open: {width: 950, height: 720},
+            open: {width: 950, height: 750},
         }: screen === 'compact'? {
             closed: {width: 78, height: 57},
             open: {width: 780, height: 575},
