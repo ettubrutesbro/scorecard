@@ -5,7 +5,7 @@ import {observer} from 'mobx-react'
 import styled from 'styled-components'
 
 import {find, findIndex} from 'lodash'
-import commaNumber from 'comma-number'
+import commaNumber from '../utilities/commaNumber'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 import 'intersection-observer'
 

@@ -1,4 +1,4 @@
-import commaNumber from 'comma-number'
+import commaNumber from './commaNumber'
 
 export default function sigFig(number){
     if(number>=1000000){

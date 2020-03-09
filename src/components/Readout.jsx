@@ -5,7 +5,7 @@ import {observer} from 'mobx-react'
 
 import {find} from 'lodash'
 import {findDOMNode} from 'react-dom'
-import commaNumber from 'comma-number'
+import commaNumber from '../utilities/commaNumber'
 
 import CountingNumber from './CountingNumber'
 

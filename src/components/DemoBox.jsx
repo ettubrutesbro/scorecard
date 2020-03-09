@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import commaNumber from 'comma-number'
+import commaNumber from '../utilities/commaNumber'
 
 import RaceBreakdownBar from './RaceBreakdownBar'
 import CountingNumber from './CountingNumber'

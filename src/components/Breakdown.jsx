@@ -4,7 +4,7 @@ import FlipMove from 'react-flip-move'
 import {observable, action, computed} from 'mobx'
 import {observer} from 'mobx-react'
 
-import commaNumber from 'comma-number'
+import commaNumber from '../utilities/commaNumber'
 
 import IndicatorByRaces from './IndicatorByRaces'
 import IndicatorByCounties from './IndicatorByCounties'
