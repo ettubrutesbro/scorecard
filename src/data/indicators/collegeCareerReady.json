@@ -2,8 +2,8 @@
   "indicator": "collegeCareerReady",
   "semantics": {
     "who": "students",
-    "what": "were college- or career-ready",
-    "label": "Students who were college- or career-ready",
+    "what": "were college-or-career-ready",
+    "label": "Students who were college-or-career-ready",
     "shorthand": "College / career readiness"
   },
   "years": ["2017"],

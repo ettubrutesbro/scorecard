@@ -1,10 +1,10 @@
 {
   "indicator": "enrolled34",
   "semantics": {
-    "who": "3- and 4-year-olds",
+    "who": "3 and 4-year-olds",
     "shortWho": "3-4 y/o's",
     "what": "enrolled in preschool or transitional kindergarten",
-    "label": "3- and 4-year-olds enrolled in preschool or transitional kindergarten",
+    "label": "3-and-4-year-olds enrolled in preschool or transitional kindergarten",
     "shorthand": "Preschool/transitional kindergarten"
   },
   "keywords": ["enrolled", "3-4", "preschool", "transitional", "kindergarten"],

@@ -2,7 +2,7 @@
   "indicator": "mathStandards8",
   "semantics": {
     "who": "8th-graders",
-    "what": "met or exceeded grade-level standards in math",
+    "what": "met or exceeded grade-level math standards",
     "label": "8th-graders who met or exceeded grade-level standards in math",
     "shorthand": "8th grade math standards"
   },

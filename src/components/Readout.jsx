@@ -121,7 +121,7 @@ export default class Readout extends React.Component{
         const ind = indicators[indicator]
         const actualYear = ind? ind.years[year] : ''
 
-        const readout = `of ${descriptor||''} ${race!=='other'? raceString : ''} ${who} ${race==='other'?raceString:''} ${what} in ${countyString} in ${actualYear}.`
+        const readout = `of ${descriptor||''} ${race!=='other'? raceString : ''} ${who}${race==='other'?raceString:''}${what[0]===','?'':' '}${what} in ${countyString} in ${actualYear}.`
 
         const firstLineBreakPoint = screen==='optimal'? 85  : screen==='compact'? 60 : 40
         const minCharsInSubsequent = 15
