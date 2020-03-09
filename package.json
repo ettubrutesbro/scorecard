@@ -23,7 +23,7 @@
     "react": "^16.4.0",
     "react-countup": "^4.0.0-alpha.6",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-flip-move": "^3.0.2",
     "react-scroll-sync": "^0.7.0",
     "requestidlecallback": "^0.3.0",
